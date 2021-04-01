@@ -2,7 +2,7 @@ openapi: 3.0.0
 
 info:
   version: 0.0.1
-  title: Blog Service
+  title: Home Project Blog Service
   description: |
     Blog for the OnHomeProject project by SoftServe
 
