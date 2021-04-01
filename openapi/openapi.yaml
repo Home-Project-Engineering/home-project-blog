@@ -22,10 +22,7 @@ paths:
         - "users"
       operationId: signUp
       security:
-        - basicAuth: []
-        - user_auth:
-          - 'write:users'
-          - 'read:users' 
+        - basicAuth: [] 
           
       requestBody:
         description: object User #ToDoAuthirization!!!!!!!!!!!!!!!!!
@@ -745,16 +742,4 @@ components:
     basicAuth:     # <-- arbitrary name for the security scheme
       type: http
       scheme: basic
-    user_auth:
-      description: |
-        Get access to data while protecting your account credentials.
-        This API uses OAuth 2 with the implicit grant flow.
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: 'http://blog/api/oauth2/authorize'
-          scopes:
-            'write:users': modify your account 
-            'read:users': read your account
-  
-  
+   
