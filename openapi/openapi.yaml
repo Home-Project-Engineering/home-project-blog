@@ -21,8 +21,14 @@ paths:
       tags:
         - "users"
       operationId: signUp
+      security:
+        - basicAuth: []
+        - user_auth:
+          - 'write:users'
+          - 'read:users' 
+          
       requestBody:
-        description: object User
+        description: object User #ToDoAuthirization!!!!!!!!!!!!!!!!!
         required: true
         content:
           application/json:
@@ -31,26 +37,49 @@ paths:
       responses:
         "201":
           description: CREATED
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
         "400":
           description: BAD REQUEST
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
 
     get:
       summary: This gets all users
-      description: Return all users with paggination, could be sorted
+      description:  Return all users with paggination, could be sorted
       tags:
         - "users"
       operationId: getAllUsers
       parameters:
         - in: query
           name: sort
+          description: In order to execute *asc*, you need to specify in the search *id* or *username* parameter. In order to complete the *desk* sorting must be specified in the query parameter *-id*
           schema:
             type: string
-            enum: [ asc, desc ]
-
+            enum: [ "id", "-id", "username", "-username" ]
+            default: "-id"
+        - in: query
+          name: page_num
+          description: PagEnum indicates the page you expect to receive.
+          schema:
+            type: integer
+            default: 1
+        - in: query
+          name: page_size
+          description:  PageSize indicates the number of users on the page
+          schema:
+            type: integer
+            default: 50
       responses:
         "200":
           description: OK
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
           content:
             application/json:
               schema:
@@ -157,6 +186,10 @@ paths:
       responses:
         "201":
           description: CREATED
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
         "400":
           description: BAD REQUEST
 
@@ -169,12 +202,28 @@ paths:
       parameters:
         - in: query
           name: sort
+          description: In order to execute *asc*, you need to specify in the search *id* or *title* parameter. In order to complete the *desk* sorting must be specified in the query parameter *-id*
           schema:
             type: string
-            enum: [ asc, desc ]
+            enum: [ "id", "-id", "title", "-title" ]
+            default: "-id"
+        - in: query
+          name: page_num
+          schema:
+            type: integer
+            default: 1
+        - in: query
+          name: page_size
+          schema:
+            type: integer
+            default: 30
       responses:
         "200":
           description: OK
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
           content:
             application/json:
               schema:
@@ -271,7 +320,7 @@ paths:
   /comments/{post_id}:
     get:
       summary: This gets all comments to post
-      description: This is a detail descritpion
+      description: In order to execute *asc*, you need to specify in the search *id* parameter. In order to complete the *desk* sorting must be specified in the query parameter *-id*
       tags:
         - "comments"
       operationId: getAllComments
@@ -282,6 +331,22 @@ paths:
             type: number
             format: int64
           required: true
+        - in: query
+          name: sort
+          schema:
+            type: string
+            enum: [ "id", "-id"]
+            default: "-id"
+        - in: query
+          name: page_num
+          schema:
+            type: integer
+            default: 1
+        - in: query
+          name: page_size
+          schema:
+            type: integer
+            default: 20    
       responses:
         "200":
           description: OK
@@ -293,6 +358,8 @@ paths:
                   $ref: "#/components/schemas/Comment"
         "404":
           description: NOT FOUND
+          
+          
     post:
       summary: Leave a Comment
       tags:
@@ -314,6 +381,10 @@ paths:
       responses:
         "201":
           description: CREATED
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
         "400":
           description: BAD REQUEST
 
@@ -397,7 +468,7 @@ paths:
 
   /tags:
     get:
-      summary: "This gets all tags"
+      description: In order to execute *asc*, you need to specify in the search *id* or *tagname* parameter. In order to complete the *desk* sorting must be specified in the query parameter *-id*
       tags:
         - "tags"
       operationId: getAllTags
@@ -406,10 +477,23 @@ paths:
           name: sort
           schema:
             type: string
-            enum: [ asc, desc ]
+            enum: [ "id", "-id", "tagname", "-tagname" ]
+            default: "tagname"
+        - in: query
+          name: page_num
+          schema:
+            type: integer
+        - in: query
+          name: page_size
+          schema:
+            type: integer
       responses:
         "200":
           description: OK
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
           content:
             application/json:
               schema:
@@ -419,7 +503,7 @@ paths:
         "404":
           description: NOT FOUND
 
-  /tags{tag_id}:
+  /tags/{tag_id}:
     get:
       summary: Find tag by ID
       description: Returns a tag
@@ -509,9 +593,41 @@ components:
           type: number
           format: int64
           readOnly: true
-        name:
-          description: User's name
+        username:
+          description: User supplied username
           type: string
+          minLength: 4
+          example: John78
+        firstName:
+          description: User first name
+          type: string
+          minLength: 1
+          example: John
+        lastName:
+          description: User last name
+          type: string
+          minLength: 1
+          example: Smith
+        email:
+          description: User email address
+          type: string
+          format: email
+          example: john.smith@example.com
+        password:
+          type: string
+          description: >-
+            User password, MUST contain a mix of upper and lower case letters,
+            as well as digits
+          format: password
+          minLength: 8
+          pattern: '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/'
+          example: passworD321
+        phone:
+          description: User phone number in international format
+          type: string
+          pattern: '/^\+(?:[0-9]-?){6,14}[0-9]$/'
+          example: +38-011-333-4455
+          nullable: true
         role:
           description: This is the level of user access to various functions
           type: string
@@ -560,7 +676,7 @@ components:
           items:
             type: string
         updatedOn:
-          description: Creation date
+          description: Updation date
           type: string
           example: "2017-07-21T17:32:28Z"
           format: date-time
@@ -596,7 +712,7 @@ components:
           type: number
           format: int64
         updatedOn:
-          description: Creation date
+          description: Date of update
           type: string
           example: "2017-07-21T17:32:28Z"
           format: date-time
@@ -614,3 +730,31 @@ components:
         name:
           description: "Tag"
           type: string
+  
+  
+  responses:
+  
+    UnauthorizedError:
+      description: Authentication information is missing or invalid
+      headers:
+        WWW_Authenticate:
+          schema:
+            type: string
+  
+  securitySchemes:
+    basicAuth:     # <-- arbitrary name for the security scheme
+      type: http
+      scheme: basic
+    user_auth:
+      description: |
+        Get access to data while protecting your account credentials.
+        This API uses OAuth 2 with the implicit grant flow.
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: 'http://blog/api/oauth2/authorize'
+          scopes:
+            'write:users': modify your account 
+            'read:users': read your account
+  
+  
