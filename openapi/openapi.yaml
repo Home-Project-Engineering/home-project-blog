@@ -1,0 +1,616 @@
+openapi: 3.0.0
+
+info:
+  version: 0.0.1
+  title: Blog Service
+  description: |
+    Blog for the OnHomeProject project by SoftServe
+
+
+tags:
+  - name: "users"
+  - name: "posts"
+  - name: "comments"
+  - name: "tags"
+
+paths:
+
+  /users:
+    post:
+      summary: Sign up a new user
+      tags:
+        - "users"
+      operationId: signUp
+      requestBody:
+        description: object User
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "201":
+          description: CREATED
+        "400":
+          description: BAD REQUEST
+
+
+    get:
+      summary: This gets all users
+      description: Return all users with paggination, could be sorted
+      tags:
+        - "users"
+      operationId: getAllUsers
+      parameters:
+        - in: query
+          name: sort
+          schema:
+            type: string
+            enum: [ asc, desc ]
+
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        "404":
+          description: NOT FOUND
+
+  /users/{user_id}:
+    get:
+      tags:
+        - "users"
+      summary: Find user by ID
+      description: Returns a user
+      operationId: getUser
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: number
+            format: int64
+          required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: BAD REQUEST
+        "404":
+          description: NOT FOUND
+
+    put:
+      tags:
+        - "users"
+      summary: Update user by ID
+      description: Updates a user
+      operationId: updateUser
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: number
+            format: int64
+          required: true
+      requestBody:
+        description: object User
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: BAD REQUEST
+        "404":
+          description: NOT FOUND
+
+    delete:
+      tags:
+        - "users"
+      summary: Delete user by ID
+      description: Delete a user
+      operationId: deleteUser
+      parameters:
+        - in: path
+          name: user_id
+          schema:
+            type: number
+            format: int64
+          required: true
+      responses:
+        "204":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400":
+          description: BAD REQUEST
+        "404":
+          description: NOT FOUND
+
+
+
+  /posts:
+    post:
+      summary: Create a Post
+      tags:
+        - "posts"
+      operationId: create
+      requestBody:
+        description: object Post
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Post"
+      responses:
+        "201":
+          description: CREATED
+        "400":
+          description: BAD REQUEST
+
+
+    get:
+      summary: This gets all posts
+      tags:
+        - "posts"
+      operationId: getAllPosts
+      parameters:
+        - in: query
+          name: sort
+          schema:
+            type: string
+            enum: [ asc, desc ]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+        "404":
+          description: NOT FOUND
+
+  /posts/{post_id}:
+    get:
+      tags:
+        - "posts"
+      summary: Find post by ID
+      description: Returns a post
+      operationId: getPost
+      parameters:
+        - in: path
+          name: post_id
+          schema:
+            type: number
+            format: int64
+          required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        "400":
+          description: BAD REQUEST
+        "404":
+          description: NOT FOUND
+
+    put:
+      tags:
+        - "posts"
+      summary: Update post by ID
+      description: Updates a post
+      operationId: updatePost
+      parameters:
+        - in: path
+          name: post_id
+          schema:
+            type: number
+            format: int64
+          required: true
+      requestBody:
+        description: some parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Post"
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: BAD REQUEST
+        "404":
+          description: NOT FOUND
+
+    delete:
+      tags:
+        - "posts"
+      summary: Delete post by ID
+      description: Delete a post
+      operationId: deletePost
+      parameters:
+        - in: path
+          name: post_id
+          schema:
+            type: number
+            format: int64
+          required: true
+      responses:
+        "204":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        "400":
+          description: BAD REQUEST
+        "404":
+          description: NOT FOUND
+          ###########################################
+
+
+
+
+
+  /comments/{post_id}:
+    get:
+      summary: This gets all comments to post
+      description: This is a detail descritpion
+      tags:
+        - "comments"
+      operationId: getAllComments
+      parameters:
+        - in: path
+          name: post_id
+          schema:
+            type: number
+            format: int64
+          required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Comment"
+        "404":
+          description: NOT FOUND
+    post:
+      summary: Leave a Comment
+      tags:
+        - "comments"
+      operationId: leaveAComment
+      parameters:
+        - in: path
+          name: post_id
+          schema:
+            type: number
+            format: int64
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Comment"
+      responses:
+        "201":
+          description: CREATED
+        "400":
+          description: BAD REQUEST
+
+  /comments/{comment_id}:
+    get:
+      tags:
+        - "comments"
+      summary: Find comment by ID
+      description: Returns a single comment
+      operationId: getCommentById
+      parameters:
+        - in: path
+          name: comment_id
+          schema:
+            type: integer
+          required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "400":
+          description: BAD REQUEST
+        "404":
+          description: NOT FOUND
+    put:
+      tags:
+        - "comments"
+      summary: Update commet by ID
+      description: Updates a comment
+      operationId: updateComment
+      parameters:
+        - in: path
+          name: comment_id
+          schema:
+            type: number
+            format: int64
+          required: true
+      requestBody:
+        description: some parameters
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Comment"
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: BAD REQUEST
+        "404":
+          description: NOT FOUND
+
+    delete:
+      tags:
+        - "comments"
+      summary: Delete post by ID
+      description: Delete a post
+      operationId: deleteComment
+      parameters:
+        - in: path
+          name: comment_id
+          schema:
+            type: number
+            format: int64
+          required: true
+      responses:
+        "204":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
+        "400":
+          description: BAD REQUEST
+        "404":
+          description: NOT FOUND
+
+
+  /tags:
+    get:
+      summary: "This gets all tags"
+      tags:
+        - "tags"
+      operationId: getAllTags
+      parameters:
+        - in: query
+          name: sort
+          schema:
+            type: string
+            enum: [ asc, desc ]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Tag"
+        "404":
+          description: NOT FOUND
+
+  /tags{tag_id}:
+    get:
+      summary: Find tag by ID
+      description: Returns a tag
+      tags:
+        - "tags"
+      operationId: getTag
+      parameters:
+        - in: path
+          name: tag_id
+          schema:
+            type: number
+            format: int64
+          required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
+        "400":
+          description: BAD REQUEST
+        "404":
+          description: NOT FOUND
+
+    put:
+      tags:
+        - "tags"
+      summary: Update tag by ID
+      operationId: updateTag
+      parameters:
+        - in: path
+          name: tag_id
+          schema:
+            type: number
+            format: int64
+          required: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tag"
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: BAD REQUEST
+        "404":
+          description: NOT FOUND
+
+    delete:
+      tags:
+        - "tags"
+      summary: Delete a tag by ID
+      operationId: deleteTag
+      parameters:
+        - in: path
+          name: tag_id
+          schema:
+            type: number
+            format: int64
+          required: true
+      responses:
+        "204":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+        "400":
+          description: BAD REQUEST
+        "404":
+          description: NOT FOUND
+
+
+components:
+  schemas:
+
+    User: #???GitAuthorize
+      description: This is a user object
+      type: object
+      required:
+        - name
+      properties:
+        id:
+          type: number
+          format: int64
+          readOnly: true
+        name:
+          description: User's name
+          type: string
+        role:
+          description: This is the level of user access to various functions
+          type: string
+          enum:
+            - guest
+            - user
+            - moderator
+            - admin
+            - expert
+
+
+    Post:
+      type: object
+      required:
+        - tags
+        - title
+        - body
+        - previewAttachment
+      properties:
+        id:
+          description: User's Id
+          type: number
+          format: int64
+          readOnly: true
+        tags:
+          type: array
+          items:
+            $ref: "#/components/schemas/Tag"
+        createdOn:
+          description: Creation date
+          type: string
+          example: "2017-07-21T17:32:28Z"
+          format: date-time
+          readOnly: true
+        user:
+          $ref: "#/components/schemas/User"
+        text:
+          description: ""
+          type: string
+        title:
+          description: ""
+          type: string
+        previewAttachment: #to do!!!
+          description: "URL"
+          type: array
+          items:
+            type: string
+        updatedOn:
+          description: Creation date
+          type: string
+          example: "2017-07-21T17:32:28Z"
+          format: date-time
+          readOnly: true
+
+
+
+    Comment:
+      required:
+        - body
+        - user
+        - postId
+        - text
+      properties:
+        id:
+          description: Comment's Id
+          type: number
+          format: int64
+          readOnly: true
+        user:
+          $ref: "#/components/schemas/User"
+        text:
+          description: Comment's text
+          type: string
+        createdOn:
+          description: Creation date
+          type: string
+          example: "2017-07-21T17:32:28Z"
+          format: date-time
+          readOnly: true
+        postId:
+          description: ""
+          type: number
+          format: int64
+        updatedOn:
+          description: Creation date
+          type: string
+          example: "2017-07-21T17:32:28Z"
+          format: date-time
+          readOnly: true
+
+    Tag:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          type: number
+          format: int64
+          readOnly: true
+        name:
+          description: "Tag"
+          type: string
