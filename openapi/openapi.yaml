@@ -208,7 +208,7 @@ paths:
             type: string
         - in: query
           name: user_id
-          description: This gets all user posts
+          description: This gets all user's posts
           schema:
             type: string
         - in: query
