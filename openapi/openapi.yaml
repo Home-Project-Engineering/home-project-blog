@@ -202,11 +202,15 @@ paths:
       operationId: getAllPosts
       parameters:
         - in: query
-          name: id
+          name: tag_id
           description: This gets all posts with the given tag
           schema:
             type: string
-            enum: [ "tag", "user", "-tag", "-user"]
+        - in: query
+          name: user_id
+          description: This gets all user posts
+          schema:
+            type: string
         - in: query
           name: sort
           description: In order to execute *asc*, you need to specify in the search *id* or *title* parameter. In order to complete the *desk* sorting must be specified in the query parameter *-id*
