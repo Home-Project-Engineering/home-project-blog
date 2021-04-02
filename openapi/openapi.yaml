@@ -135,6 +135,10 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
         "400":
           description: BAD REQUEST
         "404":
@@ -198,6 +202,12 @@ paths:
       operationId: getAllPosts
       parameters:
         - in: query
+          name: id
+          description: This gets all posts with the given tag
+          schema:
+            type: string
+            enum: [ "tag", "user", "-tag", "-user"]
+        - in: query
           name: sort
           description: In order to execute *asc*, you need to specify in the search *id* or *title* parameter. In order to complete the *desk* sorting must be specified in the query parameter *-id*
           schema:
@@ -229,7 +239,8 @@ paths:
                   $ref: "#/components/schemas/Post"
         "404":
           description: NOT FOUND
-
+  
+  
   /posts/{post_id}:
     get:
       tags:
@@ -279,6 +290,10 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
         "400":
           description: BAD REQUEST
         "404":
@@ -432,6 +447,10 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"  
         "400":
           description: BAD REQUEST
         "404":
@@ -547,6 +566,10 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
         "400":
           description: BAD REQUEST
         "404":
