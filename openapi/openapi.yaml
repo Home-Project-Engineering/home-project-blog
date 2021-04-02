@@ -49,11 +49,22 @@ paths:
       operationId: getAllUsers
       parameters:
         - in: query
+          name: id
+          description: Find by id
+          schema: 
+            type: number
+            format: int64
+        - in: query
+          name: name
+          description: Find by name
+          schema: 
+            type: string
+        - in: query
           name: sort
-          description: In order to execute *asc*, you need to specify in the search *id* or *username* parameter. In order to complete the *desk* sorting must be specified in the query parameter *-id*
+          description: In order to execute *asc*, you need to specify in the search *id* or *name* parameter. In order to complete the *desk* sorting must be specified in the query parameter *-id*
           schema:
             type: string
-            enum: [ "id", "-id", "username", "-username" ]
+            enum: [ "id", "-id", "name", "-name" ]
             default: "-id"
         - in: query
           name: page_num
@@ -73,7 +84,8 @@ paths:
           headers:
             X-Total-Count:
               schema:
-                type: integer
+                type: number
+                format: int64
           content:
             application/json:
               schema:
@@ -199,7 +211,19 @@ paths:
       operationId: getAllPosts
       parameters:
         - in: query
+          name: id
+          description: Find by id
+          schema: 
+            type: number
+            format: int64
+        - in: query
           name: tag_id
+          description: This gets all posts with the given tag
+          schema:
+            type: number
+            format: int64
+        - in: query
+          name: tag_name
           description: This gets all posts with the given tag
           schema:
             type: string
@@ -207,7 +231,8 @@ paths:
           name: user_id
           description: This gets all user posts
           schema:
-            type: string
+            type: number
+            format: int64
         - in: query
           name: sort
           description: In order to execute *asc*, you need to specify in the search *id* or *title* parameter. In order to complete the *desk* sorting must be specified in the query parameter *-id*
@@ -231,7 +256,8 @@ paths:
           headers:
             X-Total-Count:
               schema:
-                type: integer
+                type: number
+                format: int64
           content:
             application/json:
               schema:
@@ -256,6 +282,17 @@ paths:
             type: number
             format: int64
           required: true
+        - in: query
+          name: id
+          description: Find by id
+          schema: 
+            type: number
+            format: int64
+        - in: query
+          name: name
+          description: Find by name
+          schema: 
+            type: string
       responses:
         "200":
           description: OK
@@ -324,10 +361,6 @@ paths:
           description: BAD REQUEST
         "404":
           description: NOT FOUND
-          ###########################################
-
-
-
 
 
   /comments/{post_id}:
@@ -338,6 +371,23 @@ paths:
         - "comments"
       operationId: getAllComments
       parameters:
+        - in: query
+          name: user_id
+          description: Find by id
+          schema: 
+            type: number
+            format: int64
+        - in: query
+          name: id
+          description: Find by id
+          schema: 
+            type: number
+            format: int64
+        - in: query
+          name: user_name
+          description: Find by name
+          schema: 
+            type: string
         - in: path
           name: post_id
           schema:
@@ -401,6 +451,7 @@ paths:
         "400":
           description: BAD REQUEST
 
+
   /comments/{comment_id}:
     get:
       tags:
@@ -457,6 +508,7 @@ paths:
         "404":
           description: NOT FOUND
 
+
     delete:
       tags:
         - "comments"
@@ -491,6 +543,17 @@ paths:
       operationId: getAllTags
       parameters:
         - in: query
+          name: id
+          description: Find by id
+          schema: 
+            type: number
+            format: int64
+        - in: query
+          name: name
+          description: Find by name
+          schema: 
+            type: string
+        - in: query
           name: sort
           schema:
             type: string
@@ -510,7 +573,8 @@ paths:
           headers:
             X-Total-Count:
               schema:
-                type: integer
+                type: number
+                format: int64
           content:
             application/json:
               schema:
@@ -519,6 +583,7 @@ paths:
                   $ref: "#/components/schemas/Tag"
         "404":
           description: NOT FOUND
+
 
   /tags/{tag_id}:
     get:
@@ -545,6 +610,7 @@ paths:
           description: BAD REQUEST
         "404":
           description: NOT FOUND
+
 
     put:
       tags:
@@ -614,7 +680,7 @@ components:
           type: number
           format: int64
           readOnly: true
-        username:
+        name:
           description: User supplied username
           type: string
           minLength: 4
@@ -643,12 +709,6 @@ components:
           minLength: 8
           pattern: '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/'
           example: passworD321
-        phone:
-          description: User phone number in international format
-          type: string
-          pattern: '/^\+(?:[0-9]-?){6,14}[0-9]$/'
-          example: +38-011-333-4455
-          nullable: true
         role:
           description: This is the level of user access to various functions
           type: string
