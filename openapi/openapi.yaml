@@ -25,7 +25,7 @@ paths:
         - basicAuth: [] 
           
       requestBody:
-        description: object User #ToDoAuthirization!!!!!!!!!!!!!!!!!
+        description: object User
         required: true
         content:
           application/json:
