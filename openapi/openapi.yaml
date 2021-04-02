@@ -2,7 +2,7 @@ openapi: 3.0.0
 
 info:
   version: 0.0.1
-  title: Blog Service
+  title: Home Project Blog Service
   description: |
     Blog for the OnHomeProject project by SoftServe
 
@@ -811,10 +811,8 @@ components:
         name:
           description: "Tag"
           type: string
-  
-  
-  responses:
-  
+
+responses:
     UnauthorizedError:
       description: Authentication information is missing or invalid
       headers:
@@ -829,4 +827,4 @@ components:
   
 security:
   - basicAuth: [] 
-   
+
