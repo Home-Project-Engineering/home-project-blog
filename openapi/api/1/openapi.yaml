@@ -37,7 +37,7 @@ paths:
                 $ref: "#/components/schemas/User"
         "400":
           description: BAD REQUEST
-        '401':
+        "401":
           $ref: '#/components/responses/UnauthorizedError'
 
 
@@ -812,7 +812,7 @@ components:
           description: "Tag"
           type: string
 
-responses:
+  responses:
     UnauthorizedError:
       description: Authentication information is missing or invalid
       headers:
@@ -821,10 +821,11 @@ responses:
             type: string
   
   securitySchemes:
-    basicAuth:     # <-- arbitrary name for the security scheme
+    basicAuth:    
       type: http
       scheme: basic
-  
+      
+      
 security:
-  - basicAuth: [] 
-
+  - basicAuth: []  
+  
