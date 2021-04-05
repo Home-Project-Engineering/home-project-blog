@@ -19,6 +19,56 @@
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
+            <!--Regenerate our generated source files-->
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>5.0.1</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <generatorName>spring</generatorName>
+                            <inputSpec>F:\SoftServe\ITAcademy\BlogProject\home-project-blog\openapi\api\1\openapi.yaml</inputSpec>
+                            <library>spring-boot</library>
+                            <output>${project.basedir}</output>
+                            <configOptions>
+                                <serializableModel>true</serializableModel>
+                                <artifactId>${project.artifactId}</artifactId>
+                                <groupId>${project.groupId}</groupId>
+                                <version>${project.version}</version>
+                                <dateLibrary>java8</dateLibrary>
+                                <sourceFolder>src/main/gen</sourceFolder>
+                                <basePackage>com.itacademy.blog</basePackage>
+                                <invokerPackage>com.itacademy.blog</invokerPackage>
+                                <configPackage>com.itacademy.blog.config</configPackage>
+                                <apiPackage>com.itacademy.blog.api</apiPackage>
+                                <modelPackage>com.itacademy.blog.model</modelPackage>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Adding new source directory -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                    <goals>
+                        <goal>add-source</goal>
+                    </goals>
+                    <configuration>
+                        <sources>src/itacademy/gen</sources>
+                    </configuration>
+                </execution>
+            </executions>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
