@@ -17,7 +17,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import javax.servlet.ServletContext;
 
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-05T10:45:48.815140100+03:00[Europe/Kiev]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-05T13:45:49.770317300+03:00[Europe/Kiev]")
 @Configuration
 @EnableSwagger2
 public class OpenAPIDocumentationConfig {
@@ -25,17 +25,17 @@ public class OpenAPIDocumentationConfig {
     ApiInfo apiInfo() {
         return new ApiInfoBuilder()
             .title("Home Project Blog Service")
-            .description("Blog for the OnHomeProject project by SoftServe ")
+            .description("Blog for the Home Project engineers ")
             .license("")
             .licenseUrl("http://unlicense.org")
             .termsOfServiceUrl("")
-            .version("0.0.1")
+            .version("0.1.1")
             .contact(new Contact("","", ""))
             .build();
     }
 
     @Bean
-    public Docket customImplementation(ServletContext servletContext, @Value("${openapi.homeProjectBlogService.base-path:}") String basePath) {
+    public Docket customImplementation(ServletContext servletContext, @Value("${openapi.homeProjectBlogService.base-path:/1}") String basePath) {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                     .apis(RequestHandlerSelectors.basePackage("com.itacademy.blog.api"))

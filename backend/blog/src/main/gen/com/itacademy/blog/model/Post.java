@@ -19,7 +19,7 @@ import javax.validation.constraints.*;
 /**
  * Post
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-05T10:45:48.815140100+03:00[Europe/Kiev]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-05T13:45:49.770317300+03:00[Europe/Kiev]")
 public class Post  implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -44,8 +44,7 @@ public class Post  implements Serializable {
   private String title;
 
   @JsonProperty("previewAttachment")
-  @Valid
-  private List<String> previewAttachment = new ArrayList<>();
+  private String previewAttachment;
 
   @JsonProperty("updatedOn")
   @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME)
@@ -147,10 +146,10 @@ public class Post  implements Serializable {
   }
 
   /**
-   * Get text
+   * The content of the post.
    * @return text
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(value = "The content of the post.")
 
 
   public String getText() {
@@ -167,10 +166,10 @@ public class Post  implements Serializable {
   }
 
   /**
-   * Get title
+   * Summary of the post.
    * @return title
   */
-  @ApiModelProperty(required = true, value = "")
+  @ApiModelProperty(required = true, value = "Summary of the post.")
   @NotNull
 
 
@@ -182,29 +181,24 @@ public class Post  implements Serializable {
     this.title = title;
   }
 
-  public Post previewAttachment(List<String> previewAttachment) {
+  public Post previewAttachment(String previewAttachment) {
     this.previewAttachment = previewAttachment;
     return this;
   }
 
-  public Post addPreviewAttachmentItem(String previewAttachmentItem) {
-    this.previewAttachment.add(previewAttachmentItem);
-    return this;
-  }
-
   /**
-   * URL
+   * URL of the resource that will be used as an preview of the Post.
    * @return previewAttachment
   */
-  @ApiModelProperty(required = true, value = "URL")
+  @ApiModelProperty(required = true, value = "URL of the resource that will be used as an preview of the Post.")
   @NotNull
 
 
-  public List<String> getPreviewAttachment() {
+  public String getPreviewAttachment() {
     return previewAttachment;
   }
 
-  public void setPreviewAttachment(List<String> previewAttachment) {
+  public void setPreviewAttachment(String previewAttachment) {
     this.previewAttachment = previewAttachment;
   }
 

@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
 /**
  * Comment
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-05T10:45:48.815140100+03:00[Europe/Kiev]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-05T13:45:49.770317300+03:00[Europe/Kiev]")
 public class Comment  implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -131,10 +131,10 @@ public class Comment  implements Serializable {
   }
 
   /**
-   * Get postId
+   * The id of the Post that exists in the blog.
    * @return postId
   */
-  @ApiModelProperty(required = true, value = "")
+  @ApiModelProperty(required = true, value = "The id of the Post that exists in the blog.")
   @NotNull
 
   @Valid
