@@ -7,14 +7,17 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import org.openapitools.jackson.nullable.JsonNullable;
+import java.io.Serializable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * Tag
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-03T12:16:51.848769300+03:00[Europe/Kiev]")
-public class Tag   {
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-05T10:45:48.815140100+03:00[Europe/Kiev]")
+public class Tag  implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   @JsonProperty("id")
   private BigDecimal id;
 

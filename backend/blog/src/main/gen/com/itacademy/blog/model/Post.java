@@ -12,14 +12,17 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.openapitools.jackson.nullable.JsonNullable;
+import java.io.Serializable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
  * Post
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-03T12:16:51.848769300+03:00[Europe/Kiev]")
-public class Post   {
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-05T10:45:48.815140100+03:00[Europe/Kiev]")
+public class Post  implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   @JsonProperty("id")
   private BigDecimal id;
 
