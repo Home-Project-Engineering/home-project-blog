@@ -9,6 +9,9 @@ info:
 servers:
   - url: /api/1
 
+security:
+  - basicAuth: [ ]
+
 tags:
   - name: "users"
   - name: "posts"
@@ -23,23 +26,12 @@ paths:
         - "users"
       operationId: signUp
       requestBody:
-        description: object User
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/User"
+        $ref: '#/components/requestBodies/UserBody'
       responses:
         "201":
-          description: CREATED
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/User"
+          $ref: '#/components/responses/UserResponse'
         "400":
           $ref: '#/components/responses/ValidationError'
-        "401":
-          $ref: '#/components/responses/UnauthorizedError'
         "default":
           $ref: '#/components/responses/UnknownError'
     get:
@@ -49,78 +41,31 @@ paths:
         - "users"
       operationId: getAllUsers
       parameters:
-        - in: query
-          name: id
-          description: Find by id
-          schema:
-            type: number
-            format: int64
-        - in: query
-          name: name
-          description: Find by name
-          schema:
-            type: string
-        - in: query
-          name: sort
-          description: |
-            In order to execute *asc*, you need to specify in the search *id* or *name* parameter.
-            In order to complete the *desc* sorting must be specified in the query parameter *-id*
-          schema:
-            type: string
-            enum: [ "id", "-id", "name", "-name" ]
-            default: "-id"
-        - in: query
-          name: page_num
-          description: PagEnum indicates the page you expect to receive.
-          schema:
-            type: integer
-            default: 1
-        - in: query
-          name: page_size
-          description: PageSize indicates the number of users on the page
-          schema:
-            type: integer
-            default: 50
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/name'
+        - $ref: '#/components/parameters/users_sort'
+        - $ref: '#/components/parameters/page_num'
+        - $ref: '#/components/parameters/page_size'
       responses:
         "200":
-          description: OK
-          headers:
-            X-Total-Count:
-              schema:
-                type: number
-                format: int64
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/User"
-        "404":
-          $ref: '#/components/responses/NotFoundError'
+          $ref: '#/components/responses/UsersResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
         "default":
           $ref: '#/components/responses/UnknownError'
 
-  /users/{user_id}:
+  /users/{id}:
+    parameters:
+      - $ref: '#/components/parameters/p_id'
     get:
       tags:
         - "users"
-      summary: Find user by ID
+      summary: Get user by ID
       description: Returns a user
       operationId: getUser
-      parameters:
-        - in: path
-          name: user_id
-          schema:
-            type: number
-            format: int64
-          required: true
       responses:
         "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/User"
+          $ref: '#/components/responses/UserResponse'
         "400":
           $ref: '#/components/responses/ValidationError'
         "404":
@@ -133,27 +78,11 @@ paths:
       summary: Update user by ID
       description: Updates a user
       operationId: updateUser
-      parameters:
-        - in: path
-          name: user_id
-          schema:
-            type: number
-            format: int64
-          required: true
       requestBody:
-        description: object User
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/User"
+        $ref: '#/components/requestBodies/UserBody'
       responses:
         "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/User"
+          $ref: '#/components/responses/UserResponse'
         "400":
           $ref: '#/components/responses/ValidationError'
         "404":
@@ -166,20 +95,9 @@ paths:
       summary: Delete user by ID
       description: Delete a user
       operationId: deleteUser
-      parameters:
-        - in: path
-          name: user_id
-          schema:
-            type: number
-            format: int64
-          required: true
       responses:
         "204":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/User"
+          $ref: '#/components/responses/NoContentResponse'
         "400":
           $ref: '#/components/responses/ValidationError'
         "404":
@@ -194,19 +112,10 @@ paths:
         - "posts"
       operationId: create
       requestBody:
-        description: object Post
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Post"
+        $ref: '#/components/requestBodies/PostBody'
       responses:
         "201":
-          description: CREATED
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Post"
+          $ref: '#/components/responses/PostResponse'
         "400":
           $ref: '#/components/responses/ValidationError'
         "default":
@@ -217,99 +126,33 @@ paths:
         - "posts"
       operationId: getAllPosts
       parameters:
-        - in: query
-          name: id
-          description: Find by id
-          schema:
-            type: number
-            format: int64
-        - in: query
-          name: tag_id
-          description: This gets all posts with the given tag
-          schema:
-            type: number
-            format: int64
-        - in: query
-          name: tag_name
-          description: This gets all posts with the given tag
-          schema:
-            type: string
-        - in: query
-          name: user_id
-          description: This gets all user posts
-          schema:
-            type: number
-            format: int64
-        - in: query
-          name: sort
-          description: |
-            In order to execute *asc*, you need to specify in the search *id* or *title* parameter.
-            In order to complete the *desc* sorting must be specified in the query parameter *-id*
-          schema:
-            type: string
-            enum: [ "id", "-id", "title", "-title" ]
-            default: "-id"
-        - in: query
-          name: page_num
-          schema:
-            type: integer
-            default: 1
-        - in: query
-          name: page_size
-          schema:
-            type: integer
-            default: 30
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/tag_id'
+        - $ref: '#/components/parameters/tag_name'
+        - $ref: '#/components/parameters/user_id'
+        - $ref: '#/components/parameters/posts_sort'
+        - $ref: '#/components/parameters/page_num'
+        - $ref: '#/components/parameters/page_size'
       responses:
         "200":
-          description: OK
-          headers:
-            X-Total-Count:
-              schema:
-                type: number
-                format: int64
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Post"
+          $ref: '#/components/responses/PostsResponse'
         "404":
           $ref: '#/components/responses/NotFoundError'
         "default":
           $ref: '#/components/responses/UnknownError'
 
   /posts/{post_id}:
+    parameters:
+      - $ref: '#/components/parameters/p_id'
     get:
       tags:
         - "posts"
       summary: Find post by ID
       description: Returns a post
       operationId: getPost
-      parameters:
-        - in: path
-          name: post_id
-          schema:
-            type: number
-            format: int64
-          required: true
-        - in: query
-          name: id
-          description: Find by id
-          schema:
-            type: number
-            format: int64
-        - in: query
-          name: name
-          description: Find by name
-          schema:
-            type: string
       responses:
         "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Post"
+          $ref: '#/components/responses/PostResponse'
         "400":
           $ref: '#/components/responses/ValidationError'
         "404":
@@ -322,27 +165,11 @@ paths:
       summary: Update post by ID
       description: Updates a post
       operationId: updatePost
-      parameters:
-        - in: path
-          name: post_id
-          schema:
-            type: number
-            format: int64
-          required: true
       requestBody:
-        description: some parameters
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Post"
+        $ref: '#/components/requestBodies/PostBody'
       responses:
         "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Post"
+          $ref: '#/components/responses/PostResponse'
         "400":
           $ref: '#/components/responses/ValidationError'
         "404":
@@ -355,20 +182,9 @@ paths:
       summary: Delete post by ID
       description: Delete a post
       operationId: deletePost
-      parameters:
-        - in: path
-          name: post_id
-          schema:
-            type: number
-            format: int64
-          required: true
       responses:
         "204":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Post"
+          $ref: '#/components/responses/NoContentResponse'
         "400":
           $ref: '#/components/responses/ValidationError'
         "404":
@@ -377,63 +193,23 @@ paths:
           $ref: '#/components/responses/UnknownError'
 
   /posts/{post_id}/comments:
+    parameters:
+      - $ref: '#/components/parameters/p_post_id'
     get:
       summary: This gets all comments to post
       tags:
         - "comments"
       operationId: getAllComments
       parameters:
-        - in: query
-          name: user_id
-          description: Find by id
-          schema:
-            type: number
-            format: int64
-        - in: query
-          name: id
-          description: Find by id
-          schema:
-            type: number
-            format: int64
-        - in: query
-          name: user_name
-          description: Find by name
-          schema:
-            type: string
-        - in: path
-          name: post_id
-          schema:
-            type: number
-            format: int64
-          required: true
-        - in: query
-          name: sort
-          description: |
-            In order to execute *asc*, you need to specify in the search *id* parameter.
-            In order to complete the *desc* sorting must be specified in the query parameter *-id*
-          schema:
-            type: string
-            enum: [ "id", "-id" ]
-            default: "-id"
-        - in: query
-          name: page_num
-          schema:
-            type: integer
-            default: 1
-        - in: query
-          name: page_size
-          schema:
-            type: integer
-            default: 20
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/user_name'
+        - $ref: '#/components/parameters/user_id'
+        - $ref: '#/components/parameters/comments_sort'
+        - $ref: '#/components/parameters/page_num'
+        - $ref: '#/components/parameters/page_size'
       responses:
         "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Comment"
+          $ref: '#/components/responses/CommentsResponse'
         "404":
           $ref: '#/components/responses/NotFoundError'
         "default":
@@ -443,57 +219,29 @@ paths:
       tags:
         - "comments"
       operationId: leaveAComment
-      parameters:
-        - in: path
-          name: post_id
-          schema:
-            type: number
-            format: int64
-          required: true
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Comment"
+        $ref: '#/components/requestBodies/CommentBody'
       responses:
         "201":
-          description: CREATED
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Comment"
+          $ref: '#/components/responses/CommentResponse'
         "400":
           $ref: '#/components/responses/ValidationError'
         "default":
           $ref: '#/components/responses/UnknownError'
 
-  /posts/{post_id}/comments/{comment_id}:
+  /posts/{post_id}/comments/{id}:
+    parameters:
+      - $ref: '#/components/parameters/p_post_id'
+      - $ref: '#/components/parameters/p_id'
     get:
       tags:
         - "comments"
       summary: Find comment by ID
       description: Returns a single comment
       operationId: getCommentById
-      parameters:
-        - in: path
-          name: post_id
-          schema:
-            type: number
-            format: int64
-          required: true
-        - in: path
-          name: comment_id
-          schema:
-            type: integer
-          required: true
       responses:
         "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Comment"
+          $ref: '#/components/responses/CommentResponse'
         "400":
           $ref: '#/components/responses/ValidationError'
         "404":
@@ -506,33 +254,11 @@ paths:
       summary: Update commet by ID
       description: Updates a comment
       operationId: updateComment
-      parameters:
-        - in: path
-          name: post_id
-          schema:
-            type: number
-            format: int64
-          required: true
-        - in: path
-          name: comment_id
-          schema:
-            type: number
-            format: int64
-          required: true
       requestBody:
-        description: some parameters
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Comment"
+        $ref: '#/components/requestBodies/CommentBody'
       responses:
         "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Comment"
+          $ref: '#/components/responses/CommentResponse'
         "400":
           $ref: '#/components/responses/ValidationError'
         "404":
@@ -545,26 +271,9 @@ paths:
       summary: Delete post by ID
       description: Delete a post
       operationId: deleteComment
-      parameters:
-        - in: path
-          name: post_id
-          schema:
-            type: number
-            format: int64
-          required: true
-        - in: path
-          name: comment_id
-          schema:
-            type: number
-            format: int64
-          required: true
       responses:
         "204":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Comment"
+          $ref: '#/components/responses/NoContentResponse'
         "400":
           $ref: '#/components/responses/ValidationError'
         "404":
@@ -578,130 +287,69 @@ paths:
         - "tags"
       operationId: getAllTags
       parameters:
-        - in: query
-          name: id
-          description: Find by id
-          schema:
-            type: number
-            format: int64
-        - in: query
-          name: name
-          description: Find by name
-          schema:
-            type: string
-        - in: query
-          name: sort
-          description: |
-            In order to execute *asc*, you need to specify in the search *id* or *name* parameter.
-            In order to complete the *desc* sorting must be specified in the query parameter *-id*
-          schema:
-            type: string
-            enum: [ "id", "-id", "name", "-name" ]
-            default: "name"
-        - in: query
-          name: page_num
-          schema:
-            type: integer
-        - in: query
-          name: page_size
-          schema:
-            type: integer
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/name'
+        - $ref: '#/components/parameters/tags_sort'
+        - $ref: '#/components/parameters/page_num'
+        - $ref: '#/components/parameters/page_size'
       responses:
         "200":
-          description: OK
-          headers:
-            X-Total-Count:
-              schema:
-                type: number
-                format: int64
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/Tag"
+          $ref: '#/components/responses/TagsResponse'
         "404":
           $ref: '#/components/responses/NotFoundError'
         "default":
           $ref: '#/components/responses/UnknownError'
 
-  /tags/{tag_id}:
+  /tags/{id}:
+    parameters:
+      - $ref: '#/components/parameters/p_id'
     get:
       summary: Find tag by ID
       description: Returns a tag
       tags:
         - "tags"
       operationId: getTag
-      parameters:
-        - in: path
-          name: tag_id
-          schema:
-            type: number
-            format: int64
-          required: true
       responses:
         "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Tag"
+          $ref: '#/components/responses/TagResponse'
         "400":
           $ref: '#/components/responses/ValidationError'
         "404":
           $ref: '#/components/responses/NotFoundError'
         "default":
           $ref: '#/components/responses/UnknownError'
-    put:
-      tags:
-        - "tags"
-      summary: Update tag by ID
-      operationId: updateTag
-      parameters:
-        - in: path
-          name: tag_id
-          schema:
-            type: number
-            format: int64
-          required: true
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Tag"
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Tag"
-        "400":
-          $ref: '#/components/responses/ValidationError'
-        "404":
-          $ref: '#/components/responses/NotFoundError'
-        "default":
-          $ref: '#/components/responses/UnknownError'
+#    put: #todo consider removing this operation as we can just remove the tag if it is wrong
+#      tags:
+#        - "tags"
+#      summary: Update tag by ID
+#      operationId: updateTag
+#      requestBody:
+#        required: true
+#        content:
+#          application/json:
+#            schema:
+#              $ref: "#/components/schemas/Tag"
+#      responses:
+#        "200":
+#          description: OK
+#          content:
+#            application/json:
+#              schema:
+#                $ref: "#/components/schemas/Tag"
+#        "400":
+#          $ref: '#/components/responses/ValidationError'
+#        "404":
+#          $ref: '#/components/responses/NotFoundError'
+#        "default":
+#          $ref: '#/components/responses/UnknownError'
     delete:
       tags:
         - "tags"
       summary: Delete a tag by ID
       operationId: deleteTag
-      parameters:
-        - in: path
-          name: tag_id
-          schema:
-            type: number
-            format: int64
-          required: true
       responses:
         "204":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Post"
+          $ref: '#/components/responses/NoContentResponse'
         "400":
           $ref: '#/components/responses/ValidationError'
         "404":
@@ -710,6 +358,11 @@ paths:
           $ref: '#/components/responses/UnknownError'
 
 components:
+  headers:
+    X-Total-Count:
+      schema:
+        type: number
+        format: int64
   schemas:
     User:
       description: This is a user object
@@ -785,7 +438,9 @@ components:
           format: date-time
           readOnly: true
         user:
-          $ref: "#/components/schemas/User"
+          readOnly: true
+          allOf:
+            - $ref: "#/components/schemas/User"
         text:
           description: "The content of the post."
           type: string
@@ -861,6 +516,76 @@ components:
         - message
 
   responses:
+    NoContentResponse:
+      description: The request was succesfully processed.
+    TagResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Tag"
+    CommentResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Comment"
+    PostResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Post"
+    UserResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/User"
+    CommentsResponse:
+      description: OK
+      headers:
+        X-Total-Count:
+          $ref: '#/components/headers/X-Total-Count'
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Comment"
+    UsersResponse:
+      description: OK
+      headers:
+        X-Total-Count:
+          $ref: '#/components/headers/X-Total-Count'
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/User"
+    PostsResponse:
+      description: OK
+      headers:
+        X-Total-Count:
+          $ref: '#/components/headers/X-Total-Count'
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Post"
+    TagsResponse:
+      description: OK
+      headers:
+        X-Total-Count:
+          $ref: '#/components/headers/X-Total-Count'
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Tag"
     ValidationError:
       description: The payload contains an error
       content:
@@ -880,16 +605,139 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
     UnknownError:
-      description: The unknown error appeard. Check you payload or contact support.
+      description: The unknown error appeard. Check your payload or contact support.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
 
+  requestBodies:
+    CommentBody:
+      description: some parameters
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Comment"
+    PostBody:
+      description: some parameters
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Post"
+    UserBody:
+      description: some parameters
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/User"
+
+  parameters:
+    p_id:
+      in: path
+      name: id
+      schema:
+        type: number
+        format: int64
+      required: true
+    p_post_id:
+      in: path
+      name: post_id
+      schema:
+        type: number
+        format: int64
+      required: true
+    page_num:
+      in: query
+      name: page_num
+      schema:
+        type: integer
+    page_size:
+      in: query
+      name: page_size
+      schema:
+        type: integer
+    id:
+      in: query
+      name: id
+      description: Find by id
+      schema:
+        type: number
+        format: int64
+    name:
+      in: query
+      name: name
+      description: Find by name
+      schema:
+        type: string
+    user_name:
+      in: query
+      name: user_name
+      description: Find by user name
+      schema:
+        type: string
+    tag_name:
+      in: query
+      name: tag_name
+      description: Find by tag name
+      schema:
+        type: string
+    user_id:
+      in: query
+      name: user_id
+      description: Find by user id
+      schema:
+        type: string
+    tag_id:
+      in: query
+      name: tag_id
+      description: Find by tag id
+      schema:
+        type: string
+    tags_sort:
+      in: query
+      name: sort
+      description: |
+        In order to execute *asc*, you need to specify in the search *id* or *name* parameter.
+        In order to complete the *desc* sorting must be specified in the query parameter *-id*
+      schema:
+        type: string
+        enum: [ "id", "-id", "name", "-name" ]
+        default: "name"
+    users_sort:
+      in: query
+      name: sort
+      description: |
+        In order to execute *asc*, you need to specify in the search *id* or *name* parameter.
+        In order to complete the *desc* sorting must be specified in the query parameter *-id*
+      schema:
+        type: string
+        enum: [ "id", "-id", "name", "-name" ]
+        default: "-id"
+    posts_sort:
+      in: query
+      name: sort
+      description: |
+        In order to execute *asc*, you need to specify in the search *id* or *title* parameter.
+        In order to complete the *desc* sorting must be specified in the query parameter *-id*
+      schema:
+        type: string
+        enum: [ "id", "-id", "title", "-title" ]
+        default: "-id"
+    comments_sort:
+      in: query
+      name: sort
+      description: |
+        In order to execute *asc*, you need to specify in the search *id* parameter.
+        In order to complete the *desc* sorting must be specified in the query parameter *-id*
+      schema:
+        type: string
+        enum: [ "id", "-id" ]
+        default: "-id"
+
   securitySchemes:
     basicAuth:
       type: http
       scheme: basic
-
-security:
-  - basicAuth: [ ]
