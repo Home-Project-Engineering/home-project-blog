@@ -1,4 +1,4 @@
-package com.itacademy.config;
+package com.itacademy.blog.config;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
