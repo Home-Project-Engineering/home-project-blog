@@ -1,11 +1,13 @@
-openapi: 3.0.0
+openapi: 3.0.3
 
 info:
-  version: 0.0.1
+  version: 0.1.1
   title: Home Project Blog Service
   description: |
-    Blog for the OnHomeProject project by SoftServe
+    Blog for the Home Project engineers
 
+servers:
+  - url: /api/1
 
 tags:
   - name: "users"
@@ -14,7 +16,6 @@ tags:
   - name: "tags"
 
 paths:
-
   /users:
     post:
       summary: Sign up a new user
@@ -31,10 +32,16 @@ paths:
       responses:
         "201":
           description: CREATED
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
         "400":
-          description: BAD REQUEST
-
-
+          $ref: '#/components/responses/ValidationError'
+        "401":
+          $ref: '#/components/responses/UnauthorizedError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
     get:
       summary: This gets all users
       description: Return all users with paggination, could be sorted
@@ -43,14 +50,45 @@ paths:
       operationId: getAllUsers
       parameters:
         - in: query
-          name: sort
+          name: id
+          description: Find by id
+          schema:
+            type: number
+            format: int64
+        - in: query
+          name: name
+          description: Find by name
           schema:
             type: string
-            enum: [ asc, desc ]
-
+        - in: query
+          name: sort
+          description: |
+            In order to execute *asc*, you need to specify in the search *id* or *name* parameter.
+            In order to complete the *desc* sorting must be specified in the query parameter *-id*
+          schema:
+            type: string
+            enum: [ "id", "-id", "name", "-name" ]
+            default: "-id"
+        - in: query
+          name: page_num
+          description: PagEnum indicates the page you expect to receive.
+          schema:
+            type: integer
+            default: 1
+        - in: query
+          name: page_size
+          description: PageSize indicates the number of users on the page
+          schema:
+            type: integer
+            default: 50
       responses:
         "200":
           description: OK
+          headers:
+            X-Total-Count:
+              schema:
+                type: number
+                format: int64
           content:
             application/json:
               schema:
@@ -58,7 +96,9 @@ paths:
                 items:
                   $ref: "#/components/schemas/User"
         "404":
-          description: NOT FOUND
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
 
   /users/{user_id}:
     get:
@@ -82,10 +122,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/User"
         "400":
-          description: BAD REQUEST
+          $ref: '#/components/responses/ValidationError'
         "404":
-          description: NOT FOUND
-
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
     put:
       tags:
         - "users"
@@ -109,11 +150,16 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
         "400":
-          description: BAD REQUEST
+          $ref: '#/components/responses/ValidationError'
         "404":
-          description: NOT FOUND
-
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
     delete:
       tags:
         - "users"
@@ -135,11 +181,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/User"
         "400":
-          description: BAD REQUEST
+          $ref: '#/components/responses/ValidationError'
         "404":
-          description: NOT FOUND
-
-
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
 
   /posts:
     post:
@@ -157,10 +203,14 @@ paths:
       responses:
         "201":
           description: CREATED
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
         "400":
-          description: BAD REQUEST
-
-
+          $ref: '#/components/responses/ValidationError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
     get:
       summary: This gets all posts
       tags:
@@ -168,13 +218,55 @@ paths:
       operationId: getAllPosts
       parameters:
         - in: query
-          name: sort
+          name: id
+          description: Find by id
+          schema:
+            type: number
+            format: int64
+        - in: query
+          name: tag_id
+          description: This gets all posts with the given tag
+          schema:
+            type: number
+            format: int64
+        - in: query
+          name: tag_name
+          description: This gets all posts with the given tag
           schema:
             type: string
-            enum: [ asc, desc ]
+        - in: query
+          name: user_id
+          description: This gets all user posts
+          schema:
+            type: number
+            format: int64
+        - in: query
+          name: sort
+          description: |
+            In order to execute *asc*, you need to specify in the search *id* or *title* parameter.
+            In order to complete the *desc* sorting must be specified in the query parameter *-id*
+          schema:
+            type: string
+            enum: [ "id", "-id", "title", "-title" ]
+            default: "-id"
+        - in: query
+          name: page_num
+          schema:
+            type: integer
+            default: 1
+        - in: query
+          name: page_size
+          schema:
+            type: integer
+            default: 30
       responses:
         "200":
           description: OK
+          headers:
+            X-Total-Count:
+              schema:
+                type: number
+                format: int64
           content:
             application/json:
               schema:
@@ -182,7 +274,9 @@ paths:
                 items:
                   $ref: "#/components/schemas/Post"
         "404":
-          description: NOT FOUND
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
 
   /posts/{post_id}:
     get:
@@ -198,6 +292,17 @@ paths:
             type: number
             format: int64
           required: true
+        - in: query
+          name: id
+          description: Find by id
+          schema:
+            type: number
+            format: int64
+        - in: query
+          name: name
+          description: Find by name
+          schema:
+            type: string
       responses:
         "200":
           description: OK
@@ -206,10 +311,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/Post"
         "400":
-          description: BAD REQUEST
+          $ref: '#/components/responses/ValidationError'
         "404":
-          description: NOT FOUND
-
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
     put:
       tags:
         - "posts"
@@ -233,11 +339,16 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
         "400":
-          description: BAD REQUEST
+          $ref: '#/components/responses/ValidationError'
         "404":
-          description: NOT FOUND
-
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
     delete:
       tags:
         - "posts"
@@ -259,29 +370,61 @@ paths:
               schema:
                 $ref: "#/components/schemas/Post"
         "400":
-          description: BAD REQUEST
+          $ref: '#/components/responses/ValidationError'
         "404":
-          description: NOT FOUND
-          ###########################################
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
 
-
-
-
-
-  /comments/{post_id}:
+  /posts/{post_id}/comments:
     get:
       summary: This gets all comments to post
-      description: This is a detail descritpion
       tags:
         - "comments"
       operationId: getAllComments
       parameters:
+        - in: query
+          name: user_id
+          description: Find by id
+          schema:
+            type: number
+            format: int64
+        - in: query
+          name: id
+          description: Find by id
+          schema:
+            type: number
+            format: int64
+        - in: query
+          name: user_name
+          description: Find by name
+          schema:
+            type: string
         - in: path
           name: post_id
           schema:
             type: number
             format: int64
           required: true
+        - in: query
+          name: sort
+          description: |
+            In order to execute *asc*, you need to specify in the search *id* parameter.
+            In order to complete the *desc* sorting must be specified in the query parameter *-id*
+          schema:
+            type: string
+            enum: [ "id", "-id" ]
+            default: "-id"
+        - in: query
+          name: page_num
+          schema:
+            type: integer
+            default: 1
+        - in: query
+          name: page_size
+          schema:
+            type: integer
+            default: 20
       responses:
         "200":
           description: OK
@@ -292,7 +435,9 @@ paths:
                 items:
                   $ref: "#/components/schemas/Comment"
         "404":
-          description: NOT FOUND
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
     post:
       summary: Leave a Comment
       tags:
@@ -314,10 +459,16 @@ paths:
       responses:
         "201":
           description: CREATED
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
         "400":
-          description: BAD REQUEST
+          $ref: '#/components/responses/ValidationError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
 
-  /comments/{comment_id}:
+  /posts/{post_id}/comments/{comment_id}:
     get:
       tags:
         - "comments"
@@ -325,6 +476,12 @@ paths:
       description: Returns a single comment
       operationId: getCommentById
       parameters:
+        - in: path
+          name: post_id
+          schema:
+            type: number
+            format: int64
+          required: true
         - in: path
           name: comment_id
           schema:
@@ -338,9 +495,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/Comment"
         "400":
-          description: BAD REQUEST
+          $ref: '#/components/responses/ValidationError'
         "404":
-          description: NOT FOUND
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
     put:
       tags:
         - "comments"
@@ -348,6 +507,12 @@ paths:
       description: Updates a comment
       operationId: updateComment
       parameters:
+        - in: path
+          name: post_id
+          schema:
+            type: number
+            format: int64
+          required: true
         - in: path
           name: comment_id
           schema:
@@ -364,11 +529,16 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Comment"
         "400":
-          description: BAD REQUEST
+          $ref: '#/components/responses/ValidationError'
         "404":
-          description: NOT FOUND
-
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
     delete:
       tags:
         - "comments"
@@ -376,6 +546,12 @@ paths:
       description: Delete a post
       operationId: deleteComment
       parameters:
+        - in: path
+          name: post_id
+          schema:
+            type: number
+            format: int64
+          required: true
         - in: path
           name: comment_id
           schema:
@@ -390,26 +566,54 @@ paths:
               schema:
                 $ref: "#/components/schemas/Comment"
         "400":
-          description: BAD REQUEST
+          $ref: '#/components/responses/ValidationError'
         "404":
-          description: NOT FOUND
-
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
 
   /tags:
     get:
-      summary: "This gets all tags"
       tags:
         - "tags"
       operationId: getAllTags
       parameters:
         - in: query
-          name: sort
+          name: id
+          description: Find by id
+          schema:
+            type: number
+            format: int64
+        - in: query
+          name: name
+          description: Find by name
           schema:
             type: string
-            enum: [ asc, desc ]
+        - in: query
+          name: sort
+          description: |
+            In order to execute *asc*, you need to specify in the search *id* or *name* parameter.
+            In order to complete the *desc* sorting must be specified in the query parameter *-id*
+          schema:
+            type: string
+            enum: [ "id", "-id", "name", "-name" ]
+            default: "name"
+        - in: query
+          name: page_num
+          schema:
+            type: integer
+        - in: query
+          name: page_size
+          schema:
+            type: integer
       responses:
         "200":
           description: OK
+          headers:
+            X-Total-Count:
+              schema:
+                type: number
+                format: int64
           content:
             application/json:
               schema:
@@ -417,9 +621,11 @@ paths:
                 items:
                   $ref: "#/components/schemas/Tag"
         "404":
-          description: NOT FOUND
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
 
-  /tags{tag_id}:
+  /tags/{tag_id}:
     get:
       summary: Find tag by ID
       description: Returns a tag
@@ -441,10 +647,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/Tag"
         "400":
-          description: BAD REQUEST
+          $ref: '#/components/responses/ValidationError'
         "404":
-          description: NOT FOUND
-
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
     put:
       tags:
         - "tags"
@@ -466,11 +673,16 @@ paths:
       responses:
         "200":
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tag"
         "400":
-          description: BAD REQUEST
+          $ref: '#/components/responses/ValidationError'
         "404":
-          description: NOT FOUND
-
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
     delete:
       tags:
         - "tags"
@@ -491,18 +703,19 @@ paths:
               schema:
                 $ref: "#/components/schemas/Post"
         "400":
-          description: BAD REQUEST
+          $ref: '#/components/responses/ValidationError'
         "404":
-          description: NOT FOUND
-
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
 
 components:
   schemas:
-
-    User: #???GitAuthorize
+    User:
       description: This is a user object
       type: object
       required:
+        - email
         - name
       properties:
         id:
@@ -510,8 +723,34 @@ components:
           format: int64
           readOnly: true
         name:
-          description: User's name
+          description: User supplied username
           type: string
+          minLength: 4
+          example: John78
+        firstName:
+          description: User first name
+          type: string
+          minLength: 1
+          example: John
+        lastName:
+          description: User last name
+          type: string
+          minLength: 1
+          example: Smith
+        email:
+          description: User email address
+          type: string
+          format: email
+          example: john.smith@example.com
+        password:
+          type: string
+          description: >-
+            User password, MUST contain a mix of upper and lower case letters,
+            as well as digits
+          format: password
+          minLength: 8
+          pattern: '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/'
+          example: passworD321
         role:
           description: This is the level of user access to various functions
           type: string
@@ -521,7 +760,6 @@ components:
             - moderator
             - admin
             - expert
-
 
     Post:
       type: object
@@ -549,24 +787,20 @@ components:
         user:
           $ref: "#/components/schemas/User"
         text:
-          description: ""
+          description: "The content of the post."
           type: string
         title:
-          description: ""
+          description: "Summary of the post."
           type: string
-        previewAttachment: #to do!!!
-          description: "URL"
-          type: array
-          items:
-            type: string
+        previewAttachment:
+          description: "URL of the resource that will be used as an preview of the Post."
+          type: string
         updatedOn:
-          description: Creation date
+          description: Updation date
           type: string
           example: "2017-07-21T17:32:28Z"
           format: date-time
           readOnly: true
-
-
 
     Comment:
       required:
@@ -592,11 +826,11 @@ components:
           format: date-time
           readOnly: true
         postId:
-          description: ""
+          description: "The id of the Post that exists in the blog."
           type: number
           format: int64
         updatedOn:
-          description: Creation date
+          description: Date of update
           type: string
           example: "2017-07-21T17:32:28Z"
           format: date-time
@@ -614,3 +848,48 @@ components:
         name:
           description: "Tag"
           type: string
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+      required:
+        - code
+        - message
+
+  responses:
+    ValidationError:
+      description: The payload contains an error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFoundError:
+      description: The specified resource was not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnauthorizedError:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnknownError:
+      description: The unknown error appeard. Check you payload or contact support.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+
+security:
+  - basicAuth: [ ]
