@@ -11,6 +11,7 @@ import com.softserveinc.ita.home.blog.model.Tag;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @SpringBootApplication
@@ -25,8 +26,8 @@ public class HomeProjectBlogApplication {
 
     }
 
-    @org.springframework.stereotype.Controller
-    public static class Controller extends BaseController implements TagsApi {
+    @Controller
+    public static class TagsController extends BaseController implements TagsApi {
         @Override
         public ResponseEntity<List<Tag>> getAllTags(@Valid BigDecimal id,
                                                     @Valid String name,
