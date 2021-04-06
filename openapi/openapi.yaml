@@ -496,7 +496,7 @@ components:
         - name
       type: object
       properties:
-        id:
+        eid:
           type: number
           format: int64
           readOnly: true
