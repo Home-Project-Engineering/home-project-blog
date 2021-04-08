@@ -23,3 +23,7 @@
 hs_err_pid*
 
 .idea
+/backend/HELP.md
+/backend/mvnw
+/backend/mvnw.cmd
+/backend/target/
