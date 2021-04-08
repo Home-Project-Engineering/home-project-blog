@@ -1,6 +1,8 @@
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\model\Error.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\RFC3339DateFormat.java
+F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\services\UserService.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\api\PostsApiController.java
+F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\repository\UserRepo.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\api\PostsApi.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\config\HomeController.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\api\TagsApi.java
@@ -9,8 +11,12 @@ F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\c
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\model\User.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\api\UsersApi.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\api\ApiUtil.java
+F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\api\converters\Converter.java
+F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\services\DTO\UserDTO.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\api\TagsApiController.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\config\OpenAPIDocumentationConfig.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\model\Tag.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\OpenAPI2SpringBoot.java
+F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\repository\Entity\UserEntity.java
+F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\services\Converter.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\model\Post.java

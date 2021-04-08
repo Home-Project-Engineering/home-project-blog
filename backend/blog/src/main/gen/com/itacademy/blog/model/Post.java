@@ -19,7 +19,7 @@ import javax.validation.constraints.*;
 /**
  * Post
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-05T13:45:49.770317300+03:00[Europe/Kiev]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-08T12:24:27.072387+03:00[Europe/Kiev]")
 public class Post  implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -35,7 +35,7 @@ public class Post  implements Serializable {
   private OffsetDateTime createdOn;
 
   @JsonProperty("user")
-  private User user;
+  private User user = null;
 
   @JsonProperty("text")
   private String text;
@@ -128,7 +128,7 @@ public class Post  implements Serializable {
    * Get user
    * @return user
   */
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(readOnly = true, value = "")
 
   @Valid
 

@@ -4,9 +4,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.NativeWebRequest;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-05T13:29:47.231776800+03:00[Europe/Kiev]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-08T12:24:27.072387+03:00[Europe/Kiev]")
 @Controller
-@RequestMapping("${openapi.homeProjectBlogService.base-path:/1}")
+@RequestMapping("${openapi.homeProjectBlogService.base-path:/api/1}")
 public class PostsApiController implements PostsApi {
 
     private final NativeWebRequest request;
