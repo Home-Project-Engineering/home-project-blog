@@ -1,16 +1,22 @@
-package com.itacademy.blog.repository.Entity;
+package com.itacademy.blog.data.Entity;
 
 
-import com.itacademy.blog.services.DTO.UserDTO;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Data
 @Entity
-public class UserEntity {
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Table(name = "user_entity")
+public class User {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true)
     private Long id;
 
     private String name;
@@ -60,5 +66,6 @@ public class UserEntity {
     }
 
     private RoleEnum role;
+
 
 }

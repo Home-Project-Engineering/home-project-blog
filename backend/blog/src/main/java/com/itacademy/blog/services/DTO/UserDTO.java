@@ -1,14 +1,21 @@
 package com.itacademy.blog.services.DTO;
 
 import io.swagger.annotations.Scope;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class UserDTO {
+
     private BigDecimal id;
 
     private String name;
@@ -82,5 +89,6 @@ public class UserDTO {
     public int hashCode() {
         return Objects.hash(id, name, firstName, lastName, email, password, role);
     }
+
 
 }

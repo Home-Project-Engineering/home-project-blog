@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
  * This is a user object
  */
 @ApiModel(description = "This is a user object")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-08T12:24:27.072387+03:00[Europe/Kiev]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-13T17:35:33.966456+03:00[Europe/Kiev]")
 public class User  implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -80,7 +80,7 @@ public class User  implements Serializable {
   }
 
   @JsonProperty("role")
-  private RoleEnum role;
+  private RoleEnum role = RoleEnum.USER;
 
   public User id(BigDecimal id) {
     this.id = id;
@@ -196,7 +196,7 @@ public class User  implements Serializable {
   */
   @ApiModelProperty(example = "passworD321", value = "User password, MUST contain a mix of upper and lower case letters, as well as digits")
 
-@Pattern(regexp="/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/") @Size(min=8) 
+@Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}$") @Size(min=8) 
   public String getPassword() {
     return password;
   }

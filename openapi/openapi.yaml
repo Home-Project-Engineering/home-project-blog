@@ -96,7 +96,7 @@ paths:
       operationId: deleteUser
       responses:
         "204":
-          $ref: '#/components/responses/NoContentResponse'
+          $ref: '#/components/responses/UserResponse'
         "400":
           $ref: '#/components/responses/ValidationError'
         "404":
@@ -401,7 +401,7 @@ components:
             as well as digits
           format: password
           minLength: 8
-          pattern: '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/'
+          pattern: '^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}$'
           example: passworD321
         role:
           description: This is the level of user access to various functions
@@ -412,6 +412,7 @@ components:
             - moderator
             - admin
             - expert
+          default: user
 
     Post:
       type: object

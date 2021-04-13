@@ -25,7 +25,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-08T12:24:27.072387+03:00[Europe/Kiev]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-13T17:35:33.966456+03:00[Europe/Kiev]")
 @Validated
 @Api(value = "posts", description = "the posts API")
 public interface PostsApi {
@@ -159,7 +159,7 @@ public interface PostsApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"id\" : 0.8008281904610115, \"text\" : \"text\", \"postId\" : 6.027456183070403, \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"user\" : { \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : \"guest\", \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }, \"createdOn\" : \"2017-07-21T17:32:28Z\" }";
+                    String exampleString = "{ \"id\" : 0.8008281904610115, \"text\" : \"text\", \"postId\" : 6.027456183070403, \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"user\" : { \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : \"user\", \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }, \"createdOn\" : \"2017-07-21T17:32:28Z\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -239,7 +239,7 @@ public interface PostsApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"id\" : 0.8008281904610115, \"text\" : \"text\", \"postId\" : 6.027456183070403, \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"user\" : { \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : \"guest\", \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }, \"createdOn\" : \"2017-07-21T17:32:28Z\" }";
+                    String exampleString = "{ \"id\" : 0.8008281904610115, \"text\" : \"text\", \"postId\" : 6.027456183070403, \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"user\" : { \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : \"user\", \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }, \"createdOn\" : \"2017-07-21T17:32:28Z\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -314,7 +314,7 @@ public interface PostsApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"id\" : 0.8008281904610115, \"text\" : \"text\", \"postId\" : 6.027456183070403, \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"user\" : { \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : \"guest\", \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }, \"createdOn\" : \"2017-07-21T17:32:28Z\" }";
+                    String exampleString = "{ \"id\" : 0.8008281904610115, \"text\" : \"text\", \"postId\" : 6.027456183070403, \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"user\" : { \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : \"user\", \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }, \"createdOn\" : \"2017-07-21T17:32:28Z\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -355,7 +355,7 @@ public interface PostsApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"id\" : 0.8008281904610115, \"text\" : \"text\", \"postId\" : 6.027456183070403, \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"user\" : { \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : \"guest\", \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }, \"createdOn\" : \"2017-07-21T17:32:28Z\" }";
+                    String exampleString = "{ \"id\" : 0.8008281904610115, \"text\" : \"text\", \"postId\" : 6.027456183070403, \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"user\" : { \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : \"user\", \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }, \"createdOn\" : \"2017-07-21T17:32:28Z\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

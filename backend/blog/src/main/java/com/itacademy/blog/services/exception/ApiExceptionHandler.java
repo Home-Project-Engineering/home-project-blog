@@ -1,0 +1,60 @@
+package com.itacademy.blog.services.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolationException;
+
+@ControllerAdvice
+public class ApiExceptionHandler {
+
+    @ExceptionHandler(value = {EntityNotFoundException.class})
+    public ResponseEntity<Object> noSuchUserException(EntityNotFoundException e){
+        HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+
+        Error error = new Error(
+                e.getMessage(),
+                "404",
+                httpStatus
+        );
+        return new ResponseEntity<>(error, httpStatus);
+    }
+
+    @ExceptionHandler(value = {ConstraintViolationException.class})
+    public ResponseEntity<Object> noSuchUserException(ConstraintViolationException e){
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        Error error = new Error(
+                e.getMessage(),
+                "400",
+                httpStatus
+        );
+        return new ResponseEntity<>(error, httpStatus);
+    }
+/*    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
+    public ResponseEntity<Object> noSuchUserException(MethodArgumentNotValidException e){
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        Error error = new Error(
+                e.getMessage(),
+                "400",
+                httpStatus
+        );
+        return new ResponseEntity<>(error, httpStatus);
+    }*/
+    @ExceptionHandler(value = {BaseBlogException.class})
+    public ResponseEntity<Object> noSuchUserException(BaseBlogException e){
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        Error error = new Error(
+                e.getMessage(),
+                "default",
+                httpStatus
+        );
+        return new ResponseEntity<>(error, httpStatus);
+    }
+}
