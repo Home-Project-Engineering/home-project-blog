@@ -93,13 +93,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO getUserById(Long id){
         User toGet = userRepo.findById(id)
-                .orElseThrow(() -> new NotFoundBlogException("User with id:" + id + " is not found"));
+                .orElseThrow(() -> new EntityNotFoundException("User with id:" + id + " is not found"));
         return UserMapper.INSTANCE.convert(toGet);
     }
 
     @Override
     public UserDTO deleteUser(Long id) {
-        User toDelete = userRepo.findById(id).orElseThrow(() -> new NotFoundBlogException("User with id:" + id + " is not found"));
+        User toDelete = userRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("User with id:" + id + " is not found"));
         userRepo.deleteById(id);
 
         return UserMapper.INSTANCE.convert(toDelete);

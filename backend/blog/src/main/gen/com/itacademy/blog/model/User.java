@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
  * This is a user object
  */
 @ApiModel(description = "This is a user object")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-13T17:35:33.966456+03:00[Europe/Kiev]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-13T17:48:41.582383100+03:00[Europe/Kiev]")
 public class User  implements Serializable {
   private static final long serialVersionUID = 1L;
 

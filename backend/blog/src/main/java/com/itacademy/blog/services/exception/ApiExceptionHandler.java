@@ -25,7 +25,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(value = {ConstraintViolationException.class})
-    public ResponseEntity<Object> noSuchUserException(ConstraintViolationException e){
+    public ResponseEntity<Object> validationException(ConstraintViolationException e){
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
         Error error = new Error(
@@ -35,24 +35,35 @@ public class ApiExceptionHandler {
         );
         return new ResponseEntity<>(error, httpStatus);
     }
-/*    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
-    public ResponseEntity<Object> noSuchUserException(MethodArgumentNotValidException e){
+    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
+    public ResponseEntity<Object> validationException(MethodArgumentNotValidException e){
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-        Error error = new Error(
-                e.getMessage(),
-                "400",
-                httpStatus
+     Error error = new Error(
+            e.getMessage(),
+                    "400",
+                    httpStatus
         );
         return new ResponseEntity<>(error, httpStatus);
-    }*/
+    }
     @ExceptionHandler(value = {BaseBlogException.class})
-    public ResponseEntity<Object> noSuchUserException(BaseBlogException e){
+    public ResponseEntity<Object> unknownException(BaseBlogException e){
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
         Error error = new Error(
                 e.getMessage(),
                 "default",
+                httpStatus
+        );
+        return new ResponseEntity<>(error, httpStatus);
+    }
+    @ExceptionHandler(value = {AlreadyExistBlogException.class})
+    public ResponseEntity<Object> alreadyExistException(AlreadyExistBlogException e){
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+
+        Error error = new Error(
+                e.getMessage(),
+                "400",
                 httpStatus
         );
         return new ResponseEntity<>(error, httpStatus);
