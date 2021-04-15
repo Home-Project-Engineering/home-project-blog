@@ -19,7 +19,7 @@ import javax.validation.constraints.*;
 /**
  * Post
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-13T17:48:41.582383100+03:00[Europe/Kiev]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-15T19:31:49.707944300+03:00[Europe/Kiev]")
 public class Post  implements Serializable {
   private static final long serialVersionUID = 1L;
 

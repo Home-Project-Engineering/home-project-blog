@@ -4,26 +4,27 @@ package com.itacademy.blog.data.Entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Data
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "user_entity")
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String name;
 
     private String firstName;
 
     private String lastName;
 
+    @Column(unique = true, nullable = false)
     private String email;
 
     private String password;
@@ -53,17 +54,9 @@ public class User {
         public String toString() {
             return String.valueOf(value);
         }
-
-        public static RoleEnum fromValue(String value) {
-            for (RoleEnum b : RoleEnum.values()) {
-                if (b.value.equals(value)) {
-                    return b;
-                }
-            }
-            throw new IllegalArgumentException("Unexpected value '" + value + "'");
-        }
     }
 
+    @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
 

@@ -1,10 +1,14 @@
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\api\PostsApi.java
+F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\data\repository\PostRepo.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\config\HomeController.java
+F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\data\repository\TagRepo.java
+F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\data\Entity\Post.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\model\Comment.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\model\User.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\services\exception\NotFoundBlogException.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\api\UsersApi.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\services\exception\BaseBlogException.java
+F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\data\Entity\Tag.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\services\query\EntitySpecificationService.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\api\mapper\UserMapper.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\services\DTO\UserDTO.java
@@ -17,8 +21,10 @@ F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\model\Error.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\RFC3339DateFormat.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\data\Entity\User.java
+F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\data\repository\CommentRepo.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\api\TagsApi.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\services\exception\Error.java
+F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\data\Entity\Comment.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\api\ApiUtil.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\api\UsersApiController.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\config\OpenAPIDocumentationConfig.java

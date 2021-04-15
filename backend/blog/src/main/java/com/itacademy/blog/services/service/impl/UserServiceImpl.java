@@ -71,8 +71,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    @Transactional
+    @Override   
     public List<UserDTO> findUsers(Integer pageNumber, Integer pageSize, String sort, Specification<User> specification) {
         List<User> toReturn = userRepo.findAll(specification, PageRequest
                 .of(pageNumber - 1, pageSize, getSort(sort))).toList();
