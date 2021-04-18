@@ -1,6 +1,10 @@
 package com.softserveinc.ita.home.home_project_blog.models;
 
-import io.swagger.annotations.ApiModelProperty;
+//import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.*;
@@ -11,11 +15,15 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "users")
 public class User {
     @Id
-    @ReadOnlyProperty
+    //@ReadOnlyProperty
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
@@ -31,98 +39,18 @@ public class User {
     private String lastName;
 
     @Email(message = "Email should be valid.")
+    @Column(nullable = false)
     private String email;
 
     @Size(min = 8, max = 200, message = "Password should be between 8 and 200 characters.")
     @Pattern(regexp = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])")
     private String password;
 
-//    private static final enum ROLE{
+    //    private static final enum ROLE{
 //        guest, user, moderator, admin, expert
 //    }
     private String role;
 
- /*   public User (String name, String email){
-        this.name = name;
-        this.email = email;
-    }
-
-    public User (String name, String firstName, String lastName, String email, String role){
-        this.name = name;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.role = role;
-    }
-
-    public User(long id, String name) {
-        this.id = id;
-        this.name = name;
-    }*/
-
-    public User() {
-
-    }
-
-    @NotNull
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Valid
-    public long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    @NotNull
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
 
    /* @Override
     public int hashCode() {

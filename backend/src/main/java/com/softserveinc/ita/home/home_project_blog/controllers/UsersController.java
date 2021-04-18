@@ -1,27 +1,51 @@
 package com.softserveinc.ita.home.home_project_blog.controllers;
 
-//import com.example.demo.Service.UserServiceMap;
 
+import com.softserveinc.ita.home.home_project_blog.models.UpdateUser;
 import com.softserveinc.ita.home.home_project_blog.service.IUserService;
 import com.softserveinc.ita.home.home_project_blog.models.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Controller
 @RequestMapping(path = "/api/0/users")//, consumes = "application/json", produces = "application/json")
 public class UsersController {
-    @Autowired
     private IUserService userService;
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<User>> getAllUsers(){
-        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<User>> getAllUsers(
+//            @RequestParam(required = false, value = "id") @Valid Long id,
+//            @RequestParam(required = false, value = "name") @Valid String name,
+//            @RequestParam(required = false, value = "sort") @Valid String sort,
+//            @RequestParam(required = false, value = "pageNum") @Valid Integer pageNum,
+//            @RequestParam(required = false, value = "pageSize") @Valid Integer pageSize
+//            @RequestParam(Optional<Long> id),
+//            @RequestParam(Optional<String> name),
+            @RequestParam(defaultValue = "0") Integer page_num,
+            @RequestParam(defaultValue = "50") Integer page_size,
+            @RequestParam(defaultValue = "-id") String sort
+    ){
+//        return "ID: " + id.orElseGet(() -> "not provided");
+        Page<User> pagedResult = userService.findAll(page_num, page_size,sort);
+        List<User> users;
+        if (pagedResult.hasContent()) {
+            users = pagedResult.getContent();
+        } else {
+            users = new ArrayList<User>();
+        }
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.set("X-Total-Count",
+                String.valueOf(pagedResult.getTotalPages()));
+        return new ResponseEntity<>(pagedResult.getContent(), responseHeaders, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")
@@ -38,13 +62,19 @@ public class UsersController {
 
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<User> updateUser(@PathVariable Long id,
-                                           @RequestBody User user){
-        if (id!=user.getId()){
+                                           @RequestBody UpdateUser user){
+       /* if (id!=user.getId()){
             user.setId(id);
             //message id user doesn't equal id in user
             //return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        Optional<User> newUser = userService.update(user);
+        }*/
+//        User myUser = new User();
+//        myUser.setLastName(user.getLastName());
+//        myUser.setFirstName(user.getFirstName());
+//        myUser.setEmail(user.getEmail);
+//        myUser.setPassword(user.getPassword());
+//                userService.getById(id);
+        Optional<User> newUser = userService.update(id,user);
         return newUser.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 //new ResponseError("404","User with id=\""+id+"\" hasn't been found."

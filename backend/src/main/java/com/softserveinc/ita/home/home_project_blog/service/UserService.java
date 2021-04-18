@@ -1,21 +1,41 @@
 package com.softserveinc.ita.home.home_project_blog.service;
 
+import com.softserveinc.ita.home.home_project_blog.models.UpdateUser;
 import com.softserveinc.ita.home.home_project_blog.models.User;
 import com.softserveinc.ita.home.home_project_blog.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class UserService implements IUserService {
-    @Autowired
+
     private UserRepository repository;
 
     @Override
-    public List<User> findAll() {
-        return (List<User>) repository.findAll();
+//    public List<User> findAll() {
+//        return (List<User>) repository.findAll();
+//    }
+    public Page<User> findAll(Integer pageNum, Integer pageSize, String sortBy) {
+        Pageable paging;
+        if (sortBy.charAt(0) == '-') {
+            paging = PageRequest.of(pageNum, pageSize, Sort.by(sortBy.substring(1)).descending());
+        } else {
+            if (sortBy.charAt(0) == '+') {
+                sortBy = sortBy.substring(1);
+            }
+            paging = PageRequest.of(pageNum, pageSize, Sort.by(sortBy).ascending());
+        }
+        return repository.findAll(paging);
     }
 
     @Override
@@ -32,10 +52,17 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Optional<User> update(User user) {
+    public Optional<User> update(Long id, UpdateUser user) {
         //return repository.findById(id).map(value -> repository.save(value)).orElseThrow();
-        if (repository.existsById(user.getId())) {
-            return Optional.of(repository.save(user));
+
+        if (repository.existsById(id)) {
+            User oldUser = repository.findById(id).get();
+            oldUser.setLastName(user.getLastName());
+            oldUser.setFirstName(user.getFirstName());
+            oldUser.setEmail(user.getEmail());
+            oldUser.setPassword(user.getPassword());
+            oldUser.setRole(user.getRole());
+            return Optional.of(repository.save(oldUser));
         }
         return Optional.empty();
 
