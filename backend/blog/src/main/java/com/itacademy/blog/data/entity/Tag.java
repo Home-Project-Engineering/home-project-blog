@@ -1,4 +1,4 @@
-package com.itacademy.blog.data.Entity;
+package com.itacademy.blog.data.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
@@ -21,4 +23,6 @@ public class Tag {
     @Column(unique = true, nullable = false)
     private String name;
 
+/*    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
+    private List<Post> posts = new ArrayList<>();*/
 }

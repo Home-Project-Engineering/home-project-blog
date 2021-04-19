@@ -1,4 +1,4 @@
-package com.itacademy.blog.data.Entity;
+package com.itacademy.blog.data.entity;
 
 
 import lombok.*;

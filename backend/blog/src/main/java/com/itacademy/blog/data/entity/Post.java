@@ -1,7 +1,5 @@
-package com.itacademy.blog.data.Entity;
+package com.itacademy.blog.data.entity;
 
-import com.itacademy.blog.data.Entity.User;
-import com.itacademy.blog.data.Entity.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +7,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Data
@@ -23,13 +24,18 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany
-    private List<Tag> tags;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "post_tag",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<Tag> tags = new ArrayList<>();
 
     @Column(columnDefinition = "DATE")
     private OffsetDateTime createdOn;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User author;
 
     private String text;

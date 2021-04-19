@@ -96,7 +96,7 @@ paths:
       operationId: deleteUser
       responses:
         "204":
-          $ref: '#/components/responses/UserResponse'
+          $ref: '#/components/responses/NoContentResponse'
         "400":
           $ref: '#/components/responses/ValidationError'
         "404":
@@ -140,7 +140,7 @@ paths:
         "default":
           $ref: '#/components/responses/UnknownError'
 
-  /posts/{post_id}:
+  /posts/{id}:
     parameters:
       - $ref: '#/components/parameters/p_id'
     get:

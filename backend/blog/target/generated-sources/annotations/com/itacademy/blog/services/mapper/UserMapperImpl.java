@@ -1,8 +1,10 @@
 package com.itacademy.blog.services.mapper;
 
-import com.itacademy.blog.data.Entity.User;
-import com.itacademy.blog.data.Entity.User.RoleEnum;
+import com.itacademy.blog.data.entity.User;
+import com.itacademy.blog.data.entity.User.RoleEnum;
+import com.itacademy.blog.data.entity.User.UserBuilder;
 import com.itacademy.blog.services.DTO.UserDTO;
+import com.itacademy.blog.services.DTO.UserDTO.UserDTOBuilder;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +12,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-04-16T00:16:46+0300",
+    date = "2021-04-16T22:02:59+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 15.0.2 (Oracle Corporation)"
 )
 public class UserMapperImpl implements UserMapper {
@@ -21,19 +23,19 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        UserDTO userDTO = new UserDTO();
+        UserDTOBuilder userDTO = UserDTO.builder();
 
         if ( user.getId() != null ) {
-            userDTO.setId( BigDecimal.valueOf( user.getId() ) );
+            userDTO.id( BigDecimal.valueOf( user.getId() ) );
         }
-        userDTO.setName( user.getName() );
-        userDTO.setFirstName( user.getFirstName() );
-        userDTO.setLastName( user.getLastName() );
-        userDTO.setEmail( user.getEmail() );
-        userDTO.setPassword( user.getPassword() );
-        userDTO.setRole( roleEnumToRoleEnum( user.getRole() ) );
+        userDTO.name( user.getName() );
+        userDTO.firstName( user.getFirstName() );
+        userDTO.lastName( user.getLastName() );
+        userDTO.email( user.getEmail() );
+        userDTO.password( user.getPassword() );
+        userDTO.role( roleEnumToRoleEnum( user.getRole() ) );
 
-        return userDTO;
+        return userDTO.build();
     }
 
     @Override
@@ -42,19 +44,19 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        User user = new User();
+        UserBuilder user = User.builder();
 
         if ( userDTO.getId() != null ) {
-            user.setId( userDTO.getId().longValue() );
+            user.id( userDTO.getId().longValue() );
         }
-        user.setName( userDTO.getName() );
-        user.setFirstName( userDTO.getFirstName() );
-        user.setLastName( userDTO.getLastName() );
-        user.setEmail( userDTO.getEmail() );
-        user.setPassword( userDTO.getPassword() );
-        user.setRole( roleEnumToRoleEnum1( userDTO.getRole() ) );
+        user.name( userDTO.getName() );
+        user.firstName( userDTO.getFirstName() );
+        user.lastName( userDTO.getLastName() );
+        user.email( userDTO.getEmail() );
+        user.password( userDTO.getPassword() );
+        user.role( roleEnumToRoleEnum1( userDTO.getRole() ) );
 
-        return user;
+        return user.build();
     }
 
     @Override

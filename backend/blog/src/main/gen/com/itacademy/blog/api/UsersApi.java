@@ -13,16 +13,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.NativeWebRequest;
-import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-15T19:31:49.707944300+03:00[Europe/Kiev]")
 @Validated
@@ -56,7 +51,7 @@ public interface UsersApi {
         value = "/users/{id}",
         produces = { "application/json" }
     )
-    default ResponseEntity<User> deleteUser(@ApiParam(value = "",required=true) @PathVariable("id") BigDecimal id) {
+    default ResponseEntity<Void> deleteUser(@ApiParam(value = "",required=true) @PathVariable("id") BigDecimal id) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

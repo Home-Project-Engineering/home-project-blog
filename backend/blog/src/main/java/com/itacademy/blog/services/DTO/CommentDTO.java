@@ -1,39 +1,31 @@
-package com.itacademy.blog.data.Entity;
+package com.itacademy.blog.services.DTO;
 
-
+import com.itacademy.blog.data.entity.Post;
+import com.itacademy.blog.data.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
-import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-import com.itacademy.blog.data.Entity.User;
-
 @Data
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "comments")
-public class Comment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class CommentDTO {
     private Long id;
 
-    @ManyToOne
     private User author;
 
     private String text;
 
-    @Column(columnDefinition = "DATE")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private OffsetDateTime createdOn;
 
-    @ManyToOne
     private Post post;
 
-    @Column(columnDefinition = "DATE")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private OffsetDateTime updatedOn;
 }

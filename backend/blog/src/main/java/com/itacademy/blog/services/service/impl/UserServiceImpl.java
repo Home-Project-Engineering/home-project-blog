@@ -1,20 +1,19 @@
 package com.itacademy.blog.services.service.impl;
 
 
-import com.itacademy.blog.data.Entity.User;
+import com.itacademy.blog.data.entity.User;
 import com.itacademy.blog.data.repository.UserRepo;
 import com.itacademy.blog.services.DTO.UserDTO;
 import com.itacademy.blog.services.exception.AlreadyExistBlogException;
-import com.itacademy.blog.services.exception.NotFoundBlogException;
 import com.itacademy.blog.services.mapper.UserMapper;
 import com.itacademy.blog.services.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
@@ -72,9 +71,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override   
-    public List<UserDTO> findUsers(Integer pageNumber, Integer pageSize, String sort, Specification<User> specification) {
-        List<User> toReturn = userRepo.findAll(specification, PageRequest
-                .of(pageNumber - 1, pageSize, getSort(sort))).toList();
+    public Page<UserDTO> findUsers(Integer pageNumber, Integer pageSize, String sort, Specification<User> specification) {
+        Page<User> toReturn = userRepo.findAll(specification, PageRequest
+                .of(pageNumber - 1, pageSize, getSort(sort)));
 
         return UserMapper.INSTANCE.convert(toReturn);
     }

@@ -3,11 +3,12 @@ package com.itacademy.blog.api.mapper;
 import com.itacademy.blog.model.User;
 import com.itacademy.blog.model.User.RoleEnum;
 import com.itacademy.blog.services.DTO.UserDTO;
+import com.itacademy.blog.services.DTO.UserDTO.UserDTOBuilder;
 import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-04-16T00:16:45+0300",
+    date = "2021-04-16T16:02:53+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 15.0.2 (Oracle Corporation)"
 )
 public class UserMapperImpl implements UserMapper {
@@ -18,17 +19,17 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        UserDTO userDTO = new UserDTO();
+        UserDTOBuilder userDTO = UserDTO.builder();
 
-        userDTO.setId( user.getId() );
-        userDTO.setName( user.getName() );
-        userDTO.setFirstName( user.getFirstName() );
-        userDTO.setLastName( user.getLastName() );
-        userDTO.setEmail( user.getEmail() );
-        userDTO.setPassword( user.getPassword() );
-        userDTO.setRole( roleEnumToRoleEnum( user.getRole() ) );
+        userDTO.id( user.getId() );
+        userDTO.name( user.getName() );
+        userDTO.firstName( user.getFirstName() );
+        userDTO.lastName( user.getLastName() );
+        userDTO.email( user.getEmail() );
+        userDTO.password( user.getPassword() );
+        userDTO.role( roleEnumToRoleEnum( user.getRole() ) );
 
-        return userDTO;
+        return userDTO.build();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.itacademy.blog.data.repository;
 
-    import com.itacademy.blog.data.Entity.User;
+    import com.itacademy.blog.data.entity.User;
 
     import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 
+//to do
 @ControllerAdvice
 public class ApiExceptionHandler {
 
@@ -29,7 +30,7 @@ public class ApiExceptionHandler {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
         Error error = new Error(
-                e.getMessage(),
+                e.getConstraintViolations().toString(),
                 "400",
                 httpStatus
         );
@@ -40,7 +41,7 @@ public class ApiExceptionHandler {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
      Error error = new Error(
-            e.getMessage(),
+            e.getLocalizedMessage(),
                     "400",
                     httpStatus
         );

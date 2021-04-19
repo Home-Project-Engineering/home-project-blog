@@ -12,6 +12,6 @@ public interface UserMapper {
     UserMapper INSTANCE = Mappers.getMapper( UserMapper.class );
 
     UserDTO convert(User user);
-    com.itacademy.blog.model.User convert(UserDTO userDTO);
+    User convert(UserDTO userDTO);
 
 }

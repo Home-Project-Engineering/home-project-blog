@@ -270,7 +270,7 @@ public interface PostsApi {
         @ApiResponse(code = 404, message = "The specified resource was not found", response = Error.class),
         @ApiResponse(code = 200, message = "The unknown error appeard. Check your payload or contact support.", response = Error.class) })
     @GetMapping(
-        value = "/posts/{post_id}",
+        value = "/posts/{id}",
         produces = { "application/json" }
     )
     default ResponseEntity<Post> getPost(@ApiParam(value = "",required=true) @PathVariable("id") BigDecimal id) {
@@ -387,7 +387,7 @@ public interface PostsApi {
         @ApiResponse(code = 404, message = "The specified resource was not found", response = Error.class),
         @ApiResponse(code = 200, message = "The unknown error appeard. Check your payload or contact support.", response = Error.class) })
     @PutMapping(
-        value = "/posts/{post_id}",
+        value = "/posts/{id}",
         produces = { "application/json" },
         consumes = { "application/json" }
     )
