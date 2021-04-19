@@ -4,7 +4,6 @@ package com.softserveinc.ita.home.home_project_blog.controllers;
 import com.softserveinc.ita.home.home_project_blog.models.UpdateUser;
 import com.softserveinc.ita.home.home_project_blog.service.IUserService;
 import com.softserveinc.ita.home.home_project_blog.models.User;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,11 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @Controller
 @RequestMapping(path = "/api/0/users")//, consumes = "application/json", produces = "application/json")
 public class UsersController {
     private IUserService userService;
+
+    public UsersController(IUserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<User>> getAllUsers(
