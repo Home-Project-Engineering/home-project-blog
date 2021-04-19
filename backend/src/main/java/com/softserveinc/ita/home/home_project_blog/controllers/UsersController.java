@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @Controller
 //@RequiredArgsConstructor
-@RequestMapping(path = "/api/0/users")//, consumes = "application/json", produces = "application/json")
+@RequestMapping(path = "/api/0/users", produces = "application/json")
 public class UsersController {
     private final IUserService userService;
 
@@ -37,7 +37,8 @@ public class UsersController {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("X-Total-Count",
                 String.valueOf(pagedResult.getTotalPages()));
-        return new ResponseEntity<>(pagedResult.getContent(), responseHeaders, HttpStatus.OK);
+        List<User> users = pagedResult.getContent();
+        return new ResponseEntity<>(users, responseHeaders, HttpStatus.OK);
     }
 
 //    @GetMapping(produces = "application/json")
@@ -81,14 +82,14 @@ public class UsersController {
     }
 
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<User> updateUser(@PathVariable Long id,
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id,
                                            @RequestBody CreateUserDto user){
        /* if (id!=user.getId()){
             user.setId(id);
             //message id user doesn't equal id in user
             //return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }*/
-        Optional<User> newUser = userService.update(id,user);
+        Optional<UserDto> newUser = userService.update(id,user);
         return newUser.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 //new ResponseError("404","User with id=\""+id+"\" hasn't been found."

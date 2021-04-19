@@ -59,11 +59,11 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Optional<User> update(Long id, CreateUserDto user) {
+    public Optional<UserDto> update(Long id, CreateUserDto user) {
         //return repository.findById(id).map(value -> repository.save(value)).orElseThrow();
 
         if (repository.existsById(id)) {
-            return Optional.of(repository.save(mapper.signUpToUser(user)));
+            return Optional.of(mapper.toUserDto(repository.save(mapper.signUpToUser(user))));
         }
         return Optional.empty();
     }

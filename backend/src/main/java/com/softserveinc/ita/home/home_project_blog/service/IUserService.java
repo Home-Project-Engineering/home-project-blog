@@ -15,6 +15,6 @@ public interface IUserService {
 //    PageUserDto findAllDto(Integer pageNum, Integer pageSize, String sortBy);
     Optional<UserDto> getById(Long id);
     User save(CreateUserDto user);
-    Optional<User> update(Long id, CreateUserDto user);
+    Optional<UserDto> update(Long id, CreateUserDto user);
     boolean delete (Long id);
 }
