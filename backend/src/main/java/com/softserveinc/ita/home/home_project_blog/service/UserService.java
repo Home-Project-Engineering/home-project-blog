@@ -1,25 +1,30 @@
 package com.softserveinc.ita.home.home_project_blog.service;
 
-import com.softserveinc.ita.home.home_project_blog.models.UpdateUser;
+import com.softserveinc.ita.home.home_project_blog.dto.CreateUserDto;
+import com.softserveinc.ita.home.home_project_blog.dto.PageUserDto;
+import com.softserveinc.ita.home.home_project_blog.dto.UserDto;
+import com.softserveinc.ita.home.home_project_blog.mappers.UserMapper;
 import com.softserveinc.ita.home.home_project_blog.models.User;
 import com.softserveinc.ita.home.home_project_blog.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @Service
 public class UserService implements IUserService {
 
     private UserRepository repository;
+    private final UserMapper mapper;
+
+    public UserService(UserRepository repository, UserMapper mapper) {
+        this.repository = repository;
+        this.mapper = mapper;
+    }
 
     @Override
 //    public List<User> findAll() {
@@ -36,41 +41,31 @@ public class UserService implements IUserService {
             paging = PageRequest.of(pageNum, pageSize, Sort.by(sortBy).ascending());
         }
         return repository.findAll(paging);
+//        PageUserDto pageUserDto = new PageUserDto(mapper.toUserDtos(pageUser.getContent()),pageUser.getTotalPages());
+//        return pageUserDto;//mapper.toPageUserDto(repository.findAll(paging));
     }
 
     @Override
-    public Optional<User> getById(Long id) {
-        return repository.findById(id);
+    public Optional<UserDto> getById(Long id) {
+        return mapper.toOptionalUserDto(repository.findById(id));
     }
 
     @Override
-    public User save(User user) {
-        if (repository.existsById(user.getId())) {
-            user.setId(-1L);
-        }
-        return repository.save(user);
+    public User save(CreateUserDto user) {
+//        if (repository.existsById(user.getId())) {
+//            user.setId(-1L);
+//        }
+        return repository.save(mapper.signUpToUser(user));
     }
 
     @Override
-    public Optional<User> update(Long id, UpdateUser user) {
+    public Optional<User> update(Long id, CreateUserDto user) {
         //return repository.findById(id).map(value -> repository.save(value)).orElseThrow();
 
         if (repository.existsById(id)) {
-            User oldUser = repository.findById(id).get();
-            oldUser.setLastName(user.getLastName());
-            oldUser.setFirstName(user.getFirstName());
-            oldUser.setEmail(user.getEmail());
-            oldUser.setPassword(user.getPassword());
-            oldUser.setRole(user.getRole());
-            return Optional.of(repository.save(oldUser));
+            return Optional.of(repository.save(mapper.signUpToUser(user)));
         }
         return Optional.empty();
-
-//        User oldUser = repository.findById();
-//        if (Objects.nonNull(oldUser)) {
-//            oldUser.setName(user.getName());
-//        }
-//        return Optional.ofNullable(oldUser);
     }
 
     @Override

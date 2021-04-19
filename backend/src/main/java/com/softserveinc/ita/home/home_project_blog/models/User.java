@@ -9,10 +9,7 @@ import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Objects;
 
 @Data
@@ -27,6 +24,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @NotBlank
     @Size(min = 4, max = 200, message = "name must be between 4 and 200 characters.")
     private String name;
 
@@ -38,8 +36,9 @@ public class User {
     @Column(name = "lastname")
     private String lastName;
 
+    @NotBlank
     @Email(message = "Email should be valid.")
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String email;
 
     @Size(min = 8, max = 200, message = "Password should be between 8 and 200 characters.")
