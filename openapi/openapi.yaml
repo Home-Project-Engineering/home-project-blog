@@ -5,6 +5,7 @@ info:
   title: Home Project Blog Service
   description: |
     Blog for the Home Project engineers
+
 servers:
   - url: http://localhost:8080/api/1
 
@@ -140,7 +141,9 @@ paths:
         "default":
           $ref: '#/components/responses/UnknownError'
 
+
   /posts/{id}:
+
     parameters:
       - $ref: '#/components/parameters/p_id'
     get:
@@ -317,30 +320,31 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         "default":
           $ref: '#/components/responses/UnknownError'
-    #    put: #todo consider removing this operation as we can just remove the tag if it is wrong
-    #      tags:
-    #        - "tags"
-    #      summary: Update tag by ID
-    #      operationId: updateTag
-    #      requestBody:
-    #        required: true
-    #        content:
-    #          application/json:
-    #            schema:
-    #              $ref: "#/components/schemas/Tag"
-    #      responses:
-    #        "200":
-    #          description: OK
-    #          content:
-    #            application/json:
-    #              schema:
-    #                $ref: "#/components/schemas/Tag"
-    #        "400":
-    #          $ref: '#/components/responses/ValidationError'
-    #        "404":
-    #          $ref: '#/components/responses/NotFoundError'
-    #        "default":
-    #          $ref: '#/components/responses/UnknownError'
+
+#    put: #todo consider removing this operation as we can just remove the tag if it is wrong
+#      tags:
+#        - "tags"
+#      summary: Update tag by ID
+#      operationId: updateTag
+#      requestBody:
+#        required: true
+#        content:
+#          application/json:
+#            schema:
+#              $ref: "#/components/schemas/Tag"
+#      responses:
+#        "200":
+#          description: OK
+#          content:
+#            application/json:
+#              schema:
+#                $ref: "#/components/schemas/Tag"
+#        "400":
+#          $ref: '#/components/responses/ValidationError'
+#        "404":
+#          $ref: '#/components/responses/NotFoundError'
+#        "default":
+#          $ref: '#/components/responses/UnknownError'
     delete:
       tags:
         - "tags"
@@ -740,4 +744,6 @@ components:
   securitySchemes:
     basicAuth:
       type: http
+
       scheme: basic
+
