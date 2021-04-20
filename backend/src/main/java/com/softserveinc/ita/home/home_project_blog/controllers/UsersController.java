@@ -2,11 +2,9 @@ package com.softserveinc.ita.home.home_project_blog.controllers;
 
 
 import com.softserveinc.ita.home.home_project_blog.dto.CreateUserDto;
-import com.softserveinc.ita.home.home_project_blog.dto.PageUserDto;
 import com.softserveinc.ita.home.home_project_blog.dto.UserDto;
 import com.softserveinc.ita.home.home_project_blog.service.IUserService;
 import com.softserveinc.ita.home.home_project_blog.models.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;

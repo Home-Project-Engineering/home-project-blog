@@ -1,4 +1,4 @@
-package com.softserveinc.ita.home.home_project_blog.models;
+package com.softserveinc.ita.home.home_project_blog.Error;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

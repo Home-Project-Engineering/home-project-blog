@@ -1,14 +1,11 @@
 package com.softserveinc.ita.home.home_project_blog.service;
 
 import com.softserveinc.ita.home.home_project_blog.dto.CreateUserDto;
-import com.softserveinc.ita.home.home_project_blog.dto.PageUserDto;
 import com.softserveinc.ita.home.home_project_blog.dto.UserDto;
-import com.softserveinc.ita.home.home_project_blog.models.UpdateUser;
 import com.softserveinc.ita.home.home_project_blog.models.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface IUserService {

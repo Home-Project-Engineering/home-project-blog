@@ -1,7 +1,6 @@
 package com.softserveinc.ita.home.home_project_blog.service;
 
 import com.softserveinc.ita.home.home_project_blog.dto.CreateUserDto;
-import com.softserveinc.ita.home.home_project_blog.dto.PageUserDto;
 import com.softserveinc.ita.home.home_project_blog.dto.UserDto;
 import com.softserveinc.ita.home.home_project_blog.mappers.UserMapper;
 import com.softserveinc.ita.home.home_project_blog.models.User;
@@ -97,10 +96,12 @@ public class UserService implements IUserService {
         return repository.findByName(name, paging);
     }
 
+    @Override
     public Page<User> getById(Long id, Pageable paging) {
         return repository.findById(id, paging);
     }
 
+    @Override
     public Page<User> getByNameAndId(String name, Long id, Pageable paging) {
         return repository.findByNameAndId(name, id, paging);
     }
