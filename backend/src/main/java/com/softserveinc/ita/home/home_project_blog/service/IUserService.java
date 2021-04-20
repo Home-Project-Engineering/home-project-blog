@@ -17,8 +17,8 @@ public interface IUserService {
     Page<User> getByName(String name, Pageable paging);
     Page<User> getById(Long id, Pageable paging);
     Page<User> getByNameAndId(String name, Long id, Pageable paging);
-    Optional<UserDto> getById(Long id);
-    User save(CreateUserDto user);
-    Optional<UserDto> update(Long id, CreateUserDto user);
+    Optional<User> getById(Long id);
+    User save(User user);
+    Optional<User> update(Long id, User user);
     boolean delete (Long id);
 }

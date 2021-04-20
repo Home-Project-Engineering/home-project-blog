@@ -5,25 +5,22 @@ import com.softserveinc.ita.home.home_project_blog.dto.UserDto;
 import com.softserveinc.ita.home.home_project_blog.mappers.UserMapper;
 import com.softserveinc.ita.home.home_project_blog.models.User;
 import com.softserveinc.ita.home.home_project_blog.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-//@RequiredArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class UserService implements IUserService {
 
     private final UserRepository repository;
-    private final UserMapper mapper;
-
-    public UserService(UserRepository repository, UserMapper mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
-    }
 
     @Override
     public Pageable pagination(Integer pageNum, Integer pageSize, String sortBy) {
@@ -55,24 +52,31 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Optional<UserDto> getById(Long id) {
-        return mapper.toOptionalUserDto(repository.findById(id));
+    public Optional<User> getById(Long id) {
+        return repository.findById(id);
     }
 
     @Override
-    public User save(CreateUserDto user) {
+    public User save(User user) {
 //        if (repository.existsById(user.getId())) {
 //            user.setId(-1L);
 //        }
-        return repository.save(mapper.signUpToUser(user));
+        return repository.save(user);
     }
 
     @Override
-    public Optional<UserDto> update(Long id, CreateUserDto user) {
+    public Optional<User> update(Long id, User user) {
         //return repository.findById(id).map(value -> repository.save(value)).orElseThrow();
 
+
+//        Optional<User> oldUser = repository.findById(id);
+//        String password = oldUser.get().getPassword();
+//        return oldUser.map(value -> Optional.of(repository.save(value.setId(id).setPassword(password))))
+//                .orElseGet(() -> Optional.empty()); //exception
         if (repository.existsById(id)) {
-            return Optional.of(mapper.toUserDto(repository.save(mapper.signUpToUser(user))));
+            user.setId(id);
+            user.setPassword(repository.findById(id).get().getPassword()); //bad prictice!!!
+            return Optional.of(repository.save(user));
         }
         return Optional.empty();
     }
