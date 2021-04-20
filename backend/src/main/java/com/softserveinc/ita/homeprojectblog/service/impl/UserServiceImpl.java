@@ -21,6 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UsersDto getAllUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
+        pageNum--;
         // TODO find out for what is the ID for here
         Page<User> page;
         List<User> users;

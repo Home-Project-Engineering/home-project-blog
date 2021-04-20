@@ -40,7 +40,7 @@ public class UserController implements UsersApi {
                 id,
                 name,
                 sort, // UserAPI set default
-                Optional.ofNullable(pageNum).orElse(0),
+                Optional.ofNullable(pageNum).orElse(1),
                 Optional.ofNullable(pageSize).orElse(10));
 
         Collection<User> allUsers = usersAndSize.getUsers();
