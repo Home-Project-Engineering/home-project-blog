@@ -18,7 +18,7 @@ import java.util.Optional;
 @Service
 public class UserService implements IUserService {
 
-    private UserRepository repository;
+    private final UserRepository repository;
     private final UserMapper mapper;
 
     public UserService(UserRepository repository, UserMapper mapper) {
@@ -27,10 +27,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-//    public List<User> findAll() {
-//        return (List<User>) repository.findAll();
-//    }
-    public Page<User> findAll(Integer pageNum, Integer pageSize, String sortBy) {
+    public Pageable pagination(Integer pageNum, Integer pageSize, String sortBy) {
         Pageable paging;
         if (sortBy.charAt(0) == '-') {
             paging = PageRequest.of(pageNum, pageSize, Sort.by(sortBy.substring(1)).descending());
@@ -40,9 +37,22 @@ public class UserService implements IUserService {
             }
             paging = PageRequest.of(pageNum, pageSize, Sort.by(sortBy).ascending());
         }
-        return repository.findAll(paging);
+        return paging;
+    }
+
+    @Override
+//    public List<User> findAll() {
+//        return (List<User>) repository.findAll();
+//    }
+    public Page<User> findAll(Integer pageNum, Integer pageSize, String sortBy) {
+        return repository.findAll(pagination(pageNum, pageSize, sortBy));
 //        PageUserDto pageUserDto = new PageUserDto(mapper.toUserDtos(pageUser.getContent()),pageUser.getTotalPages());
 //        return pageUserDto;//mapper.toPageUserDto(repository.findAll(paging));
+    }
+
+    @Override
+    public Page<User> findAll(Pageable paging) {
+        return repository.findAll(paging);
     }
 
     @Override
@@ -76,17 +86,22 @@ public class UserService implements IUserService {
         }
         return false;//throw?
     }
-/*
-    //@Override
-    public Set<User> getByName(String name) {
-        Map<Long,User> respUser = new HashMap<Long,User>();
-        for (Long key: users.keySet()){
-            User user = users.get(key);
-            if (user.getName().equalsIgnoreCase(name)){
-                respUser.put(key,user);
-            }
-        }
-        return new HashSet<User>(respUser.values());
+
+    @Override
+    public Page<User> getByName(String name, Integer pageNum, Integer pageSize, String sortBy) {
+        return repository.findByName(name, pagination(pageNum, pageSize, sortBy));
     }
-*/
+
+    @Override
+    public Page<User> getByName(String name, Pageable paging) {
+        return repository.findByName(name, paging);
+    }
+
+    public Page<User> getById(Long id, Pageable paging) {
+        return repository.findById(id, paging);
+    }
+
+    public Page<User> getByNameAndId(String name, Long id, Pageable paging) {
+        return repository.findByNameAndId(name, id, paging);
+    }
 }

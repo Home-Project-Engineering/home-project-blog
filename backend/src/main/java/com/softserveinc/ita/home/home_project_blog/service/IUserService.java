@@ -6,13 +6,20 @@ import com.softserveinc.ita.home.home_project_blog.dto.UserDto;
 import com.softserveinc.ita.home.home_project_blog.models.UpdateUser;
 import com.softserveinc.ita.home.home_project_blog.models.User;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface IUserService {
+    public Pageable pagination(Integer pageNum, Integer pageSize, String sortBy);
+    Page<User> findAll(Pageable paging);
     Page<User> findAll(Integer pageNum, Integer pageSize, String sortBy);
 //    PageUserDto findAllDto(Integer pageNum, Integer pageSize, String sortBy);
+    Page<User> getByName(String name, Integer pageNum, Integer pageSize, String sortBy);
+    Page<User> getByName(String name, Pageable paging);
+    Page<User> getById(Long id, Pageable paging);
+    Page<User> getByNameAndId(String name, Long id, Pageable paging);
     Optional<UserDto> getById(Long id);
     User save(CreateUserDto user);
     Optional<UserDto> update(Long id, CreateUserDto user);

@@ -8,6 +8,7 @@ import com.softserveinc.ita.home.home_project_blog.service.IUserService;
 import com.softserveinc.ita.home.home_project_blog.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,14 +30,30 @@ public class UsersController {
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<User>> getAllUsers(
+            @RequestParam(required = false) Long id,
+            @RequestParam(required = false) String name,
             @RequestParam(defaultValue = "0") Integer page_num,
             @RequestParam(defaultValue = "50") Integer page_size,
             @RequestParam(defaultValue = "-id") String sort
-    ){;
-        Page<User> pagedResult = userService.findAll(page_num, page_size,sort);
+    ){
+        Pageable paging = userService.pagination(page_num,page_size,sort);
+        Page<User> pagedResult;
+        if ((name!=null)&&(id!=null)){
+            pagedResult = userService.getByNameAndId(name,id,paging);
+        }
+        else if (name!=null){
+            pagedResult = userService.getByName(name,paging);
+        }
+        else if (id!=null){
+            pagedResult = userService.getById(id,paging);
+        }
+        else {
+            pagedResult = userService.findAll(paging);
+        }
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("X-Total-Count",
                 String.valueOf(pagedResult.getTotalPages()));
+
         List<User> users = pagedResult.getContent();
         return new ResponseEntity<>(users, responseHeaders, HttpStatus.OK);
     }
