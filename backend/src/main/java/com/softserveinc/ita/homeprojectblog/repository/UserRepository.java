@@ -1,14 +1,14 @@
 package com.softserveinc.ita.homeprojectblog.repository;
 
-import com.softserveinc.ita.homeprojectblog.model.User;
+import com.softserveinc.ita.homeprojectblog.generated.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.math.BigDecimal;
-import java.util.List;
 
-public interface UserRepository {
-    List<User> getAllUsers();
+public interface UserRepository extends JpaRepository<User, BigDecimal> {
 
-    User getUserById(BigDecimal id);
+    Page<User> findByName(String name, Pageable pageable);
 
-    User setUser(User body);
 }

@@ -1,4 +1,4 @@
-package com.softserveinc.ita.homeprojectblog.model;
+package com.softserveinc.ita.homeprojectblog.generated.model;
 
 import java.util.Objects;
 

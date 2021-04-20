@@ -1,4 +1,4 @@
-package com.softserveinc.ita.homeprojectblog.model;
+package com.softserveinc.ita.homeprojectblog.generated.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -8,9 +8,14 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
 import org.springframework.validation.annotation.Validated;
+
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
+
+@Entity
+@Table(name="user", schema = "public")
 /**
  * This is a user object
  */
@@ -18,49 +23,45 @@ import javax.validation.constraints.*;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-04-08T10:34:14.997+03:00[Europe/Helsinki]")
 public class User   {
+
+  @Id
+  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @JsonProperty("id")
   private BigDecimal id = null;
 
+  @Column(name = "name")
   @JsonProperty("name")
   private String name = null;
 
+  @Column(name = "first_name")
   @JsonProperty("firstName")
   private String firstName = null;
 
+  @Column(name = "last_name")
   @JsonProperty("lastName")
   private String lastName = null;
 
+  @Column(name = "email")
   @JsonProperty("email")
   private String email = null;
 
+  @Column(name = "password")
   @JsonProperty("password")
   private String password = null;
-
-  public User() {
-  }
-
-  public User(BigDecimal id, String name, String firstName, String lastName, String email, String password, RoleEnum role) {
-    this.id = id;
-    this.name = name;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.email = email;
-    this.password = password;
-    this.role = role;
-  }
 
   /**
    * This is the level of user access to various functions
    */
   public enum RoleEnum {
     GUEST("guest"),
-    
+
     USER("user"),
-    
+
     MODERATOR("moderator"),
-    
+
     ADMIN("admin"),
-    
+
     EXPERT("expert");
 
     private String value;
@@ -85,8 +86,14 @@ public class User   {
       return null;
     }
   }
+
+  @Column(name = "role")
   @JsonProperty("role")
   private RoleEnum role = null;
+
+  public User() {
+  }
+
 
   public User id(BigDecimal id) {
     this.id = id;
@@ -98,7 +105,7 @@ public class User   {
    * @return id
   **/
   @ApiModelProperty(readOnly = true, value = "")
-  
+
     @Valid
     public BigDecimal getId() {
     return id;
@@ -114,10 +121,10 @@ public class User   {
   }
 
   /**
-   * User supplied username
+   * UserEntity supplied username
    * @return name
   **/
-  @ApiModelProperty(example = "John78", required = true, value = "User supplied username")
+  @ApiModelProperty(example = "John78", required = true, value = "UserEntity supplied username")
       @NotNull
 
   @Size(min=4)   public String getName() {
@@ -134,11 +141,11 @@ public class User   {
   }
 
   /**
-   * User first name
+   * UserEntity first name
    * @return firstName
   **/
-  @ApiModelProperty(example = "John", value = "User first name")
-  
+  @ApiModelProperty(example = "John", value = "UserEntity first name")
+
   @Size(min=1)   public String getFirstName() {
     return firstName;
   }
@@ -153,11 +160,11 @@ public class User   {
   }
 
   /**
-   * User last name
+   * UserEntity last name
    * @return lastName
   **/
-  @ApiModelProperty(example = "Smith", value = "User last name")
-  
+  @ApiModelProperty(example = "Smith", value = "UserEntity last name")
+
   @Size(min=1)   public String getLastName() {
     return lastName;
   }
@@ -172,10 +179,10 @@ public class User   {
   }
 
   /**
-   * User email address
+   * UserEntity email address
    * @return email
   **/
-  @ApiModelProperty(example = "john.smith@example.com", required = true, value = "User email address")
+  @ApiModelProperty(example = "john.smith@example.com", required = true, value = "UserEntity email address")
       @NotNull
 
     public String getEmail() {
@@ -192,11 +199,11 @@ public class User   {
   }
 
   /**
-   * User password, MUST contain a mix of upper and lower case letters, as well as digits
+   * UserEntity password, MUST contain a mix of upper and lower case letters, as well as digits
    * @return password
   **/
-  @ApiModelProperty(example = "passworD321", value = "User password, MUST contain a mix of upper and lower case letters, as well as digits")
-  
+  @ApiModelProperty(example = "passworD321", value = "UserEntity password, MUST contain a mix of upper and lower case letters, as well as digits")
+
     public String getPassword() {
     return password;
   }
@@ -215,7 +222,7 @@ public class User   {
    * @return role
   **/
   @ApiModelProperty(value = "This is the level of user access to various functions")
-  
+
     public RoleEnum getRole() {
     return role;
   }
@@ -251,8 +258,8 @@ public class User   {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class User {\n");
-    
+    sb.append("class UserEntity {\n");
+
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");

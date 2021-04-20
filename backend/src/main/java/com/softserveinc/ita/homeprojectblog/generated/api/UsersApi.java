@@ -3,11 +3,11 @@
  * https://github.com/swagger-api/swagger-codegen
  * Do not edit the class manually.
  */
-package com.softserveinc.ita.homeprojectblog.api;
+package com.softserveinc.ita.homeprojectblog.generated.api;
 
 import java.math.BigDecimal;
-import com.softserveinc.ita.homeprojectblog.model.Error;
-import com.softserveinc.ita.homeprojectblog.model.User;
+import com.softserveinc.ita.homeprojectblog.generated.model.Error;
+import com.softserveinc.ita.homeprojectblog.generated.model.User;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;

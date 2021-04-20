@@ -318,30 +318,30 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         "default":
           $ref: '#/components/responses/UnknownError'
-#    put: #todo consider removing this operation as we can just remove the tag if it is wrong
-#      tags:
-#        - "tags"
-#      summary: Update tag by ID
-#      operationId: updateTag
-#      requestBody:
-#        required: true
-#        content:
-#          application/json:
-#            schema:
-#              $ref: "#/components/schemas/Tag"
-#      responses:
-#        "200":
-#          description: OK
-#          content:
-#            application/json:
-#              schema:
-#                $ref: "#/components/schemas/Tag"
-#        "400":
-#          $ref: '#/components/responses/ValidationError'
-#        "404":
-#          $ref: '#/components/responses/NotFoundError'
-#        "default":
-#          $ref: '#/components/responses/UnknownError'
+    #    put: #todo consider removing this operation as we can just remove the tag if it is wrong
+    #      tags:
+    #        - "tags"
+    #      summary: Update tag by ID
+    #      operationId: updateTag
+    #      requestBody:
+    #        required: true
+    #        content:
+    #          application/json:
+    #            schema:
+    #              $ref: "#/components/schemas/Tag"
+    #      responses:
+    #        "200":
+    #          description: OK
+    #          content:
+    #            application/json:
+    #              schema:
+    #                $ref: "#/components/schemas/Tag"
+    #        "400":
+    #          $ref: '#/components/responses/ValidationError'
+    #        "404":
+    #          $ref: '#/components/responses/NotFoundError'
+    #        "default":
+    #          $ref: '#/components/responses/UnknownError'
     delete:
       tags:
         - "tags"
@@ -376,22 +376,22 @@ components:
           format: int64
           readOnly: true
         name:
-          description: User supplied username
+          description: UserEntity supplied username
           type: string
           minLength: 4
           example: John78
         firstName:
-          description: User first name
+          description: UserEntity first name
           type: string
           minLength: 1
           example: John
         lastName:
-          description: User last name
+          description: UserEntity last name
           type: string
           minLength: 1
           example: Smith
         email:
-          description: User email address
+          description: UserEntity email address
           type: string
           format: email
           example: john.smith@example.com
@@ -423,7 +423,7 @@ components:
         - previewAttachment
       properties:
         id:
-          description: User's Id
+          description: UserEntity's Id
           type: number
           format: int64
           readOnly: true

@@ -1,4 +1,4 @@
-package com.softserveinc.ita.homeprojectblog.model;
+package com.softserveinc.ita.homeprojectblog.generated.model;
 
 import java.util.Objects;
 
@@ -49,10 +49,10 @@ public class Post   {
   }
 
   /**
-   * User's Id
+   * UserEntity's Id
    * @return id
   **/
-  @ApiModelProperty(readOnly = true, value = "User's Id")
+  @ApiModelProperty(readOnly = true, value = "UserEntity's Id")
   
     @Valid
     public BigDecimal getId() {

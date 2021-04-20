@@ -1,62 +1,63 @@
-package com.softserveinc.ita.homeprojectblog.model;
+package com.softserveinc.ita.homeprojectblog.generated.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import java.math.BigDecimal;
 import org.springframework.validation.annotation.Validated;
-
+import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Error
+ * Tag
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-04-08T10:34:14.997+03:00[Europe/Helsinki]")
-public class Error   {
-  @JsonProperty("code")
-  private String code = null;
+public class Tag   {
+  @JsonProperty("id")
+  private BigDecimal id = null;
 
-  @JsonProperty("message")
-  private String message = null;
+  @JsonProperty("name")
+  private String name = null;
 
-  public Error code(String code) {
-    this.code = code;
+  public Tag id(BigDecimal id) {
+    this.id = id;
     return this;
   }
 
   /**
-   * Get code
-   * @return code
+   * Get id
+   * @return id
   **/
-  @ApiModelProperty(required = true, value = "")
-      @NotNull
-
-    public String getCode() {
-    return code;
+  @ApiModelProperty(readOnly = true, value = "")
+  
+    @Valid
+    public BigDecimal getId() {
+    return id;
   }
 
-  public void setCode(String code) {
-    this.code = code;
+  public void setId(BigDecimal id) {
+    this.id = id;
   }
 
-  public Error message(String message) {
-    this.message = message;
+  public Tag name(String name) {
+    this.name = name;
     return this;
   }
 
   /**
-   * Get message
-   * @return message
+   * Tag
+   * @return name
   **/
-  @ApiModelProperty(required = true, value = "")
+  @ApiModelProperty(required = true, value = "Tag")
       @NotNull
 
-    public String getMessage() {
-    return message;
+    public String getName() {
+    return name;
   }
 
-  public void setMessage(String message) {
-    this.message = message;
+  public void setName(String name) {
+    this.name = name;
   }
 
 
@@ -68,23 +69,23 @@ public class Error   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Error error = (Error) o;
-    return Objects.equals(this.code, error.code) &&
-        Objects.equals(this.message, error.message);
+    Tag tag = (Tag) o;
+    return Objects.equals(this.id, tag.id) &&
+        Objects.equals(this.name, tag.name);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(code, message);
+    return Objects.hash(id, name);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Error {\n");
+    sb.append("class Tag {\n");
     
-    sb.append("    code: ").append(toIndentedString(code)).append("\n");
-    sb.append("    message: ").append(toIndentedString(message)).append("\n");
+    sb.append("    id: ").append(toIndentedString(id)).append("\n");
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("}");
     return sb.toString();
   }

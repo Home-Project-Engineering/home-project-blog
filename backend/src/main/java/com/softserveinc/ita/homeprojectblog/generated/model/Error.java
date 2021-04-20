@@ -1,63 +1,62 @@
-package com.softserveinc.ita.homeprojectblog.model;
+package com.softserveinc.ita.homeprojectblog.generated.model;
 
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
-import java.math.BigDecimal;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
+
 import javax.validation.constraints.*;
 
 /**
- * Tag
+ * Error
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-04-08T10:34:14.997+03:00[Europe/Helsinki]")
-public class Tag   {
-  @JsonProperty("id")
-  private BigDecimal id = null;
+public class Error   {
+  @JsonProperty("code")
+  private String code = null;
 
-  @JsonProperty("name")
-  private String name = null;
+  @JsonProperty("message")
+  private String message = null;
 
-  public Tag id(BigDecimal id) {
-    this.id = id;
+  public Error code(String code) {
+    this.code = code;
     return this;
   }
 
   /**
-   * Get id
-   * @return id
+   * Get code
+   * @return code
   **/
-  @ApiModelProperty(readOnly = true, value = "")
-  
-    @Valid
-    public BigDecimal getId() {
-    return id;
-  }
-
-  public void setId(BigDecimal id) {
-    this.id = id;
-  }
-
-  public Tag name(String name) {
-    this.name = name;
-    return this;
-  }
-
-  /**
-   * Tag
-   * @return name
-  **/
-  @ApiModelProperty(required = true, value = "Tag")
+  @ApiModelProperty(required = true, value = "")
       @NotNull
 
-    public String getName() {
-    return name;
+    public String getCode() {
+    return code;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setCode(String code) {
+    this.code = code;
+  }
+
+  public Error message(String message) {
+    this.message = message;
+    return this;
+  }
+
+  /**
+   * Get message
+   * @return message
+  **/
+  @ApiModelProperty(required = true, value = "")
+      @NotNull
+
+    public String getMessage() {
+    return message;
+  }
+
+  public void setMessage(String message) {
+    this.message = message;
   }
 
 
@@ -69,23 +68,23 @@ public class Tag   {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Tag tag = (Tag) o;
-    return Objects.equals(this.id, tag.id) &&
-        Objects.equals(this.name, tag.name);
+    Error error = (Error) o;
+    return Objects.equals(this.code, error.code) &&
+        Objects.equals(this.message, error.message);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name);
+    return Objects.hash(code, message);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Tag {\n");
+    sb.append("class Error {\n");
     
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    code: ").append(toIndentedString(code)).append("\n");
+    sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("}");
     return sb.toString();
   }
