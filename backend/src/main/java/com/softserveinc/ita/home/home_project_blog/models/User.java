@@ -9,10 +9,7 @@ import org.springframework.data.annotation.ReadOnlyProperty;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.Objects;
 
 @Data
@@ -27,6 +24,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
+    @NotBlank
     @Size(min = 4, max = 200, message = "name must be between 4 and 200 characters.")
     private String name;
 
@@ -38,8 +36,9 @@ public class User {
     @Column(name = "lastname")
     private String lastName;
 
+    @NotBlank
     @Email(message = "Email should be valid.")
-    @Column(nullable = false)
+    //@Column(nullable = false)
     private String email;
 
     @Size(min = 8, max = 200, message = "Password should be between 8 and 200 characters.")
@@ -50,51 +49,6 @@ public class User {
 //        guest, user, moderator, admin, expert
 //    }
     private String role;
-
-
-   /* @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 79 * hash + Objects.hashCode(this.id);
-        hash = 79 * hash + Objects.hashCode(this.name);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final User other = (User) obj;
-//        if (this.population != other.population) {
-//            return false;
-//        }
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        return Objects.equals(this.id, other.id);
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("User{");
-        sb.append("id=").append(id);
-        sb.append(", name='").append(name).append('\'');
-//        sb.append(", population=").append(population);
-        sb.append('}');
-        return sb.toString();
-    }*/
-   /* @Override
-    public String toString() {
-        return "[\"id\":\"" + id + "\",\"name\":\"" + name + "\"]";
-    }*/
-
 }
 
  /*

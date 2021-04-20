@@ -1,99 +1,109 @@
 package com.softserveinc.ita.home.home_project_blog.controllers;
 
 
-import com.softserveinc.ita.home.home_project_blog.models.UpdateUser;
+import com.softserveinc.ita.home.home_project_blog.Error.ResponseError;
+import com.softserveinc.ita.home.home_project_blog.dto.CreateUserDto;
+import com.softserveinc.ita.home.home_project_blog.dto.UpdateUserDto;
+import com.softserveinc.ita.home.home_project_blog.dto.UserDto;
+import com.softserveinc.ita.home.home_project_blog.mappers.UserMapper;
 import com.softserveinc.ita.home.home_project_blog.service.IUserService;
 import com.softserveinc.ita.home.home_project_blog.models.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
+
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-//@RequiredArgsConstructor
-@Controller
-@RequestMapping(path = "/api/0/users")//, consumes = "application/json", produces = "application/json")
-public class UsersController {
-    private IUserService userService;
 
-    public UsersController(IUserService userService) {
-        this.userService = userService;
+@Controller
+@RequiredArgsConstructor
+@RequestMapping(path = "/api/0/users", produces = "application/json")
+public class UsersController {
+    private final IUserService userService;
+    private final UserMapper mapper;
+
+    @GetMapping(path = "/admin")
+    public ResponseEntity<List<User>> getAllUsersWithPass(
+            @RequestParam(defaultValue = "-id") String sort
+    ) {
+        return new ResponseEntity<>(userService.findAll(0, 100, sort).getContent(),HttpStatus.OK);
     }
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<User>> getAllUsers(
-//            @RequestParam(required = false, value = "id") @Valid Long id,
-//            @RequestParam(required = false, value = "name") @Valid String name,
-//            @RequestParam(required = false, value = "sort") @Valid String sort,
-//            @RequestParam(required = false, value = "pageNum") @Valid Integer pageNum,
-//            @RequestParam(required = false, value = "pageSize") @Valid Integer pageSize
-//            @RequestParam(Optional<Long> id),
-//            @RequestParam(Optional<String> name),
+    public ResponseEntity<List<UserDto>> getAllUsers(
+            @RequestParam(required = false) Long id,
+            @RequestParam(required = false) String name,
             @RequestParam(defaultValue = "0") Integer page_num,
             @RequestParam(defaultValue = "50") Integer page_size,
             @RequestParam(defaultValue = "-id") String sort
-    ){
-//        return "ID: " + id.orElseGet(() -> "not provided");
-        Page<User> pagedResult = userService.findAll(page_num, page_size,sort);
-        List<User> users;
-        if (pagedResult.hasContent()) {
-            users = pagedResult.getContent();
+    ) {
+        Pageable paging = userService.pagination(page_num, page_size, sort);
+        Page<User> pagedResult;
+        if ((name != null) && (id != null)) {
+            pagedResult = userService.getByNameAndId(name, id, paging);
+        } else if (name != null) {
+            pagedResult = userService.getByName(name, paging);
+        } else if (id != null) {
+            pagedResult = userService.getById(id, paging);
         } else {
-            users = new ArrayList<User>();
+            pagedResult = userService.findAll(paging);
         }
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("X-Total-Count",
-                String.valueOf(pagedResult.getTotalPages()));
-        return new ResponseEntity<>(pagedResult.getContent(), responseHeaders, HttpStatus.OK);
+                String.valueOf(pagedResult.getTotalElements()));
+
+        List<UserDto> users = mapper.toUserDtos(pagedResult.getContent());
+        return new ResponseEntity<>(users, responseHeaders, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")
-    public ResponseEntity<User> getUserById(@PathVariable("id") Long id) {
+    public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long id) {
         Optional<User> user = userService.getById(id);
-        return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return user.map(value -> new ResponseEntity<>(mapper.toUserDto(value),
+                HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<User> signUp(@RequestBody User user){
-        return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
+    public ResponseEntity<User> signUp(@RequestBody CreateUserDto user) {
+        return new ResponseEntity<>(userService.save(mapper.signUpToUser(user)), HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<User> updateUser(@PathVariable Long id,
-                                           @RequestBody UpdateUser user){
-       /* if (id!=user.getId()){
-            user.setId(id);
-            //message id user doesn't equal id in user
-            //return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }*/
-//        User myUser = new User();
-//        myUser.setLastName(user.getLastName());
-//        myUser.setFirstName(user.getFirstName());
-//        myUser.setEmail(user.getEmail);
-//        myUser.setPassword(user.getPassword());
-//                userService.getById(id);
-        Optional<User> newUser = userService.update(id,user);
+    public ResponseEntity<User> updateUser( @PathVariable Long id,
+                                            @RequestBody UpdateUserDto user) {
+        Optional<User> newUser = userService.update(id, mapper.UpdateToUser(user));
         return newUser.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+//    @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
+//    public ResponseEntity<User> updateUser( @PathVariable Long id,
+//                                            @RequestBody CreateUserDto user) {
+//        Optional<User> newUser = userService.update(id, mapper.signUpToUser(user));
+//        return newUser.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+//                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 //new ResponseError("404","User with id=\""+id+"\" hasn't been found."
 //        if (Objects.isNull(userService.update(longId))) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 //        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
+//    }
 
     @DeleteMapping(path = "/{id}", produces = "application/json")
-    public ResponseEntity<User> deleteUser(@PathVariable Long id){
+    public ResponseEntity<User> deleteUser(@PathVariable Long id) {
         if (userService.delete(id)) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 
-           // @RequestParam(required = false, value = "id") Long id,
-            //@RequestParam(required = false, value = "name") String name
+    // @RequestParam(required = false, value = "id") Long id,
+    //@RequestParam(required = false, value = "name") String name
 //    ) {
         /*
         if (!StringUtils.isEmpty(id)) {
@@ -116,7 +126,7 @@ public class UsersController {
             }
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }*/
-     //   var users = (List<User>) userService.findAll();
+    //   var users = (List<User>) userService.findAll();
 //        return new ResponseEntity<List<User>>(userService.findAll(), HttpStatus.OK);
 //    }
 
