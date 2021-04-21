@@ -34,8 +34,8 @@ public class UserEntity {
     @Column(name = "password")
     private String password;
 
-//    @Column(name = "create_time")
-//    private String createTime;
+    @Column(name = "create_time")
+    private String createTime;
 
     /**
      * This is the level of user access to various functions
