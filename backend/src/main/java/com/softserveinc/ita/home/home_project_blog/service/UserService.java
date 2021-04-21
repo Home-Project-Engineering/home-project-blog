@@ -1,5 +1,6 @@
 package com.softserveinc.ita.home.home_project_blog.service;
 
+import com.softserveinc.ita.home.home_project_blog.ExceptionHandling.ErrorConst;
 import com.softserveinc.ita.home.home_project_blog.dto.CreateUserDto;
 import com.softserveinc.ita.home.home_project_blog.dto.UserDto;
 import com.softserveinc.ita.home.home_project_blog.mappers.UserMapper;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -52,42 +54,29 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Optional<User> getById(Long id) {
-        return repository.findById(id);
+    public User getById(Long id) {
+        return repository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format(ErrorConst.NOT_FOUND_USER_BY_ID, id)));
     }
 
     @Override
     public User save(User user) {
-//        if (repository.existsById(user.getId())) {
-//            user.setId(-1L);
-//        }
         return repository.save(user);
     }
 
     @Override
-    public Optional<User> update(Long id, User user) {
-        //return repository.findById(id).map(value -> repository.save(value)).orElseThrow();
-
-
-//        Optional<User> oldUser = repository.findById(id);
-//        String password = oldUser.get().getPassword();
-//        return oldUser.map(value -> Optional.of(repository.save(value.setId(id).setPassword(password))))
-//                .orElseGet(() -> Optional.empty()); //exception
-        if (repository.existsById(id)) {
-            user.setId(id);
-            user.setPassword(repository.findById(id).get().getPassword()); //bad prictice!!!
-            return Optional.of(repository.save(user));
-        }
-        return Optional.empty();
+    public User update(Long id, User user) {
+        user.setId(id);
+        user.setPassword(getById(id).getPassword());
+        return repository.save(user);
     }
 
     @Override
-    public boolean delete(Long id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-            return true;
+    public void delete(Long id) {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException(String.format(ErrorConst.NOT_FOUND_USER_BY_ID, id));
         }
-        return false;//throw?
+        repository.deleteById(id);
     }
 
     @Override

@@ -1,7 +1,5 @@
 package com.softserveinc.ita.home.home_project_blog.controllers;
 
-
-import com.softserveinc.ita.home.home_project_blog.Error.ResponseError;
 import com.softserveinc.ita.home.home_project_blog.dto.CreateUserDto;
 import com.softserveinc.ita.home.home_project_blog.dto.UpdateUserDto;
 import com.softserveinc.ita.home.home_project_blog.dto.UserDto;
@@ -16,10 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 
 @Controller
@@ -28,13 +23,6 @@ import java.util.Optional;
 public class UsersController {
     private final IUserService userService;
     private final UserMapper mapper;
-
-    @GetMapping(path = "/admin")
-    public ResponseEntity<List<User>> getAllUsersWithPass(
-            @RequestParam(defaultValue = "-id") String sort
-    ) {
-        return new ResponseEntity<>(userService.findAll(0, 100, sort).getContent(),HttpStatus.OK);
-    }
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<UserDto>> getAllUsers(
@@ -65,9 +53,7 @@ public class UsersController {
 
     @GetMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long id) {
-        Optional<User> user = userService.getById(id);
-        return user.map(value -> new ResponseEntity<>(mapper.toUserDto(value),
-                HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return new ResponseEntity<>(mapper.toUserDto(userService.getById(id)), HttpStatus.OK);
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
@@ -77,11 +63,9 @@ public class UsersController {
     }
 
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<User> updateUser( @PathVariable Long id,
-                                            @RequestBody UpdateUserDto user) {
-        Optional<User> newUser = userService.update(id, mapper.UpdateToUser(user));
-        return newUser.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    public ResponseEntity<User> updateUser(@PathVariable Long id,
+                                           @RequestBody UpdateUserDto user) {
+        return new ResponseEntity<>(userService.update(id, mapper.UpdateToUser(user)), HttpStatus.OK);
     }
 
 //    @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
@@ -97,8 +81,16 @@ public class UsersController {
 
     @DeleteMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<User> deleteUser(@PathVariable Long id) {
-        if (userService.delete(id)) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        userService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+
+    @GetMapping(path = "/admin")
+    public ResponseEntity<List<User>> getAllUsersWithPass(
+            @RequestParam(defaultValue = "-id") String sort
+    ) {
+        return new ResponseEntity<>(userService.findAll(0, 100, sort).getContent(), HttpStatus.OK);
     }
 
 

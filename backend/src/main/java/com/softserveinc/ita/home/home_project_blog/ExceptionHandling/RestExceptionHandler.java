@@ -1,48 +1,62 @@
-package com.softserveinc.ita.home.home_project_blog.Error;
+package com.softserveinc.ita.home.home_project_blog.ExceptionHandling;
 
+import org.hibernate.TypeMismatchException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 
-//@Order(Ordered.HIGHEST_PRECEDENCE)
-//@ControllerAdvice
+@Order(Ordered.HIGHEST_PRECEDENCE)
+@ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {EntityNotFoundException.class})
-    public ResponseEntity<Object> noSuchUserException(EntityNotFoundException e){
+    public ResponseEntity<Error> noSuchUserException(EntityNotFoundException e){
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;
-
-        ResponseError error = new ResponseError(
-                e.getMessage(),
-                httpStatus.toString()
+        Error error = new Error(
+                httpStatus.toString(),
+                e.getMessage()
         );
         return new ResponseEntity<>(error,httpStatus);
     }
 
-    @ExceptionHandler(value = {NumberFormatException.class})//, ConstraintViolationException.class})
-    public ResponseEntity<ResponseError> validationException(EntityNotFoundException e){
+    @ExceptionHandler
+    public ResponseEntity<Error> validationException(Exception e){
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-
-        ResponseError error = new ResponseError(
-                e.getMessage(),
-                httpStatus.toString()
+        Error error = new Error(
+                httpStatus.toString(),
+                e.getMessage()
         );
         return new ResponseEntity<>(error,httpStatus);
     }
 
+    @ExceptionHandler(value = {ConstraintViolationException.class})
+    public ResponseEntity<Error> noSuchUserException(ConstraintViolationException e){
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        Error error = new Error(
+                httpStatus.toString(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(error,httpStatus);
+    }
 
-    //    @Override
+    @ExceptionHandler(value = {NumberFormatException.class})
+    public ResponseEntity<Error> validationException(NumberFormatException e){
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        Error error = new Error(
+                httpStatus.toString(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(error,httpStatus);
+    }
+
+//    @Override
 //    protected ResponseEntity<Object> handleHttpMessageNotReadable(
 //            HttpMessageNotReadableException ex,
 //            HttpHeaders headers, HttpStatus status, WebRequest request) {

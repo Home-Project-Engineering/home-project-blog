@@ -1,4 +1,4 @@
-package com.softserveinc.ita.home.home_project_blog.Error;
+package com.softserveinc.ita.home.home_project_blog.ExceptionHandling;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ResponseError {
+public class Error {
     String code;
     String message;
 }
