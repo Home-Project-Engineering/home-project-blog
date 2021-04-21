@@ -13,10 +13,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import java.util.List;
 
-
+@Validated
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(path = "/api/0/users", produces = "application/json")
@@ -58,13 +62,13 @@ public class UsersController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<User> signUp(@RequestBody CreateUserDto user) {
+    public ResponseEntity<User> signUp(@Valid @RequestBody CreateUserDto user) {
         return new ResponseEntity<>(userService.save(mapper.signUpToUser(user)), HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<User> updateUser(@PathVariable Long id,
-                                           @RequestBody UpdateUserDto user) {
+                                           @Valid @RequestBody UpdateUserDto user) {
         return new ResponseEntity<>(userService.update(id, mapper.UpdateToUser(user)), HttpStatus.OK);
     }
 
@@ -88,7 +92,7 @@ public class UsersController {
 
     @GetMapping(path = "/admin")
     public ResponseEntity<List<User>> getAllUsersWithPass(
-            @RequestParam(defaultValue = "-id") String sort
+            @Valid @RequestParam(defaultValue = "-id") String sort
     ) {
         return new ResponseEntity<>(userService.findAll(0, 100, sort).getContent(), HttpStatus.OK);
     }

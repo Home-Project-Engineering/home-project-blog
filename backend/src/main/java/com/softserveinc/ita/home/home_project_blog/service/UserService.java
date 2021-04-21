@@ -14,10 +14,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 import java.util.Optional;
 
+@Validated
 @RequiredArgsConstructor
 @Service
 public class UserService implements IUserService {
@@ -33,6 +36,7 @@ public class UserService implements IUserService {
             if (sortBy.charAt(0) == '+') {
                 sortBy = sortBy.substring(1);
             }
+            //TODO exception if not id and not null
             paging = PageRequest.of(pageNum, pageSize, Sort.by(sortBy).ascending());
         }
         return paging;
@@ -60,14 +64,17 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User save(User user) {
+    public User save(@Valid User user) {
+//        user.setRole(User.ROLE.user);
         return repository.save(user);
     }
 
     @Override
-    public User update(Long id, User user) {
+    public User update(Long id,@Valid User user) {
         user.setId(id);
-        user.setPassword(getById(id).getPassword());
+        User oldUser = getById(id);
+        user.setPassword(oldUser.getPassword());
+        user.setRole(oldUser.getRole());
         return repository.save(user);
     }
 

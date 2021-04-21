@@ -3,16 +3,20 @@ package com.softserveinc.ita.home.home_project_blog.ExceptionHandling;
 import org.hibernate.TypeMismatchException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 
-@Order(Ordered.HIGHEST_PRECEDENCE)
+//@Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -26,8 +30,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(error,httpStatus);
     }
 
-    @ExceptionHandler
-    public ResponseEntity<Error> validationException(Exception e){
+    @ExceptionHandler(value = {ConstraintViolationException.class})
+    public ResponseEntity<Error> constraintViolationException(ConstraintViolationException e){
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         Error error = new Error(
                 httpStatus.toString(),
@@ -36,8 +40,43 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(error,httpStatus);
     }
 
-    @ExceptionHandler(value = {ConstraintViolationException.class})
-    public ResponseEntity<Error> noSuchUserException(ConstraintViolationException e){
+
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+                                                                  HttpHeaders headers, HttpStatus status,
+                                                                  WebRequest request) {
+//        String errorMessage = ex.getBindingResult().getFieldErrors().stream()
+//                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+//                .findFirst()
+//                .orElse(ex.getMessage());
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        Error error = new Error(
+                httpStatus.toString(),
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(error, httpStatus.BAD_REQUEST);
+    }
+//    @Override
+//    public RestponseEntity<Error> ResponseEntityExceptionHandler.handleMethodArgumentNotValid(){
+//        return new ResponseEntity<>(new Error, HttpStatus.BAD_REQUEST);
+//    }
+
+    //can't build with this exception :(
+//    override ResponseEntityExceptionHandler.handleMethodArgumentNotValid
+
+//    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
+//    public ResponseEntity<Error> methodArgumentNotValidException(MethodArgumentNotValidException e){
+//        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+//        Error error = new Error(
+//                httpStatus.toString(),
+//                e.getMessage()
+//        );
+//        return new ResponseEntity<>(error,httpStatus);
+//    }
+
+    //doesn't work :(
+    @ExceptionHandler
+    public ResponseEntity<Error> anyException(Exception e){
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         Error error = new Error(
                 httpStatus.toString(),
@@ -45,6 +84,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         );
         return new ResponseEntity<>(error,httpStatus);
     }
+
 
     @ExceptionHandler(value = {NumberFormatException.class})
     public ResponseEntity<Error> validationException(NumberFormatException e){
