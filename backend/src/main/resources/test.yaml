@@ -9,8 +9,3 @@ info:
 servers:
   - url: localhost:8080/
     description: this is where my api is
-
-
-
-
-
