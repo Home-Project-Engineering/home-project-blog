@@ -5,15 +5,15 @@ import com.softserveinc.ita.homeprojectblog.generated.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
-import org.springframework.stereotype.Component;
 
-@Component
-@Mapper(componentModel = "spring")
+@Mapper
 public interface UserMapperController {
-    UserMapperController INSTANCE = Mappers.getMapper(UserMapperController.class );
+    UserMapperController INSTANCE = Mappers.getMapper(UserMapperController.class);
 
     User toUser(UserDto userDto);
-    Page<User> toUserPage(Page<UserDto> userDtoPage);
+    default Page<User> toUserPage(Page<UserDto> userDtoPage){
+        return userDtoPage.map(this::toUser);
+    }
 
     UserDto toUserDto(User body);
 }

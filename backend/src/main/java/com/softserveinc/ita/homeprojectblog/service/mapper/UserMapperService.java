@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface UserMapperService {
 
     UserMapperService INSTANCE = Mappers.getMapper(UserMapperService.class);
