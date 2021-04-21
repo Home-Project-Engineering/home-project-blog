@@ -33,4 +33,4 @@ build/
 .vscode/
 
 ### test files ###
-test.yaml
+backend/src/main/resources/test.yaml
