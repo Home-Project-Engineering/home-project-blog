@@ -1,7 +1,7 @@
 openapi: 3.0.3
 
 info:
-  version: 0.1.1
+  version: 1.0.1
   title: Home Project Blog Service
   description: |
     Blog for the Home Project engineers
@@ -13,16 +13,19 @@ security:
   - basicAuth: []
 
 tags:
-  - name: "User"
-  - name: "Post"
-  - name: "Comment"
-  - name: "Tag"
+  - name: Current User
+  - name: Current User Posts
+  - name: Current User Comments
+  - name: Users
+  - name: Posts
+  - name: Comments
+  - name: Tags
 
 paths:
   /users/current:
     get:
       tags:
-        - User
+        - Current User
       summary: Return current User
       description: Retrieves the current logged User.
       operationId: getCurrentUser
@@ -35,13 +38,170 @@ paths:
           $ref: '#/components/responses/NotFoundError'
         "default":
           $ref: '#/components/responses/UnknownError'
+    put:
+      tags:
+        - Current User
+      summary: Update Current User
+      description: Updates information on a Current User.
+      operationId: updateCurrentUser
+      requestBody:
+        $ref: '#/components/requestBodies/UserBody'
+      responses:
+        "200":
+          $ref: '#/components/responses/UserResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+
+  /users/current/posts:
+    get:
+      summary: Get posts by Current User
+      description: Uses query keys to retrieve a subset of existing posts assosiated with Current User.
+      tags:
+        - Current User Posts
+      operationId: getPostsByCurrentUser
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/tag_id'
+        - $ref: '#/components/parameters/tag_name'
+        - $ref: '#/components/parameters/posts_sort'
+        - $ref: '#/components/parameters/page_num'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        "200":
+          $ref: '#/components/responses/PostsResponse'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+
+  /users/current/posts/{id}:
+    parameters:
+      - $ref: '#/components/parameters/p_id'
+    get:
+      tags:
+        - Current User Posts
+      operationId: getPostByCurrentUser
+      summary: Get Post by ID and Current User
+      description: Retrieves an existing Post associated with the specified ID and Current User.
+      responses:
+        "200":
+          $ref: '#/components/responses/PostResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    put:
+      tags:
+        - Current User Posts
+      summary: Update Post by Current User
+      description: Updates information on a Post that exists in the system by the specified ID and Current User.
+      operationId: updatePostByCurrentUser
+      requestBody:
+        $ref: '#/components/requestBodies/PostBody'
+      responses:
+        "200":
+          $ref: '#/components/responses/PostResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    delete:
+      tags:
+        - Current User Posts
+      summary: Remove Post by Current User
+      description: Deletes a Post associated with a specified ID and Current User.
+      operationId: removePostByCurrentUser
+      responses:
+        "204":
+          $ref: '#/components/responses/NoContentResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+
+  /users/current/comments:
+    get:
+      summary: Get comments by Current User
+      description: Uses query keys to retrieve a subset of existing comments assosiated with Current User.
+      tags:
+        - Current User Comments
+      operationId: getCommentsByCurrentUser
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/comments_sort'
+        - $ref: '#/components/parameters/page_num'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        "200":
+          $ref: '#/components/responses/CommentsResponse'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+
+  /users/current/comments/{id}:
+    parameters:
+      - $ref: '#/components/parameters/p_id'
+    get:
+      tags:
+        - Current User Comments
+      operationId: getCommentByCurrentUser
+      summary: Get Comment by ID and Current User
+      description: Retrieves an existing Comment associated with the specified ID and Current User.
+      responses:
+        "200":
+          $ref: '#/components/responses/CommentResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    put:
+      tags:
+        - Current User Comments
+      summary: Update Comment by Current User
+      description: Updates information on a Comment that exists in the system by the specified ID and Current User.
+      operationId: updateCommentByCurrentUser
+      requestBody:
+        $ref: '#/components/requestBodies/CommentBody'
+      responses:
+        "200":
+          $ref: '#/components/responses/CommentsResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    delete:
+      tags:
+        - Current User Comments
+      summary: Remove Comment by Current User
+      description: Deletes a Comment associated with a specified ID and Current User.
+      operationId: removeCommentByCurrentUser
+      responses:
+        "204":
+          $ref: '#/components/responses/NoContentResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
 
   /users:
     post:
       summary: Create User
       description: Create a new User.
       tags:
-        - User
+        - Users
       operationId: createUser
       requestBody:
         $ref: '#/components/requestBodies/UserBody'
@@ -54,7 +214,7 @@ paths:
           $ref: '#/components/responses/UnknownError'
     get:
       tags:
-        - User
+        - Users
       summary: Get users
       description: Uses query keys to retrieve a subset of existing users.
       operationId: getUsers
@@ -77,7 +237,7 @@ paths:
       - $ref: '#/components/parameters/p_id'
     get:
       tags:
-        - User
+        - Users
       summary: Get User by ID
       description: Retrieves an existing User associated with the specified ID.
       operationId: getUser
@@ -92,7 +252,7 @@ paths:
           $ref: '#/components/responses/UnknownError'
     put:
       tags:
-        - User
+        - Users
       summary: Update User
       description: Updates information on a User that exists in the system by the specified ID.
       operationId: updateUser
@@ -109,7 +269,7 @@ paths:
           $ref: '#/components/responses/UnknownError'
     delete:
       tags:
-        - User
+        - Users
       summary: Remove User
       description: Deletes a User associated with a specified ID.
       operationId: removeUser
@@ -128,7 +288,7 @@ paths:
       summary: Create Post
       description: Create a new Post.
       tags:
-        - Post
+        - Posts
       operationId: createPost
       requestBody:
         $ref: '#/components/requestBodies/PostBody'
@@ -143,7 +303,7 @@ paths:
       summary: Get posts
       description: Uses query keys to retrieve a subset of existing posts.
       tags:
-        - Post
+        - Posts
       operationId: getPosts
       parameters:
         - $ref: '#/components/parameters/id'
@@ -156,8 +316,6 @@ paths:
       responses:
         "200":
           $ref: '#/components/responses/PostsResponse'
-        "404":
-          $ref: '#/components/responses/NotFoundError'
         "default":
           $ref: '#/components/responses/UnknownError'
 
@@ -166,7 +324,7 @@ paths:
       - $ref: '#/components/parameters/p_id'
     get:
       tags:
-        - Post
+        - Posts
       summary: Get Post by ID
       description: Retrieves an existing Post associated with the specified ID.
       operationId: getPost
@@ -181,7 +339,7 @@ paths:
           $ref: '#/components/responses/UnknownError'
     put:
       tags:
-        - Post
+        - Posts
       summary: Update Post
       description: Updates information on a Post that exists in the system by the specified ID.
       operationId: updatePost
@@ -198,7 +356,7 @@ paths:
           $ref: '#/components/responses/UnknownError'
     delete:
       tags:
-        - Post
+        - Posts
       summary: Remove Post
       description: Deletes a Post associated with a specified ID.
       operationId: removePost
@@ -219,7 +377,7 @@ paths:
       summary: Get comments
       description: Uses query keys to retrieve a subset of existing comments.
       tags:
-        - Comment
+        - Comments
       operationId: getComments
       parameters:
         - $ref: '#/components/parameters/id'
@@ -239,7 +397,7 @@ paths:
       summary: Create Comment
       description: Create a new Comment.
       tags:
-        - Comment
+        - Comments
       operationId: createComment
       requestBody:
         $ref: '#/components/requestBodies/CommentBody'
@@ -257,7 +415,7 @@ paths:
       - $ref: '#/components/parameters/p_id'
     get:
       tags:
-        - Comment
+        - Comments
       summary: Get Comment by ID.
       description: Retrieves an existing Comment associated with the specified ID.
       operationId: getComment
@@ -272,7 +430,7 @@ paths:
           $ref: '#/components/responses/UnknownError'
     put:
       tags:
-        - Comment
+        - Comments
       summary: Update Comment
       description: Updates information on a Comment that exists in the system by the specified ID and post ID.
       operationId: updateComment
@@ -289,7 +447,7 @@ paths:
           $ref: '#/components/responses/UnknownError'
     delete:
       tags:
-        - Comment
+        - Comments
       summary: Remove Comment
       description: Deletes a Comment associated with a specified ID.
       operationId: removeComment
@@ -306,7 +464,7 @@ paths:
   /tags:
     get:
       tags:
-        - Tag
+        - Tags
       summary: Get tags
       description: Uses query keys to retrieve a subset of existing tags.
       operationId: getTags
@@ -319,8 +477,6 @@ paths:
       responses:
         "200":
           $ref: '#/components/responses/TagsResponse'
-        "404":
-          $ref: '#/components/responses/NotFoundError'
         "default":
           $ref: '#/components/responses/UnknownError'
 
@@ -329,7 +485,7 @@ paths:
       - $ref: '#/components/parameters/p_id'
     get:
       tags:
-        - Tag
+        - Tags
       summary: Get Tag by ID
       description: Retrieves an existing Tag associated with the specified ID.
       operationId: getTag
@@ -344,7 +500,7 @@ paths:
           $ref: '#/components/responses/UnknownError'
     delete:
       tags:
-        - Tag
+        - Tags
       summary: Remove Tag
       description: Deletes a Tag associated with a specified ID.
       operationId: removeTag
