@@ -71,9 +71,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updateUser(UserDto bodyDto, BigDecimal id) {
-        if (bodyDto.getId() == null) {
+        if (bodyDto.getId() == null)
             bodyDto.setId(id);
-        }
+
+        if (bodyDto.getPassword() == null) // update without password
+            bodyDto.setPassword(getUserById(id).getPassword());
+
+
         UserEntity bodyEntity = UserMapperService.INSTANCE.toUserEntity(bodyDto);
         bodyEntity = userRepository.save(bodyEntity);
 

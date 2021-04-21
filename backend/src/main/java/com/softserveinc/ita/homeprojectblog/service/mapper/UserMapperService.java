@@ -12,12 +12,12 @@ public interface UserMapperService {
 
     UserMapperService INSTANCE = Mappers.getMapper(UserMapperService.class);
 
-    @Mapping(target = "password", constant = "*****")
     UserDto toUserDto(UserEntity userEntity);
 
     default Page<UserDto> toUserDtoPage(Page<UserEntity> userEntityPage){
         return userEntityPage.map(this::toUserDto);
     }
 
+//    @Mapping(target = "createTime", ignore = true)
     UserEntity toUserEntity (UserDto userDto);
 }

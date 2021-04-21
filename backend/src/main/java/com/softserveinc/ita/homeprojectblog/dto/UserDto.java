@@ -23,7 +23,7 @@ public class UserDto {
 
     private String password;
 
-    private String createTime;
+//    private String createTime;
 
     /**
      * This is the level of user access to various functions
