@@ -1,9 +1,10 @@
 package com.softserveinc.ita.homeprojectblog.service.impl;
 
-import com.softserveinc.ita.homeprojectblog.dto.UsersDto;
-import com.softserveinc.ita.homeprojectblog.generated.model.User;
+import com.softserveinc.ita.homeprojectblog.dto.UserDto;
+import com.softserveinc.ita.homeprojectblog.entity.UserEntity;
 import com.softserveinc.ita.homeprojectblog.repository.UserRepository;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
+import com.softserveinc.ita.homeprojectblog.service.mapper.UserMapperService;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -20,28 +21,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UsersDto getAllUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
+    public Page<UserDto> getAllUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
         pageNum--;
         // TODO find out for what is the ID for here
-        Page<User> page;
-        List<User> users;
-        long quantity;
+        Page<UserEntity> pageEntities;
 
         if (name != null) {
-
-            page = userRepository.findByName(name, PageRequest.of(pageNum, pageSize, getSorter(sort)));
-            users = page.getContent();
-            quantity = page.getTotalElements();
-
-            return new UsersDto(users, quantity);
+            pageEntities = userRepository.findByName(name, PageRequest.of(pageNum, pageSize, getSorter(sort)));
+            return UserMapperService.INSTANCE.toUserDtoPage(pageEntities);
         }
 
-        page = userRepository.findAll(PageRequest.of(pageNum, pageSize, getSorter(sort)));
+        pageEntities = userRepository.findAll(PageRequest.of(pageNum, pageSize, getSorter(sort)));
 
-        users = page.getContent();
-        quantity = page.getTotalElements();
-
-        return new UsersDto(users, quantity);
+        return UserMapperService.INSTANCE.toUserDtoPage(pageEntities);
     }
 
     private Sort getSorter(String sort) {
@@ -56,18 +48,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserById(BigDecimal id) {
-        User user = null;
-        Optional<User> optional = userRepository.findById(id);
+    public UserDto getUserById(BigDecimal id) {
+        UserEntity userEntity = null;
+        Optional<UserEntity> optional = userRepository.findById(id);
         if (optional.isPresent()) {
-            user = optional.get();
+            userEntity = optional.get();
         }
-        return user;
+        return UserMapperService.INSTANCE.toUserDto(userEntity);
     }
 
     @Override
-    public User signUp(User body) {
-        return userRepository.save(body);
+    public UserDto signUp(UserDto bodyDto) {
+        UserEntity userEntity = UserMapperService.INSTANCE.toUserEntity(bodyDto);
+        userRepository.save(userEntity);
+        return UserMapperService.INSTANCE.toUserDto(userEntity);
     }
 
     @Override
@@ -76,12 +70,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User body, BigDecimal id) {
-        if (body.getId() == null) {
-            body.setId(id);
+    public UserDto updateUser(UserDto bodyDto, BigDecimal id) {
+        if (bodyDto.getId() == null) {
+            bodyDto.setId(id);
         }
+        UserEntity bodyEntity = UserMapperService.INSTANCE.toUserEntity(bodyDto);
+        bodyEntity = userRepository.save(bodyEntity);
 
-        return userRepository.save(body);
+        return UserMapperService.INSTANCE.toUserDto(bodyEntity);
     }
 
 

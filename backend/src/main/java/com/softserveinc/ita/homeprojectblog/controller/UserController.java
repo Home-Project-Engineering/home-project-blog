@@ -1,11 +1,13 @@
 package com.softserveinc.ita.homeprojectblog.controller;
 
-import com.softserveinc.ita.homeprojectblog.dto.UsersDto;
+import com.softserveinc.ita.homeprojectblog.controller.mapper.UserMapperController;
+import com.softserveinc.ita.homeprojectblog.dto.UserDto;
 import com.softserveinc.ita.homeprojectblog.exceptions.NoSuchUserException;
 import com.softserveinc.ita.homeprojectblog.exceptions.NoSuchUsersException;
 import com.softserveinc.ita.homeprojectblog.generated.api.UsersApi;
 import com.softserveinc.ita.homeprojectblog.generated.model.User;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,47 +37,50 @@ public class UserController implements UsersApi {
     @Override
     public ResponseEntity<List<User>> getAllUsers(@Valid BigDecimal id, @Valid String name, @Valid String sort, @Valid Integer pageNum, @Valid Integer pageSize) {
 
-        UsersDto usersAndSize = userService.getAllUsers(
+        Page<UserDto> userDtoPage = userService.getAllUsers(
                 id,
                 name,
                 sort, // UserAPI set default
                 Optional.ofNullable(pageNum).orElse(1),
                 Optional.ofNullable(pageSize).orElse(10));
 
-        Collection<User> allUsers = usersAndSize.getUsers();
+        Page<User> userPage = UserMapperController.INSTANCE.toUserPage(userDtoPage);
 
         MultiValueMap<String, String> headers = new HttpHeaders();
-        headers.add("X-Total-Count", String.valueOf(usersAndSize.getQuantity()));
+        headers.add("X-Total-Count", String.valueOf(userPage.getTotalElements()));
 
         // TODO find out if this approach is correct
-        if (usersAndSize.getQuantity() == 0 || allUsers == null) {
+        if (userPage.getTotalElements() == 0) {
             throw new NoSuchUsersException("There are no users for your request");
         }
 
-        return new ResponseEntity(allUsers, headers, HttpStatus.OK);
+        return new ResponseEntity(userPage.getContent(), headers, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<User> getUser(BigDecimal id) {
-        User user = userService.getUserById(id);
+        UserDto userDto = userService.getUserById(id);
 
-        if (user == null) {
+        if (userDto == null) {
             throw new NoSuchUserException("There is no user with ID = " +
                     id + " in Database");
         }
 
-        return new ResponseEntity(user, HttpStatus.OK);
+        return new ResponseEntity(UserMapperController.INSTANCE.toUser(userDto), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<User> signUp(@Valid User body) {
-        User user = userService.signUp(body);
-        return new ResponseEntity(user, HttpStatus.CREATED);
+        UserDto userDto = UserMapperController.INSTANCE.toUserDto(body);
+        userDto = userService.signUp(userDto);
+        return new ResponseEntity(UserMapperController.INSTANCE.toUser(userDto), HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<User> updateUser(@Valid User body, BigDecimal id) {
-        User user = userService.updateUser(body, id);
-        return new ResponseEntity(user, HttpStatus.OK);
+        UserDto userDto = UserMapperController.INSTANCE.toUserDto(body);
+        userDto = userService.updateUser(userDto, id);
+
+        return new ResponseEntity(UserMapperController.INSTANCE.toUser(userDto), HttpStatus.OK);
     }
 }

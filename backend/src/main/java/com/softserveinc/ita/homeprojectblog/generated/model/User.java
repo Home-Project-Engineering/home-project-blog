@@ -14,8 +14,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 
-@Entity
-@Table(name="user", schema = "public")
 /**
  * This is a user object
  */
@@ -24,29 +22,21 @@ import javax.validation.constraints.*;
 @javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2021-04-08T10:34:14.997+03:00[Europe/Helsinki]")
 public class User   {
 
-  @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @JsonProperty("id")
   private BigDecimal id = null;
 
-  @Column(name = "name")
   @JsonProperty("name")
   private String name = null;
 
-  @Column(name = "first_name")
   @JsonProperty("firstName")
   private String firstName = null;
 
-  @Column(name = "last_name")
   @JsonProperty("lastName")
   private String lastName = null;
 
-  @Column(name = "email")
   @JsonProperty("email")
   private String email = null;
 
-  @Column(name = "password")
   @JsonProperty("password")
   private String password = null;
 
@@ -87,7 +77,6 @@ public class User   {
     }
   }
 
-  @Column(name = "role")
   @JsonProperty("role")
   private RoleEnum role = null;
 
