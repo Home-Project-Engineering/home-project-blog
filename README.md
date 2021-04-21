@@ -15,37 +15,38 @@ And of course, there is nothing without comment, I'm sure it's a must-have featu
 
 | Action                                             | ADMIN | MODERATOR | BLOGGER | ANY |
 |:---------------------------------------------------|:-----:|:---------:|:-------:|:---:|
+| Current User                                       |       |           |         |     |
 | See information about current User.                | V     | V         | V       |     |
 | Update information connected to current User.      | V     | V         | V       |     |
-|                                                    |       |           |         |     |
+| Comments of Current User                           |       |           |         |     |
 | See all comments assosiated with current user.     | V     | V         | V       |     |
 | See specific comment assosiated with current user. | V     | V         | V       |     |
 | Update Comment assosiated with current user.       | V     | V         | V       |     |
 | Delete Comment assosiated with current user.       | V     | V         | V       |     |
-|                                                    |       |           |         |     |
+| Posts of Current User                              |       |           |         |     |
 | See all posts assosiated with current user.        | V     | V         | V       |     |
 | See specific post assosiated with current user.    | V     | V         | V       |     |
 | Update Post assosiated with current user.          | V     | V         | V       |     |
 | Delete Post assosiated with current user.          | V     | V         | V       |     |
-|                                                    |       |           |         |     |
+| User management                                    |       |           |         |     |
 | Create new User.                                   | V     | V         | V       | V   |
 | See all users.                                     | V     |           |         |     |
 | See information about specific User.               | V     |           |         |     |
 | Update User infromation.                           | V     |           |         |     |
 | Delete Post.                                       | V     |           |         |     |
-|                                                    |       |           |         |     |
+| Posts                                              |       |           |         |     |
 | Create new Post.                                   | V     | V         | V       |     |
 | See all posts.                                     | V     | V         | V       | V   |
 | See information about specific Post.               | V     | V         | V       | V   |
 | Update Post infromation.                           | V     | V         |         |     |
 | Delete Post.                                       | V     | V         |         |     |
-|                                                    |       |           |         |     |
+| Comments                                           |       |           |         |     |
 | Create new Comment.                                | V     | V         | V       |     |
 | See all comments.                                  | V     | V         | V       | V   |
 | See information about specific Comment.            | V     | V         | V       | V   |
 | Update Comment infromation.                        | V     | V         |         |     |
 | Delete Comment.                                    | V     | V         |         |     |
-|                                                    |       |           |         |     |
+| Tags                                               |       |           |         |     |
 | See all tags.                                      | V     | V         | V       | V   |
 | See information about specific Tag.                | V     | V         | V       | V   |
 | Delete Tag.                                        | V     | V         |         |     |
