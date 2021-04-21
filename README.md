@@ -12,7 +12,16 @@ And of course, there is nothing without comment, I'm sure it's a must-have featu
 
 
 ## Role Matrix
-
+We have the following roles defined in the application:
+- __ADMIN__ - The most powerful role which includes possibility to manage users.
+- __MODERATOR__ - The role that can be used for managing existing posts and comments.
+- __BLOGGER__ - The default role for any registred user.
+- __ANY__ - Any possible user of the application including unregisterd ones.
+- 
+Resourses in the application must be restricted via the following role matrix.
+<details>
+  <summary>Click to expand!</summary>
+  
 | Action                                             | ADMIN | MODERATOR | BLOGGER | ANY |
 |:---------------------------------------------------|:-----:|:---------:|:-------:|:---:|
 | *__Current User__*                                 |       |           |         |     |
@@ -50,3 +59,5 @@ And of course, there is nothing without comment, I'm sure it's a must-have featu
 | See all tags.                                      | V     | V         | V       | V   |
 | See information about specific Tag.                | V     | V         | V       | V   |
 | Delete Tag.                                        | V     | V         |         |     |
+  
+</details>
