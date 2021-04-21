@@ -20,4 +20,11 @@ services:
     ports:
       - 5000:5432
     restart: always
-
+  flyway:
+    image: flyway/flyway
+#    command: -url=jdbc:postgresql://db:5432/blog  -schemas=public -user=postgres -password=somepassword migrate
+    volumes:
+      - ./src/main/resources/db/migration/:/flyway/sql/
+    restart: on-failure
+    depends_on:
+      - db
