@@ -1,7 +1,7 @@
 openapi: 3.0.3
 
 info:
-  version: 1.0.2
+  version: 1.0.3
   title: Home Project Blog Service
   description: |
     Blog for the Home Project engineers
@@ -17,12 +17,19 @@ security:
 
 tags:
   - name: Current User
+    description: API for managing Current User.
   - name: Current User Posts
+    description: API for managing Posts on Current User.
   - name: Current User Comments
+    description: API for managing Comments on Current User.
   - name: Users
+    description: API for managing Users.
   - name: Posts
+    description: API for managing Posts.
   - name: Comments
+    description: API for managing Comments.
   - name: Tags
+    description: API for managing Tags.
 
 paths:
   /users/current:
