@@ -15,38 +15,38 @@ And of course, there is nothing without comment, I'm sure it's a must-have featu
 
 | Action                                             | ADMIN | MODERATOR | BLOGGER | ANY |
 |:---------------------------------------------------|:-----:|:---------:|:-------:|:---:|
-| Current User                                       |       |           |         |     |
+| *__Current User__*                                 |       |           |         |     |
 | See information about current User.                | V     | V         | V       |     |
 | Update information connected to current User.      | V     | V         | V       |     |
-| Comments of Current User                           |       |           |         |     |
+| *__Comments of Current User__*                     |       |           |         |     |
 | See all comments assosiated with current user.     | V     | V         | V       |     |
 | See specific comment assosiated with current user. | V     | V         | V       |     |
 | Update Comment assosiated with current user.       | V     | V         | V       |     |
 | Delete Comment assosiated with current user.       | V     | V         | V       |     |
-| Posts of Current User                              |       |           |         |     |
+| *__Posts of Current User__*                        |       |           |         |     |
 | See all posts assosiated with current user.        | V     | V         | V       |     |
 | See specific post assosiated with current user.    | V     | V         | V       |     |
 | Update Post assosiated with current user.          | V     | V         | V       |     |
 | Delete Post assosiated with current user.          | V     | V         | V       |     |
-| User management                                    |       |           |         |     |
+| *__User management__*                              |       |           |         |     |
 | Create new User.                                   | V     | V         | V       | V   |
 | See all users.                                     | V     |           |         |     |
 | See information about specific User.               | V     |           |         |     |
 | Update User infromation.                           | V     |           |         |     |
 | Delete Post.                                       | V     |           |         |     |
-| Posts                                              |       |           |         |     |
+| *__Posts__*                                        |       |           |         |     |
 | Create new Post.                                   | V     | V         | V       |     |
 | See all posts.                                     | V     | V         | V       | V   |
 | See information about specific Post.               | V     | V         | V       | V   |
 | Update Post infromation.                           | V     | V         |         |     |
 | Delete Post.                                       | V     | V         |         |     |
-| Comments                                           |       |           |         |     |
+| *__Comments__*                                     |       |           |         |     |
 | Create new Comment.                                | V     | V         | V       |     |
 | See all comments.                                  | V     | V         | V       | V   |
 | See information about specific Comment.            | V     | V         | V       | V   |
 | Update Comment infromation.                        | V     | V         |         |     |
 | Delete Comment.                                    | V     | V         |         |     |
-| Tags                                               |       |           |         |     |
+| *__Tags__*                                         |       |           |         |     |
 | See all tags.                                      | V     | V         | V       | V   |
 | See information about specific Tag.                | V     | V         | V       | V   |
 | Delete Tag.                                        | V     | V         |         |     |
