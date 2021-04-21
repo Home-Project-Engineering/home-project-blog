@@ -1,10 +1,13 @@
 openapi: 3.0.3
 
 info:
-  version: 1.0.1
+  version: 1.0.2
   title: Home Project Blog Service
   description: |
     Blog for the Home Project engineers
+  license:
+    name: MIT
+    url: https://github.com/Home-Project-Engineering/home-project-blog/blob/main/LICENSE
 
 servers:
   - url: /api/1
