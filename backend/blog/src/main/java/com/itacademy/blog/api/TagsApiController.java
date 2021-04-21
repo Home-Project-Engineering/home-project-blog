@@ -52,6 +52,7 @@ public class TagsApiController implements TagsApi {
         if (optionalTagDTO.isPresent()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
+
         //to do return tag model in response
         Tag returnTag = TagMapper.INSTANCE.convert(optionalTagDTO.get());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
