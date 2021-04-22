@@ -1,0 +1,906 @@
+openapi: 3.0.3
+
+info:
+  version: 1.0.3
+  title: Home Project Blog Service
+  description: |
+    Blog for the Home Project engineers
+  license:
+    name: MIT
+    url: https://github.com/Home-Project-Engineering/home-project-blog/blob/main/LICENSE
+
+servers:
+  - url: /api/1
+
+security:
+  - basicAuth: []
+
+tags:
+  - name: Current User
+    description: API for managing Current User.
+  - name: Current User Posts
+    description: API for managing Posts on Current User.
+  - name: Current User Comments
+    description: API for managing Comments on Current User.
+  - name: Users
+    description: API for managing Users.
+  - name: Posts
+    description: API for managing Posts.
+  - name: Comments
+    description: API for managing Comments.
+  - name: Tags
+    description: API for managing Tags.
+
+paths:
+  /users/current:
+    get:
+      tags:
+        - Current User
+      summary: Return current User
+      description: Retrieves the current logged User.
+      operationId: getCurrentUser
+      responses:
+        "200":
+          $ref: '#/components/responses/UserResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    put:
+      tags:
+        - Current User
+      summary: Update Current User
+      description: Updates information on a Current User.
+      operationId: updateCurrentUser
+      requestBody:
+        $ref: '#/components/requestBodies/UserBody'
+      responses:
+        "200":
+          $ref: '#/components/responses/UserResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+
+  /users/current/posts:
+    get:
+      summary: Get posts by Current User
+      description: Uses query keys to retrieve a subset of existing posts assosiated with Current User.
+      tags:
+        - Current User Posts
+      operationId: getPostsByCurrentUser
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/tag_id'
+        - $ref: '#/components/parameters/tag_name'
+        - $ref: '#/components/parameters/posts_sort'
+        - $ref: '#/components/parameters/page_num'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        "200":
+          $ref: '#/components/responses/PostsResponse'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+
+  /users/current/posts/{id}:
+    parameters:
+      - $ref: '#/components/parameters/p_id'
+    get:
+      tags:
+        - Current User Posts
+      operationId: getPostByCurrentUser
+      summary: Get Post by ID and Current User
+      description: Retrieves an existing Post associated with the specified ID and Current User.
+      responses:
+        "200":
+          $ref: '#/components/responses/PostResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    put:
+      tags:
+        - Current User Posts
+      summary: Update Post by Current User
+      description: Updates information on a Post that exists in the system by the specified ID and Current User.
+      operationId: updatePostByCurrentUser
+      requestBody:
+        $ref: '#/components/requestBodies/PostBody'
+      responses:
+        "200":
+          $ref: '#/components/responses/PostResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    delete:
+      tags:
+        - Current User Posts
+      summary: Remove Post by Current User
+      description: Deletes a Post associated with a specified ID and Current User.
+      operationId: removePostByCurrentUser
+      responses:
+        "204":
+          $ref: '#/components/responses/NoContentResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+
+  /users/current/comments:
+    get:
+      summary: Get comments by Current User
+      description: Uses query keys to retrieve a subset of existing comments assosiated with Current User.
+      tags:
+        - Current User Comments
+      operationId: getCommentsByCurrentUser
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/comments_sort'
+        - $ref: '#/components/parameters/page_num'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        "200":
+          $ref: '#/components/responses/CommentsResponse'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+
+  /users/current/comments/{id}:
+    parameters:
+      - $ref: '#/components/parameters/p_id'
+    get:
+      tags:
+        - Current User Comments
+      operationId: getCommentByCurrentUser
+      summary: Get Comment by ID and Current User
+      description: Retrieves an existing Comment associated with the specified ID and Current User.
+      responses:
+        "200":
+          $ref: '#/components/responses/CommentResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    put:
+      tags:
+        - Current User Comments
+      summary: Update Comment by Current User
+      description: Updates information on a Comment that exists in the system by the specified ID and Current User.
+      operationId: updateCommentByCurrentUser
+      requestBody:
+        $ref: '#/components/requestBodies/CommentBody'
+      responses:
+        "200":
+          $ref: '#/components/responses/CommentsResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    delete:
+      tags:
+        - Current User Comments
+      summary: Remove Comment by Current User
+      description: Deletes a Comment associated with a specified ID and Current User.
+      operationId: removeCommentByCurrentUser
+      responses:
+        "204":
+          $ref: '#/components/responses/NoContentResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+
+  /users:
+    post:
+      summary: Create User
+      description: Create a new User.
+      tags:
+        - Users
+      operationId: createUser
+      requestBody:
+        $ref: '#/components/requestBodies/UserBody'
+      responses:
+        "201":
+          $ref: '#/components/responses/UserResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    get:
+      tags:
+        - Users
+      summary: Get users
+      description: Uses query keys to retrieve a subset of existing users.
+      operationId: getUsers
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/name'
+        - $ref: '#/components/parameters/users_sort'
+        - $ref: '#/components/parameters/page_num'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        "200":
+          $ref: '#/components/responses/UsersResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+
+  /users/{id}:
+    parameters:
+      - $ref: '#/components/parameters/p_id'
+    get:
+      tags:
+        - Users
+      summary: Get User by ID
+      description: Retrieves an existing User associated with the specified ID.
+      operationId: getUser
+      responses:
+        "200":
+          $ref: '#/components/responses/UserResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    put:
+      tags:
+        - Users
+      summary: Update User
+      description: Updates information on a User that exists in the system by the specified ID.
+      operationId: updateUser
+      requestBody:
+        $ref: '#/components/requestBodies/UserBody'
+      responses:
+        "200":
+          $ref: '#/components/responses/UserResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    delete:
+      tags:
+        - Users
+      summary: Remove User
+      description: Deletes a User associated with a specified ID.
+      operationId: removeUser
+      responses:
+        "204":
+          $ref: '#/components/responses/NoContentResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+
+  /posts:
+    post:
+      summary: Create Post
+      description: Create a new Post.
+      tags:
+        - Posts
+      operationId: createPost
+      requestBody:
+        $ref: '#/components/requestBodies/PostBody'
+      responses:
+        "201":
+          $ref: '#/components/responses/PostResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    get:
+      summary: Get posts
+      description: Uses query keys to retrieve a subset of existing posts.
+      tags:
+        - Posts
+      operationId: getPosts
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/tag_id'
+        - $ref: '#/components/parameters/tag_name'
+        - $ref: '#/components/parameters/user_id'
+        - $ref: '#/components/parameters/posts_sort'
+        - $ref: '#/components/parameters/page_num'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        "200":
+          $ref: '#/components/responses/PostsResponse'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+
+  /posts/{id}:
+    parameters:
+      - $ref: '#/components/parameters/p_id'
+    get:
+      tags:
+        - Posts
+      summary: Get Post by ID
+      description: Retrieves an existing Post associated with the specified ID.
+      operationId: getPost
+      responses:
+        "200":
+          $ref: '#/components/responses/PostResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    put:
+      tags:
+        - Posts
+      summary: Update Post
+      description: Updates information on a Post that exists in the system by the specified ID.
+      operationId: updatePost
+      requestBody:
+        $ref: '#/components/requestBodies/PostBody'
+      responses:
+        "200":
+          $ref: '#/components/responses/PostResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    delete:
+      tags:
+        - Posts
+      summary: Remove Post
+      description: Deletes a Post associated with a specified ID.
+      operationId: removePost
+      responses:
+        "204":
+          $ref: '#/components/responses/NoContentResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+
+  /posts/{post_id}/comments:
+    parameters:
+      - $ref: '#/components/parameters/p_post_id'
+    get:
+      summary: Get comments
+      description: Uses query keys to retrieve a subset of existing comments.
+      tags:
+        - Comments
+      operationId: getComments
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/user_name'
+        - $ref: '#/components/parameters/user_id'
+        - $ref: '#/components/parameters/comments_sort'
+        - $ref: '#/components/parameters/page_num'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        "200":
+          $ref: '#/components/responses/CommentsResponse'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    post:
+      summary: Create Comment
+      description: Create a new Comment.
+      tags:
+        - Comments
+      operationId: createComment
+      requestBody:
+        $ref: '#/components/requestBodies/CommentBody'
+      responses:
+        "201":
+          $ref: '#/components/responses/CommentResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+
+  /posts/{post_id}/comments/{id}:
+    parameters:
+      - $ref: '#/components/parameters/p_post_id'
+      - $ref: '#/components/parameters/p_id'
+    get:
+      tags:
+        - Comments
+      summary: Get Comment by ID.
+      description: Retrieves an existing Comment associated with the specified ID.
+      operationId: getComment
+      responses:
+        "200":
+          $ref: '#/components/responses/CommentResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    put:
+      tags:
+        - Comments
+      summary: Update Comment
+      description: Updates information on a Comment that exists in the system by the specified ID and post ID.
+      operationId: updateComment
+      requestBody:
+        $ref: '#/components/requestBodies/CommentBody'
+      responses:
+        "200":
+          $ref: '#/components/responses/CommentResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    delete:
+      tags:
+        - Comments
+      summary: Remove Comment
+      description: Deletes a Comment associated with a specified ID.
+      operationId: removeComment
+      responses:
+        "204":
+          $ref: '#/components/responses/NoContentResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+
+  /tags:
+    get:
+      tags:
+        - Tags
+      summary: Get tags
+      description: Uses query keys to retrieve a subset of existing tags.
+      operationId: getTags
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/name'
+        - $ref: '#/components/parameters/tags_sort'
+        - $ref: '#/components/parameters/page_num'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        "200":
+          $ref: '#/components/responses/TagsResponse'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+
+  /tags/{id}:
+    parameters:
+      - $ref: '#/components/parameters/p_id'
+    get:
+      tags:
+        - Tags
+      summary: Get Tag by ID
+      description: Retrieves an existing Tag associated with the specified ID.
+      operationId: getTag
+      responses:
+        "200":
+          $ref: '#/components/responses/TagResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    delete:
+      tags:
+        - Tags
+      summary: Remove Tag
+      description: Deletes a Tag associated with a specified ID.
+      operationId: removeTag
+      responses:
+        "204":
+          $ref: '#/components/responses/NoContentResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+
+components:
+  headers:
+    X-Total-Count:
+      description: The total results for the particular query.
+      schema:
+        type: number
+        format: int64
+  schemas:
+    User:
+      description: A representation of User entity.
+      type: object
+      required:
+        - email
+        - name
+      properties:
+        id:
+          description: The ID of the User.
+          type: number
+          format: int64
+          readOnly: true
+        name:
+          description: The name of the User.
+          type: string
+          minLength: 4
+          example: John78
+        firstName:
+          description: The first name of the User.
+          type: string
+          minLength: 1
+          example: John
+        lastName:
+          description: The last name of the User.
+          type: string
+          minLength: 1
+          example: Smith
+        email:
+          description: The email of the User.
+          type: string
+          format: email
+          example: john.smith@example.com
+        password:
+          type: string
+          description: >-
+            The password of the User. MUST contain a mix of upper and lower case letters,
+            as well as digits.
+          format: password
+          minLength: 8
+          pattern: '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/'
+          example: passworD321
+        role:
+          description: This is the level of User access to various functions.
+          type: string
+          enum:
+            - guest
+            - user
+            - moderator
+            - admin
+            - expert
+
+    Post:
+      description: A representation of Post entity.
+      type: object
+      required:
+        - title
+        - body
+        - previewAttachment
+      properties:
+        id:
+          description: The ID of the Post.
+          type: number
+          format: int64
+          readOnly: true
+        tags:
+          description: The subset of assosiated tags to the Post.
+          type: array
+          items:
+            $ref: "#/components/schemas/Tag"
+        createdOn:
+          description: The Post creation date.
+          type: string
+          example: "2017-07-21T17:32:28Z"
+          format: date-time
+          readOnly: true
+        user:
+          description: The creator of the Post.
+          readOnly: true
+          allOf:
+            - $ref: "#/components/schemas/User"
+        text:
+          description: The content of the Post.
+          type: string
+        title:
+          description: The summary of the Post.
+          type: string
+        previewAttachment:
+          description: URL of the resource that will be used as an preview of the Post.
+          type: string
+        updatedOn:
+          description: The Post update date.
+          type: string
+          example: "2017-07-21T17:32:28Z"
+          format: date-time
+          readOnly: true
+
+    Comment:
+      description: A representation of Comment entity.
+      required:
+        - text
+      properties:
+        id:
+          description: The ID of the Comment.
+          type: number
+          format: int64
+          readOnly: true
+        user:
+          description: The creator of the Comment.
+          readOnly: true
+          allOf:
+            - $ref: "#/components/schemas/User"
+        text:
+          description: The content of the Comment.
+          type: string
+        createdOn:
+          description: The Comment creation date.
+          type: string
+          example: "2017-07-21T17:32:28Z"
+          format: date-time
+          readOnly: true
+        updatedOn:
+          description: The Comment update date.
+          type: string
+          example: "2017-07-21T17:32:28Z"
+          format: date-time
+          readOnly: true
+
+    Tag:
+      required:
+        - name
+      type: object
+      properties:
+        id:
+          description: The ID of the Tag.
+          type: number
+          format: int64
+          readOnly: true
+        name:
+          description: The name of the Tag.
+          type: string
+          example: Java8
+
+    Error:
+      type: object
+      description: Representation of an Error that can appear using the application.
+      properties:
+        code:
+          description: The code of an error that describes the Error.
+          type: string
+          readOnly: true
+        message:
+          description: The message of an error that describes the Error.
+          type: string
+          readOnly: true
+
+  responses:
+    NoContentResponse:
+      description: The request was succesfully processed.
+    TagResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Tag"
+    CommentResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Comment"
+    PostResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Post"
+    UserResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/User"
+    CommentsResponse:
+      description: OK
+      headers:
+        X-Total-Count:
+          $ref: '#/components/headers/X-Total-Count'
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Comment"
+    UsersResponse:
+      description: OK
+      headers:
+        X-Total-Count:
+          $ref: '#/components/headers/X-Total-Count'
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/User"
+    PostsResponse:
+      description: OK
+      headers:
+        X-Total-Count:
+          $ref: '#/components/headers/X-Total-Count'
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Post"
+    TagsResponse:
+      description: OK
+      headers:
+        X-Total-Count:
+          $ref: '#/components/headers/X-Total-Count'
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/Tag"
+    ValidationError:
+      description: The payload contains an error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    NotFoundError:
+      description: The specified resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnauthorizedError:
+      description: Unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnknownError:
+      description: The unknown error appeard. Check your payload or contact support.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+
+  requestBodies:
+    CommentBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Comment"
+    PostBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Post"
+    UserBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/User"
+
+  parameters:
+    p_id:
+      in: path
+      name: id
+      schema:
+        type: number
+        format: int64
+      required: true
+    p_post_id:
+      in: path
+      name: post_id
+      schema:
+        type: number
+        format: int64
+      required: true
+    page_num:
+      in: query
+      name: page_num
+      schema:
+        type: integer
+    page_size:
+      in: query
+      name: page_size
+      schema:
+        type: integer
+    id:
+      in: query
+      name: id
+      schema:
+        type: number
+        format: int64
+    name:
+      in: query
+      name: name
+      schema:
+        type: string
+    user_name:
+      in: query
+      name: user_name
+      schema:
+        type: string
+    tag_name:
+      in: query
+      name: tag_name
+      schema:
+        type: string
+    user_id:
+      in: query
+      name: user_id
+      schema:
+        type: string
+    tag_id:
+      in: query
+      name: tag_id
+      schema:
+        type: string
+    tags_sort:
+      in: query
+      name: sort
+      description: |
+        In order to execute *asc*, you need to specify in the search *id* or *name* parameter.
+        In order to complete the *desc* sorting must be specified in the query parameter *-id*
+      schema:
+        type: string
+        enum: [ "id", "-id", "name", "-name" ]
+        default: "name"
+    users_sort:
+      in: query
+      name: sort
+      description: |
+        In order to execute *asc*, you need to specify in the search *id* or *name* parameter.
+        In order to complete the *desc* sorting must be specified in the query parameter *-id*
+      schema:
+        type: string
+        enum: [ "id", "-id", "name", "-name" ]
+        default: "-id"
+    posts_sort:
+      in: query
+      name: sort
+      description: |
+        In order to execute *asc*, you need to specify in the search *id* or *title* parameter.
+        In order to complete the *desc* sorting must be specified in the query parameter *-id*
+      schema:
+        type: string
+        enum: [ "id", "-id", "title", "-title" ]
+        default: "-id"
+    comments_sort:
+      in: query
+      name: sort
+      description: |
+        In order to execute *asc*, you need to specify in the search *id* parameter.
+        In order to complete the *desc* sorting must be specified in the query parameter *-id*
+      schema:
+        type: string
+        enum: [ "id", "-id" ]
+        default: "-id"
+
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
