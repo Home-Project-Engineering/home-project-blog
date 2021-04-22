@@ -11,9 +11,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Error
+ * Representation of an Error that can appear using the application.
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-15T19:31:49.707944300+03:00[Europe/Kiev]")
+@ApiModel(description = "Representation of an Error that can appear using the application.")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-22T13:30:27.722673500+03:00[Europe/Kiev]")
 public class Error  implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -29,11 +30,10 @@ public class Error  implements Serializable {
   }
 
   /**
-   * Get code
+   * The code of an error that describes the Error.
    * @return code
   */
-  @ApiModelProperty(required = true, value = "")
-  @NotNull
+  @ApiModelProperty(readOnly = true, value = "The code of an error that describes the Error.")
 
 
   public String getCode() {
@@ -50,11 +50,10 @@ public class Error  implements Serializable {
   }
 
   /**
-   * Get message
+   * The message of an error that describes the Error.
    * @return message
   */
-  @ApiModelProperty(required = true, value = "")
-  @NotNull
+  @ApiModelProperty(readOnly = true, value = "The message of an error that describes the Error.")
 
 
   public String getMessage() {

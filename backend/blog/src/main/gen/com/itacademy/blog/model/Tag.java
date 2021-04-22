@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
 /**
  * Tag
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-15T19:31:49.707944300+03:00[Europe/Kiev]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-22T13:30:27.722673500+03:00[Europe/Kiev]")
 public class Tag  implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -30,10 +30,10 @@ public class Tag  implements Serializable {
   }
 
   /**
-   * Get id
+   * The ID of the Tag.
    * @return id
   */
-  @ApiModelProperty(readOnly = true, value = "")
+  @ApiModelProperty(readOnly = true, value = "The ID of the Tag.")
 
   @Valid
 
@@ -51,10 +51,10 @@ public class Tag  implements Serializable {
   }
 
   /**
-   * Tag
+   * The name of the Tag.
    * @return name
   */
-  @ApiModelProperty(required = true, value = "Tag")
+  @ApiModelProperty(example = "Java8", required = true, value = "The name of the Tag.")
   @NotNull
 
 

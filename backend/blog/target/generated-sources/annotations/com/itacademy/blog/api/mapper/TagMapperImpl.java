@@ -2,14 +2,13 @@ package com.itacademy.blog.api.mapper;
 
 import com.itacademy.blog.model.Tag;
 import com.itacademy.blog.services.DTO.TagDTO;
-import com.itacademy.blog.services.DTO.TagDTO.TagDTOBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-04-16T16:02:53+0300",
+    date = "2021-04-22T13:30:44+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 15.0.2 (Oracle Corporation)"
 )
 public class TagMapperImpl implements TagMapper {
@@ -20,12 +19,12 @@ public class TagMapperImpl implements TagMapper {
             return null;
         }
 
-        TagDTOBuilder tagDTO = TagDTO.builder();
+        TagDTO tagDTO = new TagDTO();
 
-        tagDTO.id( user.getId() );
-        tagDTO.name( user.getName() );
+        tagDTO.setId( user.getId() );
+        tagDTO.setName( user.getName() );
 
-        return tagDTO.build();
+        return tagDTO;
     }
 
     @Override

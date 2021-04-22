@@ -14,9 +14,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Comment
+ * A representation of Comment entity.
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-15T19:31:49.707944300+03:00[Europe/Kiev]")
+@ApiModel(description = "A representation of Comment entity.")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-22T13:30:27.722673500+03:00[Europe/Kiev]")
 public class Comment  implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -24,7 +25,7 @@ public class Comment  implements Serializable {
   private BigDecimal id;
 
   @JsonProperty("user")
-  private User user;
+  private User user = null;
 
   @JsonProperty("text")
   private String text;
@@ -32,9 +33,6 @@ public class Comment  implements Serializable {
   @JsonProperty("createdOn")
   @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME)
   private OffsetDateTime createdOn;
-
-  @JsonProperty("postId")
-  private BigDecimal postId;
 
   @JsonProperty("updatedOn")
   @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME)
@@ -46,10 +44,10 @@ public class Comment  implements Serializable {
   }
 
   /**
-   * Comment's Id
+   * The ID of the Comment.
    * @return id
   */
-  @ApiModelProperty(readOnly = true, value = "Comment's Id")
+  @ApiModelProperty(readOnly = true, value = "The ID of the Comment.")
 
   @Valid
 
@@ -67,11 +65,10 @@ public class Comment  implements Serializable {
   }
 
   /**
-   * Get user
+   * The creator of the Comment.
    * @return user
   */
-  @ApiModelProperty(required = true, value = "")
-  @NotNull
+  @ApiModelProperty(readOnly = true, value = "The creator of the Comment.")
 
   @Valid
 
@@ -89,10 +86,10 @@ public class Comment  implements Serializable {
   }
 
   /**
-   * Comment's text
+   * The content of the Comment.
    * @return text
   */
-  @ApiModelProperty(required = true, value = "Comment's text")
+  @ApiModelProperty(required = true, value = "The content of the Comment.")
   @NotNull
 
 
@@ -110,10 +107,10 @@ public class Comment  implements Serializable {
   }
 
   /**
-   * Creation date
+   * The Comment creation date.
    * @return createdOn
   */
-  @ApiModelProperty(example = "2017-07-21T17:32:28Z", readOnly = true, value = "Creation date")
+  @ApiModelProperty(example = "2017-07-21T17:32:28Z", readOnly = true, value = "The Comment creation date.")
 
   @Valid
 
@@ -125,38 +122,16 @@ public class Comment  implements Serializable {
     this.createdOn = createdOn;
   }
 
-  public Comment postId(BigDecimal postId) {
-    this.postId = postId;
-    return this;
-  }
-
-  /**
-   * The id of the Post that exists in the blog.
-   * @return postId
-  */
-  @ApiModelProperty(required = true, value = "The id of the Post that exists in the blog.")
-  @NotNull
-
-  @Valid
-
-  public BigDecimal getPostId() {
-    return postId;
-  }
-
-  public void setPostId(BigDecimal postId) {
-    this.postId = postId;
-  }
-
   public Comment updatedOn(OffsetDateTime updatedOn) {
     this.updatedOn = updatedOn;
     return this;
   }
 
   /**
-   * Date of update
+   * The Comment update date.
    * @return updatedOn
   */
-  @ApiModelProperty(example = "2017-07-21T17:32:28Z", readOnly = true, value = "Date of update")
+  @ApiModelProperty(example = "2017-07-21T17:32:28Z", readOnly = true, value = "The Comment update date.")
 
   @Valid
 
@@ -182,13 +157,12 @@ public class Comment  implements Serializable {
         Objects.equals(this.user, comment.user) &&
         Objects.equals(this.text, comment.text) &&
         Objects.equals(this.createdOn, comment.createdOn) &&
-        Objects.equals(this.postId, comment.postId) &&
         Objects.equals(this.updatedOn, comment.updatedOn);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, user, text, createdOn, postId, updatedOn);
+    return Objects.hash(id, user, text, createdOn, updatedOn);
   }
 
   @Override
@@ -200,7 +174,6 @@ public class Comment  implements Serializable {
     sb.append("    user: ").append(toIndentedString(user)).append("\n");
     sb.append("    text: ").append(toIndentedString(text)).append("\n");
     sb.append("    createdOn: ").append(toIndentedString(createdOn)).append("\n");
-    sb.append("    postId: ").append(toIndentedString(postId)).append("\n");
     sb.append("    updatedOn: ").append(toIndentedString(updatedOn)).append("\n");
     sb.append("}");
     return sb.toString();

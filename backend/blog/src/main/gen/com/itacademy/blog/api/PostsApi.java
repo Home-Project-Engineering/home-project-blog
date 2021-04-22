@@ -25,7 +25,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-15T19:31:49.707944300+03:00[Europe/Kiev]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-22T13:30:27.722673500+03:00[Europe/Kiev]")
 @Validated
 @Api(value = "posts", description = "the posts API")
 public interface PostsApi {
@@ -35,31 +35,70 @@ public interface PostsApi {
     }
 
     /**
-     * POST /posts : Create a Post
+     * POST /posts/{post_id}/comments : Create Comment
+     * Create a new Comment.
      *
-     * @param post some parameters (required)
+     * @param postId  (required)
+     * @param comment  (required)
      * @return OK (status code 201)
-     *         or The payload contains an error (status code 400)
+     *         or The payload contains an error. (status code 400)
      *         or The unknown error appeard. Check your payload or contact support. (status code 200)
      */
-    @ApiOperation(value = "Create a Post", nickname = "create", notes = "", response = Post.class, authorizations = {
+    @ApiOperation(value = "Create Comment", nickname = "createComment", notes = "Create a new Comment.", response = Comment.class, authorizations = {
         
         @Authorization(value = "basicAuth")
-         }, tags={ "posts", })
+         }, tags={ "Comments", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 201, message = "OK", response = Comment.class),
+        @ApiResponse(code = 400, message = "The payload contains an error.", response = Error.class),
+        @ApiResponse(code = 200, message = "The unknown error appeard. Check your payload or contact support.", response = Error.class) })
+    @PostMapping(
+        value = "/posts/{post_id}/comments",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    default ResponseEntity<Comment> createComment(@ApiParam(value = "",required=true) @PathVariable("post_id") BigDecimal postId,@ApiParam(value = "" ,required=true )  @Valid @RequestBody Comment comment) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"id\" : 0.8008281904610115, \"text\" : \"text\", \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"user\" : \"\", \"createdOn\" : \"2017-07-21T17:32:28Z\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * POST /posts : Create Post
+     * Create a new Post.
+     *
+     * @param post  (required)
+     * @return OK (status code 201)
+     *         or The payload contains an error. (status code 400)
+     *         or The unknown error appeard. Check your payload or contact support. (status code 200)
+     */
+    @ApiOperation(value = "Create Post", nickname = "createPost", notes = "Create a new Post.", response = Post.class, authorizations = {
+        
+        @Authorization(value = "basicAuth")
+         }, tags={ "Posts", })
     @ApiResponses(value = { 
         @ApiResponse(code = 201, message = "OK", response = Post.class),
-        @ApiResponse(code = 400, message = "The payload contains an error", response = Error.class),
+        @ApiResponse(code = 400, message = "The payload contains an error.", response = Error.class),
         @ApiResponse(code = 200, message = "The unknown error appeard. Check your payload or contact support.", response = Error.class) })
     @PostMapping(
         value = "/posts",
         produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<Post> create(@ApiParam(value = "some parameters" ,required=true )  @Valid @RequestBody Post post) {
+    default ResponseEntity<Post> createPost(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Post post) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"previewAttachment\" : \"previewAttachment\", \"id\" : 0.8008281904610115, \"text\" : \"text\", \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"title\" : \"title\", \"createdOn\" : \"2017-07-21T17:32:28Z\", \"user\" : \"\", \"tags\" : [ { \"name\" : \"name\", \"id\" : 6.027456183070403 }, { \"name\" : \"name\", \"id\" : 6.027456183070403 } ] }";
+                    String exampleString = "{ \"previewAttachment\" : \"previewAttachment\", \"id\" : 0.8008281904610115, \"text\" : \"text\", \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"title\" : \"title\", \"createdOn\" : \"2017-07-21T17:32:28Z\", \"user\" : \"\", \"tags\" : [ { \"name\" : \"Java8\", \"id\" : 6.027456183070403 }, { \"name\" : \"Java8\", \"id\" : 6.027456183070403 } ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -71,95 +110,76 @@ public interface PostsApi {
 
 
     /**
-     * DELETE /posts/{post_id}/comments/{id} : Delete post by ID
-     * Delete a post
+     * GET /posts/{post_id}/comments/{id} : Get Comment by ID.
+     * Retrieves an existing Comment associated with the specified ID.
      *
      * @param postId  (required)
      * @param id  (required)
-     * @return The request was succesfully processed. (status code 204)
-     *         or The payload contains an error (status code 400)
-     *         or The specified resource was not found (status code 404)
+     * @return OK (status code 200)
+     *         or The payload contains an error. (status code 400)
+     *         or The specified resource was not found. (status code 404)
      *         or The unknown error appeard. Check your payload or contact support. (status code 200)
      */
-    @ApiOperation(value = "Delete post by ID", nickname = "deleteComment", notes = "Delete a post", authorizations = {
+    @ApiOperation(value = "Get Comment by ID.", nickname = "getComment", notes = "Retrieves an existing Comment associated with the specified ID.", response = Comment.class, authorizations = {
         
         @Authorization(value = "basicAuth")
-         }, tags={ "comments", })
+         }, tags={ "Comments", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 204, message = "The request was succesfully processed."),
-        @ApiResponse(code = 400, message = "The payload contains an error", response = Error.class),
-        @ApiResponse(code = 404, message = "The specified resource was not found", response = Error.class),
+        @ApiResponse(code = 200, message = "OK", response = Comment.class),
+        @ApiResponse(code = 400, message = "The payload contains an error.", response = Error.class),
+        @ApiResponse(code = 404, message = "The specified resource was not found.", response = Error.class),
         @ApiResponse(code = 200, message = "The unknown error appeard. Check your payload or contact support.", response = Error.class) })
-    @DeleteMapping(
+    @GetMapping(
         value = "/posts/{post_id}/comments/{id}",
         produces = { "application/json" }
     )
-    default ResponseEntity<Void> deleteComment(@ApiParam(value = "",required=true) @PathVariable("post_id") BigDecimal postId,@ApiParam(value = "",required=true) @PathVariable("id") BigDecimal id) {
+    default ResponseEntity<Comment> getComment(@ApiParam(value = "",required=true) @PathVariable("post_id") BigDecimal postId,@ApiParam(value = "",required=true) @PathVariable("id") BigDecimal id) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"id\" : 0.8008281904610115, \"text\" : \"text\", \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"user\" : \"\", \"createdOn\" : \"2017-07-21T17:32:28Z\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
 
 
     /**
-     * DELETE /posts/{post_id} : Delete post by ID
-     * Delete a post
-     *
-     * @param id  (required)
-     * @return The request was succesfully processed. (status code 204)
-     *         or The payload contains an error (status code 400)
-     *         or The specified resource was not found (status code 404)
-     *         or The unknown error appeard. Check your payload or contact support. (status code 200)
-     */
-    @ApiOperation(value = "Delete post by ID", nickname = "deletePost", notes = "Delete a post", authorizations = {
-        
-        @Authorization(value = "basicAuth")
-         }, tags={ "posts", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 204, message = "The request was succesfully processed."),
-        @ApiResponse(code = 400, message = "The payload contains an error", response = Error.class),
-        @ApiResponse(code = 404, message = "The specified resource was not found", response = Error.class),
-        @ApiResponse(code = 200, message = "The unknown error appeard. Check your payload or contact support.", response = Error.class) })
-    @DeleteMapping(
-        value = "/posts/{post_id}",
-        produces = { "application/json" }
-    )
-    default ResponseEntity<Void> deletePost(@ApiParam(value = "",required=true) @PathVariable("id") BigDecimal id) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    /**
-     * GET /posts/{post_id}/comments : This gets all comments to post
+     * GET /posts/{post_id}/comments : Get comments
+     * Uses query keys to retrieve a subset of existing comments.
      *
      * @param postId  (required)
-     * @param id Find by id (optional)
-     * @param userName Find by user name (optional)
-     * @param userId Find by user id (optional)
+     * @param id  (optional)
+     * @param userName  (optional)
+     * @param userId  (optional)
      * @param sort In order to execute *asc*, you need to specify in the search *id* parameter. In order to complete the *desc* sorting must be specified in the query parameter *-id*  (optional, default to -id)
      * @param pageNum  (optional)
      * @param pageSize  (optional)
      * @return OK (status code 200)
-     *         or The specified resource was not found (status code 404)
+     *         or The specified resource was not found. (status code 404)
      *         or The unknown error appeard. Check your payload or contact support. (status code 200)
      */
-    @ApiOperation(value = "This gets all comments to post", nickname = "getAllComments", notes = "", response = Comment.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "Get comments", nickname = "getComments", notes = "Uses query keys to retrieve a subset of existing comments.", response = Comment.class, responseContainer = "List", authorizations = {
         
         @Authorization(value = "basicAuth")
-         }, tags={ "comments", })
+         }, tags={ "Comments", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = Comment.class, responseContainer = "List"),
-        @ApiResponse(code = 404, message = "The specified resource was not found", response = Error.class),
+        @ApiResponse(code = 404, message = "The specified resource was not found.", response = Error.class),
         @ApiResponse(code = 200, message = "The unknown error appeard. Check your payload or contact support.", response = Error.class) })
     @GetMapping(
         value = "/posts/{post_id}/comments",
         produces = { "application/json" }
     )
-    default ResponseEntity<List<Comment>> getAllComments(@ApiParam(value = "",required=true) @PathVariable("post_id") BigDecimal postId,@ApiParam(value = "Find by id") @Valid @RequestParam(value = "id", required = false) BigDecimal id,@ApiParam(value = "Find by user name") @Valid @RequestParam(value = "user_name", required = false) String userName,@ApiParam(value = "Find by user id") @Valid @RequestParam(value = "user_id", required = false) String userId,@ApiParam(value = "In order to execute *asc*, you need to specify in the search *id* parameter. In order to complete the *desc* sorting must be specified in the query parameter *-id* ", allowableValues = "id, -id", defaultValue = "-id") @Valid @RequestParam(value = "sort", required = false, defaultValue="-id") String sort,@ApiParam(value = "") @Valid @RequestParam(value = "page_num", required = false) Integer pageNum,@ApiParam(value = "") @Valid @RequestParam(value = "page_size", required = false) Integer pageSize) {
+    default ResponseEntity<List<Comment>> getComments(@ApiParam(value = "",required=true) @PathVariable("post_id") BigDecimal postId,@ApiParam(value = "") @Valid @RequestParam(value = "id", required = false) BigDecimal id,@ApiParam(value = "") @Valid @RequestParam(value = "user_name", required = false) String userName,@ApiParam(value = "") @Valid @RequestParam(value = "user_id", required = false) String userId,@ApiParam(value = "In order to execute *asc*, you need to specify in the search *id* parameter. In order to complete the *desc* sorting must be specified in the query parameter *-id* ", allowableValues = "id, -id", defaultValue = "-id") @Valid @RequestParam(value = "sort", required = false, defaultValue="-id") String sort,@ApiParam(value = "") @Valid @RequestParam(value = "page_num", required = false) Integer pageNum,@ApiParam(value = "") @Valid @RequestParam(value = "page_size", required = false) Integer pageSize) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"id\" : 0.8008281904610115, \"text\" : \"text\", \"postId\" : 6.027456183070403, \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"user\" : { \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : \"user\", \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }, \"createdOn\" : \"2017-07-21T17:32:28Z\" }";
+                    String exampleString = "{ \"id\" : 0.8008281904610115, \"text\" : \"text\", \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"user\" : \"\", \"createdOn\" : \"2017-07-21T17:32:28Z\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -171,103 +191,23 @@ public interface PostsApi {
 
 
     /**
-     * GET /posts : This gets all posts
-     *
-     * @param id Find by id (optional)
-     * @param tagId Find by tag id (optional)
-     * @param tagName Find by tag name (optional)
-     * @param userId Find by user id (optional)
-     * @param sort In order to execute *asc*, you need to specify in the search *id* or *title* parameter. In order to complete the *desc* sorting must be specified in the query parameter *-id*  (optional, default to -id)
-     * @param pageNum  (optional)
-     * @param pageSize  (optional)
-     * @return OK (status code 200)
-     *         or The specified resource was not found (status code 404)
-     *         or The unknown error appeard. Check your payload or contact support. (status code 200)
-     */
-    @ApiOperation(value = "This gets all posts", nickname = "getAllPosts", notes = "", response = Post.class, responseContainer = "List", authorizations = {
-        
-        @Authorization(value = "basicAuth")
-         }, tags={ "posts", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK", response = Post.class, responseContainer = "List"),
-        @ApiResponse(code = 404, message = "The specified resource was not found", response = Error.class),
-        @ApiResponse(code = 200, message = "The unknown error appeard. Check your payload or contact support.", response = Error.class) })
-    @GetMapping(
-        value = "/posts",
-        produces = { "application/json" }
-    )
-    default ResponseEntity<List<Post>> getAllPosts(@ApiParam(value = "Find by id") @Valid @RequestParam(value = "id", required = false) BigDecimal id,@ApiParam(value = "Find by tag id") @Valid @RequestParam(value = "tag_id", required = false) String tagId,@ApiParam(value = "Find by tag name") @Valid @RequestParam(value = "tag_name", required = false) String tagName,@ApiParam(value = "Find by user id") @Valid @RequestParam(value = "user_id", required = false) String userId,@ApiParam(value = "In order to execute *asc*, you need to specify in the search *id* or *title* parameter. In order to complete the *desc* sorting must be specified in the query parameter *-id* ", allowableValues = "id, -id, title, -title", defaultValue = "-id") @Valid @RequestParam(value = "sort", required = false, defaultValue="-id") String sort,@ApiParam(value = "") @Valid @RequestParam(value = "page_num", required = false) Integer pageNum,@ApiParam(value = "") @Valid @RequestParam(value = "page_size", required = false) Integer pageSize) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"previewAttachment\" : \"previewAttachment\", \"id\" : 0.8008281904610115, \"text\" : \"text\", \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"title\" : \"title\", \"createdOn\" : \"2017-07-21T17:32:28Z\", \"user\" : \"\", \"tags\" : [ { \"name\" : \"name\", \"id\" : 6.027456183070403 }, { \"name\" : \"name\", \"id\" : 6.027456183070403 } ] }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    /**
-     * GET /posts/{post_id}/comments/{id} : Find comment by ID
-     * Returns a single comment
-     *
-     * @param postId  (required)
-     * @param id  (required)
-     * @return OK (status code 200)
-     *         or The payload contains an error (status code 400)
-     *         or The specified resource was not found (status code 404)
-     *         or The unknown error appeard. Check your payload or contact support. (status code 200)
-     */
-    @ApiOperation(value = "Find comment by ID", nickname = "getCommentById", notes = "Returns a single comment", response = Comment.class, authorizations = {
-        
-        @Authorization(value = "basicAuth")
-         }, tags={ "comments", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK", response = Comment.class),
-        @ApiResponse(code = 400, message = "The payload contains an error", response = Error.class),
-        @ApiResponse(code = 404, message = "The specified resource was not found", response = Error.class),
-        @ApiResponse(code = 200, message = "The unknown error appeard. Check your payload or contact support.", response = Error.class) })
-    @GetMapping(
-        value = "/posts/{post_id}/comments/{id}",
-        produces = { "application/json" }
-    )
-    default ResponseEntity<Comment> getCommentById(@ApiParam(value = "",required=true) @PathVariable("post_id") BigDecimal postId,@ApiParam(value = "",required=true) @PathVariable("id") BigDecimal id) {
-        getRequest().ifPresent(request -> {
-            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
-                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"id\" : 0.8008281904610115, \"text\" : \"text\", \"postId\" : 6.027456183070403, \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"user\" : { \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : \"user\", \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }, \"createdOn\" : \"2017-07-21T17:32:28Z\" }";
-                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
-                    break;
-                }
-            }
-        });
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-
-    }
-
-
-    /**
-     * GET /posts/{post_id} : Find post by ID
-     * Returns a post
+     * GET /posts/{id} : Get Post by ID
+     * Retrieves an existing Post associated with the specified ID.
      *
      * @param id  (required)
      * @return OK (status code 200)
-     *         or The payload contains an error (status code 400)
-     *         or The specified resource was not found (status code 404)
+     *         or The payload contains an error. (status code 400)
+     *         or The specified resource was not found. (status code 404)
      *         or The unknown error appeard. Check your payload or contact support. (status code 200)
      */
-    @ApiOperation(value = "Find post by ID", nickname = "getPost", notes = "Returns a post", response = Post.class, authorizations = {
+    @ApiOperation(value = "Get Post by ID", nickname = "getPost", notes = "Retrieves an existing Post associated with the specified ID.", response = Post.class, authorizations = {
         
         @Authorization(value = "basicAuth")
-         }, tags={ "posts", })
+         }, tags={ "Posts", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = Post.class),
-        @ApiResponse(code = 400, message = "The payload contains an error", response = Error.class),
-        @ApiResponse(code = 404, message = "The specified resource was not found", response = Error.class),
+        @ApiResponse(code = 400, message = "The payload contains an error.", response = Error.class),
+        @ApiResponse(code = 404, message = "The specified resource was not found.", response = Error.class),
         @ApiResponse(code = 200, message = "The unknown error appeard. Check your payload or contact support.", response = Error.class) })
     @GetMapping(
         value = "/posts/{id}",
@@ -277,7 +217,7 @@ public interface PostsApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"previewAttachment\" : \"previewAttachment\", \"id\" : 0.8008281904610115, \"text\" : \"text\", \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"title\" : \"title\", \"createdOn\" : \"2017-07-21T17:32:28Z\", \"user\" : \"\", \"tags\" : [ { \"name\" : \"name\", \"id\" : 6.027456183070403 }, { \"name\" : \"name\", \"id\" : 6.027456183070403 } ] }";
+                    String exampleString = "{ \"previewAttachment\" : \"previewAttachment\", \"id\" : 0.8008281904610115, \"text\" : \"text\", \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"title\" : \"title\", \"createdOn\" : \"2017-07-21T17:32:28Z\", \"user\" : \"\", \"tags\" : [ { \"name\" : \"Java8\", \"id\" : 6.027456183070403 }, { \"name\" : \"Java8\", \"id\" : 6.027456183070403 } ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -289,32 +229,35 @@ public interface PostsApi {
 
 
     /**
-     * POST /posts/{post_id}/comments : Leave a Comment
+     * GET /posts : Get posts
+     * Uses query keys to retrieve a subset of existing posts.
      *
-     * @param postId  (required)
-     * @param comment some parameters (required)
-     * @return OK (status code 201)
-     *         or The payload contains an error (status code 400)
+     * @param id  (optional)
+     * @param tagId  (optional)
+     * @param tagName  (optional)
+     * @param userId  (optional)
+     * @param sort In order to execute *asc*, you need to specify in the search *id* or *title* parameter. In order to complete the *desc* sorting must be specified in the query parameter *-id*  (optional, default to -id)
+     * @param pageNum  (optional)
+     * @param pageSize  (optional)
+     * @return OK (status code 200)
      *         or The unknown error appeard. Check your payload or contact support. (status code 200)
      */
-    @ApiOperation(value = "Leave a Comment", nickname = "leaveAComment", notes = "", response = Comment.class, authorizations = {
+    @ApiOperation(value = "Get posts", nickname = "getPosts", notes = "Uses query keys to retrieve a subset of existing posts.", response = Post.class, responseContainer = "List", authorizations = {
         
         @Authorization(value = "basicAuth")
-         }, tags={ "comments", })
+         }, tags={ "Posts", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 201, message = "OK", response = Comment.class),
-        @ApiResponse(code = 400, message = "The payload contains an error", response = Error.class),
+        @ApiResponse(code = 200, message = "OK", response = Post.class, responseContainer = "List"),
         @ApiResponse(code = 200, message = "The unknown error appeard. Check your payload or contact support.", response = Error.class) })
-    @PostMapping(
-        value = "/posts/{post_id}/comments",
-        produces = { "application/json" },
-        consumes = { "application/json" }
+    @GetMapping(
+        value = "/posts",
+        produces = { "application/json" }
     )
-    default ResponseEntity<Comment> leaveAComment(@ApiParam(value = "",required=true) @PathVariable("post_id") BigDecimal postId,@ApiParam(value = "some parameters" ,required=true )  @Valid @RequestBody Comment comment) {
+    default ResponseEntity<List<Post>> getPosts(@ApiParam(value = "") @Valid @RequestParam(value = "id", required = false) BigDecimal id,@ApiParam(value = "") @Valid @RequestParam(value = "tag_id", required = false) String tagId,@ApiParam(value = "") @Valid @RequestParam(value = "tag_name", required = false) String tagName,@ApiParam(value = "") @Valid @RequestParam(value = "user_id", required = false) String userId,@ApiParam(value = "In order to execute *asc*, you need to specify in the search *id* or *title* parameter. In order to complete the *desc* sorting must be specified in the query parameter *-id* ", allowableValues = "id, -id, title, -title", defaultValue = "-id") @Valid @RequestParam(value = "sort", required = false, defaultValue="-id") String sort,@ApiParam(value = "") @Valid @RequestParam(value = "page_num", required = false) Integer pageNum,@ApiParam(value = "") @Valid @RequestParam(value = "page_size", required = false) Integer pageSize) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"id\" : 0.8008281904610115, \"text\" : \"text\", \"postId\" : 6.027456183070403, \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"user\" : { \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : \"user\", \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }, \"createdOn\" : \"2017-07-21T17:32:28Z\" }";
+                    String exampleString = "{ \"previewAttachment\" : \"previewAttachment\", \"id\" : 0.8008281904610115, \"text\" : \"text\", \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"title\" : \"title\", \"createdOn\" : \"2017-07-21T17:32:28Z\", \"user\" : \"\", \"tags\" : [ { \"name\" : \"Java8\", \"id\" : 6.027456183070403 }, { \"name\" : \"Java8\", \"id\" : 6.027456183070403 } ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -326,36 +269,95 @@ public interface PostsApi {
 
 
     /**
-     * PUT /posts/{post_id}/comments/{id} : Update commet by ID
-     * Updates a comment
+     * DELETE /posts/{post_id}/comments/{id} : Remove Comment
+     * Deletes a Comment associated with a specified ID.
      *
      * @param postId  (required)
      * @param id  (required)
-     * @param comment some parameters (required)
-     * @return OK (status code 200)
-     *         or The payload contains an error (status code 400)
-     *         or The specified resource was not found (status code 404)
+     * @return The request was succesfully processed. (status code 204)
+     *         or The payload contains an error. (status code 400)
+     *         or The specified resource was not found. (status code 404)
      *         or The unknown error appeard. Check your payload or contact support. (status code 200)
      */
-    @ApiOperation(value = "Update commet by ID", nickname = "updateComment", notes = "Updates a comment", response = Comment.class, authorizations = {
+    @ApiOperation(value = "Remove Comment", nickname = "removeComment", notes = "Deletes a Comment associated with a specified ID.", authorizations = {
         
         @Authorization(value = "basicAuth")
-         }, tags={ "comments", })
+         }, tags={ "Comments", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 204, message = "The request was succesfully processed."),
+        @ApiResponse(code = 400, message = "The payload contains an error.", response = Error.class),
+        @ApiResponse(code = 404, message = "The specified resource was not found.", response = Error.class),
+        @ApiResponse(code = 200, message = "The unknown error appeard. Check your payload or contact support.", response = Error.class) })
+    @DeleteMapping(
+        value = "/posts/{post_id}/comments/{id}",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<Void> removeComment(@ApiParam(value = "",required=true) @PathVariable("post_id") BigDecimal postId,@ApiParam(value = "",required=true) @PathVariable("id") BigDecimal id) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * DELETE /posts/{id} : Remove Post
+     * Deletes a Post associated with a specified ID.
+     *
+     * @param id  (required)
+     * @return The request was succesfully processed. (status code 204)
+     *         or The payload contains an error. (status code 400)
+     *         or The specified resource was not found. (status code 404)
+     *         or The unknown error appeard. Check your payload or contact support. (status code 200)
+     */
+    @ApiOperation(value = "Remove Post", nickname = "removePost", notes = "Deletes a Post associated with a specified ID.", authorizations = {
+        
+        @Authorization(value = "basicAuth")
+         }, tags={ "Posts", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 204, message = "The request was succesfully processed."),
+        @ApiResponse(code = 400, message = "The payload contains an error.", response = Error.class),
+        @ApiResponse(code = 404, message = "The specified resource was not found.", response = Error.class),
+        @ApiResponse(code = 200, message = "The unknown error appeard. Check your payload or contact support.", response = Error.class) })
+    @DeleteMapping(
+        value = "/posts/{id}",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<Void> removePost(@ApiParam(value = "",required=true) @PathVariable("id") BigDecimal id) {
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * PUT /posts/{post_id}/comments/{id} : Update Comment
+     * Updates information on a Comment that exists in the system by the specified ID and post ID.
+     *
+     * @param postId  (required)
+     * @param id  (required)
+     * @param comment  (required)
+     * @return OK (status code 200)
+     *         or The payload contains an error. (status code 400)
+     *         or The specified resource was not found. (status code 404)
+     *         or The unknown error appeard. Check your payload or contact support. (status code 200)
+     */
+    @ApiOperation(value = "Update Comment", nickname = "updateComment", notes = "Updates information on a Comment that exists in the system by the specified ID and post ID.", response = Comment.class, authorizations = {
+        
+        @Authorization(value = "basicAuth")
+         }, tags={ "Comments", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = Comment.class),
-        @ApiResponse(code = 400, message = "The payload contains an error", response = Error.class),
-        @ApiResponse(code = 404, message = "The specified resource was not found", response = Error.class),
+        @ApiResponse(code = 400, message = "The payload contains an error.", response = Error.class),
+        @ApiResponse(code = 404, message = "The specified resource was not found.", response = Error.class),
         @ApiResponse(code = 200, message = "The unknown error appeard. Check your payload or contact support.", response = Error.class) })
     @PutMapping(
         value = "/posts/{post_id}/comments/{id}",
         produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<Comment> updateComment(@ApiParam(value = "",required=true) @PathVariable("post_id") BigDecimal postId,@ApiParam(value = "",required=true) @PathVariable("id") BigDecimal id,@ApiParam(value = "some parameters" ,required=true )  @Valid @RequestBody Comment comment) {
+    default ResponseEntity<Comment> updateComment(@ApiParam(value = "",required=true) @PathVariable("post_id") BigDecimal postId,@ApiParam(value = "",required=true) @PathVariable("id") BigDecimal id,@ApiParam(value = "" ,required=true )  @Valid @RequestBody Comment comment) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"id\" : 0.8008281904610115, \"text\" : \"text\", \"postId\" : 6.027456183070403, \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"user\" : { \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : \"user\", \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }, \"createdOn\" : \"2017-07-21T17:32:28Z\" }";
+                    String exampleString = "{ \"id\" : 0.8008281904610115, \"text\" : \"text\", \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"user\" : \"\", \"createdOn\" : \"2017-07-21T17:32:28Z\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -367,35 +369,35 @@ public interface PostsApi {
 
 
     /**
-     * PUT /posts/{post_id} : Update post by ID
-     * Updates a post
+     * PUT /posts/{id} : Update Post
+     * Updates information on a Post that exists in the system by the specified ID.
      *
      * @param id  (required)
-     * @param post some parameters (required)
+     * @param post  (required)
      * @return OK (status code 200)
-     *         or The payload contains an error (status code 400)
-     *         or The specified resource was not found (status code 404)
+     *         or The payload contains an error. (status code 400)
+     *         or The specified resource was not found. (status code 404)
      *         or The unknown error appeard. Check your payload or contact support. (status code 200)
      */
-    @ApiOperation(value = "Update post by ID", nickname = "updatePost", notes = "Updates a post", response = Post.class, authorizations = {
+    @ApiOperation(value = "Update Post", nickname = "updatePost", notes = "Updates information on a Post that exists in the system by the specified ID.", response = Post.class, authorizations = {
         
         @Authorization(value = "basicAuth")
-         }, tags={ "posts", })
+         }, tags={ "Posts", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = Post.class),
-        @ApiResponse(code = 400, message = "The payload contains an error", response = Error.class),
-        @ApiResponse(code = 404, message = "The specified resource was not found", response = Error.class),
+        @ApiResponse(code = 400, message = "The payload contains an error.", response = Error.class),
+        @ApiResponse(code = 404, message = "The specified resource was not found.", response = Error.class),
         @ApiResponse(code = 200, message = "The unknown error appeard. Check your payload or contact support.", response = Error.class) })
     @PutMapping(
         value = "/posts/{id}",
         produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<Post> updatePost(@ApiParam(value = "",required=true) @PathVariable("id") BigDecimal id,@ApiParam(value = "some parameters" ,required=true )  @Valid @RequestBody Post post) {
+    default ResponseEntity<Post> updatePost(@ApiParam(value = "",required=true) @PathVariable("id") BigDecimal id,@ApiParam(value = "" ,required=true )  @Valid @RequestBody Post post) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"previewAttachment\" : \"previewAttachment\", \"id\" : 0.8008281904610115, \"text\" : \"text\", \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"title\" : \"title\", \"createdOn\" : \"2017-07-21T17:32:28Z\", \"user\" : \"\", \"tags\" : [ { \"name\" : \"name\", \"id\" : 6.027456183070403 }, { \"name\" : \"name\", \"id\" : 6.027456183070403 } ] }";
+                    String exampleString = "{ \"previewAttachment\" : \"previewAttachment\", \"id\" : 0.8008281904610115, \"text\" : \"text\", \"updatedOn\" : \"2017-07-21T17:32:28Z\", \"title\" : \"title\", \"createdOn\" : \"2017-07-21T17:32:28Z\", \"user\" : \"\", \"tags\" : [ { \"name\" : \"Java8\", \"id\" : 6.027456183070403 }, { \"name\" : \"Java8\", \"id\" : 6.027456183070403 } ] }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

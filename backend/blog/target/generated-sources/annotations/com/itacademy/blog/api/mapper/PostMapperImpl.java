@@ -3,7 +3,6 @@ package com.itacademy.blog.api.mapper;
 import com.itacademy.blog.data.entity.Tag;
 import com.itacademy.blog.model.Post;
 import com.itacademy.blog.services.DTO.PostDTO;
-import com.itacademy.blog.services.DTO.PostDTO.PostDTOBuilder;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +10,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-04-19T10:39:09+0300",
+    date = "2021-04-22T13:30:44+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 15.0.2 (Oracle Corporation)"
 )
 public class PostMapperImpl implements PostMapper {
@@ -22,19 +21,19 @@ public class PostMapperImpl implements PostMapper {
             return null;
         }
 
-        PostDTOBuilder postDTO = PostDTO.builder();
+        PostDTO postDTO = new PostDTO();
 
         if ( post.getId() != null ) {
-            postDTO.id( post.getId().longValue() );
+            postDTO.setId( post.getId().longValue() );
         }
-        postDTO.tags( tagListToTagList( post.getTags() ) );
-        postDTO.createdOn( post.getCreatedOn() );
-        postDTO.text( post.getText() );
-        postDTO.title( post.getTitle() );
-        postDTO.previewAttachment( post.getPreviewAttachment() );
-        postDTO.updatedOn( post.getUpdatedOn() );
+        postDTO.setTags( tagListToTagList( post.getTags() ) );
+        postDTO.setCreatedOn( post.getCreatedOn() );
+        postDTO.setText( post.getText() );
+        postDTO.setTitle( post.getTitle() );
+        postDTO.setPreviewAttachment( post.getPreviewAttachment() );
+        postDTO.setUpdatedOn( post.getUpdatedOn() );
 
-        return postDTO.build();
+        return postDTO;
     }
 
     @Override

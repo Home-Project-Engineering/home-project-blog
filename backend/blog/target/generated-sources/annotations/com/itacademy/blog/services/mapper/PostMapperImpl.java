@@ -3,14 +3,13 @@ package com.itacademy.blog.services.mapper;
 import com.itacademy.blog.data.entity.Post;
 import com.itacademy.blog.data.entity.Tag;
 import com.itacademy.blog.services.DTO.PostDTO;
-import com.itacademy.blog.services.DTO.PostDTO.PostDTOBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-04-16T22:02:58+0300",
+    date = "2021-04-22T13:30:44+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 15.0.2 (Oracle Corporation)"
 )
 public class PostMapperImpl implements PostMapper {
@@ -21,21 +20,21 @@ public class PostMapperImpl implements PostMapper {
             return null;
         }
 
-        PostDTOBuilder postDTO = PostDTO.builder();
+        PostDTO postDTO = new PostDTO();
 
-        postDTO.id( post.getId() );
+        postDTO.setId( post.getId() );
         List<Tag> list = post.getTags();
         if ( list != null ) {
-            postDTO.tags( new ArrayList<Tag>( list ) );
+            postDTO.setTags( new ArrayList<Tag>( list ) );
         }
-        postDTO.createdOn( post.getCreatedOn() );
-        postDTO.author( post.getAuthor() );
-        postDTO.text( post.getText() );
-        postDTO.title( post.getTitle() );
-        postDTO.previewAttachment( post.getPreviewAttachment() );
-        postDTO.updatedOn( post.getUpdatedOn() );
+        postDTO.setCreatedOn( post.getCreatedOn() );
+        postDTO.setAuthor( post.getAuthor() );
+        postDTO.setText( post.getText() );
+        postDTO.setTitle( post.getTitle() );
+        postDTO.setPreviewAttachment( post.getPreviewAttachment() );
+        postDTO.setUpdatedOn( post.getUpdatedOn() );
 
-        return postDTO.build();
+        return postDTO;
     }
 
     @Override

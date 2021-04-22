@@ -17,9 +17,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Post
+ * A representation of Post entity.
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-15T19:31:49.707944300+03:00[Europe/Kiev]")
+@ApiModel(description = "A representation of Post entity.")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-22T13:30:27.722673500+03:00[Europe/Kiev]")
 public class Post  implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -28,7 +29,7 @@ public class Post  implements Serializable {
 
   @JsonProperty("tags")
   @Valid
-  private List<Tag> tags = new ArrayList<>();
+  private List<Tag> tags = null;
 
   @JsonProperty("createdOn")
   @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE_TIME)
@@ -56,10 +57,10 @@ public class Post  implements Serializable {
   }
 
   /**
-   * User's Id
+   * The ID of the Post.
    * @return id
   */
-  @ApiModelProperty(readOnly = true, value = "User's Id")
+  @ApiModelProperty(readOnly = true, value = "The ID of the Post.")
 
   @Valid
 
@@ -77,16 +78,18 @@ public class Post  implements Serializable {
   }
 
   public Post addTagsItem(Tag tagsItem) {
+    if (this.tags == null) {
+      this.tags = new ArrayList<>();
+    }
     this.tags.add(tagsItem);
     return this;
   }
 
   /**
-   * Get tags
+   * The subset of assosiated tags to the Post.
    * @return tags
   */
-  @ApiModelProperty(required = true, value = "")
-  @NotNull
+  @ApiModelProperty(value = "The subset of assosiated tags to the Post.")
 
   @Valid
 
@@ -104,10 +107,10 @@ public class Post  implements Serializable {
   }
 
   /**
-   * Creation date
+   * The Post creation date.
    * @return createdOn
   */
-  @ApiModelProperty(example = "2017-07-21T17:32:28Z", readOnly = true, value = "Creation date")
+  @ApiModelProperty(example = "2017-07-21T17:32:28Z", readOnly = true, value = "The Post creation date.")
 
   @Valid
 
@@ -125,10 +128,10 @@ public class Post  implements Serializable {
   }
 
   /**
-   * Get user
+   * The creator of the Post.
    * @return user
   */
-  @ApiModelProperty(readOnly = true, value = "")
+  @ApiModelProperty(readOnly = true, value = "The creator of the Post.")
 
   @Valid
 
@@ -146,10 +149,10 @@ public class Post  implements Serializable {
   }
 
   /**
-   * The content of the post.
+   * The content of the Post.
    * @return text
   */
-  @ApiModelProperty(value = "The content of the post.")
+  @ApiModelProperty(value = "The content of the Post.")
 
 
   public String getText() {
@@ -166,10 +169,10 @@ public class Post  implements Serializable {
   }
 
   /**
-   * Summary of the post.
+   * The summary of the Post.
    * @return title
   */
-  @ApiModelProperty(required = true, value = "Summary of the post.")
+  @ApiModelProperty(required = true, value = "The summary of the Post.")
   @NotNull
 
 
@@ -208,10 +211,10 @@ public class Post  implements Serializable {
   }
 
   /**
-   * Updation date
+   * The Post update date.
    * @return updatedOn
   */
-  @ApiModelProperty(example = "2017-07-21T17:32:28Z", readOnly = true, value = "Updation date")
+  @ApiModelProperty(example = "2017-07-21T17:32:28Z", readOnly = true, value = "The Post update date.")
 
   @Valid
 

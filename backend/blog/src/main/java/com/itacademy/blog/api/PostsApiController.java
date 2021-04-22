@@ -50,7 +50,7 @@ public class PostsApiController implements PostsApi {
     }
 
     @Override
-    public ResponseEntity<Post> create(@Valid Post post) {
+    public ResponseEntity<Post> createPost(@Valid Post post) {
         PostDTO createPostDto = PostMapper.INSTANCE.convert(post);
         PostDTO readPostDto = postService.createPost(createPostDto);
 
@@ -60,7 +60,7 @@ public class PostsApiController implements PostsApi {
 
 
     @Override
-    public ResponseEntity<Void> deletePost(@PathVariable("post_id") BigDecimal id) {
+    public ResponseEntity<Void> removePost(@PathVariable("post_id") BigDecimal id) {
 
         Optional<PostDTO> optionalPostDTO = Optional.ofNullable(postService.deletePost(id.longValue()));
 
@@ -71,7 +71,7 @@ public class PostsApiController implements PostsApi {
     }
 
     @Override
-    public ResponseEntity<List<Comment>> getAllComments(BigDecimal postId, @Valid BigDecimal id, @Valid String userName, @Valid String userId, @Valid String sort, @Valid Integer pageNum, @Valid Integer pageSize) {
+    public ResponseEntity<List<Comment>> getComments(BigDecimal postId, @Valid BigDecimal id, @Valid String userName, @Valid String userId, @Valid String sort, @Valid Integer pageNum, @Valid Integer pageSize) {
         Map<String, String> filterMap = new HashMap<>();
 
         if (id != null) {
@@ -95,7 +95,7 @@ public class PostsApiController implements PostsApi {
     }
 
     @Override
-    public ResponseEntity<List<Post>> getAllPosts(@Valid BigDecimal id, @Valid String tagId, @Valid String tagName, @Valid String userId, @Valid String sort, @Valid Integer pageNum, @Valid Integer pageSize) {
+    public ResponseEntity<List<Post>> getPosts(@Valid BigDecimal id, @Valid String tagId, @Valid String tagName, @Valid String userId, @Valid String sort, @Valid Integer pageNum, @Valid Integer pageSize) {
         Map<String, String> filterMap = new HashMap<>();
 
         if (id != null) {
@@ -119,7 +119,7 @@ public class PostsApiController implements PostsApi {
     }
 
     @Override
-    public ResponseEntity<Comment> getCommentById(BigDecimal postId, BigDecimal id) {
+    public ResponseEntity<Comment> getComment(BigDecimal postId, BigDecimal id) {
 
         CommentDTO readCommentDto = commentService.getCommentById(postId.longValue(), id.longValue());
 
@@ -140,7 +140,7 @@ public class PostsApiController implements PostsApi {
     //to do
     // If the user does not exist, return an error
     @Override
-    public ResponseEntity<Comment> leaveAComment(BigDecimal postId, @Valid Comment comment) {
+    public ResponseEntity<Comment> createComment(BigDecimal postId, @Valid Comment comment) {
         CommentDTO createCommentDto = CommentMapper.INSTANCE.convert(comment);
         CommentDTO readCommentDto = commentService.createComment(postId.longValue(), createCommentDto);
 
@@ -164,9 +164,10 @@ public class PostsApiController implements PostsApi {
         return new ResponseEntity<>(returnPost, HttpStatus.OK);
     }
 
-    //to do
+
+
     @Override
-    public ResponseEntity<Void> deleteComment(BigDecimal postId, BigDecimal id) {
+    public ResponseEntity<Void> removeComment(BigDecimal postId, BigDecimal id) {
         return null;
     }
 

@@ -13,10 +13,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * This is a user object
+ * A representation of User entity.
  */
-@ApiModel(description = "This is a user object")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-15T19:31:49.707944300+03:00[Europe/Kiev]")
+@ApiModel(description = "A representation of User entity.")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-22T13:30:27.722673500+03:00[Europe/Kiev]")
 public class User  implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -39,7 +39,7 @@ public class User  implements Serializable {
   private String password;
 
   /**
-   * This is the level of user access to various functions
+   * This is the level of User access to various functions.
    */
   public enum RoleEnum {
     GUEST("guest"),
@@ -80,7 +80,7 @@ public class User  implements Serializable {
   }
 
   @JsonProperty("role")
-  private RoleEnum role = RoleEnum.USER;
+  private RoleEnum role;
 
   public User id(BigDecimal id) {
     this.id = id;
@@ -88,10 +88,10 @@ public class User  implements Serializable {
   }
 
   /**
-   * Get id
+   * The ID of the User.
    * @return id
   */
-  @ApiModelProperty(readOnly = true, value = "")
+  @ApiModelProperty(readOnly = true, value = "The ID of the User.")
 
   @Valid
 
@@ -109,10 +109,10 @@ public class User  implements Serializable {
   }
 
   /**
-   * User supplied username
+   * The name of the User.
    * @return name
   */
-  @ApiModelProperty(example = "John78", required = true, value = "User supplied username")
+  @ApiModelProperty(example = "John78", required = true, value = "The name of the User.")
   @NotNull
 
 @Size(min=4) 
@@ -130,10 +130,10 @@ public class User  implements Serializable {
   }
 
   /**
-   * User first name
+   * The first name of the User.
    * @return firstName
   */
-  @ApiModelProperty(example = "John", value = "User first name")
+  @ApiModelProperty(example = "John", value = "The first name of the User.")
 
 @Size(min=1) 
   public String getFirstName() {
@@ -150,10 +150,10 @@ public class User  implements Serializable {
   }
 
   /**
-   * User last name
+   * The last name of the User.
    * @return lastName
   */
-  @ApiModelProperty(example = "Smith", value = "User last name")
+  @ApiModelProperty(example = "Smith", value = "The last name of the User.")
 
 @Size(min=1) 
   public String getLastName() {
@@ -170,10 +170,10 @@ public class User  implements Serializable {
   }
 
   /**
-   * User email address
+   * The email of the User.
    * @return email
   */
-  @ApiModelProperty(example = "john.smith@example.com", required = true, value = "User email address")
+  @ApiModelProperty(example = "john.smith@example.com", required = true, value = "The email of the User.")
   @NotNull
 
 @javax.validation.constraints.Email
@@ -191,10 +191,10 @@ public class User  implements Serializable {
   }
 
   /**
-   * User password, MUST contain a mix of upper and lower case letters, as well as digits
+   * The password of the User. MUST contain a mix of upper and lower case letters, as well as digits.
    * @return password
   */
-  @ApiModelProperty(example = "passworD321", value = "User password, MUST contain a mix of upper and lower case letters, as well as digits")
+  @ApiModelProperty(example = "passworD321", value = "The password of the User. MUST contain a mix of upper and lower case letters, as well as digits.")
 
 @Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}$") @Size(min=8) 
   public String getPassword() {
@@ -211,10 +211,10 @@ public class User  implements Serializable {
   }
 
   /**
-   * This is the level of user access to various functions
+   * This is the level of User access to various functions.
    * @return role
   */
-  @ApiModelProperty(value = "This is the level of user access to various functions")
+  @ApiModelProperty(value = "This is the level of User access to various functions.")
 
 
   public RoleEnum getRole() {
