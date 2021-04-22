@@ -1,9 +1,7 @@
 package com.softserveinc.ita.home.home_project_blog.service;
 
+import com.softserveinc.ita.home.home_project_blog.ExceptionHandling.EmailIsNotUniqueException;
 import com.softserveinc.ita.home.home_project_blog.ExceptionHandling.ErrorConst;
-import com.softserveinc.ita.home.home_project_blog.dto.CreateUserDto;
-import com.softserveinc.ita.home.home_project_blog.dto.UserDto;
-import com.softserveinc.ita.home.home_project_blog.mappers.UserMapper;
 import com.softserveinc.ita.home.home_project_blog.models.User;
 import com.softserveinc.ita.home.home_project_blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,14 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
-import java.util.Optional;
 
 @Validated
 @RequiredArgsConstructor
@@ -65,14 +60,28 @@ public class UserService implements IUserService {
 
     @Override
     public User save(@Valid User user) {
-//        user.setRole(User.ROLE.user);
+//TODO?        user.setRole(User.ROLE.user);
+        String email = user.getEmail().toLowerCase().trim();
+        throwIfEmailIsNotUnique(email);
+        user.setEmail(email);
         return repository.save(user);
     }
 
+    private void throwIfEmailIsNotUnique(String email) {
+        if (repository.existsByEmail(email)) {
+            throw new EmailIsNotUniqueException();
+        }
+    }
+
     @Override
-    public User update(Long id,@Valid User user) {
+    public User update(Long id, @Valid User user) {
         user.setId(id);
         User oldUser = getById(id);
+        String email = user.getEmail().toLowerCase().trim();
+        if (!oldUser.getEmail().equalsIgnoreCase(email)) {
+            throwIfEmailIsNotUnique(email);
+        }
+        user.setEmail(email);//lowerCase
         user.setPassword(oldUser.getPassword());
         user.setRole(oldUser.getRole());
         return repository.save(user);

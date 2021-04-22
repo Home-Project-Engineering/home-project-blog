@@ -6,14 +6,17 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
 //@Order(Ordered.HIGHEST_PRECEDENCE)
@@ -21,43 +24,73 @@ import javax.validation.ConstraintViolationException;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {EntityNotFoundException.class})
-    public ResponseEntity<Error> noSuchUserException(EntityNotFoundException e){
+    public ResponseEntity<Error> noSuchUserException(EntityNotFoundException e) {
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;
         Error error = new Error(
                 httpStatus.toString(),
                 e.getMessage()
         );
-        return new ResponseEntity<>(error,httpStatus);
+        return new ResponseEntity<>(error, httpStatus);
     }
 
-    @ExceptionHandler(value = {ConstraintViolationException.class})
-    public ResponseEntity<Error> constraintViolationException(ConstraintViolationException e){
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-        Error error = new Error(
-                httpStatus.toString(),
-                e.getMessage()
-        );
-        return new ResponseEntity<>(error,httpStatus);
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    ValidationErrorResponse onConstraintValidationException(
+            ConstraintViolationException e) {
+        ValidationErrorResponse error = new ValidationErrorResponse();
+        for (ConstraintViolation violation : e.getConstraintViolations()) {
+            error.getViolations().add(
+                    new Violation(violation.getPropertyPath().toString(), violation.getMessage()));
+        }
+        return error;
     }
+
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ResponseBody
+//    ValidationErrorResponse onMethodArgumentNotValidException(
+//            MethodArgumentNotValidException e) {
+//        ValidationErrorResponse error = new ValidationErrorResponse();
+//        for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
+//            error.getViolations().add(
+//                    new Violation(fieldError.getField(), fieldError.getDefaultMessage()));
+//        }
+//        return error;
+//    }
+
+
+    //@ExceptionHandler(value = {ConstraintViolationException.class})
+//    public ResponseEntity<Error> constraintViolationException(ConstraintViolationException e){
+//        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+//        Error error = new Error(
+//                httpStatus.toString(),
+//                e.getMessage()
+//        );
+//        return new ResponseEntity<>(error,httpStatus);
+//    }
 
 
     @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException e,
                                                                   HttpHeaders headers, HttpStatus status,
                                                                   WebRequest request) {
-//        String errorMessage = ex.getBindingResult().getFieldErrors().stream()
-//                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-//                .findFirst()
-//                .orElse(ex.getMessage());
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
-        Error error = new Error(
-                httpStatus.toString(),
-                ex.getMessage()
-        );
-        return new ResponseEntity<>(error, httpStatus.BAD_REQUEST);
+        ValidationErrorResponse error = new ValidationErrorResponse();
+        for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
+            error.getViolations().add(
+                    new Violation(fieldError.getField(), fieldError.getDefaultMessage()));
+        }
+//        Error error = new Error(
+//                httpStatus.toString(),
+//                ex.getMessage()
+//        );
+        return new ResponseEntity<>(error, httpStatus);
     }
+
+
 //    @Override
-//    public RestponseEntity<Error> ResponseEntityExceptionHandler.handleMethodArgumentNotValid(){
+//    public ResponseEntity<Error> ResponseEntityExceptionHandler.handleMethodArgumentNotValid(){
 //        return new ResponseEntity<>(new Error, HttpStatus.BAD_REQUEST);
 //    }
 
@@ -76,24 +109,24 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     //doesn't work :(
     @ExceptionHandler
-    public ResponseEntity<Error> anyException(Exception e){
+    public ResponseEntity<Error> anyException(Exception e) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         Error error = new Error(
                 httpStatus.toString(),
                 e.getMessage()
         );
-        return new ResponseEntity<>(error,httpStatus);
+        return new ResponseEntity<>(error, httpStatus);
     }
 
 
     @ExceptionHandler(value = {NumberFormatException.class})
-    public ResponseEntity<Error> validationException(NumberFormatException e){
+    public ResponseEntity<Error> validationException(NumberFormatException e) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         Error error = new Error(
                 httpStatus.toString(),
                 e.getMessage()
         );
-        return new ResponseEntity<>(error,httpStatus);
+        return new ResponseEntity<>(error, httpStatus);
     }
 
 //    @Override
