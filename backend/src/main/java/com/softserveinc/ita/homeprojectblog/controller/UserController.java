@@ -5,6 +5,8 @@ import com.softserveinc.ita.homeprojectblog.dto.UserDto;
 import com.softserveinc.ita.homeprojectblog.exceptions.NoSuchUserException;
 import com.softserveinc.ita.homeprojectblog.exceptions.NoSuchUsersException;
 import com.softserveinc.ita.homeprojectblog.generated.api.UsersApi;
+import com.softserveinc.ita.homeprojectblog.generated.model.Comment;
+import com.softserveinc.ita.homeprojectblog.generated.model.Post;
 import com.softserveinc.ita.homeprojectblog.generated.model.User;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
 import org.springframework.data.domain.Page;
@@ -30,14 +32,52 @@ public class UserController implements UsersApi {
         this.userService = userService;
     }
 
+    @Override // +
+    public ResponseEntity<User> createUser(User body) {
+        UserDto userDto = UserMapperController.INSTANCE.toUserDto(body);
+        userDto = userService.signUp(userDto);
+        return new ResponseEntity(UserMapperController.INSTANCE.toUser(userDto), HttpStatus.CREATED);
+    }
+
     @Override
-    public ResponseEntity<Void> deleteUser(BigDecimal id) {
-        userService.deleteUser(id);
+    public ResponseEntity<Comment> getCommentByCurrentUser(BigDecimal id) {
         return null;
     }
 
     @Override
-    public ResponseEntity<List<User>> getAllUsers(@Valid BigDecimal id, @Valid String name, @Valid String sort, @Valid Integer pageNum, @Valid Integer pageSize) {
+    public ResponseEntity<List<Comment>> getCommentsByCurrentUser(BigDecimal id, String sort, Integer pageNum, Integer pageSize) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<User> getCurrentUser() {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Post> getPostByCurrentUser(BigDecimal id) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<List<Post>> getPostsByCurrentUser(BigDecimal id, String tagId, String tagName, String sort, Integer pageNum, Integer pageSize) {
+        return null;
+    }
+
+    @Override // +
+    public ResponseEntity<User> getUser(BigDecimal id) {
+        UserDto userDto = userService.getUserById(id);
+
+        if (userDto == null) {
+            throw new NoSuchUserException("There is no user with ID = " +
+                    id + " in Database");
+        }
+
+        return new ResponseEntity(UserMapperController.INSTANCE.toUser(userDto), HttpStatus.OK);
+    }
+
+    @Override // +
+    public ResponseEntity<List<User>> getUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
 
         Page<UserDto> userDtoPage = userService.getAllUsers(
                 id,
@@ -60,25 +100,37 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    public ResponseEntity<User> getUser(BigDecimal id) {
-        UserDto userDto = userService.getUserById(id);
-
-        if (userDto == null) {
-            throw new NoSuchUserException("There is no user with ID = " +
-                    id + " in Database");
-        }
-
-        return new ResponseEntity(UserMapperController.INSTANCE.toUser(userDto), HttpStatus.OK);
+    public ResponseEntity<Void> removeCommentByCurrentUser(BigDecimal id) {
+        return null;
     }
 
     @Override
-    public ResponseEntity<User> signUp(@Valid User body) {
-        UserDto userDto = UserMapperController.INSTANCE.toUserDto(body);
-        userDto = userService.signUp(userDto);
-        return new ResponseEntity(UserMapperController.INSTANCE.toUser(userDto), HttpStatus.CREATED);
+    public ResponseEntity<Void> removePostByCurrentUser(BigDecimal id) {
+        return null;
+    }
+
+    @Override // +
+    public ResponseEntity<Void> removeUser(BigDecimal id) {
+        userService.deleteUser(id);
+        return new ResponseEntity("user " + id + " successfully delete", HttpStatus.OK);
     }
 
     @Override
+    public ResponseEntity<List<Comment>> updateCommentByCurrentUser(Comment body, BigDecimal id) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<User> updateCurrentUser(User body) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Post> updatePostByCurrentUser(Post body, BigDecimal id) {
+        return null;
+    }
+
+    @Override // +
     public ResponseEntity<User> updateUser(@Valid User body, BigDecimal id) {
         UserDto userDto = UserMapperController.INSTANCE.toUserDto(body);
         userDto = userService.updateUser(userDto, id);

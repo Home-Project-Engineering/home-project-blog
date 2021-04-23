@@ -138,12 +138,25 @@
                             <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
                             <language>spring</language>
 
-                            <output>${project.basedir}src/main/java/com/softserveinc/ita/homeprojectblog/generated</output>
+                            <output>${project.basedir}</output>
                             <generateSupportingFiles>false</generateSupportingFiles>
+                            <templateDirectory>src/main/resources/templates</templateDirectory>
                             <apiPackage>com.softserveinc.ita.homeprojectblog.generated.api</apiPackage>
                             <modelPackage>com.softserveinc.ita.homeprojectblog.generated.model</modelPackage>
+                            <invokerPackage>com.softserveinc.ita.homeprojectblog.generated.invoke</invokerPackage>
                             <configOptions>
                                 <interfaceOnly>true</interfaceOnly>
+
+                                <generateApis>true</generateApis>
+                                <generateApiTests>true</generateApiTests>
+                                <generateApiDocumentation>true</generateApiDocumentation>
+
+                                <generateModels>true</generateModels>
+                                <generateModelTests>true</generateModelTests>
+                                <generateModelDocumentation>true</generateModelDocumentation>
+
+                                <generateSupportingFiles>true</generateSupportingFiles>
+                                <supportingFilesToGenerate>true</supportingFilesToGenerate>
                             </configOptions>
                         </configuration>
                     </execution>

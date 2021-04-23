@@ -12,18 +12,19 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/1")
 public class TagController implements TagsApi {
-    @Override
-    public ResponseEntity<Void> deleteTag(BigDecimal id) {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<List<Tag>> getAllTags(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
-        return null;
-    }
 
     @Override
     public ResponseEntity<Tag> getTag(BigDecimal id) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<List<Tag>> getTags(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Void> removeTag(BigDecimal id) {
         return null;
     }
 }
