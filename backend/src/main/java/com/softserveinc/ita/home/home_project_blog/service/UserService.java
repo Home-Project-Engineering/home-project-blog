@@ -1,7 +1,6 @@
 package com.softserveinc.ita.home.home_project_blog.service;
 
-import com.softserveinc.ita.home.home_project_blog.ExceptionHandling.EmailIsNotUniqueException;
-import com.softserveinc.ita.home.home_project_blog.ExceptionHandling.ErrorConst;
+import com.softserveinc.ita.home.home_project_blog.ExceptionHandling.ValidationConst;
 import com.softserveinc.ita.home.home_project_blog.models.User;
 import com.softserveinc.ita.home.home_project_blog.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -55,21 +54,21 @@ public class UserService implements IUserService {
     @Override
     public User getById(Long id) {
         return repository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(String.format(ErrorConst.NOT_FOUND_USER_BY_ID, id)));
+                () -> new EntityNotFoundException(String.format(ValidationConst.NOT_FOUND_USER_BY_ID, id)));
     }
 
     @Override
     public User save(@Valid User user) {
 //TODO?        user.setRole(User.ROLE.user);
         String email = user.getEmail().toLowerCase().trim();
-        throwIfEmailIsNotUnique(email);
+//        throwIfEmailIsNotUnique(email);
         user.setEmail(email);
         return repository.save(user);
     }
 
     private void throwIfEmailIsNotUnique(String email) {
         if (repository.existsByEmail(email)) {
-            throw new EmailIsNotUniqueException();
+//            throw new EmailIsNotUniqueException();
         }
     }
 
@@ -79,7 +78,7 @@ public class UserService implements IUserService {
         User oldUser = getById(id);
         String email = user.getEmail().toLowerCase().trim();
         if (!oldUser.getEmail().equalsIgnoreCase(email)) {
-            throwIfEmailIsNotUnique(email);
+//            throwIfEmailIsNotUnique(email);
         }
         user.setEmail(email);//lowerCase
         user.setPassword(oldUser.getPassword());
@@ -90,7 +89,7 @@ public class UserService implements IUserService {
     @Override
     public void delete(Long id) {
         if (!repository.existsById(id)) {
-            throw new EntityNotFoundException(String.format(ErrorConst.NOT_FOUND_USER_BY_ID, id));
+            throw new EntityNotFoundException(String.format(ValidationConst.NOT_FOUND_USER_BY_ID, id));
         }
         repository.deleteById(id);
     }

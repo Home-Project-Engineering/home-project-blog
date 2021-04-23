@@ -1,6 +1,8 @@
 package com.softserveinc.ita.home.home_project_blog.models;
 
 //import io.swagger.annotations.ApiModelProperty;
+
+import com.softserveinc.ita.home.home_project_blog.ExceptionHandling.ValidationConst;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,34 +24,34 @@ import java.util.Objects;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//SEQUENCE)
     private Long id;
 
-    @NotNull
-    @Size(min = 4, max = 200, message = "name must be between 4 and 200 characters.")
+    @Size(min = 4, max = 255, message = ValidationConst.NAME_WRONG_LENGTH)
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @Size(min = 1, max = 200, message = "name must be between 1 and 200 characters.")
+    @Size(min = 1, max = 255, message = ValidationConst.FIRST_NAME_WRONG_LENGTH)
     @Column(name = "firstname")
     private String firstName;
 
-    @Size(min = 1, max = 200, message = "name must be between 1 and 200 characters.")
+    @Size(min = 1, max = 255, message = ValidationConst.LAST_NAME_WRONG_LENGTH)
     @Column(name = "lastname")
     private String lastName;
 
-    @NotNull
-    @Email(message = "Email should be valid.")
-    //@Column(nullable = false)
+    @Email(message = ValidationConst.EMAIL_IS_NOT_VALID)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @NotNull
-    @Size(min = 8, max = 200, message = "Password should be between 8 and 200 characters.")
-    @Pattern(regexp = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])")
+    @Size(min = 8, max = 255, message = ValidationConst.WRONG_PASSWORD)
+//    @Pattern(regexp = ValidationConst.PASSWORD_PATTERN)
     private String password;
 
-    public static enum ROLE{
+    public static enum ROLE {
         guest, user, moderator, admin, expert
     }
+
     @Enumerated(EnumType.STRING)
     @Column(length = 10)
     private ROLE role;

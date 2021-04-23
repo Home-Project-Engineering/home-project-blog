@@ -1,5 +1,6 @@
 package com.softserveinc.ita.home.home_project_blog.ExceptionHandling;
 
+import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import org.hibernate.TypeMismatchException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -25,6 +26,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {EntityNotFoundException.class})
     public ResponseEntity<Error> noSuchUserException(EntityNotFoundException e) {
+        HttpStatus httpStatus = HttpStatus.NOT_FOUND;
+        Error error = new Error(
+                httpStatus.toString(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(error, httpStatus);
+    }
+
+    @ExceptionHandler(value = {InvalidFormatException.class})
+    public ResponseEntity<Error> noSuchRoleException(InvalidFormatException e) {
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;
         Error error = new Error(
                 httpStatus.toString(),
