@@ -1,4 +1,4 @@
-package com.softserveinc.ita.home.home_project_blog.ExceptionHandling;
+package com.softserveinc.ita.home.home_project_blog.Validation;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Violation {
-    private String fieldName;
-    private String message;
+public class Error {
+    String code;
+    String message;
 }
