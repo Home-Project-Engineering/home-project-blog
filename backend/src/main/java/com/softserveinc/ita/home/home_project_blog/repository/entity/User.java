@@ -1,19 +1,18 @@
-package com.softserveinc.ita.home.home_project_blog.models;
+package com.softserveinc.ita.home.home_project_blog.repository.entity;
 
 //import io.swagger.annotations.ApiModelProperty;
 
-import com.softserveinc.ita.home.home_project_blog.ExceptionHandling.ValidationConst;
+import com.softserveinc.ita.home.home_project_blog.Validation.Const;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
-import java.util.Objects;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 @AllArgsConstructor
@@ -27,33 +26,33 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)//SEQUENCE)
     private Long id;
 
-    @Size(min = 4, max = 255, message = ValidationConst.NAME_WRONG_LENGTH)
+    @NotNull
+    @Size(min = 4, max = 255, message = Const.NAME_WRONG_LENGTH)
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Size(min = 1, max = 255, message = ValidationConst.FIRST_NAME_WRONG_LENGTH)
+    @Size(min = 1, max = 255, message = Const.FIRST_NAME_WRONG_LENGTH)
     @Column(name = "firstname")
     private String firstName;
 
-    @Size(min = 1, max = 255, message = ValidationConst.LAST_NAME_WRONG_LENGTH)
+    @Size(min = 1, max = 255, message = Const.LAST_NAME_WRONG_LENGTH)
     @Column(name = "lastname")
     private String lastName;
 
-    @Email(message = ValidationConst.EMAIL_IS_NOT_VALID)
+    @NotNull
+    @Email(message = Const.EMAIL_IS_NOT_VALID)
     @Column(nullable = false, unique = true)
     private String email;
 
     @NotNull
-    @Size(min = 8, max = 255, message = ValidationConst.WRONG_PASSWORD)
+    @Size(min = 8, max = 255, message = Const.WRONG_PASSWORD)
+    @Column(nullable = false)
 //    @Pattern(regexp = ValidationConst.PASSWORD_PATTERN)
     private String password;
 
-    public static enum ROLE {
-        guest, user, moderator, admin, expert
-    }
-
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(length = 10)
+    @Column(length = 10, nullable = false)
     private ROLE role;
 }
 /*
