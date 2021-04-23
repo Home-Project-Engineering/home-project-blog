@@ -38,10 +38,25 @@ DROP TABLE IF EXISTS "user" ;
 CREATE TABLE IF NOT EXISTS "user" (
                                       id SERIAL NOT NULL,
                                       name VARCHAR(16) NOT NULL,
-                                      first_name VARCHAR(45) NULL,
-                                      last_name VARCHAR(45) NULL,
-                                      email VARCHAR(255) NULL,
+                                      first_name VARCHAR(45) NOT NULL,
+                                      last_name VARCHAR(45) NOT NULL,
+                                      email VARCHAR(255) NOT NULL,
                                       password VARCHAR(32) NOT NULL,
-                                      create_time TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-                                      role VARCHAR(45) NULL,
+                                      create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                      update_time TIMESTAMP NULL,
+                                      role VARCHAR(45) NOT NULL,
+                                      PRIMARY KEY (id));
+
+DROP TABLE IF EXISTS "tag" ;
+
+CREATE TABLE IF NOT EXISTS "tag" (
+                                      id SERIAL NOT NULL,
+                                      name VARCHAR(16) NOT NULL,
+                                      first_name VARCHAR(45) NOT NULL,
+                                      last_name VARCHAR(45) NOT NULL,
+                                      email VARCHAR(255) NOT NULL,
+                                      password VARCHAR(32) NOT NULL,
+                                      create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                      update_time TIMESTAMP NULL,
+                                      role VARCHAR(45) NOT NULL,
                                       PRIMARY KEY (id));

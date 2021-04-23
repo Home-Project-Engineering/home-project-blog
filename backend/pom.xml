@@ -47,6 +47,7 @@
             <artifactId>spring-boot-devtools</artifactId>
         </dependency>
 
+
         <!--lombok-->
         <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
         <dependency>
@@ -137,7 +138,7 @@
                             <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
                             <language>spring</language>
 
-                            <output>${project.build.directory}/generated-sources/</output>
+                            <output>${project.basedir}src/main/java/com/softserveinc/ita/homeprojectblog/generated</output>
                             <generateSupportingFiles>false</generateSupportingFiles>
                             <apiPackage>com.softserveinc.ita.homeprojectblog.generated.api</apiPackage>
                             <modelPackage>com.softserveinc.ita.homeprojectblog.generated.model</modelPackage>
