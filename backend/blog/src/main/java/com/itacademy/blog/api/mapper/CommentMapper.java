@@ -11,7 +11,6 @@ import java.util.List;
 @Mapper
 public interface CommentMapper {
 CommentMapper INSTANCE = Mappers.getMapper(CommentMapper.class);
-    @Mapping(target = "post", ignore = true)
     @Mapping(source = "user", target = "user")
     CommentDTO convert(Comment comment);
     @Mapping(source = "user", target = "user")

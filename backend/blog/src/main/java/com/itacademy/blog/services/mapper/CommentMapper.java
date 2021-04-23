@@ -15,6 +15,7 @@ public interface CommentMapper {
 CommentMapper INSTANCE = Mappers.getMapper(CommentMapper.class);
     @Mapping(source = "user", target = "user")
     CommentDTO convert(Comment comment);
+    @Mapping(target = "post", ignore = true)
     @Mapping(source = "user", target = "user")
     Comment convert(CommentDTO commentDTO);
     List<CommentDTO> convert(List<Comment> commentEntities);

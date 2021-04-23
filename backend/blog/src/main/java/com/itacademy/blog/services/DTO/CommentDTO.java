@@ -24,7 +24,6 @@ public class CommentDTO {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private OffsetDateTime createdOn;
 
-    private Post post;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private OffsetDateTime updatedOn;
