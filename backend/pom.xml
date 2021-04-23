@@ -140,10 +140,12 @@
 
                             <output>${project.basedir}</output>
                             <generateSupportingFiles>false</generateSupportingFiles>
-                            <templateDirectory>src/main/resources/templates</templateDirectory>
+
+                            <invokerPackage>com.softserveinc.ita.homeprojectblog.generated</invokerPackage>
                             <apiPackage>com.softserveinc.ita.homeprojectblog.generated.api</apiPackage>
                             <modelPackage>com.softserveinc.ita.homeprojectblog.generated.model</modelPackage>
-                            <invokerPackage>com.softserveinc.ita.homeprojectblog.generated.invoke</invokerPackage>
+
+<!--                            <templateDirectory>${project.basedir}/src/main/resources/templates</templateDirectory>-->
                             <configOptions>
                                 <interfaceOnly>true</interfaceOnly>
 

@@ -3,6 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+.mvn/*
 
 ### STS ###
 .apt_generated
@@ -35,7 +36,7 @@ build/
 
 ### Files ###
 src/main/resources/test.yaml
-test.yaml
 
 ### generated code ###
-!**/src/main/**/generated/
+src/main/java/com/softserveinc/ita/homeprojectblog/generated/*
+#src/main/java/com/softserveinc/ita/homeprojectblog/exceptions/*
