@@ -91,7 +91,6 @@ public class PostsApiController implements PostsApi {
         filterMap.put("user.id", userId);
 
 
-
         List<Comment> comments = commentService.findComments(Optional.ofNullable(pageNum).orElse(1)
                 , Optional.ofNullable(pageSize).orElse(10), Optional.ofNullable(sort).orElse("-id")
                 , entitySpecificationService.getSpecification(filterMap));
@@ -157,7 +156,12 @@ public class PostsApiController implements PostsApi {
     @Override
     @PreAuthorize("hasAuthority('coment:update')")
     public ResponseEntity<Comment> updateComment(BigDecimal postId, BigDecimal id, @Valid Comment comment) {
-        return null;
+        CommentDTO updateCommentDto = CommentMapper.INSTANCE.convert(comment);
+        CommentDTO readCommentDto = commentService.updateComment(postId.longValue(), id.longValue(), updateCommentDto);
+
+        Comment returnComment = CommentMapper.INSTANCE.convert(readCommentDto);
+
+        return new ResponseEntity<>(returnComment, HttpStatus.OK);
     }
 
     @Override
@@ -170,7 +174,6 @@ public class PostsApiController implements PostsApi {
 
         return new ResponseEntity<>(returnPost, HttpStatus.OK);
     }
-
 
 
     @Override

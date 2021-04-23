@@ -1,9 +1,7 @@
 package com.itacademy.blog.services.mapper;
 
 import com.itacademy.blog.data.entity.Comment;
-import com.itacademy.blog.data.entity.Post;
 import com.itacademy.blog.services.DTO.CommentDTO;
-import com.itacademy.blog.services.DTO.PostDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

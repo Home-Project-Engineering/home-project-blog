@@ -34,22 +34,24 @@ public class User {
 
     public enum RoleEnum {
 
-        BLOGGER(Set.of( )),
+        BLOGGER(Set.of()),
 
         MODERATOR(Set.of(Permission.TAG_REMOVE, Permission.POST_UPDATE, Permission.POST_DELETE, Permission.COMMENTS_UPDATE, Permission.COMMENTS_DELETE)),
 
-        ADMIN(Set.of( Permission.USER_MANAGEMENT, Permission.TAG_REMOVE, Permission.POST_UPDATE, Permission.POST_DELETE, Permission.COMMENTS_UPDATE, Permission.COMMENTS_DELETE)),
+        ADMIN(Set.of(Permission.USER_MANAGEMENT, Permission.TAG_REMOVE, Permission.POST_UPDATE, Permission.POST_DELETE, Permission.COMMENTS_UPDATE, Permission.COMMENTS_DELETE)),
 
-        EXPERT(Set.of( ));
+        EXPERT(Set.of());
 
         private final Set<Permission> permissions;
 
         RoleEnum(Set<Permission> permissions) {
             this.permissions = permissions;
         }
+
         public Set<Permission> getPermissions() {
             return permissions;
         }
+
         public Set<SimpleGrantedAuthority> getAuthorities() {
             return getPermissions().stream()
                     .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))

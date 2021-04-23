@@ -6,7 +6,4 @@ public class AlreadyExistBlogException extends BaseBlogException {
         super(message);
     }
 
-    public AlreadyExistBlogException(String message, Throwable cause) {
-        super(message, cause);
-    }
 }

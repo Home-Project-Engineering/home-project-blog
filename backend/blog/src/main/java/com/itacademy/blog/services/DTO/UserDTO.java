@@ -1,11 +1,9 @@
 package com.itacademy.blog.services.DTO;
 
-import io.swagger.annotations.Scope;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.Objects;

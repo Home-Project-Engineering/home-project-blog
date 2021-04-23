@@ -10,10 +10,12 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface UserMapper {
 
-    UserMapper INSTANCE = Mappers.getMapper( UserMapper.class );
+    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
     UserDTO convert(User user);
+
     User convert(com.itacademy.blog.data.entity.User user);
+
     @Mapping(target = "password", constant = "*****")
     User convert(UserDTO userDTO);
 

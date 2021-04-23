@@ -1,18 +1,13 @@
 package com.itacademy.blog.services.service.impl;
 
 import com.itacademy.blog.data.entity.Comment;
-import com.itacademy.blog.data.entity.Post;
-import com.itacademy.blog.data.entity.User;
 import com.itacademy.blog.data.repository.CommentRepo;
 import com.itacademy.blog.data.repository.PostRepo;
 import com.itacademy.blog.services.DTO.CommentDTO;
-import com.itacademy.blog.services.exception.NotFoundBlogException;
 import com.itacademy.blog.services.mapper.CommentMapper;
-import com.itacademy.blog.services.mapper.PostMapper;
-import com.itacademy.blog.services.mapper.UserMapper;
 import com.itacademy.blog.services.service.CommentService;
 import com.itacademy.blog.services.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -24,13 +19,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
 
-    @Autowired
+    final
     CommentRepo commentRepo;
-    @Autowired
+    final
     PostRepo postRepo;
-    @Autowired
+    final
     UserService userService;
 
     @Override
@@ -68,12 +64,14 @@ public class CommentServiceImpl implements CommentService {
 
         return CommentMapper.INSTANCE.convert(toReturn);
     }
+
     private Sort getSort(String sort) {
         StringBuilder str = new StringBuilder(sort);
 
-        if(str.charAt(0) == '-'){
+        if (str.charAt(0) == '-') {
             str.deleteCharAt(0);
-            return Sort.by(Sort.Direction.DESC, str.toString());}
+            return Sort.by(Sort.Direction.DESC, str.toString());
+        }
 
         return Sort.by(Sort.Direction.ASC, str.toString());
     }

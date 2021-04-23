@@ -10,9 +10,11 @@ import java.util.List;
 
 @Mapper
 public interface TagMapper {
-    TagMapper INSTANCE = Mappers.getMapper( TagMapper.class );
+    TagMapper INSTANCE = Mappers.getMapper(TagMapper.class);
 
     TagDTO convert(Tag user);
+
     Tag convert(TagDTO userDTO);
+
     List<TagDTO> convert(List<Tag> userEntities);
 }

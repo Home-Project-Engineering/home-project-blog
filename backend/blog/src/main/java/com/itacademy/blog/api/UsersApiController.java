@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-22T13:11:30.172595800+03:00[Europe/Kiev]")
 @Controller
 @RequestMapping("${openapi.homeProjectBlogService.base-path:/api/1}")
@@ -37,7 +38,6 @@ public class UsersApiController implements UsersApi {
     private final NativeWebRequest request;
     private final UserService userService;
     private EntitySpecificationService entitySpecificationService;
-
 
 
     @Autowired
@@ -63,7 +63,6 @@ public class UsersApiController implements UsersApi {
     }
 
 
-
     @Override
     @PreAuthorize("hasAuthority('users')")
     public ResponseEntity<Void> removeUser(BigDecimal id) {
@@ -75,7 +74,7 @@ public class UsersApiController implements UsersApi {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         User returnUser = UserMapper.INSTANCE.convert(optionalUserDTO.get());
-        return new ResponseEntity<>( HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
@@ -97,7 +96,7 @@ public class UsersApiController implements UsersApi {
 
 
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("X-Total-Count",String.valueOf( users.getTotalElements()));
+        responseHeaders.set("X-Total-Count", String.valueOf(users.getTotalElements()));
         return users.isEmpty() ? new ResponseEntity<>(HttpStatus.BAD_REQUEST) : new ResponseEntity<List<User>>(users.toList(), responseHeaders, HttpStatus.OK);
     }
 
@@ -107,7 +106,7 @@ public class UsersApiController implements UsersApi {
         UserDTO readUserDto = null;
         readUserDto = userService.getUserById(id.longValue());
 
-        User returnUser = UserMapper.INSTANCE. convert(readUserDto);
+        User returnUser = UserMapper.INSTANCE.convert(readUserDto);
 
         return new ResponseEntity<>(returnUser, HttpStatus.OK);
     }
@@ -141,7 +140,7 @@ public class UsersApiController implements UsersApi {
     public ResponseEntity<User> getCurrentUser() {
         UserDTO userToReturn = userService.getCurrentUser();
 
-        return new ResponseEntity<>( UserMapper.INSTANCE.convert(userToReturn), HttpStatus.OK);
+        return new ResponseEntity<>(UserMapper.INSTANCE.convert(userToReturn), HttpStatus.OK);
     }
 
     @Override
@@ -154,12 +153,12 @@ public class UsersApiController implements UsersApi {
 
 
         List<PostDTO> posts = postService.findPosts(1
-                ,1,"id"
+                , 1, "id"
                 , entitySpecificationService.getSpecification(filterMap));
         if (posts.isEmpty()) {
             throw new NotFoundBlogException("Current user does not have a post with id:" + id + ".");
         }
-        Post postToReturn = PostMapper.INSTANCE.convert( posts.get(0));
+        Post postToReturn = PostMapper.INSTANCE.convert(posts.get(0));
         return new ResponseEntity<>(postToReturn, HttpStatus.OK);
     }
 
@@ -201,6 +200,7 @@ public class UsersApiController implements UsersApi {
     public ResponseEntity<Void> removePostByCurrentUser(BigDecimal id) {
         return null;
     }
+
     @Override
     @PermitAll
     public ResponseEntity<List<Comment>> updateCommentByCurrentUser(BigDecimal id, @Valid Comment comment) {
@@ -210,14 +210,14 @@ public class UsersApiController implements UsersApi {
     @Override
     @PermitAll
     public ResponseEntity<User> updateCurrentUser(@Valid User user) {
-    return updateUser(getCurrentUser().getBody().getId(), user);
+        return updateUser(getCurrentUser().getBody().getId(), user);
     }
 
     @Override
     @PermitAll
     public ResponseEntity<Post> updatePostByCurrentUser(BigDecimal id, @Valid Post post) {
         if (getPostByCurrentUser(id).getBody() != null) {
-            return new ResponseEntity<>( PostMapper.INSTANCE.convert( postService.updatePost(id.longValue(), PostMapper.INSTANCE.convert(post))), HttpStatus.OK);
+            return new ResponseEntity<>(PostMapper.INSTANCE.convert(postService.updatePost(id.longValue(), PostMapper.INSTANCE.convert(post))), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }

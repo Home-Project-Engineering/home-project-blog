@@ -1,16 +1,11 @@
 package com.itacademy.blog.services.service.impl;
 
 
-import com.itacademy.blog.api.PostsApiController;
 import com.itacademy.blog.data.entity.User;
 import com.itacademy.blog.data.repository.UserRepo;
-import com.itacademy.blog.model.Post;
-import com.itacademy.blog.services.DTO.PostDTO;
 import com.itacademy.blog.services.DTO.UserDTO;
 import com.itacademy.blog.services.exception.AlreadyExistBlogException;
 import com.itacademy.blog.services.mapper.UserMapper;
-import com.itacademy.blog.services.query.EntitySpecificationService;
-import com.itacademy.blog.services.service.PostService;
 import com.itacademy.blog.services.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,11 +17,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityNotFoundException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 

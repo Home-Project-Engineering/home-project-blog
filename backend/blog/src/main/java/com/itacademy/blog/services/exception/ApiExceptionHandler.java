@@ -14,7 +14,7 @@ import javax.validation.ConstraintViolationException;
 public class ApiExceptionHandler {
 
     @ExceptionHandler(value = {EntityNotFoundException.class})
-    public ResponseEntity<Object> noSuchUserException(EntityNotFoundException e){
+    public ResponseEntity<Object> noSuchUserException(EntityNotFoundException e) {
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;
 
         Error error = new Error(
@@ -26,7 +26,7 @@ public class ApiExceptionHandler {
     }
 
     @ExceptionHandler(value = {ConstraintViolationException.class})
-    public ResponseEntity<Object> validationException(ConstraintViolationException e){
+    public ResponseEntity<Object> validationException(ConstraintViolationException e) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
         Error error = new Error(
@@ -36,19 +36,21 @@ public class ApiExceptionHandler {
         );
         return new ResponseEntity<>(error, httpStatus);
     }
+
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
-    public ResponseEntity<Object> validationException(MethodArgumentNotValidException e){
+    public ResponseEntity<Object> validationException(MethodArgumentNotValidException e) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
-     Error error = new Error(
-            e.getLocalizedMessage(),
-                    "400",
-                    httpStatus
+        Error error = new Error(
+                e.getLocalizedMessage(),
+                "400",
+                httpStatus
         );
         return new ResponseEntity<>(error, httpStatus);
     }
+
     @ExceptionHandler(value = {BaseBlogException.class})
-    public ResponseEntity<Object> unknownException(BaseBlogException e){
+    public ResponseEntity<Object> unknownException(BaseBlogException e) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
         Error error = new Error(
@@ -58,8 +60,9 @@ public class ApiExceptionHandler {
         );
         return new ResponseEntity<>(error, httpStatus);
     }
+
     @ExceptionHandler(value = {AlreadyExistBlogException.class})
-    public ResponseEntity<Object> alreadyExistException(AlreadyExistBlogException e){
+    public ResponseEntity<Object> alreadyExistException(AlreadyExistBlogException e) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
 
         Error error = new Error(

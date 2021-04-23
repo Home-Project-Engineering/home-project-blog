@@ -1,6 +1,5 @@
 package com.itacademy.blog.services.DTO;
 
-import com.itacademy.blog.data.entity.Post;
 import com.itacademy.blog.data.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
