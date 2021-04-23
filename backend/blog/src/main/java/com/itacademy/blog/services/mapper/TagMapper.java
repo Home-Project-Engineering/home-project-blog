@@ -3,6 +3,7 @@ package com.itacademy.blog.services.mapper;
 import com.itacademy.blog.data.entity.Tag;
 import com.itacademy.blog.services.DTO.TagDTO;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;

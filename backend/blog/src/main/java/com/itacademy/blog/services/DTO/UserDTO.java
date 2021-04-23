@@ -30,9 +30,9 @@ public class UserDTO {
 
 
     public enum RoleEnum {
-        GUEST("guest"),
 
-        USER("user"),
+
+        BLOGGER("user"),
 
         MODERATOR("moderator"),
 

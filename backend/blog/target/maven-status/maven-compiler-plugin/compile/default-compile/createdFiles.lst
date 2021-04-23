@@ -10,6 +10,7 @@ com\itacademy\blog\model\User$RoleEnum.class
 com\itacademy\blog\services\mapper\UserMapperImpl$1.class
 com\itacademy\blog\data\entity\Post$PostBuilder.class
 com\itacademy\blog\data\entity\Tag.class
+com\itacademy\blog\data\entity\Permission.class
 com\itacademy\blog\data\entity\User$RoleEnum.class
 com\itacademy\blog\api\PostsApi.class
 com\itacademy\blog\api\TagsApi.class
@@ -35,11 +36,13 @@ com\itacademy\blog\services\service\PostService.class
 com\itacademy\blog\services\mapper\PostMapperImpl.class
 com\itacademy\blog\api\PostsApiController.class
 com\itacademy\blog\data\entity\Post.class
+com\itacademy\blog\api\security\SecurityUser.class
 com\itacademy\blog\data\entity\Tag$TagBuilder.class
 com\itacademy\blog\api\mapper\UserMapperImpl$1.class
 com\itacademy\blog\data\repository\UserRepo.class
 com\itacademy\blog\api\UsersApiController.class
 com\itacademy\blog\services\DTO\CommentDTO$CommentDTOBuilder.class
+com\itacademy\blog\api\security\UserDetailsServiceImpl.class
 com\itacademy\blog\RFC3339DateFormat.class
 com\itacademy\blog\services\service\CommentService.class
 com\itacademy\blog\services\exception\AlreadyExistBlogException.class

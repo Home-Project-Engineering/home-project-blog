@@ -2,8 +2,11 @@ package com.itacademy.blog.data.entity;
 
 
 import lombok.*;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Entity
@@ -30,29 +33,27 @@ public class User {
     private String password;
 
     public enum RoleEnum {
-        GUEST("guest"),
 
-        USER("user"),
+        BLOGGER(Set.of( )),
 
-        MODERATOR("moderator"),
+        MODERATOR(Set.of(Permission.TAG_REMOVE, Permission.POST_UPDATE, Permission.POST_DELETE, Permission.COMMENTS_UPDATE, Permission.COMMENTS_DELETE)),
 
-        ADMIN("admin"),
+        ADMIN(Set.of( Permission.USER_MANAGEMENT, Permission.TAG_REMOVE, Permission.POST_UPDATE, Permission.POST_DELETE, Permission.COMMENTS_UPDATE, Permission.COMMENTS_DELETE)),
 
-        EXPERT("expert");
+        EXPERT(Set.of( ));
 
-        private final String value;
+        private final Set<Permission> permissions;
 
-        RoleEnum(String value) {
-            this.value = value;
+        RoleEnum(Set<Permission> permissions) {
+            this.permissions = permissions;
         }
-
-        public String getValue() {
-            return value;
+        public Set<Permission> getPermissions() {
+            return permissions;
         }
-
-        @Override
-        public String toString() {
-            return String.valueOf(value);
+        public Set<SimpleGrantedAuthority> getAuthorities() {
+            return getPermissions().stream()
+                    .map(permission -> new SimpleGrantedAuthority(permission.getPermission()))
+                    .collect(Collectors.toSet());
         }
     }
 

@@ -2,6 +2,7 @@ package com.itacademy.blog.api;
 
 import com.itacademy.blog.api.mapper.CommentMapper;
 import com.itacademy.blog.api.mapper.PostMapper;
+import com.itacademy.blog.api.mapper.UserMapper;
 import com.itacademy.blog.data.repository.PostRepo;
 import com.itacademy.blog.model.Comment;
 import com.itacademy.blog.model.Post;
@@ -13,11 +14,13 @@ import com.itacademy.blog.services.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.NativeWebRequest;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -50,21 +53,24 @@ public class PostsApiController implements PostsApi {
     }
 
     @Override
+    @PermitAll
     public ResponseEntity<Post> createPost(@Valid Post post) {
         PostDTO createPostDto = PostMapper.INSTANCE.convert(post);
         PostDTO readPostDto = postService.createPost(createPostDto);
 
         Post returnPost = PostMapper.INSTANCE.convert(readPostDto);
+        returnPost.setUser(UserMapper.INSTANCE.convert(readPostDto.getUser()));
         return new ResponseEntity<Post>(returnPost, HttpStatus.CREATED);
     }
 
 
     @Override
-    public ResponseEntity<Void> removePost(@PathVariable("post_id") BigDecimal id) {
+    @PreAuthorize("hasAuthority('posts:delete')")
+    public ResponseEntity<Void> removePost(@PathVariable("id") BigDecimal id) {
 
         Optional<PostDTO> optionalPostDTO = Optional.ofNullable(postService.deletePost(id.longValue()));
 
-        if (optionalPostDTO.isPresent()) {
+        if (!optionalPostDTO.isPresent()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -81,13 +87,13 @@ public class PostsApiController implements PostsApi {
         }
 
         filterMap.put("post.id", postId.toString());
-        filterMap.put("author.name", userName);
-        filterMap.put("author.id", userId);
+        filterMap.put("user.name", userName);
+        filterMap.put("user.id", userId);
 
 
 
-        List<Comment> comments = commentService.findComments(Optional.of(pageNum).orElse(1)
-                , Optional.of(pageSize).orElse(10), Optional.of(sort).orElse("-id")
+        List<Comment> comments = commentService.findComments(Optional.ofNullable(pageNum).orElse(1)
+                , Optional.ofNullable(pageSize).orElse(10), Optional.ofNullable(sort).orElse("-id")
                 , entitySpecificationService.getSpecification(filterMap));
 
         return comments.isEmpty() ? new ResponseEntity<>(HttpStatus.BAD_REQUEST) : new ResponseEntity<List<Comment>>(comments, HttpStatus.OK);
@@ -111,8 +117,8 @@ public class PostsApiController implements PostsApi {
         filterMap.put("user.id", userId);
 
 
-        List<Post> posts = postService.findPosts(Optional.of(pageNum).orElse(1)
-                , Optional.of(pageSize).orElse(10), Optional.of(sort).orElse("-id")
+        List<Post> posts = postService.findPosts(Optional.ofNullable(pageNum).orElse(1)
+                , Optional.ofNullable(pageSize).orElse(10), Optional.ofNullable(sort).orElse("-id")
                 , entitySpecificationService.getSpecification(filterMap));
 
         return posts.isEmpty() ? new ResponseEntity<>(HttpStatus.BAD_REQUEST) : new ResponseEntity<List<Post>>(posts, HttpStatus.OK);
@@ -137,9 +143,8 @@ public class PostsApiController implements PostsApi {
         return new ResponseEntity<>(returnPost, HttpStatus.OK);
     }
 
-    //to do
-    // If the user does not exist, return an error
     @Override
+    @PermitAll
     public ResponseEntity<Comment> createComment(BigDecimal postId, @Valid Comment comment) {
         CommentDTO createCommentDto = CommentMapper.INSTANCE.convert(comment);
         CommentDTO readCommentDto = commentService.createComment(postId.longValue(), createCommentDto);
@@ -150,11 +155,13 @@ public class PostsApiController implements PostsApi {
 
     //to do
     @Override
+    @PreAuthorize("hasAuthority('coment:update')")
     public ResponseEntity<Comment> updateComment(BigDecimal postId, BigDecimal id, @Valid Comment comment) {
         return null;
     }
 
     @Override
+    @PreAuthorize("hasAuthority('post:update')")
     public ResponseEntity<Post> updatePost(BigDecimal id, @Valid Post post) {
         PostDTO updatePostDto = PostMapper.INSTANCE.convert(post);
         PostDTO readPostDto = postService.updatePost(id.longValue(), updatePostDto);
@@ -167,8 +174,15 @@ public class PostsApiController implements PostsApi {
 
 
     @Override
+    @PreAuthorize("hasAuthority('comment:remove')")
     public ResponseEntity<Void> removeComment(BigDecimal postId, BigDecimal id) {
-        return null;
+
+        Optional<CommentDTO> optionalCommentDTO = Optional.ofNullable(commentService.deleteComment(postId.longValue(), id.longValue()));
+
+        if (!optionalCommentDTO.isPresent()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

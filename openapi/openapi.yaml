@@ -577,11 +577,12 @@ components:
           description: This is the level of User access to various functions.
           type: string
           enum:
-            - guest
-            - user
+            - blogger
             - moderator
             - admin
             - expert
+          default: blogger
+
 
     Post:
       description: A representation of Post entity.

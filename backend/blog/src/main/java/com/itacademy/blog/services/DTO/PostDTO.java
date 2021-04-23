@@ -24,7 +24,7 @@ public class PostDTO {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private OffsetDateTime createdOn;
 
-    private User author;
+    private User user;
 
     private String text;
 

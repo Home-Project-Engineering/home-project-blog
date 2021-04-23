@@ -21,7 +21,7 @@ public class Comment {
     private Long id;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    private User author;
+    private User user;
 
     private String text;
 

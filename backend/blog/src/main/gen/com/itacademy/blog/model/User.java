@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
  * A representation of User entity.
  */
 @ApiModel(description = "A representation of User entity.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-22T13:30:27.722673500+03:00[Europe/Kiev]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-23T09:06:38.204348900+03:00[Europe/Kiev]")
 public class User  implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -42,9 +42,7 @@ public class User  implements Serializable {
    * This is the level of User access to various functions.
    */
   public enum RoleEnum {
-    GUEST("guest"),
-    
-    USER("user"),
+    BLOGGER("blogger"),
     
     MODERATOR("moderator"),
     
@@ -80,7 +78,7 @@ public class User  implements Serializable {
   }
 
   @JsonProperty("role")
-  private RoleEnum role;
+  private RoleEnum role = RoleEnum.BLOGGER;
 
   public User id(BigDecimal id) {
     this.id = id;

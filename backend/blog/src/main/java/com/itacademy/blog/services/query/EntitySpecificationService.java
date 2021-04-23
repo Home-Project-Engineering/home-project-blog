@@ -29,5 +29,4 @@ public class EntitySpecificationService<T> {
         return Optional.of(filterSpecification).orElseThrow();
 
     }
-
 }

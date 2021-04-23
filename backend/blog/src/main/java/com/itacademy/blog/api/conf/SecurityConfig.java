@@ -1,45 +1,70 @@
 package com.itacademy.blog.api.conf;
 
-import com.itacademy.blog.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/**").hasAnyRole(User.RoleEnum.USER.getValue(),
-                                                                             User.RoleEnum.ADMIN.getValue(),
-                                                                             User.RoleEnum.EXPERT.getValue(),
-                                                                             User.RoleEnum.GUEST.getValue(),
-                                                                             User.RoleEnum.MODERATOR.getValue())
-                .antMatchers(HttpMethod.POST, "/api/**").hasAnyRole(
-                                                                             User.RoleEnum.USER.getValue(),
-                                                                             User.RoleEnum.ADMIN.getValue(),
-                                                                             User.RoleEnum.EXPERT.getValue(),
-                                                                             User.RoleEnum.MODERATOR.getValue())
-                .anyRequest()
-                .authenticated()
-                .and()
-                .httpBasic();
+
+    private final UserDetailsService userDetailsService;
+
+    @Autowired
+    public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
-    protected UserDetailsService userDetailsService() {
-        return super.userDetailsService();
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.NEVER)
+                .and()
+                    .csrf().disable()
+                    .authorizeRequests()
+                    .antMatchers(HttpMethod.POST, "/api/*/users").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/*/tags").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/*/tags/{Id:\\d+}").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/*/posts/{Id:\\d+}").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/*/tags").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/*/comments/{Id:\\d+}").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/*/comments").permitAll()
+                    .anyRequest()
+                    .authenticated()
+                .and()
+                    .httpBasic();
     }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) {
+        auth.authenticationProvider(daoAuthenticationProvider());
+    }
+
+
+    @Bean
     protected PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder(12);
+    }
+
+    @Bean
+    protected DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
+        return daoAuthenticationProvider;
     }
 }

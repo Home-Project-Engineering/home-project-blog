@@ -1,31 +1,47 @@
 package com.itacademy.blog.services.service.impl;
 
 
+import com.itacademy.blog.api.PostsApiController;
 import com.itacademy.blog.data.entity.User;
 import com.itacademy.blog.data.repository.UserRepo;
+import com.itacademy.blog.model.Post;
+import com.itacademy.blog.services.DTO.PostDTO;
 import com.itacademy.blog.services.DTO.UserDTO;
 import com.itacademy.blog.services.exception.AlreadyExistBlogException;
 import com.itacademy.blog.services.mapper.UserMapper;
+import com.itacademy.blog.services.query.EntitySpecificationService;
+import com.itacademy.blog.services.service.PostService;
 import com.itacademy.blog.services.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Entity;
 import javax.persistence.EntityNotFoundException;
-import java.util.Optional;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    UserRepo userRepo;
+    private final UserRepo userRepo;
+
+    private final PasswordEncoder passwordEncoder;
+
+
+
+
+
 
     @Override
     public UserDTO createUser(UserDTO createUserDto) {
@@ -33,6 +49,8 @@ public class UserServiceImpl implements UserService {
             throw new AlreadyExistBlogException("User with email" + createUserDto.getEmail() + " is already exists");
         } else {
             User entityToCreate = UserMapper.INSTANCE.convert(createUserDto);
+            entityToCreate.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
+            entityToCreate.setRole(User.RoleEnum.BLOGGER);
             userRepo.save(entityToCreate);
             return UserMapper.INSTANCE.convert(entityToCreate);
         }
@@ -102,4 +120,25 @@ public class UserServiceImpl implements UserService {
 
         return UserMapper.INSTANCE.convert(toDelete);
     }
+
+
+    public User getCurrentUserEntity() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String email;
+        if (principal instanceof UserDetails) {
+            email = ((UserDetails)principal).getUsername();
+        } else {
+            email = principal.toString();
+        }
+
+        return userRepo.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("User is not found"));
+
+    }
+
+    @Override
+    public UserDTO getCurrentUser(){
+        return UserMapper.INSTANCE.convert(getCurrentUserEntity());
+    }
+
+
 }

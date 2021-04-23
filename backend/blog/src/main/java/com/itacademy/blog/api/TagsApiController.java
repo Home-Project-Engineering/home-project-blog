@@ -8,6 +8,7 @@ import com.itacademy.blog.services.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -41,6 +42,7 @@ public class TagsApiController implements TagsApi {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('tags:remove')")
     public ResponseEntity<Void> removeTag(BigDecimal id) {
         Optional<TagDTO> optionalTagDTO = Optional.ofNullable(tagService.deleteTag(id.longValue()));
 
@@ -64,8 +66,8 @@ public class TagsApiController implements TagsApi {
         }
         filterMap.put("name", name);
 
-        List<Tag> tags = tagService.findAllTags(pageNum
-                , pageSize, sort
+        List<Tag> tags = tagService.findAllTags(Optional.ofNullable(pageNum).orElse(1)
+                , Optional.ofNullable(pageSize).orElse(50), Optional.ofNullable(sort).orElse("-id")
                 , entitySpecificationService.getSpecification(filterMap));
 
 

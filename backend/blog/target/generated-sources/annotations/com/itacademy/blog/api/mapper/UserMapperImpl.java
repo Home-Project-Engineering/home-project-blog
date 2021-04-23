@@ -3,11 +3,12 @@ package com.itacademy.blog.api.mapper;
 import com.itacademy.blog.model.User;
 import com.itacademy.blog.model.User.RoleEnum;
 import com.itacademy.blog.services.DTO.UserDTO;
+import java.math.BigDecimal;
 import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-04-22T13:30:44+0300",
+    date = "2021-04-24T00:54:00+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 15.0.2 (Oracle Corporation)"
 )
 public class UserMapperImpl implements UserMapper {
@@ -32,6 +33,27 @@ public class UserMapperImpl implements UserMapper {
     }
 
     @Override
+    public User convert(com.itacademy.blog.data.entity.User user) {
+        if ( user == null ) {
+            return null;
+        }
+
+        User user1 = new User();
+
+        if ( user.getId() != null ) {
+            user1.setId( BigDecimal.valueOf( user.getId() ) );
+        }
+        user1.setName( user.getName() );
+        user1.setFirstName( user.getFirstName() );
+        user1.setLastName( user.getLastName() );
+        user1.setEmail( user.getEmail() );
+        user1.setPassword( user.getPassword() );
+        user1.setRole( roleEnumToRoleEnum1( user.getRole() ) );
+
+        return user1;
+    }
+
+    @Override
     public User convert(UserDTO userDTO) {
         if ( userDTO == null ) {
             return null;
@@ -44,8 +66,9 @@ public class UserMapperImpl implements UserMapper {
         user.setFirstName( userDTO.getFirstName() );
         user.setLastName( userDTO.getLastName() );
         user.setEmail( userDTO.getEmail() );
-        user.setPassword( userDTO.getPassword() );
-        user.setRole( roleEnumToRoleEnum1( userDTO.getRole() ) );
+        user.setRole( roleEnumToRoleEnum2( userDTO.getRole() ) );
+
+        user.setPassword( "*****" );
 
         return user;
     }
@@ -58,9 +81,7 @@ public class UserMapperImpl implements UserMapper {
         com.itacademy.blog.services.DTO.UserDTO.RoleEnum roleEnum1;
 
         switch ( roleEnum ) {
-            case GUEST: roleEnum1 = com.itacademy.blog.services.DTO.UserDTO.RoleEnum.GUEST;
-            break;
-            case USER: roleEnum1 = com.itacademy.blog.services.DTO.UserDTO.RoleEnum.USER;
+            case BLOGGER: roleEnum1 = com.itacademy.blog.services.DTO.UserDTO.RoleEnum.BLOGGER;
             break;
             case MODERATOR: roleEnum1 = com.itacademy.blog.services.DTO.UserDTO.RoleEnum.MODERATOR;
             break;
@@ -74,7 +95,7 @@ public class UserMapperImpl implements UserMapper {
         return roleEnum1;
     }
 
-    protected RoleEnum roleEnumToRoleEnum1(com.itacademy.blog.services.DTO.UserDTO.RoleEnum roleEnum) {
+    protected RoleEnum roleEnumToRoleEnum1(com.itacademy.blog.data.entity.User.RoleEnum roleEnum) {
         if ( roleEnum == null ) {
             return null;
         }
@@ -82,9 +103,29 @@ public class UserMapperImpl implements UserMapper {
         RoleEnum roleEnum1;
 
         switch ( roleEnum ) {
-            case GUEST: roleEnum1 = RoleEnum.GUEST;
+            case BLOGGER: roleEnum1 = RoleEnum.BLOGGER;
             break;
-            case USER: roleEnum1 = RoleEnum.USER;
+            case MODERATOR: roleEnum1 = RoleEnum.MODERATOR;
+            break;
+            case ADMIN: roleEnum1 = RoleEnum.ADMIN;
+            break;
+            case EXPERT: roleEnum1 = RoleEnum.EXPERT;
+            break;
+            default: throw new IllegalArgumentException( "Unexpected enum constant: " + roleEnum );
+        }
+
+        return roleEnum1;
+    }
+
+    protected RoleEnum roleEnumToRoleEnum2(com.itacademy.blog.services.DTO.UserDTO.RoleEnum roleEnum) {
+        if ( roleEnum == null ) {
+            return null;
+        }
+
+        RoleEnum roleEnum1;
+
+        switch ( roleEnum ) {
+            case BLOGGER: roleEnum1 = RoleEnum.BLOGGER;
             break;
             case MODERATOR: roleEnum1 = RoleEnum.MODERATOR;
             break;

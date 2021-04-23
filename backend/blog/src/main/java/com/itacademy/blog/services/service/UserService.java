@@ -1,6 +1,7 @@
 package com.itacademy.blog.services.service;
 
 import com.itacademy.blog.data.entity.User;
+import com.itacademy.blog.services.DTO.PostDTO;
 import com.itacademy.blog.services.DTO.UserDTO;
 import com.itacademy.blog.services.exception.AlreadyExistBlogException;
 import com.itacademy.blog.services.exception.NotFoundBlogException;
@@ -20,4 +21,8 @@ public interface UserService {
     UserDTO getUserById(Long id) throws NotFoundBlogException;
 
     UserDTO deleteUser(Long id) throws NotFoundBlogException;
+
+    UserDTO getCurrentUser();
+
+    User getCurrentUserEntity();
 }

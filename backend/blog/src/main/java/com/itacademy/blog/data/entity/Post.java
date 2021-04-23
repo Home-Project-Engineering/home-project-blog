@@ -35,8 +35,8 @@ public class Post {
     @Column(columnDefinition = "DATE")
     private OffsetDateTime createdOn;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private User author;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private User user;
 
     private String text;
 

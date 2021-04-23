@@ -8,6 +8,8 @@ import com.itacademy.blog.services.DTO.PostDTO;
 import com.itacademy.blog.services.mapper.PostMapper;
 import com.itacademy.blog.services.mapper.TagMapper;
 import com.itacademy.blog.services.service.PostService;
+import com.itacademy.blog.services.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -20,12 +22,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
-    @Autowired
-    PostRepo postRepo;
-    @Autowired
-    TagRepo tagRepo;
+    private final PostRepo postRepo;
+    private final TagRepo tagRepo;
+    private final UserService userService;
+
 
     @Override
     public PostDTO createPost(PostDTO createPostDto) {
@@ -37,8 +40,8 @@ public class PostServiceImpl implements PostService {
                 entityToCreate.getTags().add(tagRepo.findByName(createPostDto.getTags().get(i).getName()).get());
             }
         }
-        /*entityToCreate.getTags().removeIf(tag -> tagRepo.findByName(tag.getName()).isPresent());*/
         entityToCreate.setCreatedOn(OffsetDateTime.now());
+        entityToCreate.setUser(userService.getCurrentUserEntity());
         postRepo.save(entityToCreate);
         return PostMapper.INSTANCE.convert(entityToCreate);
     }
@@ -83,10 +86,12 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<PostDTO> findPosts(Integer pageNumber, Integer pageSize, String sort, Specification<Post> specification) {
-        List<Post> toReturn = postRepo.findAll(specification, PageRequest
+        List<Post> posts = postRepo.findAll(specification, PageRequest
                 .of(pageNumber - 1, pageSize, getSort(sort))).toList();
-
-        return PostMapper.INSTANCE.convert(toReturn);
+/*
+        posts.forEach(post -> post.getUser().setPassword("********"));
+*/
+        return PostMapper.INSTANCE.convert(posts);
     }
     private Sort getSort(String sort) {
         StringBuilder str = new StringBuilder(sort);
