@@ -1,6 +1,6 @@
 package com.softserveinc.ita.home.home_project_blog.repository;
 
-import com.softserveinc.ita.home.home_project_blog.models.User;
+import com.softserveinc.ita.home.home_project_blog.repository.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -16,4 +16,6 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long>, 
     Page<User> findById(Long Id, Pageable paging);
 
     boolean existsByEmail(String email);
+
+    boolean existsByName(String name);
 }
