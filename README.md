@@ -17,7 +17,7 @@ We have the following roles defined in the application:
 - __MODERATOR__ - The role that can be used for managing existing posts and comments.
 - __BLOGGER__ - The default role for any registered user.
 - __ANY__ - Any possible user of the application including unregistered ones.
-- 
+
 Resources in the application must be restricted via the following role matrix.
 <details>
   <summary>Click to expand!</summary>
