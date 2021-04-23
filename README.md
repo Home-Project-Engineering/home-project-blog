@@ -43,6 +43,8 @@ Resources in the application must be restricted via the following role matrix.
 | See information about specific User.               | V     |           |         |     |
 | Update User information.                           | V     |           |         |     |
 | Delete User.                                       | V     |           |         |     |
+| See User Role.                                     | V     |           |         |     |
+| Update User Role.                                  | V     |           |         |     |
 | *__Posts__*                                        |       |           |         |     |
 | Create new Post.                                   | V     | V         | V       |     |
 | See all posts.                                     | V     | V         | V       | V   |
