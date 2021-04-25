@@ -5,15 +5,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.*;
+
 //import org.threeten.bp.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="user", schema = "public")
+@Table(name = "user", schema = "public")
 public class UserEntity {
 
     @Id
@@ -22,6 +25,7 @@ public class UserEntity {
     private BigDecimal id;
 
     @Column(name = "name")
+//    @Size(min=50, message="to short")
     private String name;
 
     @Column(name = "first_name")
@@ -34,13 +38,15 @@ public class UserEntity {
     private String email;
 
     @Column(name = "password")
+    @Pattern(regexp = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[0-9a-zA-Z]{6,}", message = "please use pattern - a-z+A-Z+0-9")
     private String password;
 
     @Column(name = "create_on")
     private OffsetDateTime createOn = OffsetDateTime.now();
 
-    @Column(name="update_on")
+    @Column(name = "update_on")
     private OffsetDateTime updateOn;
+
     /**
      * This is the level of user access to various functions
      */

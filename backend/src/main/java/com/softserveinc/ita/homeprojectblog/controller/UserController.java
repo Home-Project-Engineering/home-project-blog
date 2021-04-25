@@ -9,34 +9,36 @@ import com.softserveinc.ita.homeprojectblog.generated.model.Comment;
 import com.softserveinc.ita.homeprojectblog.generated.model.Post;
 import com.softserveinc.ita.homeprojectblog.generated.model.User;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
+//import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/1")
 public class UserController implements UsersApi {
 
     private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserMapperController userMapperController;
 
     @Override // +
     public ResponseEntity<User> createUser(User body) {
-        UserDto userDto = UserMapperController.INSTANCE.toUserDto(body);
-        userDto = userService.signUp(userDto);
-        return new ResponseEntity(UserMapperController.INSTANCE.toUser(userDto), HttpStatus.CREATED);
+        UserDto userDto = userMapperController.toUserDto(body);
+        userDto = userService.signUp( userDto);
+        return new ResponseEntity(userMapperController.toUser(userDto), HttpStatus.CREATED);
     }
 
     @Override
@@ -73,7 +75,7 @@ public class UserController implements UsersApi {
                     id + " in Database");
         }
 
-        return new ResponseEntity(UserMapperController.INSTANCE.toUser(userDto), HttpStatus.OK);
+        return new ResponseEntity(userMapperController.toUser(userDto), HttpStatus.OK);
     }
 
     @Override // +
@@ -86,7 +88,7 @@ public class UserController implements UsersApi {
                 Optional.ofNullable(pageNum).orElse(1),
                 Optional.ofNullable(pageSize).orElse(10));
 
-        Page<User> userPage = UserMapperController.INSTANCE.toUserPage(userDtoPage);
+        Page<User> userPage = userMapperController.toUserPage(userDtoPage);
 
         MultiValueMap<String, String> headers = new HttpHeaders();
         headers.add("X-Total-Count", String.valueOf(userPage.getTotalElements()));
@@ -132,9 +134,9 @@ public class UserController implements UsersApi {
 
     @Override // +
     public ResponseEntity<User> updateUser(@Valid User body, BigDecimal id) {
-        UserDto userDto = UserMapperController.INSTANCE.toUserDto(body);
+        UserDto userDto = userMapperController.toUserDto(body);
         userDto = userService.updateUser(userDto, id);
 
-        return new ResponseEntity(UserMapperController.INSTANCE.toUser(userDto), HttpStatus.OK);
+        return new ResponseEntity(userMapperController.toUser(userDto), HttpStatus.OK);
     }
 }

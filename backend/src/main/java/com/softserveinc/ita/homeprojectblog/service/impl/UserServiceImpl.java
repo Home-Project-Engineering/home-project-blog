@@ -5,6 +5,7 @@ import com.softserveinc.ita.homeprojectblog.entity.UserEntity;
 import com.softserveinc.ita.homeprojectblog.repository.UserRepository;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
 import com.softserveinc.ita.homeprojectblog.service.mapper.UserMapperService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +13,12 @@ import java.math.BigDecimal;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final UserMapperService userMapperService;
 
     @Override
     public Page<UserDto> getAllUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
@@ -28,12 +28,12 @@ public class UserServiceImpl implements UserService {
 
         if (name != null) {
             pageEntities = userRepository.findByName(name, PageRequest.of(pageNum, pageSize, getSorter(sort)));
-            return UserMapperService.INSTANCE.toUserDtoPage(pageEntities);
+            return userMapperService.toUserDtoPage(pageEntities);
         }
 
         pageEntities = userRepository.findAll(PageRequest.of(pageNum, pageSize, getSorter(sort)));
 
-        return UserMapperService.INSTANCE.toUserDtoPage(pageEntities);
+        return userMapperService.toUserDtoPage(pageEntities);
     }
 
     private Sort getSorter(String sort) {
@@ -54,14 +54,14 @@ public class UserServiceImpl implements UserService {
         if (optional.isPresent()) {
             userEntity = optional.get();
         }
-        return UserMapperService.INSTANCE.toUserDto(userEntity);
+        return userMapperService.toUserDto(userEntity);
     }
 
     @Override
     public UserDto signUp(UserDto bodyDto) {
-        UserEntity userEntity = UserMapperService.INSTANCE.toUserEntity(bodyDto);
+        UserEntity userEntity = userMapperService.toUserEntity(bodyDto);
         userRepository.save(userEntity);
-        return UserMapperService.INSTANCE.toUserDto(userEntity);
+        return userMapperService.toUserDto(userEntity);
     }
 
     @Override
@@ -78,11 +78,9 @@ public class UserServiceImpl implements UserService {
             bodyDto.setPassword(getUserById(id).getPassword());
 
 
-        UserEntity bodyEntity = UserMapperService.INSTANCE.toUserEntity(bodyDto);
+        UserEntity bodyEntity = userMapperService.toUserEntity(bodyDto);
         bodyEntity = userRepository.save(bodyEntity);
 
-        return UserMapperService.INSTANCE.toUserDto(bodyEntity);
+        return userMapperService.toUserDto(bodyEntity);
     }
-
-
 }

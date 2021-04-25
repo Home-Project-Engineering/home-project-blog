@@ -3,27 +3,35 @@ package com.softserveinc.ita.homeprojectblog.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+//@Validated
 public class UserDto {
 
     private BigDecimal id;
 
+//    @Size(min=50, message="to short")
     private String name;
 
     private String firstName;
 
     private String lastName;
 
+
     private String email;
 
+    @Pattern(regexp = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])", message = "please use pattern - a-z+A-Z+0-9")
+//    @Size(min = 8, max = 255, message = "Password should be between 8 and 200 characters.")
     private String password;
 
-//    private String createTime;
+//    private String createOn;
 
     /**
      * This is the level of user access to various functions
