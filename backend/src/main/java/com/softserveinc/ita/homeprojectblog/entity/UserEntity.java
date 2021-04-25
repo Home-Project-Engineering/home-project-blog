@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.*;
+//import org.threeten.bp.*;
 
 @Data
 @NoArgsConstructor
@@ -35,11 +36,11 @@ public class UserEntity {
     @Column(name = "password")
     private String password;
 
-//    @Column(name = "create_time")
-//    private OffsetDateTime createTime = OffsetDateTime.now();
+    @Column(name = "create_on")
+    private OffsetDateTime createOn = OffsetDateTime.now();
 
-    @Column(name="update_time")
-    private OffsetDateTime updateTime;
+    @Column(name="update_on")
+    private OffsetDateTime updateOn;
     /**
      * This is the level of user access to various functions
      */
