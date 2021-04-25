@@ -145,20 +145,8 @@
                             <apiPackage>com.softserveinc.ita.homeprojectblog.generated.api</apiPackage>
                             <modelPackage>com.softserveinc.ita.homeprojectblog.generated.model</modelPackage>
 
-<!--                            <templateDirectory>${project.basedir}/src/main/resources/templates</templateDirectory>-->
                             <configOptions>
                                 <interfaceOnly>true</interfaceOnly>
-
-                                <generateApis>true</generateApis>
-                                <generateApiTests>true</generateApiTests>
-                                <generateApiDocumentation>true</generateApiDocumentation>
-
-                                <generateModels>true</generateModels>
-                                <generateModelTests>true</generateModelTests>
-                                <generateModelDocumentation>true</generateModelDocumentation>
-
-                                <generateSupportingFiles>true</generateSupportingFiles>
-                                <supportingFilesToGenerate>true</supportingFilesToGenerate>
                             </configOptions>
                         </configuration>
                     </execution>
