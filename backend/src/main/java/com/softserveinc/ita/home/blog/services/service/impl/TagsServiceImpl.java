@@ -1,7 +1,7 @@
-package com.softserveinc.ita.home.blog.service.impl;
+package com.softserveinc.ita.home.blog.services.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.softserveinc.ita.home.blog.service.TagsService;
+import com.softserveinc.ita.home.blog.services.service.TagsService;
 import com.softserveinc.ita.home.blog.model.Tag;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;

@@ -1,8 +1,9 @@
-package com.softserveinc.ita.home.blog.service.impl;
+package com.softserveinc.ita.home.blog.services.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserveinc.ita.home.blog.model.User;
-import com.softserveinc.ita.home.blog.service.UsersService;
+import com.softserveinc.ita.home.blog.repository.UserRepository;
+import com.softserveinc.ita.home.blog.services.service.UsersService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,9 @@ public class UsersServiceImpl implements UsersService {
 //    private final ObjectMapper objectMapper;
 
     private static final Map<Long, User> CLIENT_REPOSITORY_MAP = new HashMap<>();
+
+    @Autowired
+    private UserRepository repository;
 
     private static final AtomicLong CLIENT_ID_HOLDER = new AtomicLong();
 

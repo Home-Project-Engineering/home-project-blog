@@ -2,7 +2,7 @@ package com.softserveinc.ita.home.blog.controller;
 
 import com.softserveinc.ita.home.blog.model.Error;
 import com.softserveinc.ita.home.blog.model.User;
-import com.softserveinc.ita.home.blog.service.UsersService;
+import com.softserveinc.ita.home.blog.services.service.UsersService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.List;
 
 

@@ -1,9 +1,9 @@
-package com.softserveinc.ita.home.blog.service.impl;
+package com.softserveinc.ita.home.blog.services.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.softserveinc.ita.home.blog.model.Comment;
 import com.softserveinc.ita.home.blog.model.Post;
-import com.softserveinc.ita.home.blog.service.PostsService;
+import com.softserveinc.ita.home.blog.services.service.PostsService;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

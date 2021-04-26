@@ -1,4 +1,4 @@
-package com.softserveinc.ita.home.blog.service;
+package com.softserveinc.ita.home.blog.services.service;
 
 import com.softserveinc.ita.home.blog.model.User;
 import io.swagger.annotations.*;
