@@ -1,14 +1,18 @@
 package com.itacademy.blog.api;
 
+import com.itacademy.blog.api.mapper.CommentMapper;
 import com.itacademy.blog.api.mapper.PostMapper;
 import com.itacademy.blog.api.mapper.UserMapper;
+import com.itacademy.blog.data.repository.CommentRepo;
 import com.itacademy.blog.model.Comment;
 import com.itacademy.blog.model.Post;
 import com.itacademy.blog.model.User;
+import com.itacademy.blog.services.DTO.CommentDTO;
 import com.itacademy.blog.services.DTO.PostDTO;
 import com.itacademy.blog.services.DTO.UserDTO;
-import com.itacademy.blog.services.exception.NotFoundBlogException;
+
 import com.itacademy.blog.services.query.EntitySpecificationService;
+import com.itacademy.blog.services.service.CommentService;
 import com.itacademy.blog.services.service.PostService;
 import com.itacademy.blog.services.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import javax.annotation.security.PermitAll;
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -38,14 +43,18 @@ public class UsersApiController implements UsersApi {
     private final NativeWebRequest request;
     private final UserService userService;
     private EntitySpecificationService entitySpecificationService;
+    private final CommentService commentService;
+    private final CommentRepo commentRepo;
 
 
     @Autowired
-    public UsersApiController(PostService postService, EntitySpecificationService entitySpecificationService, NativeWebRequest request, UserService userService) {
+    public UsersApiController(PostService postService, EntitySpecificationService entitySpecificationService, NativeWebRequest request, UserService userService, CommentService commentService, CommentRepo commentRepo) {
         this.postService = postService;
         this.request = request;
         this.userService = userService;
         this.entitySpecificationService = entitySpecificationService;
+        this.commentService = commentService;
+        this.commentRepo = commentRepo;
     }
 
     @Override
@@ -66,13 +75,8 @@ public class UsersApiController implements UsersApi {
     @Override
     @PreAuthorize("hasAuthority('users')")
     public ResponseEntity<Void> removeUser(BigDecimal id) {
-        Optional<UserDTO> optionalUserDTO = null;
+        Optional<UserDTO> optionalUserDTO =  Optional.ofNullable(userService.deleteUser(id.longValue()));
 
-        optionalUserDTO = Optional.ofNullable(userService.deleteUser(id.longValue()));
-
-        if (optionalUserDTO.isPresent()) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
         User returnUser = UserMapper.INSTANCE.convert(optionalUserDTO.get());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -97,7 +101,7 @@ public class UsersApiController implements UsersApi {
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("X-Total-Count", String.valueOf(users.getTotalElements()));
-        return users.isEmpty() ? new ResponseEntity<>(HttpStatus.BAD_REQUEST) : new ResponseEntity<List<User>>(users.toList(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<List<User>>(users.toList(), responseHeaders, HttpStatus.OK);
     }
 
     @Override
@@ -126,19 +130,54 @@ public class UsersApiController implements UsersApi {
     @Override
     @PermitAll
     public ResponseEntity<Comment> getCommentByCurrentUser(BigDecimal id) {
-        return null;
+        Map<String, String> filterMap = new HashMap<>();
+
+        filterMap.put("id", id.toString());
+        filterMap.put("user.id", userService.getCurrentUserEntity().getId().toString());
+
+
+        List<CommentDTO> comments = commentService.findComments(1
+                , 1, "id"
+                , entitySpecificationService.getSpecification(filterMap));
+        if (comments.isEmpty()) {
+/*
+            throw new NotFoundBlogException("Current user does not have a post with id:" + id + ".");
+*/
+        }
+        Comment commentToReturn = CommentMapper.INSTANCE.convert(comments.get(0));
+        return new ResponseEntity<>(commentToReturn, HttpStatus.OK);
     }
 
     @Override
     @PermitAll
     public ResponseEntity<List<Comment>> getCommentsByCurrentUser(@Valid BigDecimal id, @Valid String sort, @Valid Integer pageNum, @Valid Integer pageSize) {
-        return null;
+        Map<String, String> filterMap = new HashMap<>();
+
+        if (id != null) {
+            filterMap.put("id", id.toString());
+        } else {
+            filterMap.put("id", null);
+        }
+
+        filterMap.put("user.id", userService.getCurrentUserEntity().getId().toString());
+
+
+        List<Comment> comments = commentService.findComments(Optional.ofNullable(pageNum).orElse(1)
+                , Optional.ofNullable(pageSize).orElse(10), Optional.ofNullable(sort).orElse("-id")
+                , entitySpecificationService.getSpecification(filterMap));
+        if (comments.isEmpty()) {
+/*
+            throw new NotFoundBlogException("Current user does not have a comment with id:" + id + ".");
+*/
+        }
+        return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 
     @Override
     @PermitAll
     public ResponseEntity<User> getCurrentUser() {
         UserDTO userToReturn = userService.getCurrentUser();
+
 
         return new ResponseEntity<>(UserMapper.INSTANCE.convert(userToReturn), HttpStatus.OK);
     }
@@ -156,7 +195,9 @@ public class UsersApiController implements UsersApi {
                 , 1, "id"
                 , entitySpecificationService.getSpecification(filterMap));
         if (posts.isEmpty()) {
+/*
             throw new NotFoundBlogException("Current user does not have a post with id:" + id + ".");
+*/
         }
         Post postToReturn = PostMapper.INSTANCE.convert(posts.get(0));
         return new ResponseEntity<>(postToReturn, HttpStatus.OK);
@@ -184,7 +225,9 @@ public class UsersApiController implements UsersApi {
                 , Optional.ofNullable(pageSize).orElse(10), Optional.ofNullable(sort).orElse("-id")
                 , entitySpecificationService.getSpecification(filterMap));
         if (posts.isEmpty()) {
+/*
             throw new NotFoundBlogException("Current user does not have a post with id:" + id + ".");
+*/
         }
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
@@ -192,19 +235,40 @@ public class UsersApiController implements UsersApi {
     @Override
     @PermitAll
     public ResponseEntity<Void> removeCommentByCurrentUser(BigDecimal id) {
-        return null;
+        Long postId = commentRepo.findOneByUserIdAndId(userService.getCurrentUserEntity().getId(), id.longValue()).get().getPost().getId();
+        if (getCommentByCurrentUser(id).getBody() == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        Optional<CommentDTO> optionalCommentDTO = Optional.ofNullable(commentService.deleteComment(postId.longValue(), id.longValue()));
+        if (!optionalCommentDTO.isPresent()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override
     @PermitAll
     public ResponseEntity<Void> removePostByCurrentUser(BigDecimal id) {
-        return null;
+        if(getPostByCurrentUser(id).getBody() == null) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        Optional<PostDTO> optionalPostDTO = Optional.ofNullable(postService.deletePost(id.longValue()));
+
+        if (!optionalPostDTO.isPresent()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    //return Comment not list
     @Override
     @PermitAll
-    public ResponseEntity<List<Comment>> updateCommentByCurrentUser(BigDecimal id, @Valid Comment comment) {
-        return null;
+    public ResponseEntity<Comment> updateCommentByCurrentUser(BigDecimal id, @Valid Comment comment) {
+        Long post_id = commentRepo.findOneByUserIdAndId(userService.getCurrentUserEntity().getId(), id.longValue()).get().getPost().getId();
+        if (getCommentByCurrentUser(id).getBody() == null) {
+            return new ResponseEntity<>(CommentMapper.INSTANCE.convert(commentService.updateComment(post_id, id.longValue(), CommentMapper.INSTANCE.convert(comment))), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @Override

@@ -1,7 +1,7 @@
 com\itacademy\blog\services\service\impl\CommentServiceImpl.class
 com\itacademy\blog\api\mapper\TagMapperImpl.class
+com\itacademy\blog\api\exception\BaseBlogException.class
 com\itacademy\blog\api\mapper\CommentMapperImpl.class
-com\itacademy\blog\services\exception\Error.class
 com\itacademy\blog\services\query\EntitySpecificationService.class
 com\itacademy\blog\api\mapper\PostMapperImpl.class
 com\itacademy\blog\services\DTO\TagDTO.class
@@ -21,13 +21,11 @@ com\itacademy\blog\api\mapper\CommentMapper.class
 com\itacademy\blog\services\DTO\PostDTO$PostDTOBuilder.class
 com\itacademy\blog\services\mapper\UserMapperImpl.class
 com\itacademy\blog\data\entity\User.class
+com\itacademy\blog\api\mapper\CommentMapperImpl$1.class
 com\itacademy\blog\data\entity\User$UserBuilder.class
 com\itacademy\blog\model\Comment.class
 com\itacademy\blog\api\mapper\UserMapperImpl.class
-com\itacademy\blog\services\exception\NotFoundBlogException.class
-com\itacademy\blog\services\exception\BaseBlogException.class
 com\itacademy\blog\api\conf\SecurityConfig.class
-com\itacademy\blog\services\exception\ApiExceptionHandler.class
 com\itacademy\blog\services\mapper\UserMapper.class
 com\itacademy\blog\api\mapper\PostMapper.class
 com\itacademy\blog\config\HomeController.class
@@ -45,7 +43,6 @@ com\itacademy\blog\services\DTO\CommentDTO$CommentDTOBuilder.class
 com\itacademy\blog\api\security\UserDetailsServiceImpl.class
 com\itacademy\blog\RFC3339DateFormat.class
 com\itacademy\blog\services\service\CommentService.class
-com\itacademy\blog\services\exception\AlreadyExistBlogException.class
 com\itacademy\blog\services\service\impl\PostServiceImpl.class
 com\itacademy\blog\services\service\UserService.class
 com\itacademy\blog\config\OpenAPIDocumentationConfig.class
@@ -71,6 +68,7 @@ com\itacademy\blog\services\mapper\CommentMapperImpl.class
 com\itacademy\blog\model\Tag.class
 com\itacademy\blog\services\service\impl\UserServiceImpl.class
 com\itacademy\blog\data\repository\CommentRepo.class
+com\itacademy\blog\api\mapper\PostMapperImpl$1.class
 com\itacademy\blog\services\DTO\PostDTO.class
 com\itacademy\blog\services\DTO\UserDTO$RoleEnum.class
 com\itacademy\blog\services\mapper\PostMapper.class

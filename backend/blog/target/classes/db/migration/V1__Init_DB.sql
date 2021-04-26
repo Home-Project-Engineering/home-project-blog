@@ -49,9 +49,8 @@ create table users
 alter table if exists tags add constraint tag_name unique (name);
 alter table if exists users add constraint user_email unique (email);
 alter table if exists users add constraint user_name unique (name);
-alter table if exists comments add constraint comment_user_id foreign key (user_id) references users;
-alter table if exists comments add constraint comment_post foreign key (post_id) references posts;
-alter table if exists posts add constraint post_user foreign key (user_id) references users;
+alter table if exists comments add constraint comment_user_id foreign key (user_id) references users on delete set null;
+alter table if exists comments add constraint comment_post foreign key (post_id) references posts on delete set null;
+alter table if exists posts add constraint post_user foreign key (user_id) references users on delete set null ;
 alter table if exists post_tag add constraint post_tag_tags foreign key (tag_id) references tags;
 alter table if exists post_tag add constraint post_tag_posts foreign key (post_id) references posts;
-

@@ -26,7 +26,7 @@ import javax.validation.constraints.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-23T09:06:38.204348900+03:00[Europe/Kiev]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-25T23:02:54.036583200+03:00[Europe/Kiev]")
 @Validated
 @Api(value = "users", description = "the users API")
 public interface UsersApi {
@@ -437,12 +437,12 @@ public interface UsersApi {
      *         or The specified resource was not found. (status code 404)
      *         or The unknown error appeard. Check your payload or contact support. (status code 200)
      */
-    @ApiOperation(value = "Update Comment by Current User", nickname = "updateCommentByCurrentUser", notes = "Updates information on a Comment that exists in the system by the specified ID and Current User.", response = Comment.class, responseContainer = "List", authorizations = {
+    @ApiOperation(value = "Update Comment by Current User", nickname = "updateCommentByCurrentUser", notes = "Updates information on a Comment that exists in the system by the specified ID and Current User.", response = Comment.class, authorizations = {
         
         @Authorization(value = "basicAuth")
          }, tags={ "Current User Comments", })
     @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK", response = Comment.class, responseContainer = "List"),
+        @ApiResponse(code = 200, message = "OK", response = Comment.class),
         @ApiResponse(code = 400, message = "The payload contains an error.", response = Error.class),
         @ApiResponse(code = 404, message = "The specified resource was not found.", response = Error.class),
         @ApiResponse(code = 200, message = "The unknown error appeard. Check your payload or contact support.", response = Error.class) })
@@ -451,7 +451,7 @@ public interface UsersApi {
         produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<List<Comment>> updateCommentByCurrentUser(@ApiParam(value = "",required=true) @PathVariable("id") BigDecimal id,@ApiParam(value = "" ,required=true )  @Valid @RequestBody Comment comment) {
+    default ResponseEntity<Comment> updateCommentByCurrentUser(@ApiParam(value = "",required=true) @PathVariable("id") BigDecimal id,@ApiParam(value = "" ,required=true )  @Valid @RequestBody Comment comment) {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {

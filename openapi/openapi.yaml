@@ -183,7 +183,7 @@ paths:
         $ref: '#/components/requestBodies/CommentBody'
       responses:
         "200":
-          $ref: '#/components/responses/CommentsResponse'
+          $ref: '#/components/responses/CommentResponse'
         "400":
           $ref: '#/components/responses/ValidationError'
         "404":

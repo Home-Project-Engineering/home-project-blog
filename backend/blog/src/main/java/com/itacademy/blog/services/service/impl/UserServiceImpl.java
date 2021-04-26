@@ -4,7 +4,6 @@ package com.itacademy.blog.services.service.impl;
 import com.itacademy.blog.data.entity.User;
 import com.itacademy.blog.data.repository.UserRepo;
 import com.itacademy.blog.services.DTO.UserDTO;
-import com.itacademy.blog.services.exception.AlreadyExistBlogException;
 import com.itacademy.blog.services.mapper.UserMapper;
 import com.itacademy.blog.services.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -30,29 +29,20 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
 
-
-
-
-
     @Override
     public UserDTO createUser(UserDTO createUserDto) {
-        if (userRepo.findByEmail(createUserDto.getEmail()).isPresent()) {
-            throw new AlreadyExistBlogException("User with email" + createUserDto.getEmail() + " is already exists");
-        } else {
-            User entityToCreate = UserMapper.INSTANCE.convert(createUserDto);
-            entityToCreate.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
-            entityToCreate.setRole(User.RoleEnum.BLOGGER);
-            userRepo.save(entityToCreate);
-            return UserMapper.INSTANCE.convert(entityToCreate);
-        }
+        User entityToCreate = UserMapper.INSTANCE.convert(createUserDto);
+        entityToCreate.setPassword(passwordEncoder.encode(createUserDto.getPassword()));
+        entityToCreate.setRole(User.RoleEnum.BLOGGER);
+        userRepo.save(entityToCreate);
+        return UserMapper.INSTANCE.convert(entityToCreate);
     }
 
     @Override
     public UserDTO updateUser(Long id, UserDTO updateUserDto) {
 
-        Optional<User> optionalUser = userRepo.findById(id);
-        if (optionalUser.isPresent()) {
-            User fromDB = optionalUser.get();
+        User fromDB = userRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("User with id:" + id + " is not found"));
+
             if (updateUserDto.getName() != null) {
                 fromDB.setName(updateUserDto.getName());
             }
@@ -73,13 +63,9 @@ public class UserServiceImpl implements UserService {
             }
             userRepo.save(fromDB);
             return UserMapper.INSTANCE.convert(fromDB);
-
-        } else {
-            throw new EntityNotFoundException("User with id:" + id + " is not found");
-        }
     }
 
-    @Override   
+    @Override
     public Page<UserDTO> findUsers(Integer pageNumber, Integer pageSize, String sort, Specification<User> specification) {
         Page<User> toReturn = userRepo.findAll(specification, PageRequest
                 .of(pageNumber - 1, pageSize, getSort(sort)));
@@ -88,17 +74,18 @@ public class UserServiceImpl implements UserService {
     }
 
     private Sort getSort(String sort) {
-         StringBuilder str = new StringBuilder(sort);
+        StringBuilder str = new StringBuilder(sort);
 
-        if(str.charAt(0) == '-'){
+        if (str.charAt(0) == '-') {
             str.deleteCharAt(0);
-            return Sort.by(Sort.Direction.DESC, str.toString());}
+            return Sort.by(Sort.Direction.DESC, str.toString());
+        }
 
         return Sort.by(Sort.Direction.ASC, str.toString());
     }
 
     @Override
-    public UserDTO getUserById(Long id){
+    public UserDTO getUserById(Long id) {
         User toGet = userRepo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User with id:" + id + " is not found"));
         return UserMapper.INSTANCE.convert(toGet);
@@ -112,24 +99,19 @@ public class UserServiceImpl implements UserService {
         return UserMapper.INSTANCE.convert(toDelete);
     }
 
-
     public User getCurrentUserEntity() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String email;
         if (principal instanceof UserDetails) {
-            email = ((UserDetails)principal).getUsername();
+            email = ((UserDetails) principal).getUsername();
         } else {
             email = principal.toString();
         }
-
         return userRepo.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("User is not found"));
-
     }
 
     @Override
-    public UserDTO getCurrentUser(){
+    public UserDTO getCurrentUser() {
         return UserMapper.INSTANCE.convert(getCurrentUserEntity());
     }
-
-
 }

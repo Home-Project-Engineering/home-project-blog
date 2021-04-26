@@ -53,7 +53,7 @@ public class CommentServiceImpl implements CommentService {
             }
             throw new EntityNotFoundException("Empty text."); //Edit errorHandler;
         } else {
-            throw new EntityNotFoundException("Comment with id:" + id + " is not found");
+            throw new EntityNotFoundException("Comment with id:" + id + "in post with id:" + postId + " is not found.");
         }
     }
 
@@ -79,13 +79,13 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDTO getCommentById(Long postId, Long id) {
         Comment toGet = commentRepo.findOneByPostIdAndId(postId, id)
-                .orElseThrow(() -> new EntityNotFoundException("Comment with id:" + id + " is not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Comment with id:" + id + "in post with id:" + postId + " is not found."));
         return CommentMapper.INSTANCE.convert(toGet);
     }
 
     @Override
     public CommentDTO deleteComment(Long postId, Long id) {
-        Comment toDelete = commentRepo.findOneByPostIdAndId(postId, id).orElseThrow(() -> new EntityNotFoundException("Comment with id:" + id + " is not found"));
+        Comment toDelete = commentRepo.findOneByPostIdAndId(postId, id).orElseThrow(() -> new EntityNotFoundException("Comment with id:" + id + "in post with id:" + postId + " is not found."));
         commentRepo.deleteById(id);
 
         return CommentMapper.INSTANCE.convert(toDelete);

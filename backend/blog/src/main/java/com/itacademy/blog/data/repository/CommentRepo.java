@@ -10,5 +10,6 @@ import java.util.Optional;
 @Repository
 public interface CommentRepo extends JpaRepository<Comment, Long>, JpaSpecificationExecutor<Comment> {
 
-    Optional<Comment> findOneByPostIdAndId(Long postId, Long id);
+    Optional<Comment> findOneByPostIdAndId(Long post_Id, Long id);
+    Optional<Comment> findOneByUserIdAndId(Long user_id, Long id);
 }

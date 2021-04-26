@@ -32,8 +32,8 @@ public class PostServiceImpl implements PostService {
         Post entityToCreate = PostMapper.INSTANCE.convert(createPostDto);
         entityToCreate.getTags().removeIf(tag -> tagRepo.findByName(tag.getName()).isPresent());
 
-        for(int i = 0; i < createPostDto.getTags().size();i++){
-            if(tagRepo.findByName(createPostDto.getTags().get(i).getName()).isPresent()){
+        for (int i = 0; i < createPostDto.getTags().size(); i++) {
+            if (tagRepo.findByName(createPostDto.getTags().get(i).getName()).isPresent()) {
                 entityToCreate.getTags().add(tagRepo.findByName(createPostDto.getTags().get(i).getName()).get());
             }
         }
@@ -66,7 +66,7 @@ public class PostServiceImpl implements PostService {
                 fromDB.getTags().addAll(updatePostDto.getTags());
                 fromDB.getTags().removeIf(tag -> tagRepo.findByName(tag.getName()).isPresent());
 
-                for(int i = 0; i < updatePostDto.getTags().size();i++) {
+                for (int i = 0; i < updatePostDto.getTags().size(); i++) {
                     if (tagRepo.findByName(updatePostDto.getTags().get(i).getName()).isPresent()) {
                         fromDB.getTags().add(tagRepo.findByName(updatePostDto.getTags().get(i).getName()).get());
                     }
@@ -85,17 +85,16 @@ public class PostServiceImpl implements PostService {
     public List<PostDTO> findPosts(Integer pageNumber, Integer pageSize, String sort, Specification<Post> specification) {
         List<Post> posts = postRepo.findAll(specification, PageRequest
                 .of(pageNumber - 1, pageSize, getSort(sort))).toList();
-/*
-        posts.forEach(post -> post.getUser().setPassword("********"));
-*/
         return PostMapper.INSTANCE.convert(posts);
     }
+
     private Sort getSort(String sort) {
         StringBuilder str = new StringBuilder(sort);
 
-        if(str.charAt(0) == '-'){
+        if (str.charAt(0) == '-') {
             str.deleteCharAt(0);
-            return Sort.by(Sort.Direction.DESC, str.toString());}
+            return Sort.by(Sort.Direction.DESC, str.toString());
+        }
 
         return Sort.by(Sort.Direction.ASC, str.toString());
     }
@@ -112,5 +111,6 @@ public class PostServiceImpl implements PostService {
         Post toDelete = postRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("User with id:" + id + " is not found"));
         postRepo.deleteById(id);
 
-        return PostMapper.INSTANCE.convert(toDelete);    }
+        return PostMapper.INSTANCE.convert(toDelete);
+    }
 }
