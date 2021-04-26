@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,12 +21,15 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/**").hasRole(Role.ADMIN.name())
                 .antMatchers(HttpMethod.POST,"/api/0/users").permitAll() //or ANY?
-                .antMatchers(HttpMethod.PUT,"/api/0/users/**").hasRole(Role.ADMIN.name())
+                .antMatchers(HttpMethod.PUT,"/api/0/users/*").hasRole(Role.ADMIN.name())
                 .antMatchers(HttpMethod.DELETE,"/api/**").hasRole(Role.ADMIN.name())
                 .anyRequest()
                 .authenticated()
