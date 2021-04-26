@@ -1,9 +1,9 @@
-package com.softserveinc.ita.home.home_project_blog.Validation;
+package com.softserveinc.ita.home.home_project_blog.validation;
 
 public interface Const {
-    String NOT_FOUND_USER_BY_ID = "User with id=%d wasn't found in the table 'users'.";
-    String EMAIL_IS_NOT_UNIQUE = "Email is not unique.";
-    String NAME_IS_NOT_UNIQUE = "Name is not unique.";
+    String NOT_FOUND_USER_BY_ID = "User with id=%d wasn't found in the application.";
+    String EMAIL_IS_NOT_UNIQUE = "User with such email already exists.";
+    String NAME_IS_NOT_UNIQUE = "User with such name already exists.";
     String EMAIL_IS_NOT_VALID = "Email should be valid.";
     String WRONG_LENGTH = " must be between 1 and 255 characters.";
     String NAME_WRONG_LENGTH = "Name must be between 4 and 255 characters.";

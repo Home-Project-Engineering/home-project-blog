@@ -1,12 +1,12 @@
 package com.softserveinc.ita.home.home_project_blog.service;
 
-import com.softserveinc.ita.home.home_project_blog.Validation.EmailIsNotUniqueException;
-import com.softserveinc.ita.home.home_project_blog.Validation.NameIsNotUniqueException;
-import com.softserveinc.ita.home.home_project_blog.Validation.Const;
 import com.softserveinc.ita.home.home_project_blog.repository.entity.*;
 import com.softserveinc.ita.home.home_project_blog.repository.UserRepository;
 import com.softserveinc.ita.home.home_project_blog.service.dto.UserDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.UserMapperService;
+import com.softserveinc.ita.home.home_project_blog.validation.Const;
+import com.softserveinc.ita.home.home_project_blog.validation.EmailIsNotUniqueException;
+import com.softserveinc.ita.home.home_project_blog.validation.NameIsNotUniqueException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

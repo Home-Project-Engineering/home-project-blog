@@ -1,4 +1,4 @@
-package com.softserveinc.ita.home.home_project_blog.Validation;
+package com.softserveinc.ita.home.home_project_blog.validation;
 
 public class NameIsNotUniqueException extends RuntimeException {
     public NameIsNotUniqueException() {

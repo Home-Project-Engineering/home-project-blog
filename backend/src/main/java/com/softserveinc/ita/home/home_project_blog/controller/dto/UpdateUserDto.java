@@ -1,6 +1,6 @@
 package com.softserveinc.ita.home.home_project_blog.controller.dto;
 
-import com.softserveinc.ita.home.home_project_blog.Validation.Const;
+import com.softserveinc.ita.home.home_project_blog.validation.Const;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

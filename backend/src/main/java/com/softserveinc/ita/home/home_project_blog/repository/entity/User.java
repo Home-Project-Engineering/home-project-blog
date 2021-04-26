@@ -2,7 +2,7 @@ package com.softserveinc.ita.home.home_project_blog.repository.entity;
 
 //import io.swagger.annotations.ApiModelProperty;
 
-import com.softserveinc.ita.home.home_project_blog.Validation.Const;
+import com.softserveinc.ita.home.home_project_blog.validation.Const;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

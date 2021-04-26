@@ -1,9 +1,6 @@
-package com.softserveinc.ita.home.home_project_blog.Validation;
+package com.softserveinc.ita.home.home_project_blog.validation;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import org.hibernate.TypeMismatchException;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

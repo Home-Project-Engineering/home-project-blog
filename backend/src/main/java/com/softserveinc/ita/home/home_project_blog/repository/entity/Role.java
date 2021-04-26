@@ -9,7 +9,7 @@ public enum Role {
     ADMIN,//(Set.of(Permission.USERS_WRITE, Permission.USERS_READ)),
     MODERATOR,
     BLOGGER,
-    ANY;
+    ANY
 
 //    private final Set<Permission> permissions;
 //
