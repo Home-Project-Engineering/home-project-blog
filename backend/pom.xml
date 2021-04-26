@@ -6,7 +6,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.4.5</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
     <groupId>com.softserveinc.ita.home</groupId>
     <artifactId>home_project_blog</artifactId>
@@ -15,9 +15,10 @@
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
-        <vaadin.version>14.5.2</vaadin.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <org.projectlombok.version>1.18.20</org.projectlombok.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
     </properties>
     <dependencies>
         <dependency>
@@ -28,27 +29,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.security</groupId>-->
-<!--            <artifactId>spring-security-config</artifactId>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.security</groupId>-->
-<!--            <artifactId>spring-security-web</artifactId>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!--		<dependency>-->
-        <!--			<groupId>com.vaadin</groupId>-->
-        <!--			<artifactId>vaadin-spring-boot-starter</artifactId>-->
-        <!--		</dependency>-->
-        <!--		<dependency>-->
-        <!--			<groupId>org.liquibase</groupId>-->
-        <!--			<artifactId>liquibase-core</artifactId>-->
-        <!--		</dependency>-->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -80,22 +64,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!--		<dependency>-->
-        <!--			<groupId>org.hibernate.validator</groupId>-->
-        <!--			<artifactId>hibernate-validator</artifactId>-->
-        <!--			<version>7.0.1.Final</version>-->
-        <!--		</dependency>-->
-        <!--		<dependency>-->
-        <!--			<groupId>javax.validation</groupId>-->
-        <!--			<artifactId>validation-api</artifactId>-->
-        <!--			<version>2.0.1.Final</version>-->
-        <!--		</dependency>-->
-        <!--		<dependency>-->
-        <!--			<groupId>org.glassfish</groupId>-->
-        <!--			<artifactId>javax.el</artifactId>-->
-        <!--			<version>3.0.0</version>-->
-        <!--		</dependency>-->
-
         <!--	for correct time in json-->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -105,28 +73,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        <!--		<dependency>-->
-        <!--			<groupId>io.swagger</groupId>-->
-        <!--			<artifactId>swagger-annotations</artifactId>-->
-        <!--			<version>1.6.2</version>-->
-        <!--		</dependency>-->
-        <!--		<dependency>-->
-        <!--			<groupId>org.springframework.security</groupId>-->
-        <!--			<artifactId>spring-security-test</artifactId>-->
-        <!--			<scope>test</scope>-->
-        <!--		</dependency>-->
     </dependencies>
-    <!--	<dependencyManagement>-->
-    <!--		<dependencies>-->
-    <!--			<dependency>-->
-    <!--				<groupId>com.vaadin</groupId>-->
-    <!--				<artifactId>vaadin-bom</artifactId>-->
-    <!--				<version>${vaadin.version}</version>-->
-    <!--				<type>pom</type>-->
-    <!--				<scope>import</scope>-->
-    <!--			</dependency>-->
-    <!--		</dependencies>-->
-    <!--	</dependencyManagement>-->
 
     <build>
         <plugins>
@@ -145,7 +92,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>11</source>
                     <target>11</target>
@@ -159,7 +106,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok-mapstruct-binding</artifactId>
-                            <version>0.2.0</version>
+                            <version>${lombok-mapstruct-binding.version}</version>
                         </path>
                         <!-- Mapstruct should follow the lombok path(s) -->
                         <path>
@@ -172,33 +119,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <!--	<profiles>-->
-    <!--		<profile>-->
-    <!--			<id>production</id>-->
-    <!--			<build>-->
-    <!--				<plugins>-->
-    <!--					<plugin>-->
-    <!--						<groupId>com.vaadin</groupId>-->
-    <!--						<artifactId>vaadin-maven-plugin</artifactId>-->
-    <!--						<version>${vaadin.version}</version>-->
-    <!--						<executions>-->
-    <!--							<execution>-->
-    <!--								<id>frontend</id>-->
-    <!--								<phase>compile</phase>-->
-    <!--								<goals>-->
-    <!--									<goal>prepare-frontend</goal>-->
-    <!--									<goal>build-frontend</goal>-->
-    <!--								</goals>-->
-    <!--								<configuration>-->
-    <!--									<productionMode>true</productionMode>-->
-    <!--								</configuration>-->
-    <!--							</execution>-->
-    <!--						</executions>-->
-    <!--					</plugin>-->
-    <!--				</plugins>-->
-    <!--			</build>-->
-    <!--		</profile>-->
-    <!--	</profiles>-->
 
 </project>
