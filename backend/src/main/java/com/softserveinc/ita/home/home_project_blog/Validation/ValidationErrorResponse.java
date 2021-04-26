@@ -1,4 +1,4 @@
-package com.softserveinc.ita.home.home_project_blog.ExceptionHandling;
+package com.softserveinc.ita.home.home_project_blog.Validation;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

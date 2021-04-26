@@ -1,11 +1,11 @@
-package com.softserveinc.ita.home.home_project_blog.controllers;
+package com.softserveinc.ita.home.home_project_blog.controller;
 
-import com.softserveinc.ita.home.home_project_blog.dto.CreateUserDto;
-import com.softserveinc.ita.home.home_project_blog.dto.UpdateUserDto;
-import com.softserveinc.ita.home.home_project_blog.dto.UserDto;
-import com.softserveinc.ita.home.home_project_blog.mappers.UserMapper;
+import com.softserveinc.ita.home.home_project_blog.controller.dto.UpdateUserDto;
+import com.softserveinc.ita.home.home_project_blog.controller.dto.CreateUserDto;
+import com.softserveinc.ita.home.home_project_blog.controller.dto.ViewUserDto;
+import com.softserveinc.ita.home.home_project_blog.controller.mapper.UserMapperController;
 import com.softserveinc.ita.home.home_project_blog.service.IUserService;
-import com.softserveinc.ita.home.home_project_blog.models.User;
+import com.softserveinc.ita.home.home_project_blog.service.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +17,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import java.util.List;
 
 @Validated
@@ -26,10 +25,10 @@ import java.util.List;
 @RequestMapping(path = "/api/0/users", produces = "application/json")
 public class UsersController {
     private final IUserService userService;
-    private final UserMapper mapper;
+    private final UserMapperController mapper;
 
     @GetMapping(produces = "application/json")
-    public ResponseEntity<List<UserDto>> getAllUsers(
+    public ResponseEntity<List<ViewUserDto>> getAllUsers(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String name,
             @RequestParam(defaultValue = "0") Integer page_num,
@@ -37,7 +36,7 @@ public class UsersController {
             @RequestParam(defaultValue = "-id") String sort
     ) {
         Pageable paging = userService.pagination(page_num, page_size, sort);
-        Page<User> pagedResult;
+        Page<UserDto> pagedResult;
         if ((name != null) && (id != null)) {
             pagedResult = userService.getByNameAndId(name, id, paging);
         } else if (name != null) {
@@ -51,47 +50,36 @@ public class UsersController {
         responseHeaders.set("X-Total-Count",
                 String.valueOf(pagedResult.getTotalElements()));
 
-        List<UserDto> users = mapper.toUserDtos(pagedResult.getContent());
+        List<ViewUserDto> users = mapper.toViewUserDtos(pagedResult.getContent());
         return new ResponseEntity<>(users, responseHeaders, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")
-    public ResponseEntity<UserDto> getUserById(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(mapper.toUserDto(userService.getById(id)), HttpStatus.OK);
+    public ResponseEntity<ViewUserDto> getUserById(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(mapper.toViewUserDto(userService.getById(id)), HttpStatus.OK);
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<User> signUp(@Valid @RequestBody CreateUserDto user) {
-        return new ResponseEntity<>(userService.save(mapper.signUpToUser(user)), HttpStatus.CREATED);
+    public ResponseEntity<UserDto> signUp(@Valid @RequestBody CreateUserDto user) {
+        return new ResponseEntity<>(userService.save(mapper.signUpToUserDto(user)), HttpStatus.CREATED);
     }
 
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<User> updateUser(@PathVariable Long id,
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id,
                                            @Valid @RequestBody UpdateUserDto user) {
-        return new ResponseEntity<>(userService.update(id, mapper.UpdateToUser(user)), HttpStatus.OK);
+        return new ResponseEntity<>(userService.update(id, mapper.UpdateToUserDto(user)), HttpStatus.OK);
     }
 
-//    @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
-//    public ResponseEntity<User> updateUser( @PathVariable Long id,
-//                                            @RequestBody CreateUserDto user) {
-//        Optional<User> newUser = userService.update(id, mapper.signUpToUser(user));
-//        return newUser.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-//                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-//new ResponseError("404","User with id=\""+id+"\" hasn't been found."
-//        if (Objects.isNull(userService.update(longId))) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//    }
-
     @DeleteMapping(path = "/{id}", produces = "application/json")
-    public ResponseEntity<User> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<UserDto> deleteUser(@PathVariable Long id) {
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
     @GetMapping(path = "/admin")
-    public ResponseEntity<List<User>> getAllUsersWithPass(
+    public ResponseEntity<List<UserDto>> getAllUsersWithPass(
             @Valid @RequestParam(defaultValue = "-id") String sort
     ) {
         return new ResponseEntity<>(userService.findAll(0, 100, sort).getContent(), HttpStatus.OK);
