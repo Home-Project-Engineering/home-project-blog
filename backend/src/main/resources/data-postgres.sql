@@ -5,5 +5,6 @@ INSERT INTO users(name, firstName, lastName, email, password, role) VALUES('Katy
 INSERT INTO users(name, firstName, lastName, email, password, role) VALUES('Roma', 'Roman', 'Kandibur', 'roma@gmail.com', 'Um9tYVJvbWE=', 'BLOGGER');
 INSERT INTO users(name, firstName, lastName, email, password, role) VALUES('Max', 'Maxim', 'Risenko', 'max@gmail.com', 'TWF4TWF4TWF4', 'MODERATOR');
 INSERT INTO users(name, firstName, lastName, email, password, role) VALUES('Sasha', 'Alexandr', 'Zvenigorodskiy', 'sanya@gmail.com', 'U2FzaGFTYXNoYQ==', 'BLOGGER');
-INSERT INTO users(name, firstName, lastName, email, password, role) VALUES('Oleg', 'Oleg', 'Miheev', 'oleg@gmail.com', 'T2xlZ09sZWc=', 'ADMIN');
+INSERT INTO users(name, firstName, lastName, email, password, role) VALUES('Oleg', 'Oleg', 'Miheev', 'oleg@gmail.com', '$2a$12$ZnB7X8iJ9wBi5KFON6vEo.0gtKJcxB0UDS4M0qcE144EGyZlY6uQK', 'ADMIN');
+INSERT INTO users(name, firstName, lastName, email, password, role) VALUES('Lida123', 'Lidia', 'Kalakutskaya', 'lida123@gmail.com', '$2a$12$ZnB7X8iJ9wBi5KFON6vEo.0gtKJcxB0UDS4M0qcE144EGyZlY6uQK', 'ADMIN');
 --     ADMIN, MODERATOR, BLOGGER, ANY

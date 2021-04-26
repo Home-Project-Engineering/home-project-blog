@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends PagingAndSortingRepository<User, Long>, JpaSpecificationExecutor<User> {
     Page<User> findByNameAndId(String name, Long id, Pageable paging);
@@ -14,6 +16,8 @@ public interface UserRepository extends PagingAndSortingRepository<User, Long>, 
     Page<User> findByName(String name, Pageable paging);
 
     Page<User> findById(Long Id, Pageable paging);
+
+    Optional<User> findByEmail(String email);
 
     boolean existsByEmail(String email);
 

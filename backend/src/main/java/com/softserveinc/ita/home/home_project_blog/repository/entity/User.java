@@ -12,7 +12,6 @@ import org.springframework.validation.annotation.Validated;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Data
@@ -48,7 +47,6 @@ public class User {
     @NotNull
     @Size(min = 8, max = 255, message = Const.WRONG_PASSWORD)
     @Column(nullable = false)
-    @Pattern(regexp = Const.PASSWORD_PATTERN)
     private String password;
 
     @NotNull
@@ -56,43 +54,3 @@ public class User {
     @Column(length = 10, nullable = false)
     private Role role;
 }
-/*
-    public static enum RoleEnum {
-        GUEST("guest"),
-        USER("user"),
-        MODERATOR("moderator"),
-        ADMIN("admin"),
-        EXPERT("expert");
-
-        private String value;
-
-        private RoleEnum(String value) {
-            this.value = value;
-        }
-
-        @JsonValue
-        public String getValue() {
-            return this.value;
-        }
-
-        public String toString() {
-            return String.valueOf(this.value);
-        }
-
-        @JsonCreator
-        public static User.RoleEnum fromValue(String value) {
-            User.RoleEnum[] var1 = values();
-            int var2 = var1.length;
-
-            for (int var3 = 0; var3 < var2; ++var3) {
-                User.RoleEnum b = var1[var3];
-                if (b.value.equals(value)) {
-                    return b;
-                }
-            }
-
-            throw new IllegalArgumentException("Unexpected value '" + value + "'");
-        }
-    }
-}
-*/

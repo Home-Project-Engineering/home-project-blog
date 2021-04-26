@@ -64,29 +64,21 @@ public class UsersController {
 
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<UserDto> signUp(@Valid @RequestBody CreateUserDto user) {
-        return new ResponseEntity<>(userService.save(mapper.signUpToUserDto(user)), HttpStatus.CREATED);
+    public ResponseEntity<ViewUserDto> signUp(@Valid @RequestBody CreateUserDto user) {
+        return new ResponseEntity<>(mapper.toViewUserDto(userService.save(mapper.signUpToUserDto(user))), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAuthority('users:write')")
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long id,
+    public ResponseEntity<ViewUserDto> updateUser(@PathVariable Long id,
                                               @Valid @RequestBody UpdateUserDto user) {
-        return new ResponseEntity<>(userService.update(id, mapper.UpdateToUserDto(user)), HttpStatus.OK);
+        return new ResponseEntity<>(mapper.toViewUserDto(userService.update(id, mapper.UpdateToUserDto(user))), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('users:write')")
     @DeleteMapping(path = "/{id}", produces = "application/json")
-    public ResponseEntity<UserDto> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<ViewUserDto> deleteUser(@PathVariable Long id) {
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-
-    @GetMapping(path = "/admin")
-    public ResponseEntity<List<UserDto>> getAllUsersWithPass(
-            @Valid @RequestParam(defaultValue = "-id") String sort
-    ) {
-        return new ResponseEntity<>(userService.findAll(0, 100, sort).getContent(), HttpStatus.OK);
     }
 }
