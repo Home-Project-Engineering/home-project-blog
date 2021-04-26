@@ -4,6 +4,7 @@ import com.softserveinc.ita.home.home_project_blog.repository.entity.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -16,6 +17,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class BasicConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -27,10 +29,7 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers(HttpMethod.GET,"/api/**").hasRole(Role.ADMIN.name())
-                .antMatchers(HttpMethod.POST,"/api/0/users").permitAll() //or ANY?
-                .antMatchers(HttpMethod.PUT,"/api/0/users/*").hasRole(Role.ADMIN.name())
-                .antMatchers(HttpMethod.DELETE,"/api/**").hasRole(Role.ADMIN.name())
+                .antMatchers(HttpMethod.POST, "/api/0/users").permitAll() //hasAnyAuthority() //or ANY?
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -44,28 +43,28 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
                 User.builder()
                         .username("admin")
                         .password(passwordEncoder().encode("admin"))
-                        .roles(Role.ADMIN.name())
+                        .authorities(Role.ADMIN.getAuthorities())
                         .build(),
                 User.builder()
                         .username("user")
                         .password(passwordEncoder().encode("user"))
-                        .roles(Role.ANY.name())
+                        .authorities(Role.ANY.getAuthorities())
                         .build(),
                 User.builder()
                         .username("blogger")
                         .password(passwordEncoder().encode("blogger"))
-                        .roles(Role.BLOGGER.name())
+                        .authorities(Role.BLOGGER.getAuthorities())
                         .build(),
                 User.builder()
                         .username("moderator")
                         .password(passwordEncoder().encode("moderator"))
-                        .roles(Role.MODERATOR.name())
+                        .authorities(Role.MODERATOR.getAuthorities())
                         .build()
         );
     }
 
     @Bean
-    protected PasswordEncoder passwordEncoder(){
+    protected PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
 

@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,7 @@ public class UsersController {
     private final IUserService userService;
     private final UserMapperController mapper;
 
+    @PreAuthorize("hasAuthority('users:read')")
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<ViewUserDto>> getAllUsers(
             @RequestParam(required = false) Long id,
@@ -54,6 +56,7 @@ public class UsersController {
         return new ResponseEntity<>(users, responseHeaders, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('users:read')")
     @GetMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<ViewUserDto> getUserById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(mapper.toViewUserDto(userService.getById(id)), HttpStatus.OK);
@@ -65,12 +68,14 @@ public class UsersController {
         return new ResponseEntity<>(userService.save(mapper.signUpToUserDto(user)), HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority('users:write')")
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<UserDto> updateUser(@PathVariable Long id,
-                                           @Valid @RequestBody UpdateUserDto user) {
+                                              @Valid @RequestBody UpdateUserDto user) {
         return new ResponseEntity<>(userService.update(id, mapper.UpdateToUserDto(user)), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('users:write')")
     @DeleteMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<UserDto> deleteUser(@PathVariable Long id) {
         userService.delete(id);
@@ -84,34 +89,4 @@ public class UsersController {
     ) {
         return new ResponseEntity<>(userService.findAll(0, 100, sort).getContent(), HttpStatus.OK);
     }
-
-
-    // @RequestParam(required = false, value = "id") Long id,
-    //@RequestParam(required = false, value = "name") String name
-//    ) {
-        /*
-        if (!StringUtils.isEmpty(id)) {
-            ResponseEntity<User> resp = getUserById(id);
-            if (resp.hasBody()) {
-                List<User> users = new ArrayList<User>();
-                users.add(resp.getBody());
-                return new ResponseEntity<List<User>>(users, HttpStatus.OK);
-            }
-            return new ResponseEntity<List<User>>(resp.getStatusCode());
-        }
-        if (!StringUtils.isEmpty(name)) {
-            List<User> usersByName = userService.getByName(name);
-//            if (optUser.isPresent()) {
-////            for (User user : users) {
-////                if (user.getName().equalsIgnoreCase(name)) {
-//                    List<User> users = new ArrayList<User>();
-//                    users.add(optUser.get());
-                    return new ResponseEntity<List<User>>( usersByName, HttpStatus.OK);
-            }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }*/
-    //   var users = (List<User>) userService.findAll();
-//        return new ResponseEntity<List<User>>(userService.findAll(), HttpStatus.OK);
-//    }
-
 }
