@@ -23,11 +23,10 @@ public class CommentEntity {
     private String text;
 
     @ManyToOne(cascade = CascadeType.ALL)
-//    @Column(name = "post_id")
     private PostEntity post;
 
-    @OneToOne
-//    @Column(name = "user_id")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
     @Column(name = "create_on")

@@ -39,4 +39,3 @@ src/main/resources/test.yaml
 
 ### generated code ###
 src/main/java/com/softserveinc/ita/homeprojectblog/generated/*
-#src/main/java/com/softserveinc/ita/homeprojectblog/exceptions/*

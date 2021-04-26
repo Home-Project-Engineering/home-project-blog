@@ -36,7 +36,7 @@ public class UserGlobalExceptionHandler {
         return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
     }
 
-/*    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ConstraintViolationException.class)
     public Map<String, String> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
@@ -47,5 +47,5 @@ public class UserGlobalExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
         return errors;
-    }*/
+    }
 }

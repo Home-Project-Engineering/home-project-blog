@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -27,12 +29,10 @@ public class PostEntity {
     @Column(name = "preview_attachment")
     private String previewAttachment;
 
-    @OneToOne
-//    @Column(name = "tags_id")
-    private TagEntity tag;
+    @ManyToOne
+    private Collection<TagEntity> tags;
 
     @ManyToOne
-//    @Column(name = "user_id")
     private UserEntity user;
 
     @Column(name = "create_on")
