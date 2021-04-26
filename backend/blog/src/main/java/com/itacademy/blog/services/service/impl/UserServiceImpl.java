@@ -41,28 +41,33 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO updateUser(Long id, UserDTO updateUserDto) {
 
-        User fromDB = userRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("User with id:" + id + " is not found"));
-
-            if (updateUserDto.getName() != null) {
+        Optional<User> optionalUser = userRepo.findById(id);
+        if (optionalUser.isPresent()) {
+            User fromDB = optionalUser.get();
+            if (updateUserDto.getName() != null && !updateUserDto.getName().equals(fromDB.getName())) {
                 fromDB.setName(updateUserDto.getName());
             }
-            if (updateUserDto.getFirstName() != null) {
+            if (updateUserDto.getFirstName() != null && !updateUserDto.getFirstName().equals(fromDB.getFirstName())) {
                 fromDB.setFirstName(updateUserDto.getFirstName());
             }
 
-            if (updateUserDto.getLastName() != null) {
+            if (updateUserDto.getLastName() != null && !updateUserDto.getLastName().equals(fromDB.getLastName())) {
                 fromDB.setLastName(updateUserDto.getLastName());
             }
 
-            if (updateUserDto.getEmail() != null) {
+            if (updateUserDto.getEmail() != null && !updateUserDto.getEmail().equals(fromDB.getEmail())) {
                 fromDB.setEmail(updateUserDto.getEmail());
             }
 
-            if (updateUserDto.getPassword() != null) {
-                fromDB.setPassword(updateUserDto.getPassword());
+            if (updateUserDto.getPassword() != null && !updateUserDto.getPassword().equals(fromDB.getPassword())) {
+                fromDB.setPassword(passwordEncoder.encode(updateUserDto.getPassword()));
             }
             userRepo.save(fromDB);
             return UserMapper.INSTANCE.convert(fromDB);
+
+        } else {
+            throw new EntityNotFoundException("User with id:" + id + " is not found");
+        }
     }
 
     @Override

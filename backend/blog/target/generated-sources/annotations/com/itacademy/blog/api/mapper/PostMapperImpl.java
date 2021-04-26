@@ -1,10 +1,13 @@
 package com.itacademy.blog.api.mapper;
 
 import com.itacademy.blog.data.entity.Tag;
+import com.itacademy.blog.data.entity.Tag.TagBuilder;
+import com.itacademy.blog.data.entity.User.UserBuilder;
 import com.itacademy.blog.model.Post;
 import com.itacademy.blog.model.User;
 import com.itacademy.blog.model.User.RoleEnum;
 import com.itacademy.blog.services.DTO.PostDTO;
+import com.itacademy.blog.services.DTO.PostDTO.PostDTOBuilder;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +15,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-04-25T23:17:27+0300",
+    date = "2021-04-26T17:38:16+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 15.0.2 (Oracle Corporation)"
 )
 public class PostMapperImpl implements PostMapper {
@@ -23,20 +26,20 @@ public class PostMapperImpl implements PostMapper {
             return null;
         }
 
-        PostDTO postDTO = new PostDTO();
+        PostDTOBuilder postDTO = PostDTO.builder();
 
-        postDTO.setUser( userToUser( post.getUser() ) );
+        postDTO.user( userToUser( post.getUser() ) );
         if ( post.getId() != null ) {
-            postDTO.setId( post.getId().longValue() );
+            postDTO.id( post.getId().longValue() );
         }
-        postDTO.setTags( tagListToTagList( post.getTags() ) );
-        postDTO.setCreatedOn( post.getCreatedOn() );
-        postDTO.setText( post.getText() );
-        postDTO.setTitle( post.getTitle() );
-        postDTO.setPreviewAttachment( post.getPreviewAttachment() );
-        postDTO.setUpdatedOn( post.getUpdatedOn() );
+        postDTO.tags( tagListToTagList( post.getTags() ) );
+        postDTO.createdOn( post.getCreatedOn() );
+        postDTO.text( post.getText() );
+        postDTO.title( post.getTitle() );
+        postDTO.previewAttachment( post.getPreviewAttachment() );
+        postDTO.updatedOn( post.getUpdatedOn() );
 
-        return postDTO;
+        return postDTO.build();
     }
 
     @Override
@@ -102,19 +105,19 @@ public class PostMapperImpl implements PostMapper {
             return null;
         }
 
-        com.itacademy.blog.data.entity.User user1 = new com.itacademy.blog.data.entity.User();
+        UserBuilder user1 = com.itacademy.blog.data.entity.User.builder();
 
         if ( user.getId() != null ) {
-            user1.setId( user.getId().longValue() );
+            user1.id( user.getId().longValue() );
         }
-        user1.setName( user.getName() );
-        user1.setFirstName( user.getFirstName() );
-        user1.setLastName( user.getLastName() );
-        user1.setEmail( user.getEmail() );
-        user1.setPassword( user.getPassword() );
-        user1.setRole( roleEnumToRoleEnum( user.getRole() ) );
+        user1.name( user.getName() );
+        user1.firstName( user.getFirstName() );
+        user1.lastName( user.getLastName() );
+        user1.email( user.getEmail() );
+        user1.password( user.getPassword() );
+        user1.role( roleEnumToRoleEnum( user.getRole() ) );
 
-        return user1;
+        return user1.build();
     }
 
     protected Tag tagToTag(com.itacademy.blog.model.Tag tag) {
@@ -122,14 +125,14 @@ public class PostMapperImpl implements PostMapper {
             return null;
         }
 
-        Tag tag1 = new Tag();
+        TagBuilder tag1 = Tag.builder();
 
         if ( tag.getId() != null ) {
-            tag1.setId( tag.getId().longValue() );
+            tag1.id( tag.getId().longValue() );
         }
-        tag1.setName( tag.getName() );
+        tag1.name( tag.getName() );
 
-        return tag1;
+        return tag1.build();
     }
 
     protected List<Tag> tagListToTagList(List<com.itacademy.blog.model.Tag> list) {

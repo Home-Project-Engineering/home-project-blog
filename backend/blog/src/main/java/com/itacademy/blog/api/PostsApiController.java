@@ -120,7 +120,7 @@ public class PostsApiController implements PostsApi {
                 , Optional.ofNullable(pageSize).orElse(10), Optional.ofNullable(sort).orElse("-id")
                 , entitySpecificationService.getSpecification(filterMap));
 
-        return posts.isEmpty() ? new ResponseEntity<>(HttpStatus.BAD_REQUEST) : new ResponseEntity<List<Post>>(posts, HttpStatus.OK);
+        return new ResponseEntity<List<Post>>(posts, HttpStatus.OK);
     }
 
     @Override

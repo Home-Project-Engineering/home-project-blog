@@ -265,7 +265,7 @@ public class UsersApiController implements UsersApi {
     @PermitAll
     public ResponseEntity<Comment> updateCommentByCurrentUser(BigDecimal id, @Valid Comment comment) {
         Long post_id = commentRepo.findOneByUserIdAndId(userService.getCurrentUserEntity().getId(), id.longValue()).get().getPost().getId();
-        if (getCommentByCurrentUser(id).getBody() == null) {
+        if (getCommentByCurrentUser(id).getBody() != null) {
             return new ResponseEntity<>(CommentMapper.INSTANCE.convert(commentService.updateComment(post_id, id.longValue(), CommentMapper.INSTANCE.convert(comment))), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

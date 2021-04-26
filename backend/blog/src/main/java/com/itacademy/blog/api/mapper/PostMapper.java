@@ -19,5 +19,6 @@ public interface PostMapper {
     @Mapping(target = "user.password", constant = "********")
     @Mapping(source = "user", target = "user")
     Post convert(PostDTO postDTO);
+    @Mapping(target = "user.password", constant = "********")
     List<PostDTO> convert(List<Post> postEntities);
 }
