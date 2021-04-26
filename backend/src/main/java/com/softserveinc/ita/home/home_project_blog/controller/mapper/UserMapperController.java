@@ -5,7 +5,6 @@ import com.softserveinc.ita.home.home_project_blog.controller.dto.UpdateUserDto;
 import com.softserveinc.ita.home.home_project_blog.controller.dto.ViewUserDto;
 import com.softserveinc.ita.home.home_project_blog.service.dto.UserDto;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;
 
@@ -17,10 +16,10 @@ public interface UserMapperController {
 
     UserMapperController INSTANCE = Mappers.getMapper( UserMapperController.class );
 
-    @Mapping(target = "role", constant = "user")
+    //@Mapping(target = "role", constant = ROLE.BLOGGER.name())
     UserDto signUpToUserDto(CreateUserDto user);
 
-    @Mapping(target = "role", constant = "user")
+    //@Mapping(target = "role", constant = "BLOGGER")
     UserDto UpdateToUserDto(UpdateUserDto user);
 
     ViewUserDto toViewUserDto(UserDto user);

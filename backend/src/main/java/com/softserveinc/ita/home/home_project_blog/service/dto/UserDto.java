@@ -1,8 +1,7 @@
 package com.softserveinc.ita.home.home_project_blog.service.dto;
 
 import com.softserveinc.ita.home.home_project_blog.Validation.Const;
-import com.softserveinc.ita.home.home_project_blog.repository.entity.ROLE;
-import com.softserveinc.ita.home.home_project_blog.repository.entity.User;
+import com.softserveinc.ita.home.home_project_blog.repository.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,7 +39,7 @@ public class UserDto {
     @Pattern(regexp = Const.PASSWORD_PATTERN)
     private String password;
 
-    private ROLE role;
+    private Role role;
 
     public String getEmail() {
         return email.toLowerCase().trim();

@@ -58,7 +58,7 @@ public class UserService implements IUserService {
 
     @Override
     public UserDto save(@Valid UserDto user) {
-        user.setRole(ROLE.user);
+        user.setRole(Role.BLOGGER);
         throwIfEmailIsNotUnique(user.getEmail());
         throwIfNameIsNotUnique(user.getName());
         return mapper.toUserDto(repository.save(mapper.toUser(user)));

@@ -6,7 +6,7 @@ public interface Const {
     String NAME_IS_NOT_UNIQUE = "Name is not unique.";
     String EMAIL_IS_NOT_VALID = "Email should be valid.";
     String WRONG_LENGTH = " must be between 1 and 255 characters.";
-    String NAME_WRONG_LENGTH = "Name" + WRONG_LENGTH;
+    String NAME_WRONG_LENGTH = "Name must be between 4 and 255 characters.";
     String FIRST_NAME_WRONG_LENGTH = "First name" + WRONG_LENGTH;
     String LAST_NAME_WRONG_LENGTH = "Last name" + WRONG_LENGTH;
     String WRONG_PASSWORD = "Password should be between 8 and 200 characters.";

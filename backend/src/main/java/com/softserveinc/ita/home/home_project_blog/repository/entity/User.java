@@ -54,7 +54,7 @@ public class User {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(length = 10, nullable = false)
-    private ROLE role;
+    private Role role;
 }
 /*
     public static enum RoleEnum {
