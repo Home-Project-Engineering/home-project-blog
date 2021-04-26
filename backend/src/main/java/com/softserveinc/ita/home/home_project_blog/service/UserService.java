@@ -35,7 +35,6 @@ public class UserService implements IUserService {
             if (sortBy.charAt(0) == '+') {
                 sortBy = sortBy.substring(1);
             }
-            //TODO exception if not id and not name
             paging = PageRequest.of(pageNum, pageSize, Sort.by(sortBy).ascending());
         }
         return paging;

@@ -10,5 +10,5 @@ public interface Const {
     String FIRST_NAME_WRONG_LENGTH = "First name" + WRONG_LENGTH;
     String LAST_NAME_WRONG_LENGTH = "Last name" + WRONG_LENGTH;
     String WRONG_PASSWORD = "Password should be between 8 and 200 characters.";
-    String PASSWORD_PATTERN = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])";
+    String PASSWORD_PATTERN = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[0-9a-zA-Z]{8,}";
 }

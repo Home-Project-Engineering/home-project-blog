@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 @Data
@@ -36,7 +37,7 @@ public class UserDto {
     private String email;
 
     @Size(min = 8, max = 255, message = Const.WRONG_PASSWORD)
-    // @Pattern(regexp = ValidationConst.PASSWORD_PATTERN)
+    @Pattern(regexp = Const.PASSWORD_PATTERN)
     private String password;
 
     private ROLE role;
