@@ -40,13 +40,13 @@ CREATE TABLE IF NOT EXISTS "post"
     id                 bigserial    NOT NULL,
     title              varchar(250) NOT NULL,
     preview_attachment text         NOT NULL,
-    tags_id            bigint       NULL, -- один ко многим через промежуточную таблицу в хибернейте
+    tags_id            bigint       NULL, -- one to many via the intermediate table in hibernate
     user_id            bigint       NOT NULL,
     create_on          timestamptz  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     text               text         NOT NULL,
     update_on          timestamptz  NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES "post_tags" (post_id),
+    FOREIGN KEY (tags_id) REFERENCES "post_tags" (post_id),
     FOREIGN KEY (user_id) REFERENCES "user" (id)
 );
 
@@ -56,7 +56,6 @@ CREATE TABLE IF NOT EXISTS "comment"
     id        bigserial   NOT NULL,
     text      text        NOT NULL,
     post_id   bigint      NOT NULL,
-
     user_id   bigint      NOT NULL,
 --     tags_id   bigint      NOT NULL,
     create_on timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,

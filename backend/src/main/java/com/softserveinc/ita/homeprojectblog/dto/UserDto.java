@@ -27,7 +27,7 @@ public class UserDto {
 
     private String email;
 
-    @Pattern(regexp = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])", message = "please use pattern - a-z+A-Z+0-9")
+    @Pattern(regexp = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[0-9a-zA-Z]{8,}", message = "please use pattern - a-z+A-Z+0-9")
 //    @Size(min = 8, max = 255, message = "Password should be between 8 and 200 characters.")
     private String password;
 

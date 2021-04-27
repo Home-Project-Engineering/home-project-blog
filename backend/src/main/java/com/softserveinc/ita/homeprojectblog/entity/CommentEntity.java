@@ -22,7 +22,7 @@ public class CommentEntity {
     @Column(name = "text")
     private String text;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     private PostEntity post;
 
     @OneToOne(cascade = CascadeType.ALL)

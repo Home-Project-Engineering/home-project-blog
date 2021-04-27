@@ -29,10 +29,16 @@ public class PostEntity {
     @Column(name = "preview_attachment")
     private String previewAttachment;
 
-    @ManyToOne
-    private Collection<TagEntity> tags;
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinTable(
+            name = "post_tags",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tags_id")
+    )
+    private List<TagEntity> tags;
 
-    @ManyToOne
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
     @Column(name = "create_on")

@@ -37,7 +37,7 @@ public class UserEntity {
     @Column(name = "email")
     private String email;
 
-    @Pattern(regexp = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[0-9a-zA-Z]{6,}", message = "please use pattern - a-z+A-Z+0-9")
+    @Pattern(regexp = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[0-9a-zA-Z]{8,}", message = "please use pattern - a-z+A-Z+0-9")
     @Column(name = "password")
     private String password;
 
