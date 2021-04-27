@@ -31,8 +31,8 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(error, httpStatus);
     }
 
-    @ExceptionHandler(value = {NotAuthotorizedException.class})
-    public ResponseEntity<Error> noAuthorization(NotAuthotorizedException e) {
+    @ExceptionHandler(value = {NotAuthorizedException.class})
+    public ResponseEntity<Error> noAuthorization(NotAuthorizedException e) {
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         Error error = new Error(
                 httpStatus.toString(),

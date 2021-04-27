@@ -6,9 +6,8 @@ import com.softserveinc.ita.home.home_project_blog.repository.entity.User;
 import com.softserveinc.ita.home.home_project_blog.service.dto.UserDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.UserMapperService;
 import com.softserveinc.ita.home.home_project_blog.validation.Const;
-import com.softserveinc.ita.home.home_project_blog.validation.EmailIsNotUniqueException;
-import com.softserveinc.ita.home.home_project_blog.validation.NameIsNotUniqueException;
-import com.softserveinc.ita.home.home_project_blog.validation.NotAuthotorizedException;
+import com.softserveinc.ita.home.home_project_blog.validation.NotUniqueException;
+import com.softserveinc.ita.home.home_project_blog.validation.NotAuthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -77,20 +76,20 @@ public class UserService implements IUserService {
     public UserDto getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
-            throw new NotAuthotorizedException();
+            throw new NotAuthorizedException();
         }
         return getByEmail(authentication.getName());
     }
 
     private void throwIfEmailIsNotUnique(String email) {
         if (repository.existsByEmail(email)) {
-            throw new EmailIsNotUniqueException();
+            throw new NotUniqueException(Const.EMAIL_IS_NOT_UNIQUE);
         }
     }
 
     private void throwIfNameIsNotUnique(String name) {
         if (repository.existsByName(name)) {
-            throw new NameIsNotUniqueException();
+            throw new NotUniqueException(Const.NAME_IS_NOT_UNIQUE);
         }
     }
 
