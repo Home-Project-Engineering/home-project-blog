@@ -1,8 +1,9 @@
 package com.itacademy.blog.api.mapper;
 
 import com.itacademy.blog.model.Comment;
+import com.itacademy.blog.model.Role;
+import com.itacademy.blog.model.Role.RoleEnum;
 import com.itacademy.blog.model.User;
-import com.itacademy.blog.model.User.RoleEnum;
 import com.itacademy.blog.services.DTO.CommentDTO;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-04-25T23:17:27+0300",
+    date = "2021-04-27T09:55:39+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 15.0.2 (Oracle Corporation)"
 )
 public class CommentMapperImpl implements CommentMapper {
@@ -68,26 +69,38 @@ public class CommentMapperImpl implements CommentMapper {
         return list;
     }
 
-    protected com.itacademy.blog.data.entity.User.RoleEnum roleEnumToRoleEnum(RoleEnum roleEnum) {
+    protected com.itacademy.blog.data.entity.Role.RoleEnum roleEnumToRoleEnum(RoleEnum roleEnum) {
         if ( roleEnum == null ) {
             return null;
         }
 
-        com.itacademy.blog.data.entity.User.RoleEnum roleEnum1;
+        com.itacademy.blog.data.entity.Role.RoleEnum roleEnum1;
 
         switch ( roleEnum ) {
-            case BLOGGER: roleEnum1 = com.itacademy.blog.data.entity.User.RoleEnum.BLOGGER;
+            case BLOGGER: roleEnum1 = com.itacademy.blog.data.entity.Role.RoleEnum.BLOGGER;
             break;
-            case MODERATOR: roleEnum1 = com.itacademy.blog.data.entity.User.RoleEnum.MODERATOR;
+            case ADMIN: roleEnum1 = com.itacademy.blog.data.entity.Role.RoleEnum.ADMIN;
             break;
-            case ADMIN: roleEnum1 = com.itacademy.blog.data.entity.User.RoleEnum.ADMIN;
+            case MODERATOR: roleEnum1 = com.itacademy.blog.data.entity.Role.RoleEnum.MODERATOR;
             break;
-            case EXPERT: roleEnum1 = com.itacademy.blog.data.entity.User.RoleEnum.EXPERT;
+            case EXPERT: roleEnum1 = com.itacademy.blog.data.entity.Role.RoleEnum.EXPERT;
             break;
             default: throw new IllegalArgumentException( "Unexpected enum constant: " + roleEnum );
         }
 
         return roleEnum1;
+    }
+
+    protected com.itacademy.blog.data.entity.Role roleToRole(Role role) {
+        if ( role == null ) {
+            return null;
+        }
+
+        com.itacademy.blog.data.entity.Role role1 = new com.itacademy.blog.data.entity.Role();
+
+        role1.setRole( roleEnumToRoleEnum( role.getRole() ) );
+
+        return role1;
     }
 
     protected com.itacademy.blog.data.entity.User userToUser(User user) {
@@ -105,12 +118,12 @@ public class CommentMapperImpl implements CommentMapper {
         user1.setLastName( user.getLastName() );
         user1.setEmail( user.getEmail() );
         user1.setPassword( user.getPassword() );
-        user1.setRole( roleEnumToRoleEnum( user.getRole() ) );
+        user1.setRole( roleToRole( user.getRole() ) );
 
         return user1;
     }
 
-    protected RoleEnum roleEnumToRoleEnum1(com.itacademy.blog.data.entity.User.RoleEnum roleEnum) {
+    protected RoleEnum roleEnumToRoleEnum1(com.itacademy.blog.data.entity.Role.RoleEnum roleEnum) {
         if ( roleEnum == null ) {
             return null;
         }
@@ -132,6 +145,18 @@ public class CommentMapperImpl implements CommentMapper {
         return roleEnum1;
     }
 
+    protected Role roleToRole1(com.itacademy.blog.data.entity.Role role) {
+        if ( role == null ) {
+            return null;
+        }
+
+        Role role1 = new Role();
+
+        role1.setRole( roleEnumToRoleEnum1( role.getRole() ) );
+
+        return role1;
+    }
+
     protected User userToUser1(com.itacademy.blog.data.entity.User user) {
         if ( user == null ) {
             return null;
@@ -147,7 +172,7 @@ public class CommentMapperImpl implements CommentMapper {
         user1.setLastName( user.getLastName() );
         user1.setEmail( user.getEmail() );
         user1.setPassword( user.getPassword() );
-        user1.setRole( roleEnumToRoleEnum1( user.getRole() ) );
+        user1.setRole( roleToRole1( user.getRole() ) );
 
         return user1;
     }

@@ -23,6 +23,7 @@ public class Comment {
     @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
+    @Column(nullable = false)
     private String text;
 
     @Column(columnDefinition = "DATE")

@@ -4,11 +4,10 @@ import com.itacademy.blog.api.mapper.CommentMapper;
 import com.itacademy.blog.api.mapper.PostMapper;
 import com.itacademy.blog.api.mapper.UserMapper;
 import com.itacademy.blog.data.repository.CommentRepo;
-import com.itacademy.blog.model.Comment;
-import com.itacademy.blog.model.Post;
-import com.itacademy.blog.model.User;
+import com.itacademy.blog.model.*;
 import com.itacademy.blog.services.DTO.CommentDTO;
 import com.itacademy.blog.services.DTO.PostDTO;
+import com.itacademy.blog.services.DTO.RoleDTO;
 import com.itacademy.blog.services.DTO.UserDTO;
 
 import com.itacademy.blog.services.query.EntitySpecificationService;
@@ -26,8 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import javax.annotation.security.PermitAll;
-import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import javax.xml.bind.ValidationException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -75,7 +74,7 @@ public class UsersApiController implements UsersApi {
     @Override
     @PreAuthorize("hasAuthority('users')")
     public ResponseEntity<Void> removeUser(BigDecimal id) {
-        Optional<UserDTO> optionalUserDTO =  Optional.ofNullable(userService.deleteUser(id.longValue()));
+        Optional<UserDTO> optionalUserDTO = Optional.ofNullable(userService.deleteUser(id.longValue()));
 
         User returnUser = UserMapper.INSTANCE.convert(optionalUserDTO.get());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -86,29 +85,24 @@ public class UsersApiController implements UsersApi {
     @PreAuthorize("hasAuthority('users')")
     public ResponseEntity<List<User>> getUsers(@Valid BigDecimal id, @Valid String name, @Valid String sort, @Valid Integer pageNum, @Valid Integer pageSize) {
         Map<String, String> filterMap = new HashMap<>();
-
         if (id != null) {
             filterMap.put("id", id.toString());
         } else {
             filterMap.put("id", null);
         }
         filterMap.put("name", name);
-
-        Page<User> users = userService.findUsers(Optional.ofNullable(pageNum).orElse(1)
+        Page<UserDTO> users = userService.findUsers(Optional.ofNullable(pageNum).orElse(1)
                 , Optional.ofNullable(pageSize).orElse(10), Optional.ofNullable(sort).orElse("-id")
                 , entitySpecificationService.getSpecification(filterMap));
-
-
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("X-Total-Count", String.valueOf(users.getTotalElements()));
-        return new ResponseEntity<List<User>>(users.toList(), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<List<User>>(UserMapper.INSTANCE.convert(users.toList()), responseHeaders, HttpStatus.OK);
     }
 
     @Override
     @PreAuthorize("hasAuthority('users')")
     public ResponseEntity<User> getUser(BigDecimal id) {
-        UserDTO readUserDto = null;
-        readUserDto = userService.getUserById(id.longValue());
+        UserDTO readUserDto = userService.getUserById(id.longValue());
 
         User returnUser = UserMapper.INSTANCE.convert(readUserDto);
 
@@ -121,7 +115,6 @@ public class UsersApiController implements UsersApi {
     public ResponseEntity<User> updateUser(BigDecimal id, @Valid User user) {
         UserDTO updateUserDto = UserMapper.INSTANCE.convert(user);
         UserDTO readUserDto = userService.updateUser(id.longValue(), updateUserDto);
-
         User returnUser = UserMapper.INSTANCE.convert(readUserDto);
 
         return new ResponseEntity<>(returnUser, HttpStatus.OK);
@@ -131,19 +124,11 @@ public class UsersApiController implements UsersApi {
     @PermitAll
     public ResponseEntity<Comment> getCommentByCurrentUser(BigDecimal id) {
         Map<String, String> filterMap = new HashMap<>();
-
         filterMap.put("id", id.toString());
         filterMap.put("user.id", userService.getCurrentUserEntity().getId().toString());
-
-
         List<CommentDTO> comments = commentService.findComments(1
                 , 1, "id"
                 , entitySpecificationService.getSpecification(filterMap));
-        if (comments.isEmpty()) {
-/*
-            throw new NotFoundBlogException("Current user does not have a post with id:" + id + ".");
-*/
-        }
         Comment commentToReturn = CommentMapper.INSTANCE.convert(comments.get(0));
         return new ResponseEntity<>(commentToReturn, HttpStatus.OK);
     }
@@ -152,24 +137,15 @@ public class UsersApiController implements UsersApi {
     @PermitAll
     public ResponseEntity<List<Comment>> getCommentsByCurrentUser(@Valid BigDecimal id, @Valid String sort, @Valid Integer pageNum, @Valid Integer pageSize) {
         Map<String, String> filterMap = new HashMap<>();
-
         if (id != null) {
             filterMap.put("id", id.toString());
         } else {
             filterMap.put("id", null);
         }
-
         filterMap.put("user.id", userService.getCurrentUserEntity().getId().toString());
-
-
         List<Comment> comments = commentService.findComments(Optional.ofNullable(pageNum).orElse(1)
                 , Optional.ofNullable(pageSize).orElse(10), Optional.ofNullable(sort).orElse("-id")
                 , entitySpecificationService.getSpecification(filterMap));
-        if (comments.isEmpty()) {
-/*
-            throw new NotFoundBlogException("Current user does not have a comment with id:" + id + ".");
-*/
-        }
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 
@@ -177,8 +153,6 @@ public class UsersApiController implements UsersApi {
     @PermitAll
     public ResponseEntity<User> getCurrentUser() {
         UserDTO userToReturn = userService.getCurrentUser();
-
-
         return new ResponseEntity<>(UserMapper.INSTANCE.convert(userToReturn), HttpStatus.OK);
     }
 
@@ -186,19 +160,11 @@ public class UsersApiController implements UsersApi {
     @PermitAll
     public ResponseEntity<Post> getPostByCurrentUser(BigDecimal id) {
         Map<String, String> filterMap = new HashMap<>();
-
         filterMap.put("id", id.toString());
         filterMap.put("user.id", userService.getCurrentUserEntity().getId().toString());
-
-
         List<PostDTO> posts = postService.findPosts(1
                 , 1, "id"
                 , entitySpecificationService.getSpecification(filterMap));
-        if (posts.isEmpty()) {
-/*
-            throw new NotFoundBlogException("Current user does not have a post with id:" + id + ".");
-*/
-        }
         Post postToReturn = PostMapper.INSTANCE.convert(posts.get(0));
         return new ResponseEntity<>(postToReturn, HttpStatus.OK);
     }
@@ -207,28 +173,17 @@ public class UsersApiController implements UsersApi {
     @PermitAll
     public ResponseEntity<List<Post>> getPostsByCurrentUser(@Valid BigDecimal id, @Valid String tagId, @Valid String tagName, @Valid String sort, @Valid Integer pageNum, @Valid Integer pageSize) {
         Map<String, String> filterMap = new HashMap<>();
-
         if (id != null) {
             filterMap.put("id", id.toString());
         } else {
             filterMap.put("id", null);
         }
-
         filterMap.put("tags.id", tagId);
-        //Problem with handling tags with spaces in their names
-        //Have not started working on the solution yet
         filterMap.put("tags.name", tagName);
         filterMap.put("user.id", userService.getCurrentUserEntity().getId().toString());
-
-
         List<Post> posts = postService.findPosts(Optional.ofNullable(pageNum).orElse(1)
                 , Optional.ofNullable(pageSize).orElse(10), Optional.ofNullable(sort).orElse("-id")
                 , entitySpecificationService.getSpecification(filterMap));
-        if (posts.isEmpty()) {
-/*
-            throw new NotFoundBlogException("Current user does not have a post with id:" + id + ".");
-*/
-        }
         return new ResponseEntity<>(posts, HttpStatus.OK);
     }
 
@@ -249,11 +204,10 @@ public class UsersApiController implements UsersApi {
     @Override
     @PermitAll
     public ResponseEntity<Void> removePostByCurrentUser(BigDecimal id) {
-        if(getPostByCurrentUser(id).getBody() == null) {
+        if (getPostByCurrentUser(id).getBody() == null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         Optional<PostDTO> optionalPostDTO = Optional.ofNullable(postService.deletePost(id.longValue()));
-
         if (!optionalPostDTO.isPresent()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
@@ -286,5 +240,27 @@ public class UsersApiController implements UsersApi {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    @Override
+    @PreAuthorize("hasAuthority('role')")
+    public ResponseEntity<Role> getUserRole(BigDecimal id) {
+        RoleDTO role = userService.getUserRole(id.longValue());
+        Role toReturn = UserMapper.INSTANCE.convert(role);
+        return new ResponseEntity<>(toReturn, HttpStatus.OK);
+    }
 
+    @Override
+    @PermitAll
+    public ResponseEntity<Void> updateCurrentUserPassword(@Valid Password password) throws ValidationException {
+        userService.updateCurrentUserPassword(password.getOldPassword(), password.getNewPassword());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Override
+    @PreAuthorize("hasAuthority('role')")
+    public ResponseEntity<Role> updateUserRole(BigDecimal id, @Valid Role role) {
+        RoleDTO updateRoleDto = UserMapper.INSTANCE.convert(role);
+        RoleDTO readRoleDto = userService.updateUserRole(id.longValue(), updateRoleDto);
+        Role returnRole = UserMapper.INSTANCE.convert(readRoleDto);
+        return new ResponseEntity<>(returnRole, HttpStatus.OK);
+    }
 }

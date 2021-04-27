@@ -8,6 +8,8 @@ src/main/gen/com/itacademy/blog/api/UsersApi.java
 src/main/gen/com/itacademy/blog/config/OpenAPIDocumentationConfig.java
 src/main/gen/com/itacademy/blog/model/Comment.java
 src/main/gen/com/itacademy/blog/model/Error.java
+src/main/gen/com/itacademy/blog/model/Password.java
 src/main/gen/com/itacademy/blog/model/Post.java
+src/main/gen/com/itacademy/blog/model/Role.java
 src/main/gen/com/itacademy/blog/model/Tag.java
 src/main/gen/com/itacademy/blog/model/User.java

@@ -1,6 +1,7 @@
 package com.itacademy.blog.data.entity;
 
 public enum Permission{
+    ROLE_MANAGEMENT("role"),
     USER_MANAGEMENT("users"),
     TAG_REMOVE("tags:remove"),
     POST_UPDATE("posts:update"),

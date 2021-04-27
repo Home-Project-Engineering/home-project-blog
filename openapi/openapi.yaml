@@ -66,6 +66,23 @@ paths:
         "default":
           $ref: '#/components/responses/UnknownError'
 
+  /users/current/password:
+    put:
+      tags:
+        - Current User
+      summary: Update password on a Current User
+      operationId: updateCurrentUserPassword
+
+      requestBody:
+        $ref: '#/components/requestBodies/PasswordBody'
+      responses:
+        "200":
+          $ref: '#/components/responses/PasswordUpdatedResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+
   /users/current/posts:
     get:
       summary: Get posts by Current User
@@ -286,6 +303,41 @@ paths:
       responses:
         "204":
           $ref: '#/components/responses/NoContentResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+  /users/{id}/role:
+    parameters:
+      - $ref: '#/components/parameters/p_id'
+    get:
+      tags:
+        - Users
+      summary: Get User Role by ID
+      description: Retrieves the role of an existing user associated with the specified id.
+      operationId: getUserRole
+      responses:
+        "200":
+          $ref: '#/components/responses/RoleResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "404":
+          $ref: '#/components/responses/NotFoundError'
+        "default":
+          $ref: '#/components/responses/UnknownError'
+    put:
+      tags:
+        - Users
+      summary: Update User Role
+      description: Updates User Role information that exists in the system by the specified ID.
+      operationId: updateUserRole
+      requestBody:
+        $ref: '#/components/requestBodies/RoleBody'
+      responses:
+        "200":
+          $ref: '#/components/responses/RoleResponse'
         "400":
           $ref: '#/components/responses/ValidationError'
         "404":
@@ -574,14 +626,7 @@ components:
           pattern: '^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}$'
           example: passworD321
         role:
-          description: This is the level of User access to various functions.
-          type: string
-          enum:
-            - blogger
-            - moderator
-            - admin
-            - expert
-          default: blogger
+          $ref: "#/components/schemas/Role"
 
 
     Post:
@@ -674,6 +719,30 @@ components:
           description: The name of the Tag.
           type: string
           example: Java8
+    Role:
+      required:
+        - role
+      type: object
+      properties:
+        role:
+          description: User Role
+          type: string
+          enum:
+            - blogger
+            - admin
+            - moderator
+            - expert
+          default: blogger
+    Password:
+      required:
+        - oldPassword
+        - newPassword
+      type: object
+      properties:
+        oldPassword:
+          type: string
+        newPassword:
+          type: string
 
     Error:
       type: object
@@ -689,6 +758,8 @@ components:
           readOnly: true
 
   responses:
+    PasswordUpdatedResponse:
+      description: The password was succesfully updated.
     NoContentResponse:
       description: The request was succesfully processed.
     TagResponse:
@@ -759,6 +830,12 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/Tag"
+    RoleResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Role"
     ValidationError:
       description: The payload contains an error.
       content:
@@ -797,12 +874,25 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/Post"
+    RoleBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Role"
     UserBody:
       required: true
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/User"
+    PasswordBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Password"
+
 
   parameters:
     p_id:

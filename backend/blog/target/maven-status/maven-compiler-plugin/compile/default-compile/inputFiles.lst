@@ -1,4 +1,3 @@
-F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\api\exception\BaseBlogException.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\services\service\CommentService.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\api\PostsApi.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\api\mapper\CommentMapper.java
@@ -8,6 +7,7 @@ F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\c
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\api\UsersApi.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\services\service\impl\TagServiceImpl.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\api\mapper\UserMapper.java
+F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\data\entity\Role.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\api\PostsApiController.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\api\TagsApiController.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\OpenAPI2SpringBoot.java
@@ -15,6 +15,7 @@ F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\services\DTO\TagDTO.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\model\Error.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\RFC3339DateFormat.java
+F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\model\Password.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\services\service\impl\PostServiceImpl.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\api\conf\SecurityConfig.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\services\service\impl\CommentServiceImpl.java
@@ -45,6 +46,7 @@ F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\api\TagsApi.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\data\entity\Comment.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\api\ApiUtil.java
+F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\model\Role.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\api\security\UserDetailsServiceImpl.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\api\UsersApiController.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\model\Tag.java

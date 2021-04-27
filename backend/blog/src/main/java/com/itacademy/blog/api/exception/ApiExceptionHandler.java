@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ValidationException;
 
 
 @ControllerAdvice
@@ -43,6 +44,13 @@ public class ApiExceptionHandler {
         error.setMessage(e.getMessage());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(value = {ValidationException.class})
+    public ResponseEntity<Object> validationException(ValidationException e) {
+        Error error = new Error();
+        error.setCode("400");
+        error.setMessage(e.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
     @ExceptionHandler(value = { EntityNotFoundException.class})
     public ResponseEntity<Object> notFoundException(EntityNotFoundException e) {
         Error error = new Error();
@@ -61,7 +69,7 @@ public class ApiExceptionHandler {
     public ResponseEntity<Object> baseError(Exception e) {
         Error error = new Error();
         error.setCode("502");
-        error.setMessage("ERROR: The unknown error appeard. Check your payload or contact support;");
+        error.setMessage("ERROR: The unknown error appeared. Check your payload or contact support;");
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }

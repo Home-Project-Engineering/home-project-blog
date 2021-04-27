@@ -36,10 +36,13 @@ public class Post {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private User user;
 
+    @Column(nullable = false)
     private String text;
 
+    @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
     private String previewAttachment;
 
     @Column(columnDefinition = "DATE")

@@ -1,13 +1,11 @@
 package com.itacademy.blog.api.mapper;
 
 import com.itacademy.blog.data.entity.Tag;
-import com.itacademy.blog.data.entity.Tag.TagBuilder;
-import com.itacademy.blog.data.entity.User.UserBuilder;
 import com.itacademy.blog.model.Post;
+import com.itacademy.blog.model.Role;
+import com.itacademy.blog.model.Role.RoleEnum;
 import com.itacademy.blog.model.User;
-import com.itacademy.blog.model.User.RoleEnum;
 import com.itacademy.blog.services.DTO.PostDTO;
-import com.itacademy.blog.services.DTO.PostDTO.PostDTOBuilder;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +13,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-04-26T17:38:16+0300",
+    date = "2021-04-27T09:55:38+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 15.0.2 (Oracle Corporation)"
 )
 public class PostMapperImpl implements PostMapper {
@@ -26,20 +24,20 @@ public class PostMapperImpl implements PostMapper {
             return null;
         }
 
-        PostDTOBuilder postDTO = PostDTO.builder();
+        PostDTO postDTO = new PostDTO();
 
-        postDTO.user( userToUser( post.getUser() ) );
+        postDTO.setUser( userToUser( post.getUser() ) );
         if ( post.getId() != null ) {
-            postDTO.id( post.getId().longValue() );
+            postDTO.setId( post.getId().longValue() );
         }
-        postDTO.tags( tagListToTagList( post.getTags() ) );
-        postDTO.createdOn( post.getCreatedOn() );
-        postDTO.text( post.getText() );
-        postDTO.title( post.getTitle() );
-        postDTO.previewAttachment( post.getPreviewAttachment() );
-        postDTO.updatedOn( post.getUpdatedOn() );
+        postDTO.setTags( tagListToTagList( post.getTags() ) );
+        postDTO.setCreatedOn( post.getCreatedOn() );
+        postDTO.setText( post.getText() );
+        postDTO.setTitle( post.getTitle() );
+        postDTO.setPreviewAttachment( post.getPreviewAttachment() );
+        postDTO.setUpdatedOn( post.getUpdatedOn() );
 
-        return postDTO.build();
+        return postDTO;
     }
 
     @Override
@@ -78,21 +76,21 @@ public class PostMapperImpl implements PostMapper {
         return list;
     }
 
-    protected com.itacademy.blog.data.entity.User.RoleEnum roleEnumToRoleEnum(RoleEnum roleEnum) {
+    protected com.itacademy.blog.data.entity.Role.RoleEnum roleEnumToRoleEnum(RoleEnum roleEnum) {
         if ( roleEnum == null ) {
             return null;
         }
 
-        com.itacademy.blog.data.entity.User.RoleEnum roleEnum1;
+        com.itacademy.blog.data.entity.Role.RoleEnum roleEnum1;
 
         switch ( roleEnum ) {
-            case BLOGGER: roleEnum1 = com.itacademy.blog.data.entity.User.RoleEnum.BLOGGER;
+            case BLOGGER: roleEnum1 = com.itacademy.blog.data.entity.Role.RoleEnum.BLOGGER;
             break;
-            case MODERATOR: roleEnum1 = com.itacademy.blog.data.entity.User.RoleEnum.MODERATOR;
+            case ADMIN: roleEnum1 = com.itacademy.blog.data.entity.Role.RoleEnum.ADMIN;
             break;
-            case ADMIN: roleEnum1 = com.itacademy.blog.data.entity.User.RoleEnum.ADMIN;
+            case MODERATOR: roleEnum1 = com.itacademy.blog.data.entity.Role.RoleEnum.MODERATOR;
             break;
-            case EXPERT: roleEnum1 = com.itacademy.blog.data.entity.User.RoleEnum.EXPERT;
+            case EXPERT: roleEnum1 = com.itacademy.blog.data.entity.Role.RoleEnum.EXPERT;
             break;
             default: throw new IllegalArgumentException( "Unexpected enum constant: " + roleEnum );
         }
@@ -100,24 +98,36 @@ public class PostMapperImpl implements PostMapper {
         return roleEnum1;
     }
 
+    protected com.itacademy.blog.data.entity.Role roleToRole(Role role) {
+        if ( role == null ) {
+            return null;
+        }
+
+        com.itacademy.blog.data.entity.Role role1 = new com.itacademy.blog.data.entity.Role();
+
+        role1.setRole( roleEnumToRoleEnum( role.getRole() ) );
+
+        return role1;
+    }
+
     protected com.itacademy.blog.data.entity.User userToUser(User user) {
         if ( user == null ) {
             return null;
         }
 
-        UserBuilder user1 = com.itacademy.blog.data.entity.User.builder();
+        com.itacademy.blog.data.entity.User user1 = new com.itacademy.blog.data.entity.User();
 
         if ( user.getId() != null ) {
-            user1.id( user.getId().longValue() );
+            user1.setId( user.getId().longValue() );
         }
-        user1.name( user.getName() );
-        user1.firstName( user.getFirstName() );
-        user1.lastName( user.getLastName() );
-        user1.email( user.getEmail() );
-        user1.password( user.getPassword() );
-        user1.role( roleEnumToRoleEnum( user.getRole() ) );
+        user1.setName( user.getName() );
+        user1.setFirstName( user.getFirstName() );
+        user1.setLastName( user.getLastName() );
+        user1.setEmail( user.getEmail() );
+        user1.setPassword( user.getPassword() );
+        user1.setRole( roleToRole( user.getRole() ) );
 
-        return user1.build();
+        return user1;
     }
 
     protected Tag tagToTag(com.itacademy.blog.model.Tag tag) {
@@ -125,14 +135,14 @@ public class PostMapperImpl implements PostMapper {
             return null;
         }
 
-        TagBuilder tag1 = Tag.builder();
+        Tag tag1 = new Tag();
 
         if ( tag.getId() != null ) {
-            tag1.id( tag.getId().longValue() );
+            tag1.setId( tag.getId().longValue() );
         }
-        tag1.name( tag.getName() );
+        tag1.setName( tag.getName() );
 
-        return tag1.build();
+        return tag1;
     }
 
     protected List<Tag> tagListToTagList(List<com.itacademy.blog.model.Tag> list) {
@@ -148,7 +158,7 @@ public class PostMapperImpl implements PostMapper {
         return list1;
     }
 
-    protected RoleEnum roleEnumToRoleEnum1(com.itacademy.blog.data.entity.User.RoleEnum roleEnum) {
+    protected RoleEnum roleEnumToRoleEnum1(com.itacademy.blog.data.entity.Role.RoleEnum roleEnum) {
         if ( roleEnum == null ) {
             return null;
         }
@@ -170,6 +180,18 @@ public class PostMapperImpl implements PostMapper {
         return roleEnum1;
     }
 
+    protected Role roleToRole1(com.itacademy.blog.data.entity.Role role) {
+        if ( role == null ) {
+            return null;
+        }
+
+        Role role1 = new Role();
+
+        role1.setRole( roleEnumToRoleEnum1( role.getRole() ) );
+
+        return role1;
+    }
+
     protected User userToUser1(com.itacademy.blog.data.entity.User user) {
         if ( user == null ) {
             return null;
@@ -184,7 +206,7 @@ public class PostMapperImpl implements PostMapper {
         user1.setFirstName( user.getFirstName() );
         user1.setLastName( user.getLastName() );
         user1.setEmail( user.getEmail() );
-        user1.setRole( roleEnumToRoleEnum1( user.getRole() ) );
+        user1.setRole( roleToRole1( user.getRole() ) );
 
         user1.setPassword( "********" );
 

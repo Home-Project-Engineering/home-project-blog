@@ -1,14 +1,20 @@
 package com.itacademy.blog.api.mapper;
 
+import com.itacademy.blog.model.Role;
+import com.itacademy.blog.model.Role.RoleEnum;
 import com.itacademy.blog.model.User;
-import com.itacademy.blog.model.User.RoleEnum;
+import com.itacademy.blog.services.DTO.RoleDTO;
+import com.itacademy.blog.services.DTO.RoleDTO.RoleDTOBuilder;
 import com.itacademy.blog.services.DTO.UserDTO;
+import com.itacademy.blog.services.DTO.UserDTO.UserDTOBuilder;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-04-25T23:17:28+0300",
+    date = "2021-04-27T11:03:38+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 15.0.2 (Oracle Corporation)"
 )
 public class UserMapperImpl implements UserMapper {
@@ -19,17 +25,43 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        UserDTO userDTO = new UserDTO();
+        UserDTOBuilder userDTO = UserDTO.builder();
 
-        userDTO.setId( user.getId() );
-        userDTO.setName( user.getName() );
-        userDTO.setFirstName( user.getFirstName() );
-        userDTO.setLastName( user.getLastName() );
-        userDTO.setEmail( user.getEmail() );
-        userDTO.setPassword( user.getPassword() );
-        userDTO.setRole( roleEnumToRoleEnum( user.getRole() ) );
+        userDTO.id( user.getId() );
+        userDTO.name( user.getName() );
+        userDTO.firstName( user.getFirstName() );
+        userDTO.lastName( user.getLastName() );
+        userDTO.email( user.getEmail() );
+        userDTO.password( user.getPassword() );
+        userDTO.role( convert( user.getRole() ) );
 
-        return userDTO;
+        return userDTO.build();
+    }
+
+    @Override
+    public RoleDTO convert(Role value) {
+        if ( value == null ) {
+            return null;
+        }
+
+        RoleDTOBuilder roleDTO = RoleDTO.builder();
+
+        roleDTO.role( roleEnumToRoleEnum( value.getRole() ) );
+
+        return roleDTO.build();
+    }
+
+    @Override
+    public Role convert(RoleDTO value) {
+        if ( value == null ) {
+            return null;
+        }
+
+        Role role = new Role();
+
+        role.setRole( roleEnumToRoleEnum1( value.getRole() ) );
+
+        return role;
     }
 
     @Override
@@ -48,7 +80,7 @@ public class UserMapperImpl implements UserMapper {
         user1.setLastName( user.getLastName() );
         user1.setEmail( user.getEmail() );
         user1.setPassword( user.getPassword() );
-        user1.setRole( roleEnumToRoleEnum1( user.getRole() ) );
+        user1.setRole( roleToRole( user.getRole() ) );
 
         return user1;
     }
@@ -66,28 +98,42 @@ public class UserMapperImpl implements UserMapper {
         user.setFirstName( userDTO.getFirstName() );
         user.setLastName( userDTO.getLastName() );
         user.setEmail( userDTO.getEmail() );
-        user.setRole( roleEnumToRoleEnum2( userDTO.getRole() ) );
+        user.setRole( convert( userDTO.getRole() ) );
 
-        user.setPassword( "*****" );
+        user.setPassword( "********" );
 
         return user;
     }
 
-    protected com.itacademy.blog.services.DTO.UserDTO.RoleEnum roleEnumToRoleEnum(RoleEnum roleEnum) {
+    @Override
+    public List<User> convert(List<UserDTO> users) {
+        if ( users == null ) {
+            return null;
+        }
+
+        List<User> list = new ArrayList<User>( users.size() );
+        for ( UserDTO userDTO : users ) {
+            list.add( convert( userDTO ) );
+        }
+
+        return list;
+    }
+
+    protected com.itacademy.blog.services.DTO.RoleDTO.RoleEnum roleEnumToRoleEnum(RoleEnum roleEnum) {
         if ( roleEnum == null ) {
             return null;
         }
 
-        com.itacademy.blog.services.DTO.UserDTO.RoleEnum roleEnum1;
+        com.itacademy.blog.services.DTO.RoleDTO.RoleEnum roleEnum1;
 
         switch ( roleEnum ) {
-            case BLOGGER: roleEnum1 = com.itacademy.blog.services.DTO.UserDTO.RoleEnum.BLOGGER;
+            case BLOGGER: roleEnum1 = com.itacademy.blog.services.DTO.RoleDTO.RoleEnum.BLOGGER;
             break;
-            case MODERATOR: roleEnum1 = com.itacademy.blog.services.DTO.UserDTO.RoleEnum.MODERATOR;
+            case ADMIN: roleEnum1 = com.itacademy.blog.services.DTO.RoleDTO.RoleEnum.ADMIN;
             break;
-            case ADMIN: roleEnum1 = com.itacademy.blog.services.DTO.UserDTO.RoleEnum.ADMIN;
+            case MODERATOR: roleEnum1 = com.itacademy.blog.services.DTO.RoleDTO.RoleEnum.MODERATOR;
             break;
-            case EXPERT: roleEnum1 = com.itacademy.blog.services.DTO.UserDTO.RoleEnum.EXPERT;
+            case EXPERT: roleEnum1 = com.itacademy.blog.services.DTO.RoleDTO.RoleEnum.EXPERT;
             break;
             default: throw new IllegalArgumentException( "Unexpected enum constant: " + roleEnum );
         }
@@ -95,7 +141,7 @@ public class UserMapperImpl implements UserMapper {
         return roleEnum1;
     }
 
-    protected RoleEnum roleEnumToRoleEnum1(com.itacademy.blog.data.entity.User.RoleEnum roleEnum) {
+    protected RoleEnum roleEnumToRoleEnum1(com.itacademy.blog.services.DTO.RoleDTO.RoleEnum roleEnum) {
         if ( roleEnum == null ) {
             return null;
         }
@@ -117,7 +163,7 @@ public class UserMapperImpl implements UserMapper {
         return roleEnum1;
     }
 
-    protected RoleEnum roleEnumToRoleEnum2(com.itacademy.blog.services.DTO.UserDTO.RoleEnum roleEnum) {
+    protected RoleEnum roleEnumToRoleEnum2(com.itacademy.blog.data.entity.Role.RoleEnum roleEnum) {
         if ( roleEnum == null ) {
             return null;
         }
@@ -137,5 +183,17 @@ public class UserMapperImpl implements UserMapper {
         }
 
         return roleEnum1;
+    }
+
+    protected Role roleToRole(com.itacademy.blog.data.entity.Role role) {
+        if ( role == null ) {
+            return null;
+        }
+
+        Role role1 = new Role();
+
+        role1.setRole( roleEnumToRoleEnum2( role.getRole() ) );
+
+        return role1;
     }
 }

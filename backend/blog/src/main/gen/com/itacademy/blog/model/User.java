@@ -3,7 +3,7 @@ package com.itacademy.blog.model;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.itacademy.blog.model.Role;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.math.BigDecimal;
@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
  * A representation of User entity.
  */
 @ApiModel(description = "A representation of User entity.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-25T23:02:54.036583200+03:00[Europe/Kiev]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-27T09:43:52.497006800+03:00[Europe/Kiev]")
 public class User  implements Serializable {
   private static final long serialVersionUID = 1L;
 
@@ -38,47 +38,8 @@ public class User  implements Serializable {
   @JsonProperty("password")
   private String password;
 
-  /**
-   * This is the level of User access to various functions.
-   */
-  public enum RoleEnum {
-    BLOGGER("blogger"),
-    
-    MODERATOR("moderator"),
-    
-    ADMIN("admin"),
-    
-    EXPERT("expert");
-
-    private String value;
-
-    RoleEnum(String value) {
-      this.value = value;
-    }
-
-    @JsonValue
-    public String getValue() {
-      return value;
-    }
-
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static RoleEnum fromValue(String value) {
-      for (RoleEnum b : RoleEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
-        }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
-    }
-  }
-
   @JsonProperty("role")
-  private RoleEnum role = RoleEnum.BLOGGER;
+  private Role role;
 
   public User id(BigDecimal id) {
     this.id = id;
@@ -203,23 +164,24 @@ public class User  implements Serializable {
     this.password = password;
   }
 
-  public User role(RoleEnum role) {
+  public User role(Role role) {
     this.role = role;
     return this;
   }
 
   /**
-   * This is the level of User access to various functions.
+   * Get role
    * @return role
   */
-  @ApiModelProperty(value = "This is the level of User access to various functions.")
+  @ApiModelProperty(value = "")
 
+  @Valid
 
-  public RoleEnum getRole() {
+  public Role getRole() {
     return role;
   }
 
-  public void setRole(RoleEnum role) {
+  public void setRole(Role role) {
     this.role = role;
   }
 

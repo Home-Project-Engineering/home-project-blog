@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers(HttpMethod.GET, "/api/*/tags").permitAll()
                     .antMatchers(HttpMethod.GET, "/api/*/tags/{Id:\\d+}").permitAll()
                     .antMatchers(HttpMethod.GET, "/api/*/posts/{Id:\\d+}").permitAll()
-                    .antMatchers(HttpMethod.GET, "/api/*/tags").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/*/posts").permitAll()
                     .antMatchers(HttpMethod.GET, "/api/*/comments/{Id:\\d+}").permitAll()
                     .antMatchers(HttpMethod.GET, "/api/*/comments").permitAll()
                     .anyRequest()

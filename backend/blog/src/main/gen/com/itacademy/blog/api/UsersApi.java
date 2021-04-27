@@ -8,7 +8,9 @@ package com.itacademy.blog.api;
 import java.math.BigDecimal;
 import com.itacademy.blog.model.Comment;
 import com.itacademy.blog.model.Error;
+import com.itacademy.blog.model.Password;
 import com.itacademy.blog.model.Post;
+import com.itacademy.blog.model.Role;
 import com.itacademy.blog.model.User;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
@@ -23,10 +25,11 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import javax.xml.bind.ValidationException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-25T23:02:54.036583200+03:00[Europe/Kiev]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-27T09:43:52.497006800+03:00[Europe/Kiev]")
 @Validated
 @Api(value = "users", description = "the users API")
 public interface UsersApi {
@@ -61,7 +64,7 @@ public interface UsersApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : \"blogger\", \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }";
+                    String exampleString = "{ \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : { \"role\" : \"blogger\" }, \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -173,7 +176,7 @@ public interface UsersApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : \"blogger\", \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }";
+                    String exampleString = "{ \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : { \"role\" : \"blogger\" }, \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -288,7 +291,45 @@ public interface UsersApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : \"blogger\", \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }";
+                    String exampleString = "{ \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : { \"role\" : \"blogger\" }, \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * GET /users/{id}/role : Get User Role by ID
+     * Retrieves the role of an existing user associated with the specified id.
+     *
+     * @param id  (required)
+     * @return OK (status code 200)
+     *         or The payload contains an error. (status code 400)
+     *         or The specified resource was not found. (status code 404)
+     *         or The unknown error appeard. Check your payload or contact support. (status code 200)
+     */
+    @ApiOperation(value = "Get User Role by ID", nickname = "getUserRole", notes = "Retrieves the role of an existing user associated with the specified id.", response = Role.class, authorizations = {
+        
+        @Authorization(value = "basicAuth")
+         }, tags={ "Users", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "OK", response = Role.class),
+        @ApiResponse(code = 400, message = "The payload contains an error.", response = Error.class),
+        @ApiResponse(code = 404, message = "The specified resource was not found.", response = Error.class),
+        @ApiResponse(code = 200, message = "The unknown error appeard. Check your payload or contact support.", response = Error.class) })
+    @GetMapping(
+        value = "/users/{id}/role",
+        produces = { "application/json" }
+    )
+    default ResponseEntity<Role> getUserRole(@ApiParam(value = "",required=true) @PathVariable("id") BigDecimal id) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"role\" : \"blogger\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -328,7 +369,7 @@ public interface UsersApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : \"blogger\", \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }";
+                    String exampleString = "{ \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : { \"role\" : \"blogger\" }, \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
@@ -494,12 +535,39 @@ public interface UsersApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : \"blogger\", \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }";
+                    String exampleString = "{ \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : { \"role\" : \"blogger\" }, \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }
             }
         });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * PUT /users/current/password : Update password on a Current User
+     *
+     * @param password  (required)
+     * @return The password was succesfully updated. (status code 200)
+     *         or The payload contains an error. (status code 400)
+     *         or The unknown error appeard. Check your payload or contact support. (status code 200)
+     */
+    @ApiOperation(value = "Update password on a Current User", nickname = "updateCurrentUserPassword", notes = "", authorizations = {
+        
+        @Authorization(value = "basicAuth")
+         }, tags={ "Current User", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "The password was succesfully updated."),
+        @ApiResponse(code = 400, message = "The payload contains an error.", response = Error.class),
+        @ApiResponse(code = 200, message = "The unknown error appeard. Check your payload or contact support.", response = Error.class) })
+    @PutMapping(
+        value = "/users/current/password",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    default ResponseEntity<Void> updateCurrentUserPassword(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Password password) throws ValidationException {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
@@ -574,7 +642,47 @@ public interface UsersApi {
         getRequest().ifPresent(request -> {
             for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
                 if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
-                    String exampleString = "{ \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : \"blogger\", \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }";
+                    String exampleString = "{ \"firstName\" : \"John\", \"lastName\" : \"Smith\", \"password\" : \"passworD321\", \"role\" : { \"role\" : \"blogger\" }, \"name\" : \"John78\", \"id\" : 0.8008281904610115, \"email\" : \"john.smith@example.com\" }";
+                    ApiUtil.setExampleResponse(request, "application/json", exampleString);
+                    break;
+                }
+            }
+        });
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+
+    /**
+     * PUT /users/{id}/role : Update User Role
+     * Updates User Role information that exists in the system by the specified ID.
+     *
+     * @param id  (required)
+     * @param role  (required)
+     * @return OK (status code 200)
+     *         or The payload contains an error. (status code 400)
+     *         or The specified resource was not found. (status code 404)
+     *         or The unknown error appeard. Check your payload or contact support. (status code 200)
+     */
+    @ApiOperation(value = "Update User Role", nickname = "updateUserRole", notes = "Updates User Role information that exists in the system by the specified ID.", response = Role.class, authorizations = {
+        
+        @Authorization(value = "basicAuth")
+         }, tags={ "Users", })
+    @ApiResponses(value = { 
+        @ApiResponse(code = 200, message = "OK", response = Role.class),
+        @ApiResponse(code = 400, message = "The payload contains an error.", response = Error.class),
+        @ApiResponse(code = 404, message = "The specified resource was not found.", response = Error.class),
+        @ApiResponse(code = 200, message = "The unknown error appeard. Check your payload or contact support.", response = Error.class) })
+    @PutMapping(
+        value = "/users/{id}/role",
+        produces = { "application/json" },
+        consumes = { "application/json" }
+    )
+    default ResponseEntity<Role> updateUserRole(@ApiParam(value = "",required=true) @PathVariable("id") BigDecimal id,@ApiParam(value = "" ,required=true )  @Valid @RequestBody Role role) {
+        getRequest().ifPresent(request -> {
+            for (MediaType mediaType: MediaType.parseMediaTypes(request.getHeader("Accept"))) {
+                if (mediaType.isCompatibleWith(MediaType.valueOf("application/json"))) {
+                    String exampleString = "{ \"role\" : \"blogger\" }";
                     ApiUtil.setExampleResponse(request, "application/json", exampleString);
                     break;
                 }

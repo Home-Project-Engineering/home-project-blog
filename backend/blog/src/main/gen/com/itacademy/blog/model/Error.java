@@ -14,7 +14,7 @@ import javax.validation.constraints.*;
  * Representation of an Error that can appear using the application.
  */
 @ApiModel(description = "Representation of an Error that can appear using the application.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-25T23:02:54.036583200+03:00[Europe/Kiev]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-27T09:43:52.497006800+03:00[Europe/Kiev]")
 public class Error  implements Serializable {
   private static final long serialVersionUID = 1L;
 
