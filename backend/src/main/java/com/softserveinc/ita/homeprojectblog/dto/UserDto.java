@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
@@ -18,20 +18,19 @@ public class UserDto {
 
     private BigDecimal id;
 
-    @NotNull
+    @NotBlank
     private String name;
 
-    @NotNull
+    @NotBlank
     private String firstName;
 
-    @NotNull
+    @NotBlank
     private String lastName;
 
 
-    @NotNull
+    @NotBlank
     private String email;
 
-    @NotNull
     @Pattern(regexp = PASSWORD_REGEXP,
             message = WRONG_PASSWORD_PATTERN)
     @Size(min = 8, max = 255,
@@ -67,6 +66,5 @@ public class UserDto {
 
     }
 
-    @NotNull
     private com.softserveinc.ita.homeprojectblog.entity.UserEntity.RoleEnum role;
 }

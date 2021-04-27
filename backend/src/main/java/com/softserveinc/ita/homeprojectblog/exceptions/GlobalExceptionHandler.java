@@ -4,6 +4,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -50,6 +51,15 @@ public class GlobalExceptionHandler {
         var error = new Error();
         error.setCode("400");
         error.setMessage(e.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler
+    public ResponseEntity<Error> springframeworkValidationException(MethodArgumentNotValidException e) {
+        var error = new Error();
+        error.setCode("400");
+        error.setMessage(e.getMessage().split(": \\[")[1].split("; ")[0]);
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 

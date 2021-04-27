@@ -28,7 +28,6 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal id;
 
-    @NotNull
     @NotBlank
     @Column(name = "name")
     private String name;
@@ -42,7 +41,6 @@ public class UserEntity {
     private String lastName;
 
     @NotBlank
-    @NotNull
     @Column(name = "email")
     private String email;
 
