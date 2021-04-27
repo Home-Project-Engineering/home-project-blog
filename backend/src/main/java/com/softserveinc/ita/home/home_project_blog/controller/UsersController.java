@@ -62,6 +62,16 @@ public class UsersController {
         return new ResponseEntity<>(mapper.toViewUserDto(userService.getById(id)), HttpStatus.OK);
     }
 
+    @GetMapping(path = "/current", produces = "application/json")
+    public ResponseEntity<ViewUserDto> getCurrentUser() {
+        return new ResponseEntity<>(mapper.toViewUserDto(userService.getCurrentUser()), HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/current", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<ViewUserDto> updateCurrentUser(@Valid @RequestBody UpdateUserDto user) {
+        return new ResponseEntity<>(mapper.toViewUserDto(userService.updateCurrentUser(mapper.UpdateToUserDto(user))), HttpStatus.OK);
+    }
+
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseBody
     public ResponseEntity<ViewUserDto> signUp(@Valid @RequestBody CreateUserDto user) {
@@ -71,7 +81,7 @@ public class UsersController {
     @PreAuthorize("hasAuthority('users:write')")
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ViewUserDto> updateUser(@PathVariable Long id,
-                                              @Valid @RequestBody UpdateUserDto user) {
+                                                  @Valid @RequestBody UpdateUserDto user) {
         return new ResponseEntity<>(mapper.toViewUserDto(userService.update(id, mapper.UpdateToUserDto(user))), HttpStatus.OK);
     }
 

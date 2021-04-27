@@ -25,9 +25,13 @@ public interface IUserService {
 
     UserDto getById(Long id);
 
+    UserDto getCurrentUser();
+
     UserDto save(@Valid UserDto user);
 
     UserDto update(Long id, @Valid UserDto user);
+
+    UserDto updateCurrentUser(@Valid UserDto user);
 
     void delete(Long id);
 }

@@ -1,8 +1,8 @@
 package com.softserveinc.ita.home.home_project_blog.validation;
 
 public interface Const {
-    String NOT_FOUND_USER_BY_ID = "User with id=%d wasn't found.";
     String USER_DOESNT_EXIST = "User doesn't exist.";
+    String NO_AUTH = "User wasn't authorized.";
     String EMAIL_IS_NOT_UNIQUE = "User with such email already exists.";
     String NAME_IS_NOT_UNIQUE = "User with such name already exists.";
     String EMAIL_IS_NOT_VALID = "Email should be valid.";

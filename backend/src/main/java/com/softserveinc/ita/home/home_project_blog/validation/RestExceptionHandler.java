@@ -31,6 +31,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(error, httpStatus);
     }
 
+    @ExceptionHandler(value = {NotAuthotorizedException.class})
+    public ResponseEntity<Error> noAuthorization(NotAuthotorizedException e) {
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        Error error = new Error(
+                httpStatus.toString(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(error, httpStatus);
+    }
+
     @ExceptionHandler(value = {InvalidFormatException.class})
     public ResponseEntity<Error> noSuchRoleException(InvalidFormatException e) {
         HttpStatus httpStatus = HttpStatus.NOT_FOUND;

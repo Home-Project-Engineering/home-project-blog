@@ -30,7 +30,6 @@ public class CreateUserDto {
     private String email;
 
     @NotNull
-    @Size(min = 8, max = 255, message = Const.WRONG_PASSWORD_LENGTH)
     @Pattern(regexp = Const.PASSWORD_PATTERN, message = Const.WRONG_PASSWORD)
     private String password;
 
