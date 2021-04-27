@@ -9,19 +9,7 @@ import javax.validation.Valid;
 
 @Validated
 public interface IUserService {
-    Pageable pagination(Integer pageNum, Integer pageSize, String sortBy);
-
-    Page<UserDto> findAll(Pageable paging);
-
-    Page<UserDto> findAll(Integer pageNum, Integer pageSize, String sortBy);
-
-    Page<UserDto> getByName(String name, Integer pageNum, Integer pageSize, String sortBy);
-
-    Page<UserDto> getByName(String name, Pageable paging);
-
-    Page<UserDto> getById(Long id, Pageable paging);
-
-    Page<UserDto> getByNameAndId(String name, Long id, Pageable paging);
+    Page<UserDto> findAll(Long id, String name, Integer pageNum, Integer pageSize, String sort);
 
     UserDto getById(Long id);
 

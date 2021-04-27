@@ -1,7 +1,8 @@
 package com.softserveinc.ita.home.home_project_blog.service;
 
-import com.softserveinc.ita.home.home_project_blog.repository.entity.*;
 import com.softserveinc.ita.home.home_project_blog.repository.UserRepository;
+import com.softserveinc.ita.home.home_project_blog.repository.entity.Role;
+import com.softserveinc.ita.home.home_project_blog.repository.entity.User;
 import com.softserveinc.ita.home.home_project_blog.service.dto.UserDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.UserMapperService;
 import com.softserveinc.ita.home.home_project_blog.validation.Const;
@@ -33,7 +34,22 @@ public class UserService implements IUserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public Pageable pagination(Integer pageNum, Integer pageSize, String sortBy) {
+    public Page<UserDto> findAll(Long id, String name, Integer pageNum, Integer pageSize, String sort) {
+        Pageable paging = pagination(pageNum, pageSize, sort);
+        Page<User> usersPage;
+        if ((name != null) && (id != null)) {
+            usersPage = repository.findByNameAndId(name, id, paging);
+        } else if (name != null) {
+            usersPage = repository.findByName(name, paging);
+        } else if (id != null) {
+            usersPage = repository.findById(id, paging);
+        } else {
+            usersPage = repository.findAll(paging);
+        }
+        return mapper.toPageUserDto(usersPage);
+    }
+
+    private Pageable pagination(Integer pageNum, Integer pageSize, String sortBy) {
         Pageable paging;
         if (sortBy.charAt(0) == '-') {
             paging = PageRequest.of(pageNum, pageSize, Sort.by(sortBy.substring(1)).descending());
@@ -47,43 +63,23 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Page<UserDto> findAll(Integer pageNum, Integer pageSize, String sortBy) {
-        return mapper.toPageUserDto(repository.findAll(pagination(pageNum, pageSize, sortBy)));
-    }
-
-    @Override
-    public Page<UserDto> findAll(Pageable paging) {
-        return mapper.toPageUserDto(repository.findAll(paging));
-    }
-
-    @Override
     public UserDto getById(Long id) {
         return mapper.toUserDto(repository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(Const.USER_DOESNT_EXIST)));
     }
 
-    public UserDto getByEmail(String email){
+    private UserDto getByEmail(String email) {
         return mapper.toUserDto(repository.findByEmail(email).orElseThrow(
                 () -> new EntityNotFoundException(Const.USER_DOESNT_EXIST)));
     }
 
     @Override
-    public UserDto getCurrentUser(){
+    public UserDto getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
             throw new NotAuthotorizedException();
         }
         return getByEmail(authentication.getName());
-    }
-
-
-    @Override
-    public UserDto save(@Valid UserDto user) {
-        user.setRole(Role.BLOGGER);
-        throwIfEmailIsNotUnique(user.getEmail());
-        throwIfNameIsNotUnique(user.getName());
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return mapper.toUserDto(repository.save(mapper.toUser(user)));
     }
 
     private void throwIfEmailIsNotUnique(String email) {
@@ -98,7 +94,16 @@ public class UserService implements IUserService {
         }
     }
 
-    private UserDto updateDto(UserDto oldUser, UserDto newUser){
+    @Override
+    public UserDto save(@Valid UserDto user) {
+        throwIfEmailIsNotUnique(user.getEmail());
+        throwIfNameIsNotUnique(user.getName());
+        user.setRole(Role.BLOGGER);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return mapper.toUserDto(repository.save(mapper.toUser(user)));
+    }
+
+    private UserDto updateDto(UserDto oldUser, UserDto newUser) {
         if (!oldUser.getEmail().equalsIgnoreCase(newUser.getEmail())) {
             throwIfEmailIsNotUnique(newUser.getEmail());
         }
@@ -113,12 +118,12 @@ public class UserService implements IUserService {
 
     @Override
     public UserDto update(Long id, @Valid UserDto user) {
-        return updateDto(getById(id),user);
+        return updateDto(getById(id), user);
     }
 
     @Override
     public UserDto updateCurrentUser(@Valid UserDto user) {
-        return updateDto(getCurrentUser(),user);
+        return updateDto(getCurrentUser(), user);
     }
 
     @Override
@@ -127,25 +132,5 @@ public class UserService implements IUserService {
             throw new EntityNotFoundException(Const.USER_DOESNT_EXIST);
         }
         repository.deleteById(id);
-    }
-
-    @Override
-    public Page<UserDto> getByName(String name, Integer pageNum, Integer pageSize, String sortBy) {
-        return mapper.toPageUserDto(repository.findByName(name, pagination(pageNum, pageSize, sortBy)));
-    }
-
-    @Override
-    public Page<UserDto> getByName(String name, Pageable paging) {
-        return mapper.toPageUserDto(repository.findByName(name, paging));
-    }
-
-    @Override
-    public Page<UserDto> getById(Long id, Pageable paging) {
-        return mapper.toPageUserDto(repository.findById(id, paging));
-    }
-
-    @Override
-    public Page<UserDto> getByNameAndId(String name, Long id, Pageable paging) {
-        return mapper.toPageUserDto(repository.findByNameAndId(name, id, paging));
     }
 }

@@ -1,14 +1,12 @@
 package com.softserveinc.ita.home.home_project_blog.controller;
 
-import com.softserveinc.ita.home.home_project_blog.controller.dto.UpdateUserDto;
 import com.softserveinc.ita.home.home_project_blog.controller.dto.CreateUserDto;
+import com.softserveinc.ita.home.home_project_blog.controller.dto.UpdateUserDto;
 import com.softserveinc.ita.home.home_project_blog.controller.dto.ViewUserDto;
 import com.softserveinc.ita.home.home_project_blog.controller.mapper.UserMapperController;
 import com.softserveinc.ita.home.home_project_blog.service.IUserService;
-import com.softserveinc.ita.home.home_project_blog.service.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,23 +35,12 @@ public class UsersController {
             @RequestParam(defaultValue = "50") Integer page_size,
             @RequestParam(defaultValue = "-id") String sort
     ) {
-        Pageable paging = userService.pagination(page_num, page_size, sort);
-        Page<UserDto> pagedResult;
-        if ((name != null) && (id != null)) {
-            pagedResult = userService.getByNameAndId(name, id, paging);
-        } else if (name != null) {
-            pagedResult = userService.getByName(name, paging);
-        } else if (id != null) {
-            pagedResult = userService.getById(id, paging);
-        } else {
-            pagedResult = userService.findAll(paging);
-        }
+        Page<ViewUserDto> pagedResult = mapper.toPageViewUserDto(
+                userService.findAll(id, name, page_num, page_size, sort));
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("X-Total-Count",
                 String.valueOf(pagedResult.getTotalElements()));
-
-        List<ViewUserDto> users = mapper.toViewUserDtos(pagedResult.getContent());
-        return new ResponseEntity<>(users, responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(pagedResult.getContent(), responseHeaders, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('users:read')")
