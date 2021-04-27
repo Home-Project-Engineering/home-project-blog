@@ -15,10 +15,10 @@ And of course, there is nothing without comment, I'm sure it's a must-have featu
 We have the following roles defined in the application:
 - __ADMIN__ - The most powerful role which includes possibility to manage users.
 - __MODERATOR__ - The role that can be used for managing existing posts and comments.
-- __BLOGGER__ - The default role for any registred user.
-- __ANY__ - Any possible user of the application including unregisterd ones.
-- 
-Resourses in the application must be restricted via the following role matrix.
+- __BLOGGER__ - The default role for any registered user.
+- __ANY__ - Any possible user of the application including unregistered ones.
+
+Resources in the application must be restricted via the following role matrix.
 <details>
   <summary>Click to expand!</summary>
   
@@ -41,19 +41,21 @@ Resourses in the application must be restricted via the following role matrix.
 | Create new User.                                   | V     | V         | V       | V   |
 | See all users.                                     | V     |           |         |     |
 | See information about specific User.               | V     |           |         |     |
-| Update User infromation.                           | V     |           |         |     |
-| Delete Post.                                       | V     |           |         |     |
+| Update User information.                           | V     |           |         |     |
+| Delete User.                                       | V     |           |         |     |
+| See User Role.                                     | V     |           |         |     |
+| Update User Role.                                  | V     |           |         |     |
 | *__Posts__*                                        |       |           |         |     |
 | Create new Post.                                   | V     | V         | V       |     |
 | See all posts.                                     | V     | V         | V       | V   |
 | See information about specific Post.               | V     | V         | V       | V   |
-| Update Post infromation.                           | V     | V         |         |     |
+| Update Post information.                           | V     | V         |         |     |
 | Delete Post.                                       | V     | V         |         |     |
 | *__Comments__*                                     |       |           |         |     |
 | Create new Comment.                                | V     | V         | V       |     |
 | See all comments.                                  | V     | V         | V       | V   |
 | See information about specific Comment.            | V     | V         | V       | V   |
-| Update Comment infromation.                        | V     | V         |         |     |
+| Update Comment information.                        | V     | V         |         |     |
 | Delete Comment.                                    | V     | V         |         |     |
 | *__Tags__*                                         |       |           |         |     |
 | See all tags.                                      | V     | V         | V       | V   |
