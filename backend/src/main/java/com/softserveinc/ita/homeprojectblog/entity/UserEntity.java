@@ -5,10 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.*;
+
+import static com.softserveinc.ita.homeprojectblog.util.Constants.*;
 
 //import org.threeten.bp.*;
 
@@ -24,20 +28,28 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal id;
 
+    @NotNull
+    @NotBlank
     @Column(name = "name")
-//    @Size(min=50, message="to short")
     private String name;
 
+    @NotBlank
     @Column(name = "first_name")
     private String firstName;
 
+    @NotBlank
     @Column(name = "last_name")
     private String lastName;
 
+    @NotBlank
+    @NotNull
     @Column(name = "email")
     private String email;
 
-    @Pattern(regexp = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[0-9a-zA-Z]{8,}", message = "please use pattern - a-z+A-Z+0-9")
+    @Pattern(regexp = PASSWORD_REGEXP,
+            message = WRONG_PASSWORD_PATTERN)
+    @Size(min = 8, max = 255,
+            message = WRONG_PASSWORD_SIZE)
     @Column(name = "password")
     private String password;
 

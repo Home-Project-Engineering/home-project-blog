@@ -16,7 +16,5 @@ public interface UserMapperController {
         return userDtoPage.map(this::toUser);
     }
 
-
-    //    @Mapping(target = "password", ignore = true)
     UserDto toUserDto(User body);
 }

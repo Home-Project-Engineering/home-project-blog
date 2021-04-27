@@ -3,32 +3,39 @@ package com.softserveinc.ita.homeprojectblog.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 
+import static com.softserveinc.ita.homeprojectblog.util.Constants.*;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-//@Validated
 public class UserDto {
 
     private BigDecimal id;
 
-//    @Size(min=50, message="to short")
+    @NotNull
     private String name;
 
+    @NotNull
     private String firstName;
 
+    @NotNull
     private String lastName;
 
 
+    @NotNull
     private String email;
 
-    @Pattern(regexp = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[0-9a-zA-Z]{8,}", message = "please use pattern - a-z+A-Z+0-9")
-//    @Size(min = 8, max = 255, message = "Password should be between 8 and 200 characters.")
+    @NotNull
+    @Pattern(regexp = PASSWORD_REGEXP,
+            message = WRONG_PASSWORD_PATTERN)
+    @Size(min = 8, max = 255,
+            message = WRONG_PASSWORD_SIZE)
     private String password;
 
 //    private String createOn;
@@ -60,5 +67,6 @@ public class UserDto {
 
     }
 
+    @NotNull
     private com.softserveinc.ita.homeprojectblog.entity.UserEntity.RoleEnum role;
 }

@@ -4,12 +4,8 @@ import com.softserveinc.ita.homeprojectblog.dto.UserDto;
 import com.softserveinc.ita.homeprojectblog.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
-import org.springframework.validation.annotation.Validated;
-
-import javax.validation.Valid;
 
 @Mapper(componentModel = "spring")
-@Validated
 public interface UserMapperService {
 
     UserDto toUserDto(UserEntity userEntity);
@@ -18,6 +14,5 @@ public interface UserMapperService {
         return userEntityPage.map(this::toUserDto);
     }
 
-    @Valid
     UserEntity toUserEntity(UserDto userDto);
 }
