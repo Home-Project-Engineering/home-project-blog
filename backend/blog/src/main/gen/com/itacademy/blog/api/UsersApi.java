@@ -25,11 +25,10 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
-import javax.xml.bind.ValidationException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-27T09:43:52.497006800+03:00[Europe/Kiev]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-27T20:44:50.769328600+03:00[Europe/Kiev]")
 @Validated
 @Api(value = "users", description = "the users API")
 public interface UsersApi {
@@ -567,7 +566,7 @@ public interface UsersApi {
         produces = { "application/json" },
         consumes = { "application/json" }
     )
-    default ResponseEntity<Void> updateCurrentUserPassword(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Password password) throws ValidationException {
+    default ResponseEntity<Void> updateCurrentUserPassword(@ApiParam(value = "" ,required=true )  @Valid @RequestBody Password password) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }

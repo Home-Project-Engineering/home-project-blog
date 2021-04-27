@@ -4,9 +4,7 @@ import com.itacademy.blog.model.Role;
 import com.itacademy.blog.model.Role.RoleEnum;
 import com.itacademy.blog.model.User;
 import com.itacademy.blog.services.DTO.RoleDTO;
-import com.itacademy.blog.services.DTO.RoleDTO.RoleDTOBuilder;
 import com.itacademy.blog.services.DTO.UserDTO;
-import com.itacademy.blog.services.DTO.UserDTO.UserDTOBuilder;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +12,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-04-27T11:03:38+0300",
+    date = "2021-04-27T20:48:53+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 15.0.2 (Oracle Corporation)"
 )
 public class UserMapperImpl implements UserMapper {
@@ -25,17 +23,17 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        UserDTOBuilder userDTO = UserDTO.builder();
+        UserDTO userDTO = new UserDTO();
 
-        userDTO.id( user.getId() );
-        userDTO.name( user.getName() );
-        userDTO.firstName( user.getFirstName() );
-        userDTO.lastName( user.getLastName() );
-        userDTO.email( user.getEmail() );
-        userDTO.password( user.getPassword() );
-        userDTO.role( convert( user.getRole() ) );
+        userDTO.setId( user.getId() );
+        userDTO.setName( user.getName() );
+        userDTO.setFirstName( user.getFirstName() );
+        userDTO.setLastName( user.getLastName() );
+        userDTO.setEmail( user.getEmail() );
+        userDTO.setPassword( user.getPassword() );
+        userDTO.setRole( convert( user.getRole() ) );
 
-        return userDTO.build();
+        return userDTO;
     }
 
     @Override
@@ -44,11 +42,11 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        RoleDTOBuilder roleDTO = RoleDTO.builder();
+        RoleDTO roleDTO = new RoleDTO();
 
-        roleDTO.role( roleEnumToRoleEnum( value.getRole() ) );
+        roleDTO.setRole( roleEnumToRoleEnum( value.getRole() ) );
 
-        return roleDTO.build();
+        return roleDTO;
     }
 
     @Override

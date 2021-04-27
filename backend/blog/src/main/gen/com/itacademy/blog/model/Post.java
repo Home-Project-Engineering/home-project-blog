@@ -20,7 +20,7 @@ import javax.validation.constraints.*;
  * A representation of Post entity.
  */
 @ApiModel(description = "A representation of Post entity.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-27T09:43:52.497006800+03:00[Europe/Kiev]")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-27T20:44:50.769328600+03:00[Europe/Kiev]")
 public class Post  implements Serializable {
   private static final long serialVersionUID = 1L;
 

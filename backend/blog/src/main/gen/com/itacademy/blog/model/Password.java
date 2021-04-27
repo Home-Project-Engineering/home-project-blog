@@ -5,65 +5,64 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.math.BigDecimal;
 import org.openapitools.jackson.nullable.JsonNullable;
 import java.io.Serializable;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 
 /**
- * Tag
+ * Password
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-04-27T20:44:50.769328600+03:00[Europe/Kiev]")
-public class Tag  implements Serializable {
+public class Password  implements Serializable {
   private static final long serialVersionUID = 1L;
 
-  @JsonProperty("id")
-  private BigDecimal id;
+  @JsonProperty("oldPassword")
+  private String oldPassword;
 
-  @JsonProperty("name")
-  private String name;
+  @JsonProperty("newPassword")
+  private String newPassword;
 
-  public Tag id(BigDecimal id) {
-    this.id = id;
+  public Password oldPassword(String oldPassword) {
+    this.oldPassword = oldPassword;
     return this;
   }
 
   /**
-   * The ID of the Tag.
-   * @return id
+   * Get oldPassword
+   * @return oldPassword
   */
-  @ApiModelProperty(readOnly = true, value = "The ID of the Tag.")
-
-  @Valid
-
-  public BigDecimal getId() {
-    return id;
-  }
-
-  public void setId(BigDecimal id) {
-    this.id = id;
-  }
-
-  public Tag name(String name) {
-    this.name = name;
-    return this;
-  }
-
-  /**
-   * The name of the Tag.
-   * @return name
-  */
-  @ApiModelProperty(example = "Java8", required = true, value = "The name of the Tag.")
+  @ApiModelProperty(required = true, value = "")
   @NotNull
 
 
-  public String getName() {
-    return name;
+  public String getOldPassword() {
+    return oldPassword;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setOldPassword(String oldPassword) {
+    this.oldPassword = oldPassword;
+  }
+
+  public Password newPassword(String newPassword) {
+    this.newPassword = newPassword;
+    return this;
+  }
+
+  /**
+   * Get newPassword
+   * @return newPassword
+  */
+  @ApiModelProperty(required = true, value = "")
+  @NotNull
+
+
+  public String getNewPassword() {
+    return newPassword;
+  }
+
+  public void setNewPassword(String newPassword) {
+    this.newPassword = newPassword;
   }
 
 
@@ -75,23 +74,23 @@ public class Tag  implements Serializable {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Tag tag = (Tag) o;
-    return Objects.equals(this.id, tag.id) &&
-        Objects.equals(this.name, tag.name);
+    Password password = (Password) o;
+    return Objects.equals(this.oldPassword, password.oldPassword) &&
+        Objects.equals(this.newPassword, password.newPassword);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name);
+    return Objects.hash(oldPassword, newPassword);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Tag {\n");
+    sb.append("class Password {\n");
     
-    sb.append("    id: ").append(toIndentedString(id)).append("\n");
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    oldPassword: ").append(toIndentedString(oldPassword)).append("\n");
+    sb.append("    newPassword: ").append(toIndentedString(newPassword)).append("\n");
     sb.append("}");
     return sb.toString();
   }

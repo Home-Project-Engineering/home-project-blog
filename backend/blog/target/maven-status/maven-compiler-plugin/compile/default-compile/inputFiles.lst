@@ -36,11 +36,13 @@ F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\services\DTO\UserDTO.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\services\service\UserService.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\services\service\TagService.java
+F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\data\repository\RoleRepo.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\services\service\impl\UserServiceImpl.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\services\mapper\TagMapper.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\api\mapper\TagMapper.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\data\entity\User.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\data\repository\CommentRepo.java
+F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\services\DTO\RoleDTO.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\data\entity\Permission.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\java\com\itacademy\blog\api\security\SecurityUser.java
 F:\SoftServe\ITAcademy\BlogProject\home-project-blog\backend\blog\src\main\gen\com\itacademy\blog\api\TagsApi.java

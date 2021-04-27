@@ -1,14 +1,10 @@
 package com.itacademy.blog.services.mapper;
 
 import com.itacademy.blog.data.entity.Role;
-import com.itacademy.blog.data.entity.Role.RoleBuilder;
 import com.itacademy.blog.data.entity.Role.RoleEnum;
 import com.itacademy.blog.data.entity.User;
-import com.itacademy.blog.data.entity.User.UserBuilder;
 import com.itacademy.blog.services.DTO.RoleDTO;
-import com.itacademy.blog.services.DTO.RoleDTO.RoleDTOBuilder;
 import com.itacademy.blog.services.DTO.UserDTO;
-import com.itacademy.blog.services.DTO.UserDTO.UserDTOBuilder;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +12,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2021-04-27T11:03:37+0300",
+    date = "2021-04-27T20:48:54+0300",
     comments = "version: 1.4.2.Final, compiler: javac, environment: Java 15.0.2 (Oracle Corporation)"
 )
 public class UserMapperImpl implements UserMapper {
@@ -27,20 +23,20 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        UserDTOBuilder userDTO = UserDTO.builder();
+        UserDTO userDTO = new UserDTO();
 
         if ( user.getId() != null ) {
-            userDTO.id( BigDecimal.valueOf( user.getId() ) );
+            userDTO.setId( BigDecimal.valueOf( user.getId() ) );
         }
-        userDTO.name( user.getName() );
-        userDTO.firstName( user.getFirstName() );
-        userDTO.lastName( user.getLastName() );
-        userDTO.email( user.getEmail() );
-        userDTO.role( convert( user.getRole() ) );
+        userDTO.setName( user.getName() );
+        userDTO.setFirstName( user.getFirstName() );
+        userDTO.setLastName( user.getLastName() );
+        userDTO.setEmail( user.getEmail() );
+        userDTO.setRole( convert( user.getRole() ) );
 
-        userDTO.password( "********" );
+        userDTO.setPassword( "********" );
 
-        return userDTO.build();
+        return userDTO;
     }
 
     @Override
@@ -49,19 +45,19 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        UserBuilder user = User.builder();
+        User user = new User();
 
         if ( userDTO.getId() != null ) {
-            user.id( userDTO.getId().longValue() );
+            user.setId( userDTO.getId().longValue() );
         }
-        user.name( userDTO.getName() );
-        user.firstName( userDTO.getFirstName() );
-        user.lastName( userDTO.getLastName() );
-        user.email( userDTO.getEmail() );
-        user.password( userDTO.getPassword() );
-        user.role( convert( userDTO.getRole() ) );
+        user.setName( userDTO.getName() );
+        user.setFirstName( userDTO.getFirstName() );
+        user.setLastName( userDTO.getLastName() );
+        user.setEmail( userDTO.getEmail() );
+        user.setPassword( userDTO.getPassword() );
+        user.setRole( convert( userDTO.getRole() ) );
 
-        return user.build();
+        return user;
     }
 
     @Override
@@ -70,11 +66,11 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        RoleDTOBuilder roleDTO = RoleDTO.builder();
+        RoleDTO roleDTO = new RoleDTO();
 
-        roleDTO.role( roleEnumToRoleEnum( value.getRole() ) );
+        roleDTO.setRole( roleEnumToRoleEnum( value.getRole() ) );
 
-        return roleDTO.build();
+        return roleDTO;
     }
 
     @Override
@@ -83,11 +79,11 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
 
-        RoleBuilder role = Role.builder();
+        Role role = new Role();
 
-        role.role( roleEnumToRoleEnum1( value.getRole() ) );
+        role.setRole( roleEnumToRoleEnum1( value.getRole() ) );
 
-        return role.build();
+        return role;
     }
 
     @Override

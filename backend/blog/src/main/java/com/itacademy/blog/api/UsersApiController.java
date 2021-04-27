@@ -14,6 +14,7 @@ import com.itacademy.blog.services.query.EntitySpecificationService;
 import com.itacademy.blog.services.service.CommentService;
 import com.itacademy.blog.services.service.PostService;
 import com.itacademy.blog.services.service.UserService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
@@ -26,7 +27,6 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
-import javax.xml.bind.ValidationException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
@@ -248,9 +248,10 @@ public class UsersApiController implements UsersApi {
         return new ResponseEntity<>(toReturn, HttpStatus.OK);
     }
 
+    @SneakyThrows
     @Override
     @PermitAll
-    public ResponseEntity<Void> updateCurrentUserPassword(@Valid Password password) throws ValidationException {
+    public ResponseEntity<Void> updateCurrentUserPassword(@Valid Password password) {
         userService.updateCurrentUserPassword(password.getOldPassword(), password.getNewPassword());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
