@@ -1,7 +1,6 @@
 package com.softserveinc.ita.homeprojectblog.exceptions;
 
 import org.hibernate.exception.ConstraintViolationException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -37,9 +36,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(value = {DataIntegrityViolationException.class,
+    @ExceptionHandler(value = {org.springframework.dao.DataIntegrityViolationException.class,
             org.hibernate.exception.ConstraintViolationException.class})
-    public ResponseEntity<Object> hibernateValidationException(ConstraintViolationException e) {
+    public ResponseEntity<Error> hibernateValidationException(ConstraintViolationException e) {
         var error = new Error();
         error.setCode("400");
         error.setMessage(e.getCause().getMessage().split("Detail: ")[1]);
