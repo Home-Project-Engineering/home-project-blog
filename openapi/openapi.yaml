@@ -1,10 +1,13 @@
 openapi: 3.0.3
 
 info:
-  version: 0.1.1
+  version: 1.1.1
   title: Home Project Blog Service
   description: |
     Blog for the Home Project engineers
+  license:
+    name: MIT
+    url: https://github.com/Home-Project-Engineering/home-project-blog/blob/main/LICENSE
 
 servers:
   - url: /api/1
@@ -13,27 +16,214 @@ security:
   - basicAuth: []
 
 tags:
-  - name: "User"
-  - name: "Post"
-  - name: "Comment"
-  - name: "Tag"
+  - name: Current User
+    description: API for managing Current User.
+  - name: Current User Posts
+    description: API for managing Posts on Current User.
+  - name: Current User Comments
+    description: API for managing Comments on Current User.
+  - name: Users
+    description: API for managing Users.
+  - name: Posts
+    description: API for managing Posts.
+  - name: Comments
+    description: API for managing Comments.
+  - name: Tags
+    description: API for managing Tags.
 
 paths:
   /users/current:
     get:
       tags:
-        - User
+        - Current User
       summary: Return current User
       description: Retrieves the current logged User.
       operationId: getCurrentUser
       responses:
-        "200":
+        200:
           $ref: '#/components/responses/UserResponse'
-        "400":
+        400:
           $ref: '#/components/responses/ValidationError'
-        "404":
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
           $ref: '#/components/responses/NotFoundError'
-        "default":
+        default:
+          $ref: '#/components/responses/UnknownError'
+    put:
+      tags:
+        - Current User
+      summary: Update Current User
+      description: Updates information on a Current User.
+      operationId: updateCurrentUser
+      requestBody:
+        $ref: '#/components/requestBodies/UserBody'
+      responses:
+        200:
+          $ref: '#/components/responses/UserResponse'
+        400:
+          $ref: '#/components/responses/ValidationError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/UnknownError'
+
+  /users/current/posts:
+    get:
+      summary: Get posts by Current User
+      description: Uses query keys to retrieve a subset of existing posts assosiated with Current User.
+      tags:
+        - Current User Posts
+      operationId: getPostsByCurrentUser
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/tag_id'
+        - $ref: '#/components/parameters/tag_name'
+        - $ref: '#/components/parameters/posts_sort'
+        - $ref: '#/components/parameters/page_num'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        200:
+          $ref: '#/components/responses/PostsResponse'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        default:
+          $ref: '#/components/responses/UnknownError'
+
+  /users/current/posts/{id}:
+    parameters:
+      - $ref: '#/components/parameters/p_id'
+    get:
+      tags:
+        - Current User Posts
+      operationId: getPostByCurrentUser
+      summary: Get Post by ID and Current User
+      description: Retrieves an existing Post associated with the specified ID and Current User.
+      responses:
+        200:
+          $ref: '#/components/responses/PostResponse'
+        400:
+          $ref: '#/components/responses/ValidationError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/UnknownError'
+    put:
+      tags:
+        - Current User Posts
+      summary: Update Post by Current User
+      description: Updates information on a Post that exists in the system by the specified ID and Current User.
+      operationId: updatePostByCurrentUser
+      requestBody:
+        $ref: '#/components/requestBodies/PostBody'
+      responses:
+        200:
+          $ref: '#/components/responses/PostResponse'
+        400:
+          $ref: '#/components/responses/ValidationError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/UnknownError'
+    delete:
+      tags:
+        - Current User Posts
+      summary: Remove Post by Current User
+      description: Deletes a Post associated with a specified ID and Current User.
+      operationId: removePostByCurrentUser
+      responses:
+        204:
+          $ref: '#/components/responses/NoContentResponse'
+        400:
+          $ref: '#/components/responses/ValidationError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/UnknownError'
+
+  /users/current/comments:
+    get:
+      summary: Get comments by Current User
+      description: Uses query keys to retrieve a subset of existing comments assosiated with Current User.
+      tags:
+        - Current User Comments
+      operationId: getCommentsByCurrentUser
+      parameters:
+        - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/comments_sort'
+        - $ref: '#/components/parameters/page_num'
+        - $ref: '#/components/parameters/page_size'
+      responses:
+        200:
+          $ref: '#/components/responses/CommentsResponse'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        default:
+          $ref: '#/components/responses/UnknownError'
+
+  /users/current/comments/{id}:
+    parameters:
+      - $ref: '#/components/parameters/p_id'
+    get:
+      tags:
+        - Current User Comments
+      operationId: getCommentByCurrentUser
+      summary: Get Comment by ID and Current User
+      description: Retrieves an existing Comment associated with the specified ID and Current User.
+      responses:
+        200:
+          $ref: '#/components/responses/CommentResponse'
+        400:
+          $ref: '#/components/responses/ValidationError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/UnknownError'
+    put:
+      tags:
+        - Current User Comments
+      summary: Update Comment by Current User
+      description: Updates information on a Comment that exists in the system by the specified ID and Current User.
+      operationId: updateCommentByCurrentUser
+      requestBody:
+        $ref: '#/components/requestBodies/CommentBody'
+      responses:
+        200:
+          $ref: '#/components/responses/CommentsResponse'
+        400:
+          $ref: '#/components/responses/ValidationError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/UnknownError'
+    delete:
+      tags:
+        - Current User Comments
+      summary: Remove Comment by Current User
+      description: Deletes a Comment associated with a specified ID and Current User.
+      operationId: removeCommentByCurrentUser
+      responses:
+        204:
+          $ref: '#/components/responses/NoContentResponse'
+        400:
+          $ref: '#/components/responses/ValidationError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+        default:
           $ref: '#/components/responses/UnknownError'
 
   /users:
@@ -41,20 +231,20 @@ paths:
       summary: Create User
       description: Create a new User.
       tags:
-        - User
+        - Users
       operationId: createUser
       requestBody:
         $ref: '#/components/requestBodies/UserBody'
       responses:
-        "201":
+        201:
           $ref: '#/components/responses/UserResponse'
-        "400":
+        400:
           $ref: '#/components/responses/ValidationError'
-        "default":
+        default:
           $ref: '#/components/responses/UnknownError'
     get:
       tags:
-        - User
+        - Users
       summary: Get users
       description: Uses query keys to retrieve a subset of existing users.
       operationId: getUsers
@@ -65,11 +255,15 @@ paths:
         - $ref: '#/components/parameters/page_num'
         - $ref: '#/components/parameters/page_size'
       responses:
-        "200":
+        200:
           $ref: '#/components/responses/UsersResponse'
-        "400":
+        400:
           $ref: '#/components/responses/ValidationError'
-        "default":
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        default:
           $ref: '#/components/responses/UnknownError'
 
   /users/{id}:
@@ -77,50 +271,106 @@ paths:
       - $ref: '#/components/parameters/p_id'
     get:
       tags:
-        - User
+        - Users
       summary: Get User by ID
       description: Retrieves an existing User associated with the specified ID.
       operationId: getUser
       responses:
-        "200":
+        200:
           $ref: '#/components/responses/UserResponse'
-        "400":
+        400:
           $ref: '#/components/responses/ValidationError'
-        "404":
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        404:
           $ref: '#/components/responses/NotFoundError'
-        "default":
+        default:
           $ref: '#/components/responses/UnknownError'
     put:
       tags:
-        - User
+        - Users
       summary: Update User
       description: Updates information on a User that exists in the system by the specified ID.
       operationId: updateUser
       requestBody:
         $ref: '#/components/requestBodies/UserBody'
       responses:
-        "200":
+        200:
           $ref: '#/components/responses/UserResponse'
-        "400":
+        400:
           $ref: '#/components/responses/ValidationError'
-        "404":
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        404:
           $ref: '#/components/responses/NotFoundError'
-        "default":
+        default:
           $ref: '#/components/responses/UnknownError'
     delete:
       tags:
-        - User
+        - Users
       summary: Remove User
       description: Deletes a User associated with a specified ID.
       operationId: removeUser
       responses:
-        "204":
+        204:
           $ref: '#/components/responses/NoContentResponse'
-        "400":
+        400:
           $ref: '#/components/responses/ValidationError'
-        "404":
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        404:
           $ref: '#/components/responses/NotFoundError'
-        "default":
+        default:
+          $ref: '#/components/responses/UnknownError'
+
+  /users/{id}/role:
+    parameters:
+      - $ref: '#/components/parameters/p_id'
+    get:
+      tags:
+        - Users
+      summary: Get User Role by ID
+      description: Retrieves an existing User Role associated with the specified ID.
+      operationId: getUserRole
+      responses:
+        200:
+          $ref: '#/components/responses/UserRoleResponse'
+        400:
+          $ref: '#/components/responses/ValidationError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/UnknownError'
+    put:
+      tags:
+        - Users
+      summary: Update User Role
+      description: Updates Role on a User that exists in the system by the specified ID.
+      operationId: updateUserRole
+      requestBody:
+        $ref: '#/components/requestBodies/RoleBody'
+      responses:
+        200:
+          $ref: '#/components/responses/RoleResponse'
+        400:
+          $ref: '#/components/responses/ValidationError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+        default:
           $ref: '#/components/responses/UnknownError'
 
   /posts:
@@ -128,22 +378,24 @@ paths:
       summary: Create Post
       description: Create a new Post.
       tags:
-        - Post
+        - Posts
       operationId: createPost
       requestBody:
         $ref: '#/components/requestBodies/PostBody'
       responses:
-        "201":
+        201:
           $ref: '#/components/responses/PostResponse'
-        "400":
+        400:
           $ref: '#/components/responses/ValidationError'
-        "default":
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        default:
           $ref: '#/components/responses/UnknownError'
     get:
       summary: Get posts
       description: Uses query keys to retrieve a subset of existing posts.
       tags:
-        - Post
+        - Posts
       operationId: getPosts
       parameters:
         - $ref: '#/components/parameters/id'
@@ -154,11 +406,9 @@ paths:
         - $ref: '#/components/parameters/page_num'
         - $ref: '#/components/parameters/page_size'
       responses:
-        "200":
+        200:
           $ref: '#/components/responses/PostsResponse'
-        "404":
-          $ref: '#/components/responses/NotFoundError'
-        "default":
+        default:
           $ref: '#/components/responses/UnknownError'
 
   /posts/{id}:
@@ -166,50 +416,58 @@ paths:
       - $ref: '#/components/parameters/p_id'
     get:
       tags:
-        - Post
+        - Posts
       summary: Get Post by ID
       description: Retrieves an existing Post associated with the specified ID.
       operationId: getPost
       responses:
-        "200":
+        200:
           $ref: '#/components/responses/PostResponse'
-        "400":
+        400:
           $ref: '#/components/responses/ValidationError'
-        "404":
+        404:
           $ref: '#/components/responses/NotFoundError'
-        "default":
+        default:
           $ref: '#/components/responses/UnknownError'
     put:
       tags:
-        - Post
+        - Posts
       summary: Update Post
       description: Updates information on a Post that exists in the system by the specified ID.
       operationId: updatePost
       requestBody:
         $ref: '#/components/requestBodies/PostBody'
       responses:
-        "200":
+        200:
           $ref: '#/components/responses/PostResponse'
-        "400":
+        400:
           $ref: '#/components/responses/ValidationError'
-        "404":
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        404:
           $ref: '#/components/responses/NotFoundError'
-        "default":
+        default:
           $ref: '#/components/responses/UnknownError'
     delete:
       tags:
-        - Post
+        - Posts
       summary: Remove Post
       description: Deletes a Post associated with a specified ID.
       operationId: removePost
       responses:
-        "204":
+        204:
           $ref: '#/components/responses/NoContentResponse'
-        "400":
+        400:
           $ref: '#/components/responses/ValidationError'
-        "404":
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        404:
           $ref: '#/components/responses/NotFoundError'
-        "default":
+        default:
           $ref: '#/components/responses/UnknownError'
 
   /posts/{post_id}/comments:
@@ -219,7 +477,7 @@ paths:
       summary: Get comments
       description: Uses query keys to retrieve a subset of existing comments.
       tags:
-        - Comment
+        - Comments
       operationId: getComments
       parameters:
         - $ref: '#/components/parameters/id'
@@ -229,26 +487,28 @@ paths:
         - $ref: '#/components/parameters/page_num'
         - $ref: '#/components/parameters/page_size'
       responses:
-        "200":
+        200:
           $ref: '#/components/responses/CommentsResponse'
-        "404":
+        404:
           $ref: '#/components/responses/NotFoundError'
-        "default":
+        default:
           $ref: '#/components/responses/UnknownError'
     post:
       summary: Create Comment
       description: Create a new Comment.
       tags:
-        - Comment
+        - Comments
       operationId: createComment
       requestBody:
         $ref: '#/components/requestBodies/CommentBody'
       responses:
-        "201":
+        201:
           $ref: '#/components/responses/CommentResponse'
-        "400":
+        400:
           $ref: '#/components/responses/ValidationError'
-        "default":
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        default:
           $ref: '#/components/responses/UnknownError'
 
   /posts/{post_id}/comments/{id}:
@@ -257,56 +517,64 @@ paths:
       - $ref: '#/components/parameters/p_id'
     get:
       tags:
-        - Comment
+        - Comments
       summary: Get Comment by ID.
       description: Retrieves an existing Comment associated with the specified ID.
       operationId: getComment
       responses:
-        "200":
+        200:
           $ref: '#/components/responses/CommentResponse'
-        "400":
+        400:
           $ref: '#/components/responses/ValidationError'
-        "404":
+        404:
           $ref: '#/components/responses/NotFoundError'
-        "default":
+        default:
           $ref: '#/components/responses/UnknownError'
     put:
       tags:
-        - Comment
+        - Comments
       summary: Update Comment
       description: Updates information on a Comment that exists in the system by the specified ID and post ID.
       operationId: updateComment
       requestBody:
         $ref: '#/components/requestBodies/CommentBody'
       responses:
-        "200":
+        200:
           $ref: '#/components/responses/CommentResponse'
-        "400":
+        400:
           $ref: '#/components/responses/ValidationError'
-        "404":
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        404:
           $ref: '#/components/responses/NotFoundError'
-        "default":
+        default:
           $ref: '#/components/responses/UnknownError'
     delete:
       tags:
-        - Comment
+        - Comments
       summary: Remove Comment
       description: Deletes a Comment associated with a specified ID.
       operationId: removeComment
       responses:
-        "204":
+        204:
           $ref: '#/components/responses/NoContentResponse'
-        "400":
+        400:
           $ref: '#/components/responses/ValidationError'
-        "404":
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        404:
           $ref: '#/components/responses/NotFoundError'
-        "default":
+        default:
           $ref: '#/components/responses/UnknownError'
 
   /tags:
     get:
       tags:
-        - Tag
+        - Tags
       summary: Get tags
       description: Uses query keys to retrieve a subset of existing tags.
       operationId: getTags
@@ -317,11 +585,9 @@ paths:
         - $ref: '#/components/parameters/page_num'
         - $ref: '#/components/parameters/page_size'
       responses:
-        "200":
+        200:
           $ref: '#/components/responses/TagsResponse'
-        "404":
-          $ref: '#/components/responses/NotFoundError'
-        "default":
+        default:
           $ref: '#/components/responses/UnknownError'
 
   /tags/{id}:
@@ -329,33 +595,37 @@ paths:
       - $ref: '#/components/parameters/p_id'
     get:
       tags:
-        - Tag
+        - Tags
       summary: Get Tag by ID
       description: Retrieves an existing Tag associated with the specified ID.
       operationId: getTag
       responses:
-        "200":
+        200:
           $ref: '#/components/responses/TagResponse'
-        "400":
+        400:
           $ref: '#/components/responses/ValidationError'
-        "404":
+        404:
           $ref: '#/components/responses/NotFoundError'
-        "default":
+        default:
           $ref: '#/components/responses/UnknownError'
     delete:
       tags:
-        - Tag
+        - Tags
       summary: Remove Tag
       description: Deletes a Tag associated with a specified ID.
       operationId: removeTag
       responses:
-        "204":
+        204:
           $ref: '#/components/responses/NoContentResponse'
-        "400":
+        400:
           $ref: '#/components/responses/ValidationError'
-        "404":
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        404:
           $ref: '#/components/responses/NotFoundError'
-        "default":
+        default:
           $ref: '#/components/responses/UnknownError'
 
 components:
@@ -408,14 +678,23 @@ components:
           pattern: '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/'
           example: passworD321
         role:
-          description: This is the level of User access to various functions.
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/Role'
+
+    Role:
+      description: This is the level of User access to various functions.
+      type: object
+      required:
+        - role
+      properties:
+        name:
+          description: The name of the Role.
           type: string
           enum:
-            - guest
-            - user
+            - blogger
             - moderator
             - admin
-            - expert
 
     Post:
       description: A representation of Post entity.
@@ -548,6 +827,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/User"
+    RoleResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Role"
     CommentsResponse:
       description: OK
       headers:
@@ -610,6 +895,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Error'
+    ForbiddenError:
+      description: Forbidden.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
     UnknownError:
       description: The unknown error appeard. Check your payload or contact support.
       content:
@@ -636,6 +927,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/User"
+    RoleBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Role"
 
   parameters:
     p_id:
