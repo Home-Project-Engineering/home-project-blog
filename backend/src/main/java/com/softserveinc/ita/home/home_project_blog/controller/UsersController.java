@@ -21,12 +21,12 @@ import java.util.List;
 @Validated
 @Controller
 @RequiredArgsConstructor
-@RequestMapping(path = "/api/0/users", produces = "application/json")
+@RequestMapping(path = "/api/1/users", produces = "application/json")
 public class UsersController {
     private final IUserService userService;
     private final UserMapperController mapper;
 
-    @PreAuthorize("hasAuthority('users:read')")
+    @PreAuthorize("hasAuthority('users')")
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<ViewUserDto>> getAllUsers(
             @RequestParam(required = false) Long id,
@@ -43,7 +43,7 @@ public class UsersController {
         return new ResponseEntity<>(pagedResult.getContent(), responseHeaders, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('users:read')")
+    @PreAuthorize("hasAuthority('users')")
     @GetMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<ViewUserDto> getUserById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(mapper.toViewUserDto(userService.getById(id)), HttpStatus.OK);
@@ -65,14 +65,14 @@ public class UsersController {
         return new ResponseEntity<>(mapper.toViewUserDto(userService.save(mapper.signUpToUserDto(user))), HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAuthority('users:write')")
+    @PreAuthorize("hasAuthority('users')")
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ViewUserDto> updateUser(@PathVariable Long id,
                                                   @Valid @RequestBody UpdateUserDto user) {
         return new ResponseEntity<>(mapper.toViewUserDto(userService.update(id, mapper.UpdateToUserDto(user))), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('users:write')")
+    @PreAuthorize("hasAuthority('users')")
     @DeleteMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<ViewUserDto> deleteUser(@PathVariable Long id) {
         userService.delete(id);

@@ -1,8 +1,10 @@
-package com.softserveinc.ita.home.home_project_blog.repository.entity;
+package com.softserveinc.ita.home.home_project_blog.security.model;
 
 public enum Permission {
-    USERS_READ("users:read"),
-    USERS_WRITE("users:write");
+    USERS("users"),
+    POSTS_CREATE("posts:create"),
+    POSTS_UPDATE("posts:update"),
+    TAGS_DELETE("tags:delete");
 
     private final String permission;
 

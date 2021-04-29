@@ -1,4 +1,4 @@
-package com.softserveinc.ita.home.home_project_blog.repository.entity;
+package com.softserveinc.ita.home.home_project_blog.security.model;
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
@@ -6,9 +6,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public enum Role {
-    ADMIN(Set.of(Permission.USERS_WRITE, Permission.USERS_READ)),
-    MODERATOR,
-    BLOGGER;
+    ADMIN(Set.of(Permission.USERS, Permission.POSTS_CREATE, Permission.POSTS_UPDATE, Permission.TAGS_DELETE)),
+    MODERATOR(Set.of(Permission.POSTS_CREATE, Permission.POSTS_UPDATE, Permission.TAGS_DELETE)),
+    BLOGGER(Set.of(Permission.POSTS_CREATE));
 
     private final Set<Permission> permissions;
 

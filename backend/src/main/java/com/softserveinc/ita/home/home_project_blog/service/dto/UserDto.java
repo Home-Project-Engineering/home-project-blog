@@ -1,7 +1,7 @@
 package com.softserveinc.ita.home.home_project_blog.service.dto;
 
+import com.softserveinc.ita.home.home_project_blog.security.model.Role;
 import com.softserveinc.ita.home.home_project_blog.validation.Const;
-import com.softserveinc.ita.home.home_project_blog.repository.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

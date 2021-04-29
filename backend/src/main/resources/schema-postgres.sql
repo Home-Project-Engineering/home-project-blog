@@ -24,7 +24,8 @@ CREATE TABLE posts
     text              VARCHAR,
     title             VARCHAR(255),
     previewAttachment VARCHAR(255),
---     user_id bigserial FOREIGN KEY REFERENCES blog.users,
+    user_id           bigserial,
+    FOREIGN KEY(user_id) REFERENCES users(id)
 --     tag_id bigserial FOREIGN KEY REFERENCES blog.tag
 );
 

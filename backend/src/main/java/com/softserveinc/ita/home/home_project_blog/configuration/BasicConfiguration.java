@@ -33,6 +33,7 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/*/users").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/*/posts").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/*/users/current").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/*/users/current").permitAll()
                 .anyRequest()
