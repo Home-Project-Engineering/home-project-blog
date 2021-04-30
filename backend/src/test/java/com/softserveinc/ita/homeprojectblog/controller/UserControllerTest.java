@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserControllerTest {
 
-    @Test
-    public void createUser() {
+ /*   @Test
+    void createUser() {
         User user;
         User testUser = new User();
         RestTemplate restTemplate = new RestTemplate();
@@ -25,7 +25,6 @@ class UserControllerTest {
         testUser.setRole(User.RoleEnum.ADMIN);
 
         user = restTemplate.postForObject("http://localhost:8080/api/1/users", testUser, User.class);
-        System.out.println(user);
         testUser.setPassword("*****");
         assert user != null;
         BigDecimal id = user.getId();
@@ -48,12 +47,10 @@ class UserControllerTest {
         tempUser.setRole(User.RoleEnum.ADMIN);
 
         User user = restTemplate.postForObject("http://localhost:8080/api/1/users", tempUser, User.class);
-        assert user != null;
         BigDecimal id = user.getId();
 
         User testUser = restTemplate.getForObject("http://localhost:8080/api/1/users/" + id, User.class);
         restTemplate.delete("http://localhost:8080/api/1/users/" + id);
         assertEquals(user, testUser);
-    }
-
+    }*/
 }

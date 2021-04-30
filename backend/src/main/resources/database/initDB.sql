@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS "user"
     password   VARCHAR(255) NOT NULL,
     create_on  timestamptz  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_on  timestamptz  NULL,
-    role       VARCHAR(1)   NOT NULL,
+    role       VARCHAR(20)   NOT NULL,
     PRIMARY KEY (id)
 );
 

@@ -85,5 +85,6 @@ public class UserEntity {
     }
 
     @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private UserEntity.RoleEnum role;
 }

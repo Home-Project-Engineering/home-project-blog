@@ -14,13 +14,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.MultiValueMap;
-//import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +34,7 @@ public class UserController implements UsersApi {
     private final UserMapperController userMapperController;
 
     @Override // +
+    @PreAuthorize("hasAuthority('developers:write')")
     public ResponseEntity<User> createUser(User body) {
         UserDto userDto = userMapperController.toUserDto(body);
         userDto = userService.signUp( userDto);
