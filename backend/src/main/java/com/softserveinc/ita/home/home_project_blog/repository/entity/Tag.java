@@ -15,7 +15,9 @@ import javax.validation.constraints.NotNull;
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)//IDENTITY)
+    @Column(updatable = false)
     private Long id;
+
     @NotNull
     @Column(nullable = false)
     private String name;
