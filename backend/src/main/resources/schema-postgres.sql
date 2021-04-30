@@ -25,7 +25,9 @@ CREATE TABLE posts
     title             VARCHAR(255),
     previewAttachment VARCHAR(255),
     user_id           bigserial REFERENCES users,
-    tag_id            bigserial REFERENCES tags
+    tag_id            bigserial REFERENCES tags,
+    created_on        timestamp default current_timestamp,
+    updated_on        timestamp default current_timestamp
 );
 
 CREATE TABLE posts_tags

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,9 +20,9 @@ public class ViewPostDto {
     private String text;
     private String title;
     private String previewAttachment;
-    private ViewUserDto user;
-//    private Date createdOn;
-//    private Date updatedOn;
+    private ViewUserForPostDto user;
+    private Date createdOn;
+    private Date updatedOn;
 }
 //    {
 //        "id": 0,

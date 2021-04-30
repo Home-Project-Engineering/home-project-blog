@@ -7,4 +7,6 @@ INSERT INTO users(name, firstName, lastName, email, password, role) VALUES('Max'
 INSERT INTO users(name, firstName, lastName, email, password, role) VALUES('Sasha', 'Alexandr', 'Zvenigorodskiy', 'sanya@gmail.com', 'U2FzaGFTYXNoYQ==', 'BLOGGER');
 INSERT INTO users(name, firstName, lastName, email, password, role) VALUES('Oleg', 'Oleg', 'Miheev', 'oleg@gmail.com', '$2a$12$ZnB7X8iJ9wBi5KFON6vEo.0gtKJcxB0UDS4M0qcE144EGyZlY6uQK', 'ADMIN');
 INSERT INTO users(name, firstName, lastName, email, password, role) VALUES('Lida123', 'Lidia', 'Kalakutskaya', 'lida123@gmail.com', '$2a$12$ZnB7X8iJ9wBi5KFON6vEo.0gtKJcxB0UDS4M0qcE144EGyZlY6uQK', 'ADMIN');
+INSERT INTO users(name, firstName, lastName, email, password, role) VALUES('Nadya', 'Nadya', 'Nadezhda', 'nad@gmail.com', '$2a$12$ZnB7X8iJ9wBi5KFON6vEo.0gtKJcxB0UDS4M0qcE144EGyZlY6uQK', 'MODERATOR');
+
 --     ADMIN, MODERATOR, BLOGGER, ANY

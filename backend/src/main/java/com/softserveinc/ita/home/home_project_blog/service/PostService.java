@@ -5,7 +5,6 @@ import com.softserveinc.ita.home.home_project_blog.repository.TagRepository;
 import com.softserveinc.ita.home.home_project_blog.repository.entity.Post;
 import com.softserveinc.ita.home.home_project_blog.repository.entity.Tag;
 import com.softserveinc.ita.home.home_project_blog.service.dto.PostDto;
-import com.softserveinc.ita.home.home_project_blog.service.dto.UserDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.PostMapperService;
 import com.softserveinc.ita.home.home_project_blog.validation.Const;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +16,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -69,10 +69,9 @@ public class PostService implements IPostService {
 
     @Override
     public PostDto save(@Valid PostDto post) {
-//        throwIfEmailIsNotUnique(post.getEmail());
-//        throwIfNameIsNotUnique(post.getName());
-//        post.setRole(Role.BLOGGER);
-//        post.setPassword(passwordEncoder.encode(post.getPassword()));
+        Date now = new Date(System.currentTimeMillis());
+//        post.setCreatedOn(now);
+//        post.setUpdatedOn(now);
         post.setUser(userService.getCurrentUser());
         Post post1 = mapper.toPost(post);
         post1.setTags(setTags(post1.getTags()));
