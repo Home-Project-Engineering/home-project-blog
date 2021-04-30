@@ -6,7 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Data
@@ -16,12 +17,10 @@ import java.util.List;
 @Validated
 public class PostDto {
     private long id;
-//    private List<TagDto> tags;
+    private Set<TagDto> tags = new HashSet<>();
     private String text;
     private String title;
-//    private String previewAttachment;
-//    @ManyToOne()
-//    @JoinColumn(name = "user_id", nullable = false)
+    private String previewAttachment;
     private UserDto user;
     //private Date createdOn;
 //    private Date updatedOn;

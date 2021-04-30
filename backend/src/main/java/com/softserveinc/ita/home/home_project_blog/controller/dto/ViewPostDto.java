@@ -5,7 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -14,10 +15,10 @@ import java.util.List;
 public class ViewPostDto {
 
     private Long id;
-//    private List<ViewTagDto> tags;
+    private Set<ViewTagDto> tags = new HashSet<>();
     private String text;
     private String title;
-//    private String previewAttachment;
+    private String previewAttachment;
     private ViewUserDto user;
 //    private Date createdOn;
 //    private Date updatedOn;

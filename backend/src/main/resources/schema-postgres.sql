@@ -24,9 +24,15 @@ CREATE TABLE posts
     text              VARCHAR,
     title             VARCHAR(255),
     previewAttachment VARCHAR(255),
-    user_id           bigserial,
-    FOREIGN KEY(user_id) REFERENCES users(id)
---     tag_id bigserial FOREIGN KEY REFERENCES blog.tag
+    user_id           bigserial REFERENCES users,
+    tag_id            bigserial REFERENCES tags
+);
+
+CREATE TABLE posts_tags
+(
+    post_id bigserial REFERENCES posts ON DELETE CASCADE,
+    tag_id  bigserial REFERENCES tags ON DELETE RESTRICT,
+    PRIMARY KEY (product_no, order_id)
 );
 
 -- CREATE TYPE user_role AS ENUM ( 'guest', 'user', 'moderator', 'admin', 'expert');

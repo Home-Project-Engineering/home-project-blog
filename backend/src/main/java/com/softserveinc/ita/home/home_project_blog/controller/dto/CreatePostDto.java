@@ -5,17 +5,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class CreatePostDto {
-   // private List<CreateTagDto> tags;
+    private Set<CreateTagDto> tags = new HashSet<>();
     private String text;
     private String title;
-//    private String previewAttachment;
+    private String previewAttachment;
 }
 //    {
 //        "tags": [

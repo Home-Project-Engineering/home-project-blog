@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -18,11 +18,17 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)//IDENTITY
     private long id;
-//    private Set<Tag> tags;
+    @ManyToMany//(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "posts_tags",
+            joinColumns = { @JoinColumn(name = "post_id") },
+            inverseJoinColumns = { @JoinColumn(name = "tag_id") }
+    )
+    private Set<Tag> tags = new HashSet<>();
     private String text;
     private String title;
-//    private String previewAttachment;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private String previewAttachment;
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 //    private Date createdOn;

@@ -25,7 +25,6 @@ public class PostsController {
     private final IPostService postService;
     private final PostMapperController mapper;
 
-    @PreAuthorize("hasAuthority('posts:read')")
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<ViewPostDto>> getAllPosts(
             @RequestParam(required = false) Long id,

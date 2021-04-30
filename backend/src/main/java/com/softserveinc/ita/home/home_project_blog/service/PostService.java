@@ -1,8 +1,11 @@
 package com.softserveinc.ita.home.home_project_blog.service;
 
 import com.softserveinc.ita.home.home_project_blog.repository.PostRepository;
+import com.softserveinc.ita.home.home_project_blog.repository.TagRepository;
 import com.softserveinc.ita.home.home_project_blog.repository.entity.Post;
+import com.softserveinc.ita.home.home_project_blog.repository.entity.Tag;
 import com.softserveinc.ita.home.home_project_blog.service.dto.PostDto;
+import com.softserveinc.ita.home.home_project_blog.service.dto.UserDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.PostMapperService;
 import com.softserveinc.ita.home.home_project_blog.validation.Const;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +17,16 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.util.HashSet;
+import java.util.Set;
 
 @Validated
 @RequiredArgsConstructor
 @Service
 public class PostService implements IPostService {
 
-    private final PostRepository repository;
+    private final PostRepository postRepository;
+    private final TagRepository tagRepository;
     private final PostMapperService mapper;
     private final PasswordEncoder passwordEncoder;
     private final IUserService userService;
@@ -35,16 +41,16 @@ public class PostService implements IPostService {
 //            postsPage = repository.findByTitle(title, paging);
 //        } else
         if (id != null) {
-            postsPage = repository.findById(id, paging);
+            postsPage = postRepository.findById(id, paging);
         } else {
-            postsPage = repository.findAll(paging);
+            postsPage = postRepository.findAll(paging);
         }
         return mapper.toPagePostDto(postsPage);
     }
 
     @Override
     public PostDto getById(Long id) {
-        return mapper.toPostDto(repository.findById(id).orElseThrow(
+        return mapper.toPostDto(postRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(Const.POST_DOESNT_EXIST)));
     }
 
@@ -69,10 +75,18 @@ public class PostService implements IPostService {
 //        post.setPassword(passwordEncoder.encode(post.getPassword()));
         post.setUser(userService.getCurrentUser());
         Post post1 = mapper.toPost(post);
-        Post post2 = repository.save(post1);
-        PostDto postDto = mapper.toPostDto(post2);
-        return postDto;
+        post1.setTags(setTags(post1.getTags()));
+        Post post2 = postRepository.save(post1);
+        return mapper.toPostDto(post2);
 //        return mapper.toPostDto(repository.save(mapper.toPost(post)));
+    }
+
+    private Set<Tag> setTags(Set<Tag> tags) {
+        Set<Tag> tags2 = new HashSet<>();
+        for (Tag tag: tags) {
+            tags2.add(tagRepository.findByName(tag.getName()).orElseGet(() -> tagRepository.save(tag)));
+        }
+        return tags2;
     }
 
 //    private PostDto updateDto(PostDto oldPost, PostDto newPost) {
