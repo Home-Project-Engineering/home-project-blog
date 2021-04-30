@@ -1,7 +1,7 @@
 package com.softserveinc.ita.home.home_project_blog.service;
 
 import com.softserveinc.ita.home.home_project_blog.repository.UserRepository;
-import com.softserveinc.ita.home.home_project_blog.repository.entity.Role;
+import com.softserveinc.ita.home.home_project_blog.security.model.Role;
 import com.softserveinc.ita.home.home_project_blog.repository.entity.User;
 import com.softserveinc.ita.home.home_project_blog.service.dto.UserDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.UserMapperService;
@@ -34,7 +34,7 @@ public class UserService implements IUserService {
 
     @Override
     public Page<UserDto> findAll(Long id, String name, Integer pageNum, Integer pageSize, String sort) {
-        Pageable paging = pagination(pageNum, pageSize, sort);
+        Pageable paging = GeneralService.pagination(pageNum, pageSize, sort);
         Page<User> usersPage;
         if ((name != null) && (id != null)) {
             usersPage = repository.findByNameAndId(name, id, paging);
@@ -46,19 +46,6 @@ public class UserService implements IUserService {
             usersPage = repository.findAll(paging);
         }
         return mapper.toPageUserDto(usersPage);
-    }
-
-    private Pageable pagination(Integer pageNum, Integer pageSize, String sortBy) {
-        Pageable paging;
-        if (sortBy.charAt(0) == '-') {
-            paging = PageRequest.of(pageNum, pageSize, Sort.by(sortBy.substring(1)).descending());
-        } else {
-            if (sortBy.charAt(0) == '+') {
-                sortBy = sortBy.substring(1);
-            }
-            paging = PageRequest.of(pageNum, pageSize, Sort.by(sortBy).ascending());
-        }
-        return paging;
     }
 
     @Override

@@ -10,6 +10,31 @@ CREATE TABLE users
     role      varchar(10)           NOT NULL
 );
 
+DROP TABLE IF EXISTS tags;
+CREATE TABLE tags
+(
+    id   bigserial PRIMARY KEY NOT NULL,
+    name VARCHAR(255)          NOT NULL UNIQUE
+)
+
+DROP TABLE IF EXISTS posts;
+CREATE TABLE posts
+(
+    id                bigserial PRIMARY KEY NOT NULL,
+    text              VARCHAR,
+    title             VARCHAR(255),
+    previewAttachment VARCHAR(255),
+    user_id           bigserial REFERENCES users,
+    tag_id            bigserial REFERENCES tags
+);
+
+CREATE TABLE posts_tags
+(
+    post_id bigserial REFERENCES posts ON DELETE CASCADE,
+    tag_id  bigserial REFERENCES tags ON DELETE RESTRICT,
+    PRIMARY KEY (product_no, order_id)
+);
+
 -- CREATE TYPE user_role AS ENUM ( 'guest', 'user', 'moderator', 'admin', 'expert');
 
 -- role user_role default 'user'

@@ -1,7 +1,6 @@
 package com.softserveinc.ita.home.home_project_blog.repository.entity;
 
-//import io.swagger.annotations.ApiModelProperty;
-
+import com.softserveinc.ita.home.home_project_blog.security.model.Role;
 import com.softserveinc.ita.home.home_project_blog.validation.Const;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +12,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -23,7 +23,7 @@ import javax.validation.constraints.Size;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)//SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
