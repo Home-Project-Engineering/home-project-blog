@@ -10,7 +10,7 @@ info:
     url: https://github.com/Home-Project-Engineering/home-project-blog/blob/main/LICENSE
 
 servers:
-  - url: http://localhost:8080/api/1
+  - url: /api/1
 
 security:
   - basicAuth: []
