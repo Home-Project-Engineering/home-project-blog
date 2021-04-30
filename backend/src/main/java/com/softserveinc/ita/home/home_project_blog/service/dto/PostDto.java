@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,6 +23,6 @@ public class PostDto {
     private String title;
     private String previewAttachment;
     private UserDto user;
-    //private Date createdOn;
-//    private Date updatedOn;
+    private Date createdOn;
+    private Date updatedOn;
     }
