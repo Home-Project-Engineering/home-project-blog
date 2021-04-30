@@ -736,7 +736,7 @@ components:
           example: "2017-07-21T17:32:28Z"
           format: date-time
           readOnly: true
-        user:
+        author:
           description: The creator of the Post.
           readOnly: true
           allOf:
@@ -781,7 +781,7 @@ components:
           type: number
           format: int64
           readOnly: true
-        user:
+        author:
           description: The creator of the Comment.
           readOnly: true
           allOf:
