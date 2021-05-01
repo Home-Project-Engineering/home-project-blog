@@ -37,6 +37,7 @@ public class UserEntity {
     @Column(name = "email")
     private String email;
 
+    // don't use validation because already encrypted
     @Column(name = "password")
     private String password;
 

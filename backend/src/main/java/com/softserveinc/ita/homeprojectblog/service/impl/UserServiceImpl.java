@@ -8,8 +8,8 @@ import com.softserveinc.ita.homeprojectblog.service.mapper.UserMapperService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +30,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public Page<UserDto> getAllUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
         pageNum--;
-        // TODO find out for what is the ID for here
         Page<UserEntity> pageEntities;
 
         if (name != null) {
@@ -44,7 +43,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private Sort getSorter(String sort) {
-        StringBuilder str = new StringBuilder(sort);
+        var str = new StringBuilder(sort);
 
         if (str.charAt(0) == '-') {
             str.deleteCharAt(0);
@@ -62,6 +61,13 @@ public class UserServiceImpl implements UserService {
             userEntity = optional.get();
         }
         return userMapperService.toUserDto(userEntity);
+    }
+
+    @Override
+    public UserDto getUserByName(String username) {
+        var currentUserEntity = userRepository.findByName(username).orElseThrow(()->
+                new UsernameNotFoundException("User does not exists"));
+        return userMapperService.toUserDto(currentUserEntity);
     }
 
     @Override
@@ -86,7 +92,7 @@ public class UserServiceImpl implements UserService {
             bodyDto.setPassword(getUserById(id).getPassword());
 
 
-        UserEntity bodyEntity = userMapperService.toUserEntity(bodyDto);
+        var bodyEntity = userMapperService.toUserEntity(bodyDto);
         bodyEntity = userRepository.save(bodyEntity);
 
         return userMapperService.toUserDto(bodyEntity);

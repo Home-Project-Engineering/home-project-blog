@@ -13,8 +13,9 @@ public interface UserService {
 
     UserDto getUserById(BigDecimal id);
 
+    UserDto getUserByName(String username);
+
     UserDto createUser(@Valid UserDto bodyDto);
-//    UserDto signUp(UserDto bodyDto);
 
     UserDto updateUser(UserDto body, BigDecimal id);
 
