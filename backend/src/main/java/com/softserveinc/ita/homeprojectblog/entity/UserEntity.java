@@ -44,10 +44,10 @@ public class UserEntity {
     @Column(name = "email")
     private String email;
 
-    @Pattern(regexp = PASSWORD_REGEXP,
-            message = WRONG_PASSWORD_PATTERN)
-    @Size(min = 8, max = 255,
-            message = WRONG_PASSWORD_SIZE)
+//    @Pattern(regexp = PASSWORD_REGEXP,
+//            message = WRONG_PASSWORD_PATTERN)
+//    @Size(min = 8, max = 255,
+//            message = WRONG_PASSWORD_SIZE)
     @Column(name = "password")
     private String password;
 

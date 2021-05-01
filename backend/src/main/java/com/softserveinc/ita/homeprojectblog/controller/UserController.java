@@ -37,7 +37,7 @@ public class UserController implements UsersApi {
     @PreAuthorize("hasAuthority('developers:write')")
     public ResponseEntity<User> createUser(User body) {
         UserDto userDto = userMapperController.toUserDto(body);
-        userDto = userService.signUp( userDto);
+        userDto = userService.createUser(userDto);
         return new ResponseEntity(userMapperController.toUser(userDto), HttpStatus.CREATED);
     }
 

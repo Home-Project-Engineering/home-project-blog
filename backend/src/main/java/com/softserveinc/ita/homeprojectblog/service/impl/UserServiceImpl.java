@@ -5,20 +5,27 @@ import com.softserveinc.ita.homeprojectblog.entity.UserEntity;
 import com.softserveinc.ita.homeprojectblog.repository.UserRepository;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
 import com.softserveinc.ita.homeprojectblog.service.mapper.UserMapperService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.*;
 
 @Service
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    UserRepository userRepository;
 
-    private final UserMapperService userMapperService;
+    UserMapperService userMapperService;
+
+    PasswordEncoder passwordEncoder;
 
     @Override
     public Page<UserDto> getAllUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
@@ -58,8 +65,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto signUp(UserDto bodyDto) {
-        UserEntity userEntity = userMapperService.toUserEntity(bodyDto);
+    public UserDto createUser(UserDto bodyDto) {
+        var userEntity = userMapperService.toUserEntity(bodyDto);
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         userRepository.save(userEntity);
         return userMapperService.toUserDto(userEntity);
     }

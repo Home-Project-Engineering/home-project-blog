@@ -1,4 +1,4 @@
-package com.softserveinc.ita.homeprojectblog.security;
+package com.softserveinc.ita.homeprojectblog.Config;
 
 import lombok.AccessLevel;
 import lombok.NonNull;
