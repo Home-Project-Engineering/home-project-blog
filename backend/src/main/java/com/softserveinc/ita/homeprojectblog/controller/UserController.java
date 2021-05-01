@@ -139,4 +139,6 @@ public class UserController implements UsersApi {
 
         return new ResponseEntity(userMapperController.toUser(userDto), HttpStatus.OK);
     }
+
+
 }
