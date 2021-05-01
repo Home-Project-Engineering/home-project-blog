@@ -6,15 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.*;
-
-import static com.softserveinc.ita.homeprojectblog.util.Constants.*;
-
-//import org.threeten.bp.*;
 
 @Data
 @NoArgsConstructor
@@ -44,10 +37,6 @@ public class UserEntity {
     @Column(name = "email")
     private String email;
 
-//    @Pattern(regexp = PASSWORD_REGEXP,
-//            message = WRONG_PASSWORD_PATTERN)
-//    @Size(min = 8, max = 255,
-//            message = WRONG_PASSWORD_SIZE)
     @Column(name = "password")
     private String password;
 

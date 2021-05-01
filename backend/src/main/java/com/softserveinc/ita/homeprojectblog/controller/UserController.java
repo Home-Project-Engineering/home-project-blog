@@ -36,9 +36,9 @@ public class UserController implements UsersApi {
     @Override // +
     @PreAuthorize("hasAuthority('developers:write')")
     public ResponseEntity<User> createUser(User body) {
-        UserDto userDto = userMapperController.toUserDto(body);
+        var userDto = userMapperController.toUserDto(body);
         userDto = userService.createUser(userDto);
-        return new ResponseEntity(userMapperController.toUser(userDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(userMapperController.toUser(userDto), HttpStatus.CREATED);
     }
 
     @Override
@@ -68,14 +68,14 @@ public class UserController implements UsersApi {
 
     @Override // +
     public ResponseEntity<User> getUser(BigDecimal id) {
-        UserDto userDto = userService.getUserById(id);
+        var userDto = userService.getUserById(id);
 
         if (userDto == null) {
             throw new NoSuchUserException("There is no user with ID = " +
                     id + " in Database");
         }
 
-        return new ResponseEntity(userMapperController.toUser(userDto), HttpStatus.OK);
+        return new ResponseEntity<>(userMapperController.toUser(userDto), HttpStatus.OK);
     }
 
     @Override // +
@@ -93,12 +93,11 @@ public class UserController implements UsersApi {
         MultiValueMap<String, String> headers = new HttpHeaders();
         headers.add("X-Total-Count", String.valueOf(userPage.getTotalElements()));
 
-        // TODO find out if this approach is correct
         if (userPage.getTotalElements() == 0) {
             throw new NoSuchUsersException("There are no users for your request");
         }
 
-        return new ResponseEntity(userPage.getContent(), headers, HttpStatus.OK);
+        return new ResponseEntity<>(userPage.getContent(), headers, HttpStatus.OK);
     }
 
     @Override
@@ -114,7 +113,7 @@ public class UserController implements UsersApi {
     @Override // +
     public ResponseEntity<Void> removeUser(BigDecimal id) {
         userService.deleteUser(id);
-        return new ResponseEntity("user " + id + " successfully deleted", HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override
@@ -134,10 +133,10 @@ public class UserController implements UsersApi {
 
     @Override // +
     public ResponseEntity<User> updateUser(@Valid User body, BigDecimal id) {
-        UserDto userDto = userMapperController.toUserDto(body);
+        var userDto = userMapperController.toUserDto(body);
         userDto = userService.updateUser(userDto, id);
 
-        return new ResponseEntity(userMapperController.toUser(userDto), HttpStatus.OK);
+        return new ResponseEntity<>(userMapperController.toUser(userDto), HttpStatus.OK);
     }
 
 
