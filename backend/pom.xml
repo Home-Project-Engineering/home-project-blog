@@ -17,7 +17,7 @@
     <description>Demo project for Spring Boot</description>
 
     <dependencies>
-        <!--boot-->
+        <!--spring boot-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -57,6 +57,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+        <!--/spring boot-->
 
 
         <!--lombok-->
@@ -67,6 +68,7 @@
             <version>1.18.20</version>
             <scope>provided</scope>
         </dependency>
+        <!--/lombok-->
 
         <!--mapstruct-->
         <!-- https://mvnrepository.com/artifact/org.mapstruct/mapstruct -->
@@ -82,6 +84,7 @@
             <artifactId>mapstruct-processor</artifactId>
             <version>1.4.2.Final</version>
         </dependency>
+        <!--/mapstruct-->
 
 
         <!--DB-->
@@ -91,38 +94,38 @@
             <artifactId>postgresql</artifactId>
             <version>42.2.19</version>
         </dependency>
+        <!--/DB-->
 
 
         <!--swagger-->
-<!--                <dependency>
-                    <groupId>io.swagger</groupId>
-                    <artifactId>swagger-annotations</artifactId>
-                    <version>1.5.21</version>
-                </dependency>
-                <dependency>
-                    <groupId>io.swagger</groupId>
-                    <artifactId>swagger-models</artifactId>
-                    <version>1.6.0</version>
-                </dependency>
+        <!--                <dependency>
+                            <groupId>io.swagger</groupId>
+                            <artifactId>swagger-annotations</artifactId>
+                            <version>1.5.21</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>io.swagger</groupId>
+                            <artifactId>swagger-models</artifactId>
+                            <version>1.6.0</version>
+                        </dependency>
 
-                <dependency>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-annotations</artifactId>
-                    <version>2.10.3</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.threeten</groupId>
-                    <artifactId>threetenbp</artifactId>
-                    <version>1.4.0</version>
-                </dependency>
-                <dependency>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-tx</artifactId>
-                    <version>5.3.1</version>
-                </dependency>-->
+                        <dependency>
+                            <groupId>com.fasterxml.jackson.core</groupId>
+                            <artifactId>jackson-annotations</artifactId>
+                            <version>2.10.3</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.threeten</groupId>
+                            <artifactId>threetenbp</artifactId>
+                            <version>1.4.0</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>org.springframework</groupId>
+                            <artifactId>spring-tx</artifactId>
+                            <version>5.3.1</version>
+                        </dependency>-->
 
         <!--SpringFox dependencies -->
-        <!--TODO try it after creating a working build-->
 
         <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
         <dependency>
@@ -151,26 +154,11 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.openapitools/jackson-databind-nullable -->
-<!--
         <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
             <version>0.2.1</version>
         </dependency>
--->
-
-        <dependency>
-            <groupId>org.openapitools</groupId>
-            <artifactId>jackson-databind-nullable</artifactId>
-            <version>0.2.1</version>
-        </dependency>
-
-<!--        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>2.9.2</version>
-        </dependency>-->
 
         <dependency>
             <groupId>javax.validation</groupId>
@@ -185,7 +173,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-<!--                <version>2.4.5</version>-->
                 <executions>
                     <execution>
                         <goals>
@@ -201,38 +188,11 @@
                 <version>3.5.1</version>
             </plugin>
 
-<!--            Regenerate our generated source files-->
-
-            <!--Valera version-->
+            <!--swagger new generator-->
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <version>5.0.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
-                            <generatorName>spring</generatorName>
-<!--                            <inputSpec>${project.parent.basedir}/openapi/openapi.yaml</inputSpec>-->
-                            <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
-<!--                            <inputSpec>D:\Documents\2_For_work\Workspaces\home-project-blog\openapi\openapi.yaml</inputSpec>-->
-                            <output>${project.basedir}</output>
-<!--                            <generateSupportingFiles>true</generateSupportingFiles>-->
-                            <apiPackage>com.softserveinc.ita.homeprojectblog.generated.api</apiPackage>
-                            <modelPackage>com.softserveinc.ita.homeprojectblog.generated.model</modelPackage>
-                            <configOptions>
-                                <interfaceOnly>true</interfaceOnly>
-                            </configOptions>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!--Venia vesion-->
-<!--            <plugin>
                 <executions>
                     <execution>
                         <phase>generate-sources</phase>
@@ -241,20 +201,19 @@
                         </goals>
                         <configuration>
                             <generatorName>spring</generatorName>
-                            <inputSpec>${project.parent.basedir}/openapi/openapi.yaml</inputSpec>
-&lt;!&ndash;                            <inputSpec>D:\Documents\2_For_work\Workspaces\home-project-blog\openapi\openapi.yaml</inputSpec>&ndash;&gt;
+                            <!--<inputSpec>${project.parent.basedir}/openapi/openapi.yaml</inputSpec>-->
+                            <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
                             <library>spring-boot</library>
                             <output>${project.basedir}</output>
                             <configOptions>
-                                <serializableModel>true</serializableModel>
+<!--                                <serializableModel>true</serializableModel>-->
                                 <artifactId>${project.artifactId}</artifactId>
                                 <groupId>${project.groupId}</groupId>
                                 <version>${project.parent.version}</version>
                                 <dateLibrary>java11</dateLibrary>
-                                <sourceFolder>src/main/java/com/softserveinc/ita/homeprojectblog/generated
-                                </sourceFolder>
-                                <basePackage>com.softserveinc.ita.homeprojectblog</basePackage>
-                                <invokerPackage>com.softserveinc.ita.homeprojectblog</invokerPackage>
+                                <sourceFolder>src/main/java/</sourceFolder>
+<!--                                <basePackage>com.softserveinc.ita.homeprojectblog</basePackage>-->
+<!--                                <invokerPackage>com.softserveinc.ita.homeprojectblog</invokerPackage>-->
                                 <configPackage>com.softserveinc.ita.homeprojectblog.config</configPackage>
                                 <apiPackage>com.softserveinc.ita.homeprojectblog.generated.api</apiPackage>
                                 <modelPackage>com.softserveinc.ita.homeprojectblog.generated.model</modelPackage>
@@ -262,37 +221,8 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>-->
-
-            <!--Old swagger generator-->
-<!--                        <plugin>
-                            <groupId>io.swagger.codegen.v3</groupId>
-                            <artifactId>swagger-codegen-maven-plugin</artifactId>
-                            <version>3.0.18</version>
-                            <executions>
-                                <execution>
-                                    <goals>
-                                        <goal>generate</goal>
-                                    </goals>
-                                    <configuration>
-                                        <inputSpec>${project.parent.basedir}/openapi/openapi.yaml</inputSpec>
-                                        <language>spring</language>
-
-                                        <output>${project.basedir}</output>
-                                        <generateSupportingFiles>false</generateSupportingFiles>
-
-                                        <invokerPackage>com.softserveinc.ita.homeprojectblog.generated</invokerPackage>
-                                        <apiPackage>com.softserveinc.ita.homeprojectblog.generated.api</apiPackage>
-                                        <modelPackage>com.softserveinc.ita.homeprojectblog.generated.model</modelPackage>
-
-                                        <configOptions>
-                                            <interfaceOnly>true</interfaceOnly>
-                                        </configOptions>
-                                    </configuration>
-                                </execution>
-                            </executions>
-                        </plugin>-->
-
+            </plugin>
+            <!--/swagger new generator-->
         </plugins>
     </build>
 
