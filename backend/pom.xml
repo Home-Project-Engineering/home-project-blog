@@ -98,34 +98,39 @@
 
 
         <!--swagger-->
-        <!--                <dependency>
-                            <groupId>io.swagger</groupId>
-                            <artifactId>swagger-annotations</artifactId>
-                            <version>1.5.21</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>io.swagger</groupId>
-                            <artifactId>swagger-models</artifactId>
-                            <version>1.6.0</version>
-                        </dependency>
+<!--        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.5.21</version>
+        </dependency>-->
+        <!--  <dependency>
+              <groupId>io.swagger</groupId>
+              <artifactId>swagger-models</artifactId>
+              <version>1.6.0</version>
+          </dependency>
 
-                        <dependency>
-                            <groupId>com.fasterxml.jackson.core</groupId>
-                            <artifactId>jackson-annotations</artifactId>
-                            <version>2.10.3</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>org.threeten</groupId>
-                            <artifactId>threetenbp</artifactId>
-                            <version>1.4.0</version>
-                        </dependency>
-                        <dependency>
-                            <groupId>org.springframework</groupId>
-                            <artifactId>spring-tx</artifactId>
-                            <version>5.3.1</version>
-                        </dependency>-->
+          <dependency>
+              <groupId>com.fasterxml.jackson.core</groupId>
+              <artifactId>jackson-annotations</artifactId>
+              <version>2.10.3</version>
+          </dependency>
+          <dependency>
+              <groupId>org.threeten</groupId>
+              <artifactId>threetenbp</artifactId>
+              <version>1.4.0</version>
+          </dependency>
+          <dependency>
+              <groupId>org.springframework</groupId>
+              <artifactId>spring-tx</artifactId>
+              <version>5.3.1</version>
+          </dependency>&ndash;&gt;-->
 
         <!--SpringFox dependencies -->
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.5.21</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
         <dependency>
@@ -133,6 +138,28 @@
             <artifactId>springfox-swagger2</artifactId>
             <version>3.0.0</version>
         </dependency>
+
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/io.springfox/springfox-schema &ndash;&gt;
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-schema</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
+        &lt;!&ndash; https://mvnrepository.com/artifact/io.springfox/springfox-core &ndash;&gt;
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-core</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+
+        &lt;!&ndash; https://mvnrepository.com/artifact/io.springfox/springfox-spi &ndash;&gt;
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-spi</artifactId>
+            <version>3.0.0</version>
+        </dependency>-->
+
 
         <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
         <dependency>
@@ -159,12 +186,15 @@
             <artifactId>jackson-databind-nullable</artifactId>
             <version>0.2.1</version>
         </dependency>
+        <!--/SpringFox dependencies -->
 
-        <dependency>
+<!--        <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
             <version>2.0.1.Final</version>
-        </dependency>
+        </dependency>-->
+
+
 
     </dependencies>
 
@@ -206,14 +236,14 @@
                             <library>spring-boot</library>
                             <output>${project.basedir}</output>
                             <configOptions>
-<!--                                <serializableModel>true</serializableModel>-->
-                                <artifactId>${project.artifactId}</artifactId>
-                                <groupId>${project.groupId}</groupId>
-                                <version>${project.parent.version}</version>
-                                <dateLibrary>java11</dateLibrary>
+                                <!--                                <serializableModel>true</serializableModel>-->
+                                <!--                                <artifactId>${project.artifactId}</artifactId>-->
+                                <!--                                <groupId>${project.groupId}</groupId>-->
+                                <!--                                <version>${project.parent.version}</version>-->
+                                <!--                                <dateLibrary>java11</dateLibrary>-->
                                 <sourceFolder>src/main/java/</sourceFolder>
-<!--                                <basePackage>com.softserveinc.ita.homeprojectblog</basePackage>-->
-<!--                                <invokerPackage>com.softserveinc.ita.homeprojectblog</invokerPackage>-->
+                                <!--                                <basePackage>com.softserveinc.ita.homeprojectblog</basePackage>-->
+                                <!--                                <invokerPackage>com.softserveinc.ita.homeprojectblog</invokerPackage>-->
                                 <configPackage>com.softserveinc.ita.homeprojectblog.config</configPackage>
                                 <apiPackage>com.softserveinc.ita.homeprojectblog.generated.api</apiPackage>
                                 <modelPackage>com.softserveinc.ita.homeprojectblog.generated.model</modelPackage>
