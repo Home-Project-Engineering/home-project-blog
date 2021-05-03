@@ -1,4 +1,4 @@
-package com.softserveinc.ita.homeprojectblog.Config;
+package com.softserveinc.ita.homeprojectblog.config;
 
 import lombok.AccessLevel;
 import lombok.NonNull;
@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
 

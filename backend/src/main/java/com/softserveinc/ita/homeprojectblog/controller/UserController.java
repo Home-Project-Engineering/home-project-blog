@@ -1,6 +1,6 @@
 package com.softserveinc.ita.homeprojectblog.controller;
 
-import com.softserveinc.ita.homeprojectblog.controller.mapper.UserMapperController;
+import com.softserveinc.ita.homeprojectblog.mapper.UserMapperController;
 import com.softserveinc.ita.homeprojectblog.dto.UserDto;
 import com.softserveinc.ita.homeprojectblog.exceptions.NoSuchUserException;
 import com.softserveinc.ita.homeprojectblog.exceptions.NoSuchUsersException;

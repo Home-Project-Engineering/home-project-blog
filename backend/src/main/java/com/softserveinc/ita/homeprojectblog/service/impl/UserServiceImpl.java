@@ -4,7 +4,7 @@ import com.softserveinc.ita.homeprojectblog.dto.UserDto;
 import com.softserveinc.ita.homeprojectblog.entity.UserEntity;
 import com.softserveinc.ita.homeprojectblog.repository.UserRepository;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
-import com.softserveinc.ita.homeprojectblog.service.mapper.UserMapperService;
+import com.softserveinc.ita.homeprojectblog.mapper.UserMapperService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

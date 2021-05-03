@@ -1,4 +1,4 @@
-package com.softserveinc.ita.homeprojectblog.controller.mapper;
+package com.softserveinc.ita.homeprojectblog.mapper;
 
 import com.softserveinc.ita.homeprojectblog.dto.UserDto;
 import com.softserveinc.ita.homeprojectblog.generated.model.User;

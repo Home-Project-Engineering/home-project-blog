@@ -1,4 +1,4 @@
-package com.softserveinc.ita.homeprojectblog.service.mapper;
+package com.softserveinc.ita.homeprojectblog.mapper;
 
 import org.mapstruct.Mapper;
 
