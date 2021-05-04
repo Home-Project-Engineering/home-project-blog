@@ -1,6 +1,6 @@
 package com.softserveinc.ita.homeprojectblog.controller;
 
-import com.softserveinc.ita.homeprojectblog.generated.model.User;
+import com.softserveinc.ita.homeprojectblog.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.event.annotation.AfterTestMethod;
 import org.springframework.test.context.event.annotation.BeforeTestMethod;

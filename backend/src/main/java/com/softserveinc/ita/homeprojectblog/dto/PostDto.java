@@ -1,6 +1,6 @@
 package com.softserveinc.ita.homeprojectblog.dto;
 
-import com.softserveinc.ita.homeprojectblog.generated.model.Tag;
+import com.softserveinc.ita.homeprojectblog.model.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

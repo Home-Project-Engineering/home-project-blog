@@ -1,5 +1,10 @@
 package com.softserveinc.ita.homeprojectblog.entity;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.softserveinc.ita.homeprojectblog.dto.UserDto;
+import com.softserveinc.ita.homeprojectblog.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,34 +52,8 @@ public class UserEntity {
     @Column(name = "update_on")
     private OffsetDateTime updateOn;
 
-    /**
-     * This is the level of user access to various functions
-     */
-    public enum RoleEnum {
-        GUEST("guest"),
-
-        USER("user"),
-
-        MODERATOR("moderator"),
-
-        ADMIN("admin"),
-
-        EXPERT("expert");
-
-        private String value;
-
-        RoleEnum(String value) {
-            this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-    }
 
     @Column(name = "role")
-    @Enumerated(EnumType.STRING)
-    private UserEntity.RoleEnum role;
+//    @Enumerated(EnumType.STRING)
+    private RoleEntity role;
 }

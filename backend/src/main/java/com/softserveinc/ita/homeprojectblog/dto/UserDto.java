@@ -39,32 +39,5 @@ public class UserDto {
 
 //    private String createOn;
 
-    /**
-     * This is the level of user access to various functions
-     */
-    public enum RoleEnum {
-        GUEST("guest"),
-
-        USER("user"),
-
-        MODERATOR("moderator"),
-
-        ADMIN("admin"),
-
-        EXPERT("expert");
-
-        private String value;
-
-        RoleEnum(String value) {
-            this.value = value;
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(value);
-        }
-
-    }
-
-    private com.softserveinc.ita.homeprojectblog.entity.UserEntity.RoleEnum role;
+    private RoleDto role;
 }

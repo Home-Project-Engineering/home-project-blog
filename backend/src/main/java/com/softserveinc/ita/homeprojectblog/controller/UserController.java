@@ -4,12 +4,14 @@ import com.softserveinc.ita.homeprojectblog.mapper.UserMapperController;
 import com.softserveinc.ita.homeprojectblog.dto.UserDto;
 import com.softserveinc.ita.homeprojectblog.exceptions.NoSuchUserException;
 import com.softserveinc.ita.homeprojectblog.exceptions.NoSuchUsersException;
-import com.softserveinc.ita.homeprojectblog.generated.api.UsersApi;
-import com.softserveinc.ita.homeprojectblog.generated.model.Comment;
-import com.softserveinc.ita.homeprojectblog.generated.model.Post;
-import com.softserveinc.ita.homeprojectblog.generated.model.User;
+import com.softserveinc.ita.homeprojectblog.api.UsersApi;
+import com.softserveinc.ita.homeprojectblog.model.Comment;
+import com.softserveinc.ita.homeprojectblog.model.Post;
+import com.softserveinc.ita.homeprojectblog.model.User;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.NativeWebRequest;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
@@ -29,11 +32,18 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequestMapping("${openapi.homeProjectBlogService.base-path:/api/1}")
 public class UserController implements UsersApi {
 
-    private final UserService userService;
-    private final UserMapperController userMapperController;
+    UserService userService;
+    UserMapperController userMapperController;
+    NativeWebRequest request;
+
+    @Override
+    public Optional<NativeWebRequest> getRequest() {
+        return Optional.ofNullable(request);
+    }
 
     @Override // +
     @PreAuthorize("hasAuthority('developers:write')")

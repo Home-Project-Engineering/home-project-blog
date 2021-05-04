@@ -13,12 +13,12 @@ And of course, there is nothing without comment, I'm sure it's a must-have featu
 
 ## Role Matrix
 We have the following roles defined in the application:
-- __ADMIN__ - The most powerful role which includes possibility to manage users.
-- __MODERATOR__ - The role that can be used for managing existing posts and comments.
-- __BLOGGER__ - The default role for any registered user.
+- __ADMIN__ - The most powerful roleDto which includes possibility to manage users.
+- __MODERATOR__ - The roleDto that can be used for managing existing posts and comments.
+- __BLOGGER__ - The default roleDto for any registered user.
 - __ANY__ - Any possible user of the application including unregistered ones.
 
-Resources in the application must be restricted via the following role matrix.
+Resources in the application must be restricted via the following roleDto matrix.
 <details>
   <summary>Click to expand!</summary>
   

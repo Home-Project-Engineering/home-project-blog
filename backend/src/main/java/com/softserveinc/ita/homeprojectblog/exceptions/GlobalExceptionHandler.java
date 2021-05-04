@@ -8,7 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.softserveinc.ita.homeprojectblog.generated.model.Error;
+import com.softserveinc.ita.homeprojectblog.model.Error;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
