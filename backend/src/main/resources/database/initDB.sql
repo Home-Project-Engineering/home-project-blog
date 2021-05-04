@@ -1,6 +1,13 @@
 -- DROP DATABASE blog;
 -- CREATE DATABASE blog;
 
+create table role
+(
+    id   smallserial not null,
+    name varchar(20),
+    primary key (id)
+);
+
 -- DROP TABLE IF EXISTS "user";
 CREATE TABLE IF NOT EXISTS "user"
 (
@@ -12,8 +19,9 @@ CREATE TABLE IF NOT EXISTS "user"
     password   VARCHAR(255) NOT NULL,
     create_on  timestamptz  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_on  timestamptz  NULL,
-    roleDto       VARCHAR(20)   NOT NULL,
-    PRIMARY KEY (id)
+    role_id    smallint     NOT NULL,
+    PRIMARY KEY (id),
+    foreign key (role_id) references role (id)
 );
 
 -- DROP TABLE IF EXISTS "tag";
@@ -64,6 +72,8 @@ CREATE TABLE IF NOT EXISTS "comment"
     FOREIGN KEY (user_id) REFERENCES "user" (id),
     FOREIGN KEY (post_id) REFERENCES "post" (id)
 );
+
+
 
 -- DROP TABLE IF EXISTS "comment_tags";
 -- create table comment_tags

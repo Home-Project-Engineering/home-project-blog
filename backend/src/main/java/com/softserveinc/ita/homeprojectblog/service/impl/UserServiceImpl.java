@@ -9,8 +9,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.*;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
+//import org.springframework.security.core.userdetails.UsernameNotFoundException;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
 
     UserMapperService userMapperService;
 
-    PasswordEncoder passwordEncoder;
+//    PasswordEncoder passwordEncoder;
 
     @Override
     public Page<UserDto> getAllUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
@@ -65,17 +65,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByName(String username) {
-        var currentUserEntity = userRepository.findByName(username).orElseThrow(()->
-                new UsernameNotFoundException("User does not exists"));
-        return userMapperService.toUserDto(currentUserEntity);
+//        var currentUserEntity = userRepository.findByName(username).orElseThrow(()->
+//                new UsernameNotFoundException("User does not exists"));
+//        return userMapperService.toUserDto(currentUserEntity);
+        return null;
     }
 
     @Override
     public UserDto createUser(UserDto bodyDto) {
         var userEntity = userMapperService.toUserEntity(bodyDto);
-        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+//        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        System.out.println(userEntity);
         userRepository.save(userEntity);
         return userMapperService.toUserDto(userEntity);
+//        return null;
     }
 
     @Override

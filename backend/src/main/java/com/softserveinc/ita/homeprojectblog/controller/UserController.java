@@ -7,6 +7,7 @@ import com.softserveinc.ita.homeprojectblog.exceptions.NoSuchUsersException;
 import com.softserveinc.ita.homeprojectblog.api.UsersApi;
 import com.softserveinc.ita.homeprojectblog.model.Comment;
 import com.softserveinc.ita.homeprojectblog.model.Post;
+import com.softserveinc.ita.homeprojectblog.model.Role;
 import com.softserveinc.ita.homeprojectblog.model.User;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
 import lombok.AccessLevel;
@@ -16,9 +17,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.access.prepost.PreAuthorize;
+//import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,8 +47,12 @@ public class UserController implements UsersApi {
     }
 
     @Override // +
-    @PreAuthorize("hasAuthority('developers:write')")
+//    @PreAuthorize("hasAuthority('developers:write')")
     public ResponseEntity<User> createUser(User body) {
+     /*   var roleForUser = new Role();
+        roleForUser.setName(Role.NameEnum.BLOGGER);
+        body.setRole(roleForUser);*/
+        System.out.println(body);
         var userDto = userMapperController.toUserDto(body);
         userDto = userService.createUser(userDto);
         return new ResponseEntity<>(userMapperController.toUser(userDto), HttpStatus.CREATED);
@@ -65,11 +70,12 @@ public class UserController implements UsersApi {
 
     @Override
     public ResponseEntity<User> getCurrentUser() {
-        var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails) principal).getUsername();
-        var currentUserDto = userService.getUserByName(username);
-        var currentUser = userMapperController.toUser(currentUserDto);
-        return new ResponseEntity<>(currentUser, HttpStatus.OK);
+//        var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        String username = ((UserDetails) principal).getUsername();
+//        var currentUserDto = userService.getUserByName(username);
+//        var currentUser = userMapperController.toUser(currentUserDto);
+//        return new ResponseEntity<>(currentUser, HttpStatus.OK);
+        return null;
     }
 
     @Override

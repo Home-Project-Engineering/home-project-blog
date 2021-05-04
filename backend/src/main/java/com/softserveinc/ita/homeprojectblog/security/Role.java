@@ -1,12 +1,12 @@
 package com.softserveinc.ita.homeprojectblog.security;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public enum Role {
-    USER(Set.of(Permission.DEVELOPERS_READ)),
+/*    USER(Set.of(Permission.DEVELOPERS_READ)),
     ADMIN(Set.of(Permission.DEVELOPERS_READ, Permission.DEVELOPERS_WRITE));
 
     private final Set<Permission> permission;
@@ -23,5 +23,5 @@ public enum Role {
         return getPermission().stream()
                 .map(perm -> new SimpleGrantedAuthority(perm.getName()))
                 .collect(Collectors.toSet());
-    }
+    }*/
 }

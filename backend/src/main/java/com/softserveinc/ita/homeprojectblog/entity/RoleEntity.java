@@ -5,21 +5,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * This is the level of User access to various functions.
- */
-@ApiModel(description = "This is the level of User access to various functions.")
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.SpringCodegen", date = "2021-05-04T04:46:41.921649900+03:00[Europe/Helsinki]")
-public class RoleEntity implements Serializable {
-  private static final long serialVersionUID = 1L;
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name="role", schema = "public")
+public class RoleEntity {
 
-  /**
-   * The name of the RoleDto.
-   */
+  @Id
+  @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  Long id;
+
+  @Column(name = "name")
+  @Enumerated(EnumType.STRING)
+  private NameEnum name = NameEnum.BLOGGER;
+
   public enum NameEnum {
     BLOGGER("blogger"),
     
@@ -54,8 +63,7 @@ public class RoleEntity implements Serializable {
     }
   }
 
-  @JsonProperty("name")
-  private NameEnum name = NameEnum.BLOGGER;
+
 
   public RoleEntity name(NameEnum name) {
     this.name = name;

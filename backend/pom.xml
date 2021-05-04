@@ -62,10 +62,10 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
-        <dependency>
+<!--        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+        </dependency>-->
         <!--/spring boot-->
 
 
@@ -189,7 +189,7 @@
                             <configOptions>
                                 <interfaceOnly>false</interfaceOnly>
                                 <dateLibrary>java8</dateLibrary>
-                                <serializableModel>true</serializableModel>
+                                <serializableModel>false</serializableModel>
                                 <basePackages>com.softserveinc.ita.homeprojectblog</basePackages>
                                 <sourceFolder>src/main/gen/</sourceFolder>
                                 <invokerPackage>com.softserveinc.ita.homeprojectblog</invokerPackage>

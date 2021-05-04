@@ -1,7 +1,7 @@
 package com.softserveinc.ita.homeprojectblog.security;
 
 public enum Permission {
-    DEVELOPERS_READ("developers:read"),
+/*    DEVELOPERS_READ("developers:read"),
     DEVELOPERS_WRITE("developers:write");
 
     private final String name;
@@ -12,5 +12,5 @@ public enum Permission {
 
     public String getName() {
         return name;
-    }
+    }*/
 }

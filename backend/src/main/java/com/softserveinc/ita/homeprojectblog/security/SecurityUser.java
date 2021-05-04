@@ -3,17 +3,19 @@ package com.softserveinc.ita.homeprojectblog.security;
 import com.softserveinc.ita.homeprojectblog.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;
+//import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class SecurityUser implements UserDetails {
-
+public class SecurityUser
+//        implements UserDetails
+{
+/*
     private final String username;
 
     private final String password;
@@ -67,6 +69,6 @@ public class SecurityUser implements UserDetails {
                 true,
                 Role.ADMIN.getAuthorities()
         );
-    }
+    }*/
 
 }

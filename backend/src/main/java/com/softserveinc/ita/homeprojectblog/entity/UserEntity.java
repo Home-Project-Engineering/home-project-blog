@@ -53,7 +53,7 @@ public class UserEntity {
     private OffsetDateTime updateOn;
 
 
-    @Column(name = "role")
-//    @Enumerated(EnumType.STRING)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "role_id")
     private RoleEntity role;
 }
