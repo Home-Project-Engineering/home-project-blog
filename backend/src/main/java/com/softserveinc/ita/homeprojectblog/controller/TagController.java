@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/1")
+@RequestMapping("${openapi.homeProjectBlogService.base-path:/api/1}")
 public class TagController implements TagsApi {
 
     @Override

@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/1")
+@RequestMapping("${openapi.homeProjectBlogService.base-path:/api/1}")
 public class PostController implements PostsApi {
     @Override
     public ResponseEntity<Comment> createComment(Comment body, BigDecimal postId) {

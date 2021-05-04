@@ -146,6 +146,7 @@
     </dependencies>
 
     <build>
+        <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -179,23 +180,44 @@
                         <configuration>
                             <generatorName>spring</generatorName>
                             <!--<inputSpec>${project.parent.basedir}/openapi/openapi.yaml</inputSpec>-->
-                            <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
+<!--                            <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>-->
+                            <inputSpec>https://raw.githubusercontent.com/BenAvleck/home-project-blog/main/openapi/openapi.yaml</inputSpec>
                             <output>${project.basedir}</output>
                             <skipValidateSpec>true</skipValidateSpec>
                             <skipOverwrite>true</skipOverwrite>
                             <packageName>generated</packageName>
                             <configOptions>
+                                <interfaceOnly>false</interfaceOnly>
+                                <dateLibrary>java8</dateLibrary>
                                 <serializableModel>true</serializableModel>
-                                <sourceFolder>src/main/java/</sourceFolder>
-                                <invokerPackage>com.softserveinc.ita.homeprojectblog.generated</invokerPackage>
-                                <configPackage>com.softserveinc.ita.homeprojectblog.generated.config</configPackage>
-                                <apiPackage>com.softserveinc.ita.homeprojectblog.generated.api</apiPackage>
-                                <modelPackage>com.softserveinc.ita.homeprojectblog.generated.model</modelPackage>
+                                <basePackages>com.softserveinc.ita.homeprojectblog</basePackages>
+                                <sourceFolder>src/main/gen/</sourceFolder>
+                                <invokerPackage>com.softserveinc.ita.homeprojectblog</invokerPackage>
+                                <configPackage>com.softserveinc.ita.homeprojectblog.config</configPackage>
+                                <apiPackage>com.softserveinc.ita.homeprojectblog.api</apiPackage>
+                                <modelPackage>com.softserveinc.ita.homeprojectblog.model</modelPackage>
                             </configOptions>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>src/main/gen</sources>
+                        </configuration>
+                    </execution>
+                </executions> </plugin>
+
             <!--/swagger/openapi new generator-->
         </plugins>
     </build>

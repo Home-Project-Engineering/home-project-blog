@@ -4,9 +4,9 @@ import com.softserveinc.ita.homeprojectblog.generated.model.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.threeten.bp.OffsetDateTime;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Data

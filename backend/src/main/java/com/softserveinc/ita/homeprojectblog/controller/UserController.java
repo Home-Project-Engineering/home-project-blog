@@ -29,7 +29,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/1")
+@RequestMapping("${openapi.homeProjectBlogService.base-path:/api/1}")
 public class UserController implements UsersApi {
 
     private final UserService userService;
@@ -123,8 +123,8 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    public ResponseEntity<List<Comment>> updateCommentByCurrentUser(Comment body, BigDecimal id) {
-        return null;
+    public ResponseEntity<Comment> updateCommentByCurrentUser(BigDecimal id, Comment comment) {
+        return UsersApi.super.updateCommentByCurrentUser(id, comment);
     }
 
     @Override
@@ -133,17 +133,15 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    public ResponseEntity<Post> updatePostByCurrentUser(Post body, BigDecimal id) {
-        return null;
+    public ResponseEntity<Post> updatePostByCurrentUser(BigDecimal id, Post post) {
+        return UsersApi.super.updatePostByCurrentUser(id, post);
     }
 
-    @Override // +
-    public ResponseEntity<User> updateUser(@Valid User body, BigDecimal id) {
-        var userDto = userMapperController.toUserDto(body);
+    @Override
+    public ResponseEntity<User> updateUser(BigDecimal id, User user) {
+        var userDto = userMapperController.toUserDto(user);
         userDto = userService.updateUser(userDto, id);
 
         return new ResponseEntity<>(userMapperController.toUser(userDto), HttpStatus.OK);
     }
-
-
 }
