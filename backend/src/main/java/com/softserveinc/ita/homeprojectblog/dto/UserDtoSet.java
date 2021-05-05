@@ -28,7 +28,6 @@ public class UserDtoSet {
     @NotBlank
     private String lastName;
 
-
     @NotBlank
     private String email;
 
@@ -42,5 +41,4 @@ public class UserDtoSet {
 
     private RoleDto role;
 
-    private Byte roleByte;
 }

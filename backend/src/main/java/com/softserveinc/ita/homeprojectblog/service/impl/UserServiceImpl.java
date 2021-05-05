@@ -2,7 +2,9 @@ package com.softserveinc.ita.homeprojectblog.service.impl;
 
 import com.softserveinc.ita.homeprojectblog.dto.UserDtoGet;
 import com.softserveinc.ita.homeprojectblog.dto.UserDtoSet;
+import com.softserveinc.ita.homeprojectblog.entity.RoleEntity;
 import com.softserveinc.ita.homeprojectblog.entity.UserEntity;
+import com.softserveinc.ita.homeprojectblog.repository.RoleRepository;
 import com.softserveinc.ita.homeprojectblog.repository.UserRepository;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
 import com.softserveinc.ita.homeprojectblog.mapper.UserMapperService;
@@ -23,6 +25,8 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
 
     UserRepository userRepository;
+
+    RoleRepository roleRepository;
 
     UserMapperService userMapperService;
 
@@ -75,15 +79,14 @@ public class UserServiceImpl implements UserService {
     public UserDtoGet createUser(UserDtoSet userDtoSet) {
         var userEntity = userMapperService.toUserEntity(userDtoSet);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
-        System.out.println(userEntity);
-
+        Optional<RoleEntity> roleEntity = roleRepository.findByName(RoleEntity.NameEnum.BLOGGER);
+        if(roleEntity.isPresent()) {
+            userEntity.setRole(roleEntity.get());
+        }else {
+            userEntity.setRole(new RoleEntity());
+        }
         userRepository.save(userEntity);
         return userMapperService.toUserDto(userEntity);
-    }
-
-    @Override
-    public void deleteUser(BigDecimal id) {
-        userRepository.deleteById(id);
     }
 
     @Override
@@ -99,5 +102,10 @@ public class UserServiceImpl implements UserService {
         bodyEntity = userRepository.save(bodyEntity);
 
         return userMapperService.toUserDto(bodyEntity);
+    }
+
+    @Override
+    public void deleteUser(BigDecimal id) {
+        userRepository.deleteById(id);
     }
 }

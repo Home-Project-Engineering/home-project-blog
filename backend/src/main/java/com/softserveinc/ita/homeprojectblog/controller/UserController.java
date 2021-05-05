@@ -1,7 +1,6 @@
 package com.softserveinc.ita.homeprojectblog.controller;
 
 import com.softserveinc.ita.homeprojectblog.dto.UserDtoGet;
-import com.softserveinc.ita.homeprojectblog.dto.UserDtoSet;
 import com.softserveinc.ita.homeprojectblog.mapper.UserMapperController;
 import com.softserveinc.ita.homeprojectblog.exceptions.NoSuchUserException;
 import com.softserveinc.ita.homeprojectblog.exceptions.NoSuchUsersException;
@@ -30,7 +29,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -54,10 +52,9 @@ public class UserController implements UsersApi {
            roleForUser.setName(Role.NameEnum.BLOGGER);
            body.setRole(roleForUser);
        }
-        UserDtoSet userDtoSet = userMapperController.toUserDto(body);
-        UserDtoGet userDtoGet = userService.createUser(userDtoSet);
+        var userDtoSet = userMapperController.toUserDto(body);
+        var userDtoGet = userService.createUser(userDtoSet);
 
-        System.out.println(userDtoGet);
         return new ResponseEntity<>(userMapperController.toUser(userDtoGet), HttpStatus.CREATED);
     }
 
@@ -162,7 +159,7 @@ public class UserController implements UsersApi {
     @Override
     public ResponseEntity<User> updateUser(BigDecimal id, User user) {
         var userDtoSet = userMapperController.toUserDto(user);
-        UserDtoGet userDtoGet = userService.updateUser(userDtoSet, id);
+        var userDtoGet = userService.updateUser(userDtoSet, id);
 
         return new ResponseEntity<>(userMapperController.toUser(userDtoGet), HttpStatus.OK);
     }

@@ -1,7 +1,5 @@
 package com.softserveinc.ita.homeprojectblog.security;
 
-import com.softserveinc.ita.homeprojectblog.dto.RoleDto;
-import com.softserveinc.ita.homeprojectblog.entity.RoleEntity;
 import com.softserveinc.ita.homeprojectblog.entity.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -61,9 +59,6 @@ public class SecurityUser
     }
 
     public static UserDetails fromUser(UserEntity user){
-        // TODO move to util code
-        var role = new RoleEntity();
-        role.setName(RoleEntity.NameEnum.values()[(int) user.getRoleByte()]);
         return new org.springframework.security.core.userdetails.User(
                 user.getName(),
                 user.getPassword(),
@@ -71,7 +66,7 @@ public class SecurityUser
                 true,
                 true,
                 true,
-                role.getName().getAuthorities()
+                user.getRole().getName().getAuthorities()
         );
     }
 

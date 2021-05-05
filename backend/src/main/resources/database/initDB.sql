@@ -3,8 +3,8 @@
 
 create table role
 (
-    id   SMALLSERIAL NOT NULL,
-    name varchar(20) NOT NULL,
+    id   SMALLSERIAL        NOT NULL,
+    name varchar(20) UNIQUE NOT NULL,
     primary key (id)
 );
 
@@ -12,16 +12,15 @@ create table role
 CREATE TABLE IF NOT EXISTS "user"
 (
     id         bigserial    NOT NULL,
-    name       VARCHAR(20)  NOT NULL unique,
+    name       VARCHAR(20)  NOT NULL UNIQUE,
     first_name VARCHAR(50)  NOT NULL,
     last_name  VARCHAR(50)  NOT NULL,
-    email      VARCHAR(255) NOT NULL unique,
+    email      VARCHAR(255) NOT NULL UNIQUE,
     password   VARCHAR(255) NOT NULL,
     create_on  TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_on  TIMESTAMPTZ  NULL,
     role_id    smallint     NOT NULL,
-    PRIMARY KEY (id)
-,
+    PRIMARY KEY (id),
     foreign key (role_id) references role (id)
 );
 
@@ -29,7 +28,7 @@ CREATE TABLE IF NOT EXISTS "user"
 CREATE TABLE IF NOT EXISTS "tag"
 (
     id        bigserial   NOT NULL,
-    name      VARCHAR(50) NOT NULL unique,
+    name      VARCHAR(50) NOT NULL UNIQUE,
     create_on TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_on TIMESTAMPTZ NULL,
     PRIMARY KEY (id)
@@ -38,21 +37,21 @@ CREATE TABLE IF NOT EXISTS "tag"
 -- DROP TABLE IF EXISTS "post_tags";
 create table post_tags
 (
-    post_id bigint not null unique,
-    tags_id bigint not null,
+    post_id BIGINT NOT NULL UNIQUE,
+    tags_id BIGINT NOT NULL,
     FOREIGN KEY (tags_id) REFERENCES tag (id)
 );
 
 -- DROP TABLE IF EXISTS "post";
 CREATE TABLE IF NOT EXISTS "post"
 (
-    id                 bigserial    NOT NULL,
-    title              varchar(250) NOT NULL,
-    preview_attachment text         NOT NULL,
-    tags_id            bigint       NULL, -- one to many via the intermediate table in hibernate
-    user_id            bigint       NOT NULL,
+    id                 BIGSERIAL    NOT NULL,
+    title              VARCHAR(250) NOT NULL,
+    preview_attachment TEXT         NOT NULL,
+    tags_id            BIGINT       NULL, -- one to many via the intermediate table in hibernate
+    user_id            BIGINT       NOT NULL,
     create_on          TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    text               text         NOT NULL,
+    text               TEXT         NOT NULL,
     update_on          TIMESTAMPTZ  NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (tags_id) REFERENCES "post_tags" (post_id),
@@ -62,11 +61,11 @@ CREATE TABLE IF NOT EXISTS "post"
 -- DROP TABLE IF EXISTS "comment";
 CREATE TABLE IF NOT EXISTS "comment"
 (
-    id        bigserial   NOT NULL,
-    text      text        NOT NULL,
-    post_id   bigint      NOT NULL,
-    user_id   bigint      NOT NULL,
---     tags_id   bigint      NOT NULL,
+    id        BIGSERIAL   NOT NULL,
+    text      TEXT        NOT NULL,
+    post_id   BIGINT      NOT NULL,
+    user_id   BIGINT      NOT NULL,
+--     tags_id   BIGINT      NOT NULL,
     create_on TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_on TIMESTAMPTZ NULL,
     PRIMARY KEY (id),

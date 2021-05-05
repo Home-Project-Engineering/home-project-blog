@@ -28,5 +28,4 @@ public class UserDtoGet {
 
     private RoleDto role;
 
-    private Byte roleByte;
 }
