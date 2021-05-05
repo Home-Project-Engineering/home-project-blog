@@ -28,11 +28,10 @@ public class PostService implements IPostService {
     private final PostRepository postRepository;
     private final TagRepository tagRepository;
     private final PostMapperService mapper;
-    private final PasswordEncoder passwordEncoder;
     private final IUserService userService;
 
     @Override
-    public Page<PostDto> findAll(Long id, String title, Integer pageNum, Integer pageSize, String sort) {
+    public Page<PostDto> findAll(Long id, String tag_id, String tag_name, String user_id, Integer pageNum, Integer pageSize, String sort) {
         Pageable paging = GeneralService.pagination(pageNum, pageSize, sort);
         Page<Post> postsPage;
 //        if ((title != null) && (id != null)) {
@@ -87,7 +86,7 @@ public class PostService implements IPostService {
         }
         return tags2;
     }
-
+//
 //    private PostDto updateDto(PostDto oldPost, PostDto newPost) {
 //        if (!oldPost.getEmail().equalsIgnoreCase(newPost.getEmail())) {
 //            throwIfEmailIsNotUnique(newPost.getEmail());
@@ -100,22 +99,23 @@ public class PostService implements IPostService {
 //        newPost.setRole(oldPost.getRole());
 //        return mapper.toPostDto(repository.save(mapper.toPost(newPost)));
 //    }
-
+//
 //    @Override
 //    public PostDto update(Long id, @Valid PostDto post) {
 //        return updateDto(getById(id), post);
 //    }
-//
+
 //    @Override
 //    public PostDto updateCurrentPost(@Valid PostDto post) {
 //        return updateDto(getCurrentPost(), post);
 //    }
-//
-//    @Override
-//    public void delete(Long id) {
-//        if (!repository.existsById(id)) {
-//            throw new EntityNotFoundException(Const.USER_DOESNT_EXIST);
-//        }
-//        repository.deleteById(id);
-//    }
+
+    @Override
+    public void delete(Long id) {
+        if (!postRepository.existsById(id)) {
+            throw new EntityNotFoundException(Const.POST_DOESNT_EXIST);
+        }
+        //TODO tags verify
+        postRepository.deleteById(id);
+    }
 }

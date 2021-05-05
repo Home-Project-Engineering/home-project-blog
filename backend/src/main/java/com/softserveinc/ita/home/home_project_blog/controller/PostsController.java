@@ -28,24 +28,25 @@ public class PostsController {
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<ViewPostDto>> getAllPosts(
             @RequestParam(required = false) Long id,
-            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String tag_id,
+            @RequestParam(required = false) String tag_name,
+            @RequestParam(required = false) String user_id,
             @RequestParam(defaultValue = "0") Integer page_num,
             @RequestParam(defaultValue = "50") Integer page_size,
             @RequestParam(defaultValue = "-id") String sort
     ) {
         Page<ViewPostDto> pagedResult = mapper.toPageViewPostDto(
-                postService.findAll(id, title, page_num, page_size, sort));
+                postService.findAll(id, tag_id, tag_name, user_id, page_num, page_size, sort));
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("X-Total-Count",
                 String.valueOf(pagedResult.getTotalElements()));
         return new ResponseEntity<>(pagedResult.getContent(), responseHeaders, HttpStatus.OK);
     }
 
-    //    @PreAuthorize("hasAuthority('posts:read')")
-//    @GetMapping(path = "/{id}", produces = "application/json")
-//    public ResponseEntity<ViewPostDto> getPostById(@PathVariable("id") Long id) {
-//        return new ResponseEntity<>(mapper.toViewPostDto(postService.getById(id)), HttpStatus.OK);
-//    }
+    @GetMapping(path = "/{id}", produces = "application/json")
+    public ResponseEntity<ViewPostDto> getPostById(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(mapper.toViewPostDto(postService.getById(id)), HttpStatus.OK);
+    }
 //
 //    @GetMapping(path = "/current", produces = "application/json")
 //    public ResponseEntity<ViewPostDto> getCurrentPost() {
@@ -63,17 +64,17 @@ public class PostsController {
         return new ResponseEntity<>(mapper.toViewPostDto(postService.save(mapper.toPostDto(post))), HttpStatus.CREATED);
     }
 
-//    @PreAuthorize("hasAuthority('posts:write')")
+//    @PreAuthorize("hasAuthority('posts:update')")
 //    @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
 //    public ResponseEntity<ViewPostDto> updatePost(@PathVariable Long id,
 //                                                  @Valid @RequestBody UpdatePostDto post) {
 //        return new ResponseEntity<>(mapper.toViewPostDto(postService.update(id, mapper.UpdateToPostDto(post))), HttpStatus.OK);
 //    }
-//
-//    @PreAuthorize("hasAuthority('posts:write')")
-//    @DeleteMapping(path = "/{id}", produces = "application/json")
-//    public ResponseEntity<ViewPostDto> deletePost(@PathVariable Long id) {
-//        postService.delete(id);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
+
+    @PreAuthorize("hasAuthority('posts:update')")
+    @DeleteMapping(path = "/{id}", produces = "application/json")
+    public ResponseEntity<ViewPostDto> deletePost(@PathVariable Long id) {
+        postService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
