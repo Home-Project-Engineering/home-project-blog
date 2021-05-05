@@ -64,12 +64,12 @@ public class PostsController {
         return new ResponseEntity<>(mapper.toViewPostDto(postService.save(mapper.toPostDto(post))), HttpStatus.CREATED);
     }
 
-//    @PreAuthorize("hasAuthority('posts:update')")
-//    @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
-//    public ResponseEntity<ViewPostDto> updatePost(@PathVariable Long id,
-//                                                  @Valid @RequestBody UpdatePostDto post) {
-//        return new ResponseEntity<>(mapper.toViewPostDto(postService.update(id, mapper.UpdateToPostDto(post))), HttpStatus.OK);
-//    }
+    @PreAuthorize("hasAuthority('posts:update')")
+    @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<ViewPostDto> updatePost(@PathVariable Long id,
+                                                  @Valid @RequestBody CreatePostDto post) {
+        return new ResponseEntity<>(mapper.toViewPostDto(postService.update(id, mapper.toPostDto(post))), HttpStatus.OK);
+    }
 
     @PreAuthorize("hasAuthority('posts:update')")
     @DeleteMapping(path = "/{id}", produces = "application/json")

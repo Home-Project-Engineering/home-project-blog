@@ -5,12 +5,13 @@ import com.softserveinc.ita.home.home_project_blog.repository.TagRepository;
 import com.softserveinc.ita.home.home_project_blog.repository.entity.Post;
 import com.softserveinc.ita.home.home_project_blog.repository.entity.Tag;
 import com.softserveinc.ita.home.home_project_blog.service.dto.PostDto;
+import com.softserveinc.ita.home.home_project_blog.service.dto.TagDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.PostMapperService;
+import com.softserveinc.ita.home.home_project_blog.service.mapper.TagMapperService;
 import com.softserveinc.ita.home.home_project_blog.validation.Const;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -19,6 +20,7 @@ import javax.validation.Valid;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Validated
 @RequiredArgsConstructor
@@ -28,6 +30,7 @@ public class PostService implements IPostService {
     private final PostRepository postRepository;
     private final TagRepository tagRepository;
     private final PostMapperService mapper;
+    private final TagMapperService tagMapper;
     private final IUserService userService;
 
     @Override
@@ -53,57 +56,100 @@ public class PostService implements IPostService {
                 () -> new EntityNotFoundException(Const.POST_DOESNT_EXIST)));
     }
 
-
-//    private void throwIfEmailIsNotUnique(String email) {
-//        if (repository.existsByEmail(email)) {
-//            throw new NotUniqueException(Const.EMAIL_IS_NOT_UNIQUE);
-//        }
-//    }
-//
-//    private void throwIfNameIsNotUnique(String name) {
-//        if (repository.existsByName(name)) {
-//            throw new NotUniqueException(Const.NAME_IS_NOT_UNIQUE);
-//        }
-//    }
-
     @Override
     public PostDto save(@Valid PostDto post) {
         Date now = new Date(System.currentTimeMillis());
 //        post.setCreatedOn(now);
 //        post.setUpdatedOn(now);
         post.setUser(userService.getCurrentUser());
-        Post post1 = mapper.toPost(post);
-        post1.setTags(setTags(post1.getTags()));
-        Post post2 = postRepository.save(post1);
-        return mapper.toPostDto(post2);
-//        return mapper.toPostDto(repository.save(mapper.toPost(post)));
+        post.setTags(updateTags(post.getTags()));
+//        Post post1 = mapper.toPost(post);
+//        //post1.setTags(setTags(post1.getTags()));
+//        Post post2 = postRepository.save(post1);
+//        return mapper.toPostDto(post2);
+        return mapper.toPostDto(postRepository.save(mapper.toPost(post)));
     }
 
-    private Set<Tag> setTags(Set<Tag> tags) {
-        Set<Tag> tags2 = new HashSet<>();
-        for (Tag tag: tags) {
-            tags2.add(tagRepository.findByName(tag.getName()).orElseGet(() -> tagRepository.save(tag)));
+//    private Set<Tag> setTags(Set<Tag> tags) {
+//        Set<Tag> tags2 = new HashSet<>();
+//        for (Tag tag : tags) {
+//            tags2.add(tagRepository.findByName(tag.getName()).orElseGet(() -> tagRepository.save(tag)));
+//        }
+//        return tags2;
+//    }
+
+
+//    private Set<TagDto> updateTags(Set<TagDto> tags) {
+//        //Set<TagDto> tags2 = new HashSet<>();
+//        for (TagDto tag: tags) {
+//            if (tagRepository.existsByName(tag.getName())){
+//                tag.setId(tagRepository.findByName(tag.getName()).get().getId());
+//            }
+////            tags2.add(tagRepository.findByName(tag.getName()).orElseGet(() -> tagRepository.save(tag)));
+//        }
+//        return tags2;
+//    }
+
+    private Set<TagDto> updateTags(Set<TagDto> tags) {
+        Set<TagDto> tags2 = new HashSet<>();
+        for (TagDto tag : tags) {
+//            tags2.add(tagMapper.toTagDto(addTagIfNotExists(tag.getName())));
+            tags2.add(tagMapper.toTagDto(
+                    tagRepository.findByName(tag.getName())
+                            .orElseGet(() -> tagRepository.save(tagMapper.toTag(tag)))
+            ));
         }
         return tags2;
     }
-//
-//    private PostDto updateDto(PostDto oldPost, PostDto newPost) {
-//        if (!oldPost.getEmail().equalsIgnoreCase(newPost.getEmail())) {
-//            throwIfEmailIsNotUnique(newPost.getEmail());
-//        }
-//        if (!oldPost.getName().equalsIgnoreCase(newPost.getName())) {
-//            throwIfNameIsNotUnique(newPost.getName());
-//        }
-//        newPost.setId(oldPost.getId());
-//        newPost.setPassword(oldPost.getPassword());
-//        newPost.setRole(oldPost.getRole());
-//        return mapper.toPostDto(repository.save(mapper.toPost(newPost)));
+
+//    private Tag addTagIfNotExists(String name){
+//        return tagRepository.findByName(name)
+//                        .orElseGet(() -> tagRepository.save(new Tag(null,name)));
 //    }
-//
-//    @Override
-//    public PostDto update(Long id, @Valid PostDto post) {
-//        return updateDto(getById(id), post);
-//    }
+
+    private void deleteTags(Set<Tag> tags) {
+        for (Tag tag : tags) {
+            deleteTag(tag.getId());
+        }
+    }
+
+
+    //todo delete tag from posts_tags and maybe from tags
+    private void deleteTag(Long id) {
+        tagRepository.deleteById(id);
+        //tagRepository.deleteById(tagRepository.findByName(tag.getName()));
+    }
+
+    private Set<TagDto> compareAndUpdateTags(Set<TagDto> oldTags, Set<TagDto> newTags){
+        Set<String> stringTags = newTags.stream().map(TagDto::getName).collect(Collectors.toSet());
+        Set<String> stringOldTags = oldTags.stream().map(TagDto::getName).collect(Collectors.toSet());
+        if (stringOldTags.equals(stringTags)) {
+            System.out.println("Tags weren't changed!!!");
+            return oldTags;
+        }
+        Set<TagDto> mergeTags = updateTags(newTags);
+
+        //delete extra tags
+        for (TagDto tag: oldTags) {
+            if (!stringTags.contains(tag.getName())) {
+                deleteTag(tag.getId());
+            }
+        }
+        return mergeTags;
+    }
+
+    private PostDto updateDto(PostDto oldPost, PostDto postUpdates) {
+        oldPost.setTags(compareAndUpdateTags(oldPost.getTags(), postUpdates.getTags()));
+        oldPost.setText(postUpdates.getText());
+        oldPost.setTitle(postUpdates.getTitle());
+        oldPost.setPreviewAttachment(postUpdates.getPreviewAttachment());
+        return mapper.toPostDto(postRepository.save(mapper.toPost(oldPost)));
+    }
+
+    @Override
+    public PostDto update(Long id, @Valid PostDto post) {
+        return updateDto(getById(id), post);
+    }
 
 //    @Override
 //    public PostDto updateCurrentPost(@Valid PostDto post) {
@@ -115,7 +161,7 @@ public class PostService implements IPostService {
         if (!postRepository.existsById(id)) {
             throw new EntityNotFoundException(Const.POST_DOESNT_EXIST);
         }
-        //TODO tags verify
+        deleteTags(postRepository.findById(id).get().getTags());
         postRepository.deleteById(id);
     }
 }

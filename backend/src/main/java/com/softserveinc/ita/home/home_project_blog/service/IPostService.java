@@ -14,7 +14,7 @@ public interface IPostService {
 
     PostDto save(@Valid PostDto post);
 
-//    PostDto update(Long id, @Valid PostDto post);
+    PostDto update(Long id, @Valid PostDto post);
 
     void delete(Long id);
 }

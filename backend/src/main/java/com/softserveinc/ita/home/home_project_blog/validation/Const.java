@@ -3,6 +3,7 @@ package com.softserveinc.ita.home.home_project_blog.validation;
 public interface Const {
     String USER_DOESNT_EXIST = "User doesn't exist.";
     String POST_DOESNT_EXIST = "Post doesn't exist.";
+    String TAG_DOESNT_EXIST = "Tag doesn't exist.";
     String NO_AUTH = "User wasn't authorized.";
     String EMAIL_IS_NOT_UNIQUE = "User with such email already exists.";
     String NAME_IS_NOT_UNIQUE = "User with such name already exists.";
