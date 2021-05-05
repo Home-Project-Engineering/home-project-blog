@@ -35,12 +35,12 @@ public class UserServiceImpl implements UserService {
 
         if (name != null) {
             pageEntities = userRepository.findByName(name, PageRequest.of(pageNum, pageSize, getSorter(sort)));
-            return userMapperService.toUserDtoPage(pageEntities);
+            return userMapperService.toUserDtoGetPage(pageEntities);
         }
 
         pageEntities = userRepository.findAll(PageRequest.of(pageNum, pageSize, getSorter(sort)));
 
-        return userMapperService.toUserDtoPage(pageEntities);
+        return userMapperService.toUserDtoGetPage(pageEntities);
     }
 
     private Sort getSorter(String sort) {
@@ -72,17 +72,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDtoGet createUser(UserDtoSet bodyDto) {
-        // TODO move to mapper
-        bodyDto.setRoleByte((byte) bodyDto.getRole().getName().ordinal());
-        var userEntity = userMapperService.toUserEntity(bodyDto);
+    public UserDtoGet createUser(UserDtoSet userDtoSet) {
+        var userEntity = userMapperService.toUserEntity(userDtoSet);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
         System.out.println(userEntity);
 
-//        System.out.println(userEntity.getRole().getName().ordinal());
         userRepository.save(userEntity);
         return userMapperService.toUserDto(userEntity);
-//        return null;
     }
 
     @Override

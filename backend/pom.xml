@@ -62,10 +62,10 @@
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
-<!--        <dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>-->
+        </dependency>
         <!--/spring boot-->
 
 
@@ -202,6 +202,7 @@
                 </executions>
             </plugin>
 
+            <!--add new source for executions-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -217,7 +218,7 @@
                         </configuration>
                     </execution>
                 </executions> </plugin>
-
+            <!--/add new source for executions-->
             <!--/swagger/openapi new generator-->
         </plugins>
     </build>

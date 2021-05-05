@@ -9,9 +9,28 @@ import org.springframework.data.domain.Page;
 
 @Mapper(componentModel = "spring")
 public interface UserMapperService {
-    UserEntity toUserEntity(UserDtoSet userDtoSet);
+    default UserEntity toUserEntity(UserDtoSet userDtoSet){
+        if ( userDtoSet == null ) {
+            return null;
+        }
+        // setRoleByte
+        userDtoSet.setRoleByte((byte) userDtoSet.getRole().getName().ordinal());
 
-    default Page<UserDtoGet> toUserDtoPage(Page<UserEntity> userEntityPage) {
+        var userEntity = new UserEntity();
+
+        userEntity.setId( userDtoSet.getId() );
+        userEntity.setName( userDtoSet.getName() );
+        userEntity.setFirstName( userDtoSet.getFirstName() );
+        userEntity.setLastName( userDtoSet.getLastName() );
+        userEntity.setEmail( userDtoSet.getEmail() );
+        userEntity.setPassword( userDtoSet.getPassword() );
+        userEntity.setCreateOn( userDtoSet.getCreateOn() );
+        userEntity.setRoleByte( userDtoSet.getRoleByte() );
+
+        return userEntity;
+    }
+
+    default Page<UserDtoGet> toUserDtoGetPage(Page<UserEntity> userEntityPage) {
         return userEntityPage.map(this::toUserDto);
     }
 
@@ -20,22 +39,20 @@ public interface UserMapperService {
             return null;
         }
 
-        var userDto = new UserDtoGet();
+        var userDtoGet = new UserDtoGet();
 
-        userDto.setId( userEntity.getId() );
-        userDto.setName( userEntity.getName() );
-        userDto.setFirstName( userEntity.getFirstName() );
-        userDto.setLastName( userEntity.getLastName() );
-        userDto.setEmail( userEntity.getEmail() );
-        userDto.setPassword( userEntity.getPassword() );
-        userDto.setRoleByte( userEntity.getRoleByte() );
+        userDtoGet.setId( userEntity.getId() );
+        userDtoGet.setName( userEntity.getName() );
+        userDtoGet.setFirstName( userEntity.getFirstName() );
+        userDtoGet.setLastName( userEntity.getLastName() );
+        userDtoGet.setEmail( userEntity.getEmail() );
+        userDtoGet.setPassword( userEntity.getPassword() );
+        userDtoGet.setRoleByte( userEntity.getRoleByte() );
 
-        return setRole(userDto);
+        return setRoleToUserDtoGet(userDtoGet);
     }
 
-
-
-    default UserDtoGet setRole(UserDtoGet userDtoGet){
+    default UserDtoGet setRoleToUserDtoGet(UserDtoGet userDtoGet){
         var roleDto = new RoleDto();
         roleDto.setName(RoleDto.NameEnum.values()[(int) userDtoGet.getRoleByte()]);
         userDtoGet.setRole(roleDto);
