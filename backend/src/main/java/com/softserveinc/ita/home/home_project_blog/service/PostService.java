@@ -113,7 +113,7 @@ public class PostService implements IPostService {
     @Override
     public void delete(Long id) {
         if (!postRepository.existsById(id)) {
-            throw new EntityNotFoundException(Const.USER_DOESNT_EXIST);
+            throw new EntityNotFoundException(Const.POST_DOESNT_EXIST);
         }
         //TODO tags verify
         postRepository.deleteById(id);
