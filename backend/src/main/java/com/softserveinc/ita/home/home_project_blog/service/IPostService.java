@@ -8,13 +8,13 @@ import javax.validation.Valid;
 
 @Validated
 public interface IPostService {
-    Page<PostDto> findAll(Long id, String title, Integer pageNum, Integer pageSize, String sort);
+    Page<PostDto> findAll(Long id, String tag_id, String tag_name, String user_id, Integer pageNum, Integer pageSize, String sort);
 
     PostDto getById(Long id);
 
     PostDto save(@Valid PostDto post);
 
 //    PostDto update(Long id, @Valid PostDto post);
-//
-//    void delete(Long id);
+
+    void delete(Long id);
 }
