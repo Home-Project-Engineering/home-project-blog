@@ -33,7 +33,7 @@ public class PostController implements PostsApi {
         return PostsApi.super.createComment(postId, comment);
     }
 
-    // TODO this
+    // TODO this --> simultaneously create tags
     @Override
     public ResponseEntity<Post> createPost(Post body) {
         return null;

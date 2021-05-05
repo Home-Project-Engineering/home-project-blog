@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Error> generalException(Exception exception) {
         var error = new Error();
         error.setCode("404");
-        error.setMessage("General Exception. " + exception);
+        error.setMessage("The unknown error appeared. Check your payload or contact support. More details: " + exception);
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 

@@ -73,9 +73,6 @@ public class UserController implements UsersApi {
         var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = ((UserDetails) principal).getUsername();
         var currentUserDto = userService.getUserByName(username);
-
-
-
         var currentUser = userMapperController.toUser(currentUserDto);
         return new ResponseEntity<>(currentUser, HttpStatus.OK);
     }
