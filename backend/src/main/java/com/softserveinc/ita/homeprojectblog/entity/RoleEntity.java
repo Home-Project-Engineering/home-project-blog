@@ -3,127 +3,72 @@ package com.softserveinc.ita.homeprojectblog.entity;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.softserveinc.ita.homeprojectblog.security.Permission;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
-@Table(name="role", schema = "public")
+@Table(name = "role", schema = "public")
 public class RoleEntity {
 
-  @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  Long id;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
 
-  @Column(name = "name")
-  @Enumerated(EnumType.STRING)
-  private NameEnum name = NameEnum.BLOGGER;
+    @Column(name = "name")
+    @Enumerated(EnumType.STRING)
+    private NameEnum name;
 
-  public enum NameEnum {
-    BLOGGER("blogger"),
-    
-    MODERATOR("moderator"),
-    
-    ADMIN("admin");
+    public enum NameEnum {
+        BLOGGER(Set.of()),
 
-    private String value;
+        MODERATOR(Set.of(Permission.TAG_REMOVE
+                ,Permission.POST_UPDATE
+                ,Permission.POST_DELETE
+                ,Permission.COMMENTS_UPDATE
+                ,Permission.COMMENTS_DELETE)),
 
-    NameEnum(String value) {
-      this.value = value;
-    }
+        ADMIN(Set.of(Permission.USER_MANAGEMENT
+                ,Permission.TAG_REMOVE
+                ,Permission.POST_UPDATE
+                ,Permission.POST_DELETE
+                ,Permission.COMMENTS_UPDATE
+                ,Permission.COMMENTS_DELETE
+                ,Permission.ROLE_MANAGEMENT));
 
-    @JsonValue
-    public String getValue() {
-      return value;
-    }
+        private final Set<Permission> permission;
 
-    @Override
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static NameEnum fromValue(String value) {
-      for (NameEnum b : NameEnum.values()) {
-        if (b.value.equals(value)) {
-          return b;
+        NameEnum(Set<Permission> permission) {
+            this.permission = permission;
         }
-      }
-      throw new IllegalArgumentException("Unexpected value '" + value + "'");
+
+        public Set<Permission> getPermission() {
+            return permission;
+        }
+
+        public Set<SimpleGrantedAuthority> getAuthorities() {
+            return getPermission().stream()
+                    .map(perm -> new SimpleGrantedAuthority(perm.getName()))
+                    .collect(Collectors.toSet());
+        }
     }
-  }
-
-
-
-  public RoleEntity name(NameEnum name) {
-    this.name = name;
-    return this;
-  }
-
-  /**
-   * The name of the RoleDto.
-   * @return name
-  */
-  @ApiModelProperty(value = "The name of the RoleDto.")
-
-
-  public NameEnum getName() {
-    return name;
-  }
-
-  public void setName(NameEnum name) {
-    this.name = name;
-  }
-
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    RoleEntity roleEntity = (RoleEntity) o;
-    return Objects.equals(this.name, roleEntity.name);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(name);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class RoleDto {\n");
-    
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
 }
 

@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.MultiValueMap;
@@ -104,6 +105,7 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(userMapperController.toUser(userDto), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('user:management')")
     @Override // +
     public ResponseEntity<List<User>> getUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
 

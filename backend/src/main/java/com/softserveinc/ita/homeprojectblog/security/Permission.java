@@ -1,8 +1,13 @@
 package com.softserveinc.ita.homeprojectblog.security;
 
 public enum Permission {
-    DEVELOPERS_READ("developers:read"),
-    DEVELOPERS_WRITE("developers:write");
+    ROLE_MANAGEMENT("role:management"),
+    USER_MANAGEMENT("user:management"),
+    TAG_REMOVE("tag:remove"),
+    POST_UPDATE("posts:update"),
+    POST_DELETE("posts:delete"),
+    COMMENTS_UPDATE("comments:update"),
+    COMMENTS_DELETE("comments:delete");
 
     private final String name;
 

@@ -4,6 +4,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -63,12 +64,15 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-/*    @ExceptionHandler
+    @ExceptionHandler
     public ResponseEntity<Error> springSecurity(AccessDeniedException e) {
         var error = new Error();
         error.setCode("403");
         error.setMessage(e.getMessage());
         return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
-    }*/
+    }
+
+    // TODO Handle exceptions ↓
+//    HttpMessageNotReadableException --> softserveinc.ita.homeprojectblog.model.Role[\"name\"])
 
 }
