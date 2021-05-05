@@ -40,4 +40,6 @@ public class UserDto {
 //    private String createOn;
 
     private RoleDto role;
+
+    private Byte roleByte;
 }

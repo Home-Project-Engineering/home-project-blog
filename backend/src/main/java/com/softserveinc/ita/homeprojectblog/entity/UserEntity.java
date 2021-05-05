@@ -1,22 +1,20 @@
 package com.softserveinc.ita.homeprojectblog.entity;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.softserveinc.ita.homeprojectblog.dto.UserDto;
-import com.softserveinc.ita.homeprojectblog.model.Role;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "user", schema = "public")
 public class UserEntity {
@@ -53,7 +51,10 @@ public class UserEntity {
     private OffsetDateTime updateOn;
 
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "role_id")
-    private RoleEntity role;
+//    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+//    @JoinColumn(name = "role_id")
+    @Column(name = "role_id")
+//    private RoleEntity role;
+    private Byte roleByte;
+
 }

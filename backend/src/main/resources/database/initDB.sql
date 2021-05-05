@@ -3,8 +3,8 @@
 
 create table role
 (
-    id   smallserial not null,
-    name varchar(20),
+    id   SMALLSERIAL NOT NULL,
+    name varchar(20) NOT NULL,
     primary key (id)
 );
 
@@ -20,7 +20,8 @@ CREATE TABLE IF NOT EXISTS "user"
     create_on  timestamptz  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_on  timestamptz  NULL,
     role_id    smallint     NOT NULL,
-    PRIMARY KEY (id),
+    PRIMARY KEY (id)
+,
     foreign key (role_id) references role (id)
 );
 

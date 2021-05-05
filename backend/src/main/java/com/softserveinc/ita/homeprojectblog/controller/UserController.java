@@ -1,5 +1,6 @@
 package com.softserveinc.ita.homeprojectblog.controller;
 
+import com.softserveinc.ita.homeprojectblog.dto.RoleDto;
 import com.softserveinc.ita.homeprojectblog.mapper.UserMapperController;
 import com.softserveinc.ita.homeprojectblog.dto.UserDto;
 import com.softserveinc.ita.homeprojectblog.exceptions.NoSuchUserException;
@@ -17,9 +18,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
-//import org.springframework.security.core.context.SecurityContextHolder;
-//import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +28,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,12 +51,19 @@ public class UserController implements UsersApi {
     @Override // +
 //    @PreAuthorize("hasAuthority('developers:write')")
     public ResponseEntity<User> createUser(User body) {
-     /*   var roleForUser = new Role();
-        roleForUser.setName(Role.NameEnum.BLOGGER);
-        body.setRole(roleForUser);*/
-        System.out.println(body);
+       if(body.getRole() == null){
+           var roleForUser = new Role();
+           roleForUser.setName(Role.NameEnum.BLOGGER);
+           body.setRole(roleForUser);
+       }
         var userDto = userMapperController.toUserDto(body);
         userDto = userService.createUser(userDto);
+
+//        var roleDto = new RoleDto();
+//        roleDto.setName(RoleDto.NameEnum.values()[(int)userDto.getRoleByte()]);
+//        userDto.setRole(roleDto);
+
+        System.out.println(userDto);
         return new ResponseEntity<>(userMapperController.toUser(userDto), HttpStatus.CREATED);
     }
 
@@ -70,12 +79,17 @@ public class UserController implements UsersApi {
 
     @Override
     public ResponseEntity<User> getCurrentUser() {
-//        var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        String username = ((UserDetails) principal).getUsername();
-//        var currentUserDto = userService.getUserByName(username);
-//        var currentUser = userMapperController.toUser(currentUserDto);
-//        return new ResponseEntity<>(currentUser, HttpStatus.OK);
-        return null;
+        var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
+        var currentUserDto = userService.getUserByName(username);
+
+//        var roleDto = new RoleDto();
+//        roleDto.setName(RoleDto.NameEnum.values()[(int)currentUserDto.getRoleByte()]);
+//        currentUserDto.setRole(roleDto);
+
+        var currentUser = userMapperController.toUser(currentUserDto);
+        return new ResponseEntity<>(currentUser, HttpStatus.OK);
+//        return null;
     }
 
     @Override
