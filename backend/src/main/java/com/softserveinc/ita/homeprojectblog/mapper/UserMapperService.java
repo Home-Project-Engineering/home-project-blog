@@ -1,20 +1,26 @@
 package com.softserveinc.ita.homeprojectblog.mapper;
 
 import com.softserveinc.ita.homeprojectblog.dto.RoleDto;
-import com.softserveinc.ita.homeprojectblog.dto.UserDto;
+import com.softserveinc.ita.homeprojectblog.dto.UserDtoGet;
+import com.softserveinc.ita.homeprojectblog.dto.UserDtoSet;
 import com.softserveinc.ita.homeprojectblog.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
 
 @Mapper(componentModel = "spring")
 public interface UserMapperService {
+    UserEntity toUserEntity(UserDtoSet userDtoSet);
 
-    default UserDto toUserDto(UserEntity userEntity){
+    default Page<UserDtoGet> toUserDtoPage(Page<UserEntity> userEntityPage) {
+        return userEntityPage.map(this::toUserDto);
+    }
+
+    default UserDtoGet toUserDto(UserEntity userEntity){
         if ( userEntity == null ) {
             return null;
         }
 
-        var userDto = new UserDto();
+        var userDto = new UserDtoGet();
 
         userDto.setId( userEntity.getId() );
         userDto.setName( userEntity.getName() );
@@ -27,17 +33,13 @@ public interface UserMapperService {
         return setRole(userDto);
     }
 
-    default Page<UserDto> toUserDtoPage(Page<UserEntity> userEntityPage) {
-        return userEntityPage.map(this::toUserDto);
-    }
 
-    UserEntity toUserEntity(UserDto userDto);
 
-    default UserDto setRole(UserDto userDto){
+    default UserDtoGet setRole(UserDtoGet userDtoGet){
         var roleDto = new RoleDto();
-        roleDto.setName(RoleDto.NameEnum.values()[(int)userDto.getRoleByte()]);
-        userDto.setRole(roleDto);
-        return userDto;
+        roleDto.setName(RoleDto.NameEnum.values()[(int) userDtoGet.getRoleByte()]);
+        userDtoGet.setRole(roleDto);
+        return userDtoGet;
     }
 
 }

@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.*;
 
@@ -45,7 +44,7 @@ public class UserEntity {
     private String password;
 
     @Column(name = "create_on")
-    private OffsetDateTime createOn = OffsetDateTime.now();
+    private OffsetDateTime createOn;
 
     @Column(name = "update_on")
     private OffsetDateTime updateOn;

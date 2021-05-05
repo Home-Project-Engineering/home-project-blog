@@ -1,8 +1,8 @@
 package com.softserveinc.ita.homeprojectblog.service.impl;
 
-import com.softserveinc.ita.homeprojectblog.dto.UserDto;
+import com.softserveinc.ita.homeprojectblog.dto.UserDtoGet;
+import com.softserveinc.ita.homeprojectblog.dto.UserDtoSet;
 import com.softserveinc.ita.homeprojectblog.entity.UserEntity;
-import com.softserveinc.ita.homeprojectblog.repository.RoleRepository;
 import com.softserveinc.ita.homeprojectblog.repository.UserRepository;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
 import com.softserveinc.ita.homeprojectblog.mapper.UserMapperService;
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
 
     @Override
-    public Page<UserDto> getAllUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
+    public Page<UserDtoGet> getAllUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
         pageNum--;
         Page<UserEntity> pageEntities;
 
@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserById(BigDecimal id) {
+    public UserDtoGet getUserById(BigDecimal id) {
         UserEntity userEntity = null;
         Optional<UserEntity> optional = userRepository.findById(id);
         if (optional.isPresent()) {
@@ -65,15 +65,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserByName(String username) {
+    public UserDtoGet getUserByName(String username) {
         var currentUserEntity = userRepository.findByName(username).orElseThrow(() ->
                 new UsernameNotFoundException("User does not exists"));
         return userMapperService.toUserDto(currentUserEntity);
-//        return null;
     }
 
     @Override
-    public UserDto createUser(UserDto bodyDto) {
+    public UserDtoGet createUser(UserDtoSet bodyDto) {
         // TODO move to mapper
         bodyDto.setRoleByte((byte) bodyDto.getRole().getName().ordinal());
         var userEntity = userMapperService.toUserEntity(bodyDto);
@@ -92,7 +91,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto updateUser(UserDto bodyDto, BigDecimal id) {
+    public UserDtoGet updateUser(UserDtoSet bodyDto, BigDecimal id) {
         if (bodyDto.getId() == null)
             bodyDto.setId(id);
 

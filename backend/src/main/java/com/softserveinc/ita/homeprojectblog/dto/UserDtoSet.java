@@ -8,13 +8,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 
 import static com.softserveinc.ita.homeprojectblog.util.Constants.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class UserDtoSet {
 
     private BigDecimal id;
 
@@ -37,7 +38,7 @@ public class UserDto {
             message = WRONG_PASSWORD_SIZE)
     private String password;
 
-//    private String createOn;
+    private OffsetDateTime createOn = OffsetDateTime.now();
 
     private RoleDto role;
 

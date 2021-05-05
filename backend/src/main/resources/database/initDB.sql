@@ -17,8 +17,8 @@ CREATE TABLE IF NOT EXISTS "user"
     last_name  VARCHAR(50)  NOT NULL,
     email      VARCHAR(255) NOT NULL unique,
     password   VARCHAR(255) NOT NULL,
-    create_on  timestamptz  NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    update_on  timestamptz  NULL,
+    create_on  TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_on  TIMESTAMPTZ  NULL,
     role_id    smallint     NOT NULL,
     PRIMARY KEY (id)
 ,
@@ -30,8 +30,8 @@ CREATE TABLE IF NOT EXISTS "tag"
 (
     id        bigserial   NOT NULL,
     name      VARCHAR(50) NOT NULL unique,
-    create_on timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    update_on timestamptz NULL,
+    create_on TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_on TIMESTAMPTZ NULL,
     PRIMARY KEY (id)
 );
 
@@ -51,9 +51,9 @@ CREATE TABLE IF NOT EXISTS "post"
     preview_attachment text         NOT NULL,
     tags_id            bigint       NULL, -- one to many via the intermediate table in hibernate
     user_id            bigint       NOT NULL,
-    create_on          timestamptz  NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    create_on          TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     text               text         NOT NULL,
-    update_on          timestamptz  NULL,
+    update_on          TIMESTAMPTZ  NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (tags_id) REFERENCES "post_tags" (post_id),
     FOREIGN KEY (user_id) REFERENCES "user" (id)
@@ -67,8 +67,8 @@ CREATE TABLE IF NOT EXISTS "comment"
     post_id   bigint      NOT NULL,
     user_id   bigint      NOT NULL,
 --     tags_id   bigint      NOT NULL,
-    create_on timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    update_on timestamptz NULL,
+    create_on TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    update_on TIMESTAMPTZ NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES "user" (id),
     FOREIGN KEY (post_id) REFERENCES "post" (id)
