@@ -37,6 +37,11 @@ CREATE TABLE posts_tags
     PRIMARY KEY (product_no, order_id)
 );
 
+alter table if exists posts_tags add constraint posts_tags_tags foreign key (tag_id) references tags on delete cascade;
+alter table if exists posts_tags add constraint posts_tags_posts foreign key (post_id) references posts on delete cascade;
+
+alter table if exists comments add constraint comments_posts foreign key (post_id) references posts on delete cascade;
+
 -- CREATE TYPE user_role AS ENUM ( 'guest', 'user', 'moderator', 'admin', 'expert');
 
 -- role user_role default 'user'

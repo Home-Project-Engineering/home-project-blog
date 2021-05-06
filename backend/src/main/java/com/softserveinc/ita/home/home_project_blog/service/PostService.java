@@ -114,7 +114,7 @@ public class PostService implements IPostService {
 
     //todo delete tag from posts_tags and maybe from tags
     private void deleteTag(Long id) {
-        tagRepository.deleteById(id);
+ //       tagRepository.deleteById(id);
         //tagRepository.deleteById(tagRepository.findByName(tag.getName()));
     }
 
@@ -122,7 +122,6 @@ public class PostService implements IPostService {
         Set<String> stringTags = newTags.stream().map(TagDto::getName).collect(Collectors.toSet());
         Set<String> stringOldTags = oldTags.stream().map(TagDto::getName).collect(Collectors.toSet());
         if (stringOldTags.equals(stringTags)) {
-            System.out.println("Tags weren't changed!!!");
             return oldTags;
         }
         Set<TagDto> mergeTags = updateTags(newTags);
@@ -159,7 +158,7 @@ public class PostService implements IPostService {
         if (!postRepository.existsById(id)) {
             throw new EntityNotFoundException(Const.POST_DOESNT_EXIST);
         }
-        deleteTags(postRepository.findById(id).get().getTags());
+        //deleteTags(postRepository.findById(id).get().getTags());
         postRepository.deleteById(id);
     }
 }
