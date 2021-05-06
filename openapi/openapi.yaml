@@ -1,7 +1,7 @@
 openapi: 3.0.3
 
 info:
-  version: 1.0.3
+  version: 1.1.1
   title: Home Project Blog Service
   description: |
     Blog for the Home Project engineers
@@ -10,7 +10,7 @@ info:
     url: https://github.com/Home-Project-Engineering/home-project-blog/blob/main/LICENSE
 
 servers:
-  - url: /api/1
+  - url: http://localhost:8080/api/1
 
 security:
   - basicAuth: []
@@ -68,6 +68,23 @@ paths:
         404:
           $ref: '#/components/responses/NotFoundError'
         default:
+          $ref: '#/components/responses/UnknownError'
+
+  /users/current/password:
+    put:
+      tags:
+        - Current User
+      summary: Update password on a Current User
+      operationId: updateCurrentUserPassword
+
+      requestBody:
+        $ref: '#/components/requestBodies/PasswordBody'
+      responses:
+        "200":
+          $ref: '#/components/responses/PasswordUpdatedResponse'
+        "400":
+          $ref: '#/components/responses/ValidationError'
+        "default":
           $ref: '#/components/responses/UnknownError'
 
   /users/current/posts:
@@ -199,7 +216,7 @@ paths:
         $ref: '#/components/requestBodies/CommentBody'
       responses:
         200:
-          $ref: '#/components/responses/CommentsResponse'
+          $ref: '#/components/responses/CommentResponse'
         400:
           $ref: '#/components/responses/ValidationError'
         401:
@@ -329,6 +346,50 @@ paths:
         default:
           $ref: '#/components/responses/UnknownError'
 
+  /users/{id}/role:
+    parameters:
+      - $ref: '#/components/parameters/p_id'
+    get:
+      tags:
+        - Users
+      summary: Get User Role by ID
+      description: Retrieves an existing User Role associated with the specified ID.
+      operationId: getUserRole
+      responses:
+        200:
+          $ref: '#/components/responses/RoleResponse'
+        400:
+          $ref: '#/components/responses/ValidationError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/UnknownError'
+    put:
+      tags:
+        - Users
+      summary: Update User Role
+      description: Updates Role on a User that exists in the system by the specified ID.
+      operationId: updateUserRole
+      requestBody:
+        $ref: '#/components/requestBodies/RoleBody'
+      responses:
+        200:
+          $ref: '#/components/responses/RoleResponse'
+        400:
+          $ref: '#/components/responses/ValidationError'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        403:
+          $ref: '#/components/responses/ForbiddenError'
+        404:
+          $ref: '#/components/responses/NotFoundError'
+        default:
+          $ref: '#/components/responses/UnknownError'
+
   /posts:
     post:
       summary: Create Post
@@ -357,7 +418,7 @@ paths:
         - $ref: '#/components/parameters/id'
         - $ref: '#/components/parameters/tag_id'
         - $ref: '#/components/parameters/tag_name'
-        - $ref: '#/components/parameters/user_id'
+        - $ref: '#/components/parameters/author_name'
         - $ref: '#/components/parameters/posts_sort'
         - $ref: '#/components/parameters/page_num'
         - $ref: '#/components/parameters/page_size'
@@ -437,8 +498,7 @@ paths:
       operationId: getComments
       parameters:
         - $ref: '#/components/parameters/id'
-        - $ref: '#/components/parameters/user_name'
-        - $ref: '#/components/parameters/user_id'
+        - $ref: '#/components/parameters/author_name'
         - $ref: '#/components/parameters/comments_sort'
         - $ref: '#/components/parameters/page_num'
         - $ref: '#/components/parameters/page_size'
@@ -631,18 +691,27 @@ components:
             as well as digits.
           format: password
           minLength: 8
-          pattern: '/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])/'
+          pattern: '^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}$'
           example: passworD321
         role:
-          description: This is the level of User access to various functions.
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/Role'
+
+    Role:
+      description: This is the level of User access to various functions.
+      type: object
+      required:
+        - role
+      properties:
+        name:
+          description: The name of the Role.
           type: string
           enum:
-            - guest
-            - user
+            - blogger
             - moderator
             - admin
-            - expert
-
+          default: blogger
     Post:
       description: A representation of Post entity.
       type: object
@@ -667,11 +736,11 @@ components:
           example: "2017-07-21T17:32:28Z"
           format: date-time
           readOnly: true
-        user:
+        author:
           description: The creator of the Post.
           readOnly: true
           allOf:
-            - $ref: "#/components/schemas/User"
+            - $ref: "#/components/schemas/Author"
         text:
           description: The content of the Post.
           type: string
@@ -688,6 +757,20 @@ components:
           format: date-time
           readOnly: true
 
+    Author:
+      description: A representation of User entity for posts and comments
+      properties:
+        name:
+          description: The alias of the user.
+          type: string
+        firstName:
+          description: The name of the user.
+          type: string
+        lastName:
+          description: The lastName of the User.
+          type: string
+
+
     Comment:
       description: A representation of Comment entity.
       required:
@@ -698,11 +781,11 @@ components:
           type: number
           format: int64
           readOnly: true
-        user:
+        author:
           description: The creator of the Comment.
           readOnly: true
           allOf:
-            - $ref: "#/components/schemas/User"
+            - $ref: "#/components/schemas/Author"
         text:
           description: The content of the Comment.
           type: string
@@ -746,8 +829,20 @@ components:
           description: The message of an error that describes the Error.
           type: string
           readOnly: true
+    Password:
+      required:
+        - oldPassword
+        - newPassword
+      type: object
+      properties:
+        oldPassword:
+          type: string
+        newPassword:
+          type: string
 
   responses:
+    PasswordUpdatedResponse:
+      description: The password was succesfully updated.
     NoContentResponse:
       description: The request was succesfully processed.
     TagResponse:
@@ -774,6 +869,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/User"
+    RoleResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Role"
     CommentsResponse:
       description: OK
       headers:
@@ -868,6 +969,19 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/User"
+    RoleBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Role"
+    PasswordBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Password"
+
 
   parameters:
     p_id:
@@ -905,9 +1019,9 @@ components:
       name: name
       schema:
         type: string
-    user_name:
+    author_name:
       in: query
-      name: user_name
+      name: author_name
       schema:
         type: string
     tag_name:
