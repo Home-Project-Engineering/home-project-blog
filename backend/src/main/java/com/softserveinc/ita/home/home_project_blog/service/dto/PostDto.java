@@ -25,4 +25,4 @@ public class PostDto {
     private UserDto user;
     private Date createdOn;
     private Date updatedOn;
-    }
+}
