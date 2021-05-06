@@ -6,7 +6,7 @@ import com.softserveinc.ita.home.home_project_blog.repository.entity.Comment;
 import com.softserveinc.ita.home.home_project_blog.service.dto.CommentDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.CommentMapperService;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.TagMapperService;
-import com.softserveinc.ita.home.home_project_blog.validation.CommentDoesntAdhereToThePostException;
+import com.softserveinc.ita.home.home_project_blog.validation.MismatchException;
 import com.softserveinc.ita.home.home_project_blog.validation.Const;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,10 +24,8 @@ public class CommentService implements ICommentService {
 
     private final PostService postService;
     private final CommentRepository commentRepository;
-    private final TagRepository tagRepository;
     private final CommentMapperService mapper;
-    private final TagMapperService tagMapper;
-    private final IUserService userService;
+    private final ICurrentUserService currentUserService;
 
     @Override
     public Page<CommentDto> findAll(Long post_id, Long id, String user_name, Long user_id, Integer pageNum, Integer pageSize, String sort) {
@@ -52,7 +50,7 @@ public class CommentService implements ICommentService {
                 () -> new EntityNotFoundException(Const.COMMENT_DOESNT_EXIST)));
         //todo equals comments!!!! Does it work?
         if (!comment.getPost().equals(postService.getById(post_id))) {
-            throw new CommentDoesntAdhereToThePostException();
+            throw new MismatchException(Const.COMMENT_DOESNT_ADHERE_TO_THE_POST);
         }
         return comment;
     }
@@ -60,7 +58,7 @@ public class CommentService implements ICommentService {
     @Override
     public CommentDto createComment(Long post_id, @Valid CommentDto comment) {
         comment.setPost(postService.getById(post_id));
-        comment.setUser(userService.getCurrentUser());
+        comment.setUser(currentUserService.getCurrentUser());
         return mapper.toCommentDto(commentRepository.save(mapper.toComment(comment)));
     }
 

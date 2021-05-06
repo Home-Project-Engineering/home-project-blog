@@ -7,15 +7,9 @@ import com.softserveinc.ita.home.home_project_blog.service.dto.UserDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.UserMapperService;
 import com.softserveinc.ita.home.home_project_blog.validation.Const;
 import com.softserveinc.ita.home.home_project_blog.validation.NotUniqueException;
-import com.softserveinc.ita.home.home_project_blog.validation.NotAuthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -54,20 +48,6 @@ public class UserService implements IUserService {
                 () -> new EntityNotFoundException(Const.USER_DOESNT_EXIST)));
     }
 
-    private UserDto getByEmail(String email) {
-        return mapper.toUserDto(repository.findByEmail(email).orElseThrow(
-                () -> new EntityNotFoundException(Const.USER_DOESNT_EXIST)));
-    }
-
-    @Override
-    public UserDto getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication instanceof AnonymousAuthenticationToken) {
-            throw new NotAuthorizedException();
-        }
-        return getByEmail(authentication.getName());
-    }
-
     private void throwIfEmailIsNotUnique(String email) {
         if (repository.existsByEmail(email)) {
             throw new NotUniqueException(Const.EMAIL_IS_NOT_UNIQUE);
@@ -89,7 +69,8 @@ public class UserService implements IUserService {
         return mapper.toUserDto(repository.save(mapper.toUser(user)));
     }
 
-    private UserDto updateDto(UserDto oldUser, UserDto newUser) {
+    @Override
+    public UserDto update(@Valid UserDto oldUser, @Valid UserDto newUser) {
         if (!oldUser.getEmail().equalsIgnoreCase(newUser.getEmail())) {
             throwIfEmailIsNotUnique(newUser.getEmail());
         }
@@ -104,12 +85,7 @@ public class UserService implements IUserService {
 
     @Override
     public UserDto update(Long id, @Valid UserDto user) {
-        return updateDto(getById(id), user);
-    }
-
-    @Override
-    public UserDto updateCurrentUser(@Valid UserDto user) {
-        return updateDto(getCurrentUser(), user);
+        return update(getById(id), user);
     }
 
     @Override

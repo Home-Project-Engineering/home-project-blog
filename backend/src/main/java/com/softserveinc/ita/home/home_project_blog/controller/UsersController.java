@@ -49,16 +49,6 @@ public class UsersController {
         return new ResponseEntity<>(mapper.toViewUserDto(userService.getById(id)), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/current", produces = "application/json")
-    public ResponseEntity<ViewUserDto> getCurrentUser() {
-        return new ResponseEntity<>(mapper.toViewUserDto(userService.getCurrentUser()), HttpStatus.OK);
-    }
-
-    @PutMapping(path = "/current", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<ViewUserDto> updateCurrentUser(@Valid @RequestBody UpdateUserDto user) {
-        return new ResponseEntity<>(mapper.toViewUserDto(userService.updateCurrentUser(mapper.UpdateToUserDto(user))), HttpStatus.OK);
-    }
-
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseBody
     public ResponseEntity<ViewUserDto> signUp(@Valid @RequestBody CreateUserDto user) {

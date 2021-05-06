@@ -17,7 +17,6 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,7 +30,7 @@ public class PostService implements IPostService {
     private final TagRepository tagRepository;
     private final PostMapperService mapper;
     private final TagMapperService tagMapper;
-    private final IUserService userService;
+    private final ICurrentUserService currentUserService;
 
     @Override
     public Page<PostDto> findAll(Long id, Long tag_id, String tag_name, Long user_id, Integer pageNum, Integer pageSize, String sort) {
@@ -63,7 +62,7 @@ public class PostService implements IPostService {
 
     @Override
     public PostDto save(@Valid PostDto post) {
-        post.setUser(userService.getCurrentUser());
+        post.setUser(currentUserService.getCurrentUser());
         post.setTags(updateTags(post.getTags()));
         return mapper.toPostDto(postRepository.save(mapper.toPost(post)));
     }
@@ -118,25 +117,27 @@ public class PostService implements IPostService {
         //tagRepository.deleteById(tagRepository.findByName(tag.getName()));
     }
 
-    private Set<TagDto> compareAndUpdateTags(Set<TagDto> oldTags, Set<TagDto> newTags){
-        Set<String> stringTags = newTags.stream().map(TagDto::getName).collect(Collectors.toSet());
-        Set<String> stringOldTags = oldTags.stream().map(TagDto::getName).collect(Collectors.toSet());
-        if (stringOldTags.equals(stringTags)) {
-            return oldTags;
-        }
-        Set<TagDto> mergeTags = updateTags(newTags);
+//    private Set<TagDto> compareAndUpdateTags(Set<TagDto> oldTags, Set<TagDto> newTags){
+//        Set<String> stringTags = newTags.stream().map(TagDto::getName).collect(Collectors.toSet());
+//        Set<String> stringOldTags = oldTags.stream().map(TagDto::getName).collect(Collectors.toSet());
+//        if (stringOldTags.equals(stringTags)) {
+//            return oldTags;
+//        }
+//        Set<TagDto> mergeTags = updateTags(newTags);
+//
+//        //delete extra tags
+//        for (TagDto tag: oldTags) {
+//            if (!stringTags.contains(tag.getName())) {
+//                deleteTag(tag.getId());
+//            }
+//        }
+//        return mergeTags;
+//    }
 
-        //delete extra tags
-        for (TagDto tag: oldTags) {
-            if (!stringTags.contains(tag.getName())) {
-                deleteTag(tag.getId());
-            }
-        }
-        return mergeTags;
-    }
-
-    private PostDto updateDto(PostDto oldPost, PostDto postUpdates) {
-        oldPost.setTags(compareAndUpdateTags(oldPost.getTags(), postUpdates.getTags()));
+    @Override
+    public PostDto update(PostDto oldPost, PostDto postUpdates) {
+       // oldPost.setTags(compareAndUpdateTags(oldPost.getTags(), postUpdates.getTags()));
+        oldPost.setTags(updateTags(postUpdates.getTags()));
         oldPost.setText(postUpdates.getText());
         oldPost.setTitle(postUpdates.getTitle());
         oldPost.setPreviewAttachment(postUpdates.getPreviewAttachment());
@@ -145,7 +146,7 @@ public class PostService implements IPostService {
 
     @Override
     public PostDto update(Long id, @Valid PostDto post) {
-        return updateDto(getById(id), post);
+        return update(getById(id), post);
     }
 
 //    @Override
