@@ -66,6 +66,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
+
+        <!--rsql for specification-->
+        <dependency>
+            <groupId>io.github.perplexhub</groupId>
+            <artifactId>rsql-jpa-spring-boot-starter</artifactId>
+        </dependency>
+        <!--/rsql for specification-->
         <!--/spring boot-->
 
 
@@ -143,6 +150,7 @@
         <!-- /Bean Validation API support -->
 
 
+
     </dependencies>
 
     <build>
@@ -180,8 +188,10 @@
                         <configuration>
                             <generatorName>spring</generatorName>
                             <!--<inputSpec>${project.parent.basedir}/openapi/openapi.yaml</inputSpec>-->
-<!--                            <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>-->
-                            <inputSpec>https://raw.githubusercontent.com/BenAvleck/home-project-blog/main/openapi/openapi.yaml</inputSpec>
+                            <!--                            <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>-->
+                            <inputSpec>
+                                https://raw.githubusercontent.com/BenAvleck/home-project-blog/main/openapi/openapi.yaml
+                            </inputSpec>
                             <output>${project.basedir}</output>
                             <skipValidateSpec>true</skipValidateSpec>
                             <skipOverwrite>true</skipOverwrite>
@@ -217,7 +227,8 @@
                             <sources>src/main/gen</sources>
                         </configuration>
                     </execution>
-                </executions> </plugin>
+                </executions>
+            </plugin>
             <!--/add new source for executions-->
             <!--/swagger/openapi new generator-->
         </plugins>

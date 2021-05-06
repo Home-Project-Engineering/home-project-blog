@@ -11,6 +11,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -35,16 +36,10 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
 
     @Override
-    public Page<UserDto> getAllUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
+    public Page<UserDto> findUsers(Integer pageNum, Integer pageSize, String sort, Specification<UserEntity> specification) {
         pageNum--;
-        Page<UserEntity> pageEntities;
-
-        if (name != null) {
-            pageEntities = userRepository.findByName(name, PageRequest.of(pageNum, pageSize, getSorter(sort)));
-            return userMapperService.toUserDtoGetPage(pageEntities);
-        }
-
-        pageEntities = userRepository.findAll(PageRequest.of(pageNum, pageSize, getSorter(sort)));
+        Page<UserEntity> pageEntities = userRepository.findAll(specification, PageRequest
+                .of(pageNum, pageSize, getSorter(sort)));
 
         return userMapperService.toUserDtoGetPage(pageEntities);
     }

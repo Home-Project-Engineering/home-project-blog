@@ -1,25 +1,29 @@
 package com.softserveinc.ita.homeprojectblog.service;
 
 import com.softserveinc.ita.homeprojectblog.dto.UserDto;
+import com.softserveinc.ita.homeprojectblog.entity.UserEntity;
 import org.springframework.data.domain.Page;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.data.jpa.domain.Specification;
 
-import javax.validation.Valid;
 import java.math.BigDecimal;
 
-@Validated
 public interface UserService {
-    Page<UserDto> getAllUsers(@Valid BigDecimal id, @Valid String name, @Valid String sort, @Valid Integer pageNum, @Valid Integer pageSize);
+
+    Page<UserDto> findUsers(Integer pageNum,
+                            Integer pageSize,
+                            String sort,
+                            Specification<UserEntity> specification);
 
     UserDto getUserById(BigDecimal id);
 
     UserDto getUserByName(String username);
 
-    UserDto createUser(@Valid UserDto bodyDto);
+    UserDto createUser(UserDto bodyDto);
 
     UserDto updateUser(UserDto body, BigDecimal id);
 
     void deleteUser(BigDecimal id);
 
     UserDto getCurrentUser();
+
 }

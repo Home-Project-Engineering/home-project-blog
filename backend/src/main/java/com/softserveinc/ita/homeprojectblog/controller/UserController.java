@@ -9,9 +9,11 @@ import com.softserveinc.ita.homeprojectblog.model.Comment;
 import com.softserveinc.ita.homeprojectblog.model.Post;
 import com.softserveinc.ita.homeprojectblog.model.User;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
+import com.softserveinc.ita.homeprojectblog.util.query.EntitySpecificationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,7 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -35,6 +39,8 @@ public class UserController implements UsersApi {
     UserService userService;
     UserMapperController userMapperController;
     NativeWebRequest request;
+    @Qualifier("entitySpecificationService")
+    EntitySpecificationService<com.softserveinc.ita.homeprojectblog.entity.UserEntity> entitySpecificationService;
 
     @Override
     public Optional<NativeWebRequest> getRequest() {
@@ -89,13 +95,19 @@ public class UserController implements UsersApi {
     @PreAuthorize("hasAuthority('user:management')")
     @Override // +
     public ResponseEntity<List<User>> getUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
-
-        Page<UserDto> userDtoPage = userService.getAllUsers(
-                id,
-                name,
-                sort, // UserAPI set default
+        Map<String, String> predicateMap = new HashMap<>();
+        if (id != null) {
+            predicateMap.put("id", id.toString());
+        } else {
+            predicateMap.put("id", null);
+        }
+        predicateMap.put("name", name);
+        Page<UserDto> userDtoPage = userService.findUsers(
                 Optional.ofNullable(pageNum).orElse(1),
-                Optional.ofNullable(pageSize).orElse(10));
+                Optional.ofNullable(pageSize).orElse(10),
+                Optional.ofNullable(sort).orElse("-id"), // UserAPI set default too
+                entitySpecificationService.getSpecification(predicateMap)
+                );
 
         Page<User> userPage = userMapperController.toUserPage(userDtoPage);
 
