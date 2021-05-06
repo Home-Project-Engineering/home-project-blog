@@ -47,7 +47,7 @@ public class UserEntity {
     private OffsetDateTime createOn;
 
     @Column(name = "update_on")
-    private OffsetDateTime updateOn;
+    private OffsetDateTime updatedOn;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "role_id")

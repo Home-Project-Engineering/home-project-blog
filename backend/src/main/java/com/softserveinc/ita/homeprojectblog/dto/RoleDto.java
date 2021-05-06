@@ -18,7 +18,7 @@ public class RoleDto {
 
     MODERATOR,
     
-    ADMIN;
+    ADMIN
   }
 }
 
