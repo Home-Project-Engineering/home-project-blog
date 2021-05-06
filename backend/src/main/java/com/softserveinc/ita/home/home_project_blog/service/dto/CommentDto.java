@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 
 @Data
@@ -16,12 +14,10 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 @Validated
-public class PostDto {
+public class CommentDto {
     private long id;
-    private Set<TagDto> tags = new HashSet<>();
     private String text;
-    private String title;
-    private String previewAttachment;
+    private PostDto post;
     private UserDto user;
     private Date createdOn;
     private Date updatedOn;

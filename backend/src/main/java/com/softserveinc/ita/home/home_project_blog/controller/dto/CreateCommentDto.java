@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,9 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreatePostDto {
-    private Set<CreateTagDto> tags = new HashSet<>();
+public class CreateCommentDto {
+    @NotBlank
     private String text;
-    private String title;
-    private String previewAttachment;
 }

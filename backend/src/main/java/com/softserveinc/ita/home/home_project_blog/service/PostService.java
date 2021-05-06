@@ -34,7 +34,7 @@ public class PostService implements IPostService {
     private final IUserService userService;
 
     @Override
-    public Page<PostDto> findAll(Long id, String tag_id, String tag_name, String user_id, Integer pageNum, Integer pageSize, String sort) {
+    public Page<PostDto> findAll(Long id, Long tag_id, String tag_name, Long user_id, Integer pageNum, Integer pageSize, String sort) {
         Pageable paging = GeneralService.pagination(pageNum, pageSize, sort);
         Page<Post> postsPage;
 //        if ((title != null) && (id != null)) {
@@ -50,6 +50,11 @@ public class PostService implements IPostService {
         return mapper.toPagePostDto(postsPage);
     }
 
+    Post getPostById(Long id){
+        return postRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(Const.POST_DOESNT_EXIST));
+    }
+
     @Override
     public PostDto getById(Long id) {
         return mapper.toPostDto(postRepository.findById(id).orElseThrow(
@@ -58,15 +63,8 @@ public class PostService implements IPostService {
 
     @Override
     public PostDto save(@Valid PostDto post) {
-        Date now = new Date(System.currentTimeMillis());
-//        post.setCreatedOn(now);
-//        post.setUpdatedOn(now);
         post.setUser(userService.getCurrentUser());
         post.setTags(updateTags(post.getTags()));
-//        Post post1 = mapper.toPost(post);
-//        //post1.setTags(setTags(post1.getTags()));
-//        Post post2 = postRepository.save(post1);
-//        return mapper.toPostDto(post2);
         return mapper.toPostDto(postRepository.save(mapper.toPost(post)));
     }
 

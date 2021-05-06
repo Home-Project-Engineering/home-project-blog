@@ -4,6 +4,8 @@ public enum Permission {
     USERS("users"),
     POSTS_CREATE("posts:create"),
     POSTS_UPDATE("posts:update"),
+    COMMENTS_CREATE("comments:create"),
+    COMMENTS_UPDATE("comments:update"),
     TAGS_DELETE("tags:delete");
 
     private final String permission;
