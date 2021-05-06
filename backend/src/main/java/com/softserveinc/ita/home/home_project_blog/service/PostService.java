@@ -9,6 +9,7 @@ import com.softserveinc.ita.home.home_project_blog.service.dto.TagDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.PostMapperService;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.TagMapperService;
 import com.softserveinc.ita.home.home_project_blog.validation.Const;
+import com.softserveinc.ita.home.home_project_blog.validation.MismatchException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +20,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Validated
 @RequiredArgsConstructor
@@ -28,9 +28,9 @@ public class PostService implements IPostService {
 
     private final PostRepository postRepository;
     private final TagRepository tagRepository;
-    private final PostMapperService mapper;
+    private final PostMapperService postMapper;
     private final TagMapperService tagMapper;
-    private final ICurrentUserService currentUserService;
+    private final IUserService userService;
 
     @Override
     public Page<PostDto> findAll(Long id, Long tag_id, String tag_name, Long user_id, Integer pageNum, Integer pageSize, String sort) {
@@ -46,25 +46,25 @@ public class PostService implements IPostService {
         } else {
             postsPage = postRepository.findAll(paging);
         }
-        return mapper.toPagePostDto(postsPage);
+        return postMapper.toPagePostDto(postsPage);
     }
 
-    Post getPostById(Long id){
+    Post getPostById(Long id) {
         return postRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(Const.POST_DOESNT_EXIST));
     }
 
     @Override
     public PostDto getById(Long id) {
-        return mapper.toPostDto(postRepository.findById(id).orElseThrow(
+        return postMapper.toPostDto(postRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(Const.POST_DOESNT_EXIST)));
     }
 
     @Override
     public PostDto save(@Valid PostDto post) {
-        post.setUser(currentUserService.getCurrentUser());
+        post.setUser(userService.getCurrentUser());
         post.setTags(updateTags(post.getTags()));
-        return mapper.toPostDto(postRepository.save(mapper.toPost(post)));
+        return postMapper.toPostDto(postRepository.save(postMapper.toPost(post)));
     }
 
 //    private Set<Tag> setTags(Set<Tag> tags) {
@@ -113,7 +113,7 @@ public class PostService implements IPostService {
 
     //todo delete tag from posts_tags and maybe from tags
     private void deleteTag(Long id) {
- //       tagRepository.deleteById(id);
+        //       tagRepository.deleteById(id);
         //tagRepository.deleteById(tagRepository.findByName(tag.getName()));
     }
 
@@ -136,12 +136,12 @@ public class PostService implements IPostService {
 
     @Override
     public PostDto update(PostDto oldPost, PostDto postUpdates) {
-       // oldPost.setTags(compareAndUpdateTags(oldPost.getTags(), postUpdates.getTags()));
+        // oldPost.setTags(compareAndUpdateTags(oldPost.getTags(), postUpdates.getTags()));
         oldPost.setTags(updateTags(postUpdates.getTags()));
         oldPost.setText(postUpdates.getText());
         oldPost.setTitle(postUpdates.getTitle());
         oldPost.setPreviewAttachment(postUpdates.getPreviewAttachment());
-        return mapper.toPostDto(postRepository.save(mapper.toPost(oldPost)));
+        return postMapper.toPostDto(postRepository.save(postMapper.toPost(oldPost)));
     }
 
     @Override
@@ -161,5 +161,32 @@ public class PostService implements IPostService {
         }
         //deleteTags(postRepository.findById(id).get().getTags());
         postRepository.deleteById(id);
+    }
+
+    //***************CURRENT USER*************************
+
+    @Override
+    public Page<PostDto> getPostsByCurrentUser(Long post_id, Long tag_id, String tag_name, Integer pageNum, Integer pageSize, String sort) {
+        return findAll(post_id, tag_id, tag_name, userService.getCurrentUser().getId(), pageNum, pageSize, sort);
+    }
+
+    public PostDto getPostByIdByCurrentUser(Long post_id) {
+        PostDto post = getById(post_id);
+        if (!post.getUser().equals(userService.getCurrentUser())) {
+            throw new MismatchException(Const.POST_DOESNT_ADHERE_TO_THE_USER);
+        }
+        return post;
+    }
+
+
+    @Override
+    public PostDto updatePostByCurrentUser(Long post_id, @Valid PostDto post) {
+        return update(getPostByIdByCurrentUser(post_id), post);
+    }
+
+    @Override
+    public void deletePostByCurrentUser(Long post_id) {
+        getPostByIdByCurrentUser(post_id);
+        postRepository.deleteById(post_id);
     }
 }

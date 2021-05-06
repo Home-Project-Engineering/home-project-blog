@@ -3,10 +3,9 @@ package com.softserveinc.ita.home.home_project_blog.controller;
 import com.softserveinc.ita.home.home_project_blog.controller.dto.CreateCommentDto;
 import com.softserveinc.ita.home.home_project_blog.controller.dto.ViewCommentDto;
 import com.softserveinc.ita.home.home_project_blog.controller.mapper.CommentMapperController;
+import com.softserveinc.ita.home.home_project_blog.service.GeneralService;
 import com.softserveinc.ita.home.home_project_blog.service.ICommentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +23,7 @@ import java.util.List;
 public class CommentsController {
     private final ICommentService commentService;
     private final CommentMapperController mapper;
+    private final GeneralService<ViewCommentDto> generalService;
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<ViewCommentDto>> getAllComments(
@@ -35,12 +35,8 @@ public class CommentsController {
             @RequestParam(defaultValue = "-id") String sort,
             @PathVariable("post_id") Long post_id
     ) {
-        Page<ViewCommentDto> pagedResult = mapper.toPageViewCommentDto(
-                commentService.findAll(post_id, id, user_name, user_id, page_num, page_size, sort));
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("X-Total-Count",
-                String.valueOf(pagedResult.getTotalElements()));
-        return new ResponseEntity<>(pagedResult.getContent(), responseHeaders, HttpStatus.OK);
+        return generalService.toResponseEntity(mapper.toPageViewCommentDto(
+                commentService.findAll(post_id, id, user_name, user_id, page_num, page_size, sort)));
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")
@@ -62,7 +58,7 @@ public class CommentsController {
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseBody
     public ResponseEntity<ViewCommentDto> createComment(@Valid @RequestBody CreateCommentDto comment, @PathVariable("post_id") Long post_id) {
-         return new ResponseEntity<>(mapper.toViewCommentDto(commentService.createComment(post_id, mapper.toCommentDto(comment))), HttpStatus.CREATED);
+        return new ResponseEntity<>(mapper.toViewCommentDto(commentService.createComment(post_id, mapper.toCommentDto(comment))), HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAuthority('comments:update')")

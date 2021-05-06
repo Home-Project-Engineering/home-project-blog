@@ -6,10 +6,14 @@ import com.softserveinc.ita.home.home_project_blog.repository.entity.User;
 import com.softserveinc.ita.home.home_project_blog.service.dto.UserDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.UserMapperService;
 import com.softserveinc.ita.home.home_project_blog.validation.Const;
+import com.softserveinc.ita.home.home_project_blog.validation.NotAuthorizedException;
 import com.softserveinc.ita.home.home_project_blog.validation.NotUniqueException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -95,4 +99,24 @@ public class UserService implements IUserService {
         }
         repository.deleteById(id);
     }
+
+    private UserDto getByEmail(String email) {
+        return mapper.toUserDto(repository.findByEmail(email).orElseThrow(
+                () -> new EntityNotFoundException(Const.USER_DOESNT_EXIST)));
+    }
+
+    @Override
+    public UserDto getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            throw new NotAuthorizedException();
+        }
+        return getByEmail(authentication.getName());
+    }
+
+    @Override
+    public UserDto updateCurrentUser(@Valid UserDto user) {
+        return update(getCurrentUser(), user);
+    }
+
 }

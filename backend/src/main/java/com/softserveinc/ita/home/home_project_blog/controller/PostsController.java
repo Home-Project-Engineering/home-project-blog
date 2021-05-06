@@ -3,10 +3,9 @@ package com.softserveinc.ita.home.home_project_blog.controller;
 import com.softserveinc.ita.home.home_project_blog.controller.dto.CreatePostDto;
 import com.softserveinc.ita.home.home_project_blog.controller.dto.ViewPostDto;
 import com.softserveinc.ita.home.home_project_blog.controller.mapper.PostMapperController;
+import com.softserveinc.ita.home.home_project_blog.service.GeneralService;
 import com.softserveinc.ita.home.home_project_blog.service.IPostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,6 +23,7 @@ import java.util.List;
 public class PostsController {
     private final IPostService postService;
     private final PostMapperController mapper;
+    private final GeneralService<ViewPostDto> generalService;
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<ViewPostDto>> getAllPosts(
@@ -35,19 +35,16 @@ public class PostsController {
             @RequestParam(defaultValue = "50") Integer page_size,
             @RequestParam(defaultValue = "-id") String sort
     ) {
-        Page<ViewPostDto> pagedResult = mapper.toPageViewPostDto(
-                postService.findAll(id, tag_id, tag_name, user_id, page_num, page_size, sort));
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("X-Total-Count",
-                String.valueOf(pagedResult.getTotalElements()));
-        return new ResponseEntity<>(pagedResult.getContent(), responseHeaders, HttpStatus.OK);
+        return generalService.toResponseEntity(mapper.toPageViewPostDto(
+                postService.findAll(id, tag_id, tag_name, user_id, page_num, page_size, sort)));
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<ViewPostDto> getPostById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(mapper.toViewPostDto(postService.getById(id)), HttpStatus.OK);
     }
-//
+
+    //
 //    @GetMapping(path = "/current", produces = "application/json")
 //    public ResponseEntity<ViewPostDto> getCurrentPost() {
 //        return new ResponseEntity<>(mapper.toViewPostDto(postService.getCurrentPost()), HttpStatus.OK);

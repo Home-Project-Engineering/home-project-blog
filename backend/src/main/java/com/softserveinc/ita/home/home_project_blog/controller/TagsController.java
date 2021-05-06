@@ -1,7 +1,9 @@
 package com.softserveinc.ita.home.home_project_blog.controller;
 
 import com.softserveinc.ita.home.home_project_blog.controller.dto.ViewTagDto;
+import com.softserveinc.ita.home.home_project_blog.controller.dto.ViewUserDto;
 import com.softserveinc.ita.home.home_project_blog.controller.mapper.TagMapperController;
+import com.softserveinc.ita.home.home_project_blog.service.GeneralService;
 import com.softserveinc.ita.home.home_project_blog.service.ITagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,6 +24,7 @@ import java.util.List;
 public class TagsController {
     private final ITagService postService;
     private final TagMapperController mapper;
+    private final GeneralService<ViewTagDto> generalService;
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<List<ViewTagDto>> getAllTags(
@@ -31,12 +34,8 @@ public class TagsController {
             @RequestParam(defaultValue = "50") Integer page_size,
             @RequestParam(defaultValue = "-id") String sort
     ) {
-        Page<ViewTagDto> pagedResult = mapper.toPageViewTagDto(
-                postService.findAll(id, name, page_num, page_size, sort));
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("X-Total-Count",
-                String.valueOf(pagedResult.getTotalElements()));
-        return new ResponseEntity<>(pagedResult.getContent(), responseHeaders, HttpStatus.OK);
+        return generalService.toResponseEntity(mapper.toPageViewTagDto(
+                postService.findAll(id, name, page_num, page_size, sort)));
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")

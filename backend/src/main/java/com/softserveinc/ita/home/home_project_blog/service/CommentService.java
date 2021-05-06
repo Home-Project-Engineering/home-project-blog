@@ -1,11 +1,9 @@
 package com.softserveinc.ita.home.home_project_blog.service;
 
 import com.softserveinc.ita.home.home_project_blog.repository.CommentRepository;
-import com.softserveinc.ita.home.home_project_blog.repository.TagRepository;
 import com.softserveinc.ita.home.home_project_blog.repository.entity.Comment;
 import com.softserveinc.ita.home.home_project_blog.service.dto.CommentDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.CommentMapperService;
-import com.softserveinc.ita.home.home_project_blog.service.mapper.TagMapperService;
 import com.softserveinc.ita.home.home_project_blog.validation.MismatchException;
 import com.softserveinc.ita.home.home_project_blog.validation.Const;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +23,7 @@ public class CommentService implements ICommentService {
     private final PostService postService;
     private final CommentRepository commentRepository;
     private final CommentMapperService mapper;
-    private final ICurrentUserService currentUserService;
+    private final IUserService userService;
 
     @Override
     public Page<CommentDto> findAll(Long post_id, Long id, String user_name, Long user_id, Integer pageNum, Integer pageSize, String sort) {
@@ -58,7 +56,7 @@ public class CommentService implements ICommentService {
     @Override
     public CommentDto createComment(Long post_id, @Valid CommentDto comment) {
         comment.setPost(postService.getById(post_id));
-        comment.setUser(currentUserService.getCurrentUser());
+        comment.setUser(userService.getCurrentUser());
         return mapper.toCommentDto(commentRepository.save(mapper.toComment(comment)));
     }
 

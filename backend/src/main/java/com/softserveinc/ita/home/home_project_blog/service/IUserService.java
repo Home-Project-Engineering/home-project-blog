@@ -20,4 +20,8 @@ public interface IUserService {
     UserDto update(Long id, @Valid UserDto user);
 
     void delete(Long id);
+
+    UserDto getCurrentUser();
+
+    UserDto updateCurrentUser(@Valid UserDto user);
 }

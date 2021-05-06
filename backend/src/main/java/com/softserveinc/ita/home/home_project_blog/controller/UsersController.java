@@ -4,10 +4,9 @@ import com.softserveinc.ita.home.home_project_blog.controller.dto.CreateUserDto;
 import com.softserveinc.ita.home.home_project_blog.controller.dto.UpdateUserDto;
 import com.softserveinc.ita.home.home_project_blog.controller.dto.ViewUserDto;
 import com.softserveinc.ita.home.home_project_blog.controller.mapper.UserMapperController;
+import com.softserveinc.ita.home.home_project_blog.service.GeneralService;
 import com.softserveinc.ita.home.home_project_blog.service.IUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +24,7 @@ import java.util.List;
 public class UsersController {
     private final IUserService userService;
     private final UserMapperController mapper;
+    private final GeneralService<ViewUserDto> generalService;
 
     @PreAuthorize("hasAuthority('users')")
     @GetMapping(produces = "application/json")
@@ -35,12 +35,8 @@ public class UsersController {
             @RequestParam(defaultValue = "50") Integer page_size,
             @RequestParam(defaultValue = "-id") String sort
     ) {
-        Page<ViewUserDto> pagedResult = mapper.toPageViewUserDto(
-                userService.findAll(id, name, page_num, page_size, sort));
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.set("X-Total-Count",
-                String.valueOf(pagedResult.getTotalElements()));
-        return new ResponseEntity<>(pagedResult.getContent(), responseHeaders, HttpStatus.OK);
+        return generalService.toResponseEntity(mapper.toPageViewUserDto(
+                userService.findAll(id, name, page_num, page_size, sort)));
     }
 
     @PreAuthorize("hasAuthority('users')")

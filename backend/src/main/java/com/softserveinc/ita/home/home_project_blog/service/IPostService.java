@@ -19,4 +19,12 @@ public interface IPostService {
     PostDto update(Long id, @Valid PostDto post);
 
     void delete(Long id);
+
+    Page<PostDto> getPostsByCurrentUser(Long id, Long tag_id, String tag_name, Integer pageNum, Integer pageSize, String sort);
+
+    PostDto getPostByIdByCurrentUser(Long id);
+
+    PostDto updatePostByCurrentUser(Long post_id, @Valid PostDto post);
+
+    void deletePostByCurrentUser(Long id);
 }
