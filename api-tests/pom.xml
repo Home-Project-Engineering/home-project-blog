@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.softserveinc.ita.homeproject</groupId>
-  <artifactId>home-project-blog-api-tests</artifactId>
-  <version>${revision}</version>
+  <groupId>com.itacademy</groupId>
+  <artifactId>api-tests</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
 
   <name>Home project blog api tests</name>
   <description>This module is intended to test backend of Home Project Blog application.</description>
@@ -20,11 +20,13 @@
 
     <junit-jupiter-engine.version>5.5.2</junit-jupiter-engine.version>
 
-    <jackson-version>2.9.9</jackson-version>
+    <jackson-version>2.12.3</jackson-version>
     <jackson-databind-nullable-version>0.2.1</jackson-databind-nullable-version>
     <junit-version>4.13</junit-version>
     <jsr305-version>3.0.2</jsr305-version>
     <swagger-annotations-version>1.5.22</swagger-annotations-version>
+    <jersey-version>2.32</jersey-version>
+    <threetenbp-version>2.9.10</threetenbp-version>
   </properties>
 
   <dependencies>
@@ -53,7 +55,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.datatype</groupId>
       <artifactId>jackson-datatype-jsr310</artifactId>
-      <version>${jackson-version}</version>
+      <version>2.10.3</version>
     </dependency>
     <dependency>
       <groupId>org.openapitools</groupId>
@@ -73,6 +75,62 @@
       <artifactId>swagger-annotations</artifactId>
       <version>${swagger-annotations-version}</version>
     </dependency>
+
+
+    <!--Random String-->
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.12.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.19.0</version>
+      <scope>test</scope>
+    </dependency>
+    <!-- Fix for Java 11 -->
+    <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+      <version>2.3.3</version>
+    </dependency>
+    <dependency>
+      <groupId>javax.ws.rs</groupId>
+      <artifactId>javax.ws.rs-api</artifactId>
+      <version>2.1.1</version>
+    </dependency>
+
+    <!-- HTTP client: jersey-client -->
+    <dependency>
+      <groupId>org.glassfish.jersey.core</groupId>
+      <artifactId>jersey-client</artifactId>
+      <version>${jersey-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.inject</groupId>
+      <artifactId>jersey-hk2</artifactId>
+      <version>${jersey-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-multipart</artifactId>
+      <version>${jersey-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.glassfish.jersey.media</groupId>
+      <artifactId>jersey-media-json-jackson</artifactId>
+      <version>${jersey-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.joschi.jackson</groupId>
+      <artifactId>jackson-datatype-threetenbp</artifactId>
+      <version>${threetenbp-version}</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+
+
   </dependencies>
 
   <build>
@@ -80,7 +138,8 @@
       <plugin>
         <groupId>org.openapitools</groupId>
         <artifactId>openapi-generator-maven-plugin</artifactId>
-        <version>4.3.1</version>
+        <version>5.0.1</version>
+
         <executions>
           <execution>
             <phase>generate-sources</phase>
@@ -95,7 +154,7 @@
               <configOptions>
                 <java8>true</java8>
                 <dateLibrary>java8</dateLibrary>
-                <library>native</library>
+                <library>jersey2</library>
                 <sourceFolder>src/gen/java/main</sourceFolder>
                 <artifactId>home-project-blog-api-client</artifactId>
                 <artifactVersion>${revision}</artifactVersion>
@@ -103,8 +162,11 @@
                 <modelPackage>com.softserveinc.ita.homeproject.blog.client.model</modelPackage>
                 <apiPackage>com.softserveinc.ita.homeproject.blog.client.api</apiPackage>
                 <invokerPackage>com.softserveinc.ita.homeproject.blog</invokerPackage>
-                <useRuntimeException>true</useRuntimeException>
+                <useRuntimeException>true</useRuntimeException>]
+                <openApiNullable>true</openApiNullable>
               </configOptions>
+              <templateDirectory>${project.build.resources[0].directory}/mustaches/client</templateDirectory>
+              <output>${project.build.directory}/generated-sources/openapi/client</output>
               <addCompileSourceRoot>true</addCompileSourceRoot>
             </configuration>
           </execution>
