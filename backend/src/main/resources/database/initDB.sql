@@ -28,34 +28,33 @@ CREATE TABLE IF NOT EXISTS "user"
 CREATE TABLE IF NOT EXISTS "tag"
 (
     id        bigserial   NOT NULL,
-    name      VARCHAR(50) NOT NULL UNIQUE,
+    name      VARCHAR(50) NOT NULL,
     create_on TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_on TIMESTAMPTZ NULL,
     PRIMARY KEY (id)
 );
 
 -- DROP TABLE IF EXISTS "post_tags";
-create table post_tags
-(
-    post_id BIGINT NOT NULL UNIQUE,
-    tags_id BIGINT NOT NULL,
-    FOREIGN KEY (tags_id) REFERENCES tag (id)
-);
-
--- DROP TABLE IF EXISTS "post";
 CREATE TABLE IF NOT EXISTS "post"
 (
     id                 BIGSERIAL    NOT NULL,
     title              VARCHAR(250) NOT NULL,
     preview_attachment TEXT         NOT NULL,
-    tags_id            BIGINT       NULL, -- one to many via the intermediate table in hibernate
     user_id            BIGINT       NOT NULL,
     create_on          TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     text               TEXT         NOT NULL,
     update_on          TIMESTAMPTZ  NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (tags_id) REFERENCES "post_tags" (post_id),
     FOREIGN KEY (user_id) REFERENCES "user" (id)
+);
+
+-- DROP TABLE IF EXISTS "post";
+create table post_tags
+(
+    post_id BIGINT NOT NULL,
+    tags_id BIGINT NOT NULL,
+    FOREIGN KEY (post_id) REFERENCES post (id) ON DELETE CASCADE,
+    FOREIGN KEY (tags_id) REFERENCES tag (id)
 );
 
 -- DROP TABLE IF EXISTS "comment";

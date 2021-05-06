@@ -2,7 +2,8 @@ openapi: 3.0.3
 
 info:
   version: 1.1.1.0.0.1.0
-#  usable.khoma.ben.val.lid.vld.sash
+#  version: usable.khoma.ben.val.lid.vld.sash
+#  own addition until commit --> 2/2021.05.06
   title: Home Project Blog Service
   description: |
     Blog for the Home Project engineers
@@ -247,7 +248,7 @@ paths:
   /users:
     post:
       summary: Create User
-      description: Create a new User.
+      description: Create a new User. You can only create a blogger
       tags:
         - Users
       operationId: createUser

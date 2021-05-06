@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.Collection;
 import java.util.List;
 
 @Data
@@ -23,13 +22,7 @@ public class PostEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private BigDecimal id;
 
-    @Column(name = "title")
-    private String title;
-
-    @Column(name = "preview_attachment")
-    private String previewAttachment;
-
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @OneToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "post_tags",
             joinColumns = @JoinColumn(name = "post_id"),
@@ -37,17 +30,22 @@ public class PostEntity {
     )
     private List<TagEntity> tags;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @Column(name = "create_on")
+    private OffsetDateTime createdOn;
+
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "user_id")
     private UserEntity user;
-
-    @Column(name = "create_on")
-    private OffsetDateTime createOn;
 
     @Column(name = "text")
     private String text;
 
-    @Column(name = "update_on")
-    private OffsetDateTime updateOn;
+    @Column(name = "title")
+    private String title;
 
+    @Column(name = "preview_attachment")
+    private String previewAttachment;
+
+    @Column(name = "update_on")
+    private OffsetDateTime updatedOn;
 }

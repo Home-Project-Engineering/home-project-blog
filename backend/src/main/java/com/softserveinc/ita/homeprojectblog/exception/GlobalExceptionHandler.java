@@ -1,10 +1,12 @@
-package com.softserveinc.ita.homeprojectblog.exceptions;
+package com.softserveinc.ita.homeprojectblog.exception;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.AccessDeniedException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -55,6 +57,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler
+    public ResponseEntity<Error> javaxValidationException(HttpMessageNotReadableException e) {
+        var error = new Error();
+        error.setCode("400");
+        error.setMessage(e.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
 
     @ExceptionHandler
     public ResponseEntity<Error> springframeworkValidationException(MethodArgumentNotValidException e) {
@@ -72,7 +82,20 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
     }
 
-    // TODO Handle exceptions ↓
-//    HttpMessageNotReadableException --> softserveinc.ita.homeprojectblog.model.Role[\"name\"])
+    @ExceptionHandler(value = UsernameNotFoundException.class)
+    public ResponseEntity<Error> springSecurity(UsernameNotFoundException e) {
+        var error = new Error();
+        error.setCode("401");
+        error.setMessage(e.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Error> springSecurity(BadCredentialsException e) {
+        var error = new Error();
+        error.setCode("401");
+        error.setMessage(e.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+    }
 
 }

@@ -1,7 +1,6 @@
 package com.softserveinc.ita.homeprojectblog.service.impl;
 
-import com.softserveinc.ita.homeprojectblog.dto.UserDtoGet;
-import com.softserveinc.ita.homeprojectblog.dto.UserDtoSet;
+import com.softserveinc.ita.homeprojectblog.dto.UserDto;
 import com.softserveinc.ita.homeprojectblog.entity.RoleEntity;
 import com.softserveinc.ita.homeprojectblog.entity.UserEntity;
 import com.softserveinc.ita.homeprojectblog.repository.RoleRepository;
@@ -12,11 +11,14 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.*;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.*;
 
 @Service
@@ -33,7 +35,7 @@ public class UserServiceImpl implements UserService {
     PasswordEncoder passwordEncoder;
 
     @Override
-    public Page<UserDtoGet> getAllUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
+    public Page<UserDto> getAllUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
         pageNum--;
         Page<UserEntity> pageEntities;
 
@@ -59,7 +61,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDtoGet getUserById(BigDecimal id) {
+    public UserDto getUserById(BigDecimal id) {
         UserEntity userEntity = null;
         Optional<UserEntity> optional = userRepository.findById(id);
         if (optional.isPresent()) {
@@ -69,28 +71,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDtoGet getUserByName(String username) {
+    public UserDto getUserByName(String username) {
         var currentUserEntity = userRepository.findByName(username).orElseThrow(() ->
                 new UsernameNotFoundException("User does not exists"));
         return userMapperService.toUserDto(currentUserEntity);
     }
 
     @Override
-    public UserDtoGet createUser(UserDtoSet userDtoSet) {
-        var userEntity = userMapperService.toUserEntity(userDtoSet);
+    public UserDto createUser(UserDto userDto) {
+
+        var userEntity = userMapperService.toUserEntity(userDto);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+
         Optional<RoleEntity> roleEntity = roleRepository.findByName(RoleEntity.NameEnum.BLOGGER);
         if(roleEntity.isPresent()) {
             userEntity.setRole(roleEntity.get());
         }else {
             userEntity.setRole(new RoleEntity());
         }
+
+        userEntity.setCreateOn(OffsetDateTime.now());
+
         userRepository.save(userEntity);
         return userMapperService.toUserDto(userEntity);
     }
 
     @Override
-    public UserDtoGet updateUser(UserDtoSet bodyDto, BigDecimal id) {
+    public UserDto updateUser(UserDto bodyDto, BigDecimal id) {
         if (bodyDto.getId() == null)
             bodyDto.setId(id);
 
@@ -107,5 +114,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(BigDecimal id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public UserDto getCurrentUser() {
+        var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = ((UserDetails) principal).getUsername();
+        return getUserByName(username);
     }
 }

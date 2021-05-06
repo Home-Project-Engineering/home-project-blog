@@ -1,11 +1,14 @@
 package com.softserveinc.ita.homeprojectblog.controller;
 
 import com.softserveinc.ita.homeprojectblog.api.PostsApi;
+import com.softserveinc.ita.homeprojectblog.mapper.PostMapperController;
 import com.softserveinc.ita.homeprojectblog.model.Comment;
 import com.softserveinc.ita.homeprojectblog.model.Post;
+import com.softserveinc.ita.homeprojectblog.service.PostService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +24,10 @@ import java.util.Optional;
 @RequestMapping("${openapi.homeProjectBlogService.base-path:/api/1}")
 public class PostController implements PostsApi {
 
+    PostMapperController postMapperController;
+
+    PostService postService;
+
     NativeWebRequest request;
 
     @Override
@@ -33,10 +40,11 @@ public class PostController implements PostsApi {
         return PostsApi.super.createComment(postId, comment);
     }
 
-    // TODO this --> simultaneously create tags
     @Override
     public ResponseEntity<Post> createPost(Post body) {
-        return null;
+        var postDto = postMapperController.toPostDto(body);
+        postDto = postService.createPost(postDto);
+        return new ResponseEntity<>(postMapperController.toPost(postDto), HttpStatus.CREATED);
     }
 
     @Override

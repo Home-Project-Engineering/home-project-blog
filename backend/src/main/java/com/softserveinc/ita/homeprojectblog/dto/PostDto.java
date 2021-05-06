@@ -1,6 +1,5 @@
 package com.softserveinc.ita.homeprojectblog.dto;
 
-import com.softserveinc.ita.homeprojectblog.model.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,20 +13,20 @@ import java.util.List;
 @AllArgsConstructor
 public class PostDto {
 
-    private BigDecimal id; //+
+    private BigDecimal id;
 
-    private List<Tag> tags; //+/TODO
+    private List<TagDto> tags;
 
-    private OffsetDateTime createdOn; //+
+    private OffsetDateTime createdOn;
 
-    private Object user; //+
+    private UserDto user;
 
-    private String text; //+/TODO
+    private String text;
 
-    private String title; //+/TODO
+    private String title;
 
-    private String previewAttachment; //+/TODO
+    private String previewAttachment;
 
-    private OffsetDateTime updatedOn; //+
+    private OffsetDateTime updatedOn;
 
 }

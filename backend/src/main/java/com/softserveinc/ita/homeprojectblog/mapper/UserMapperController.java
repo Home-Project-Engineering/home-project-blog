@@ -1,7 +1,6 @@
 package com.softserveinc.ita.homeprojectblog.mapper;
 
-import com.softserveinc.ita.homeprojectblog.dto.UserDtoGet;
-import com.softserveinc.ita.homeprojectblog.dto.UserDtoSet;
+import com.softserveinc.ita.homeprojectblog.dto.UserDto;
 import com.softserveinc.ita.homeprojectblog.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -11,11 +10,13 @@ import org.springframework.data.domain.Page;
 public interface UserMapperController {
 
     @Mapping(target = "password", constant = "*****")
-    User toUser(UserDtoGet userDtoGet);
+    User toUser(UserDto userDto);
 
-    default Page<User> toUserPage(Page<UserDtoGet> userDtoPage) {
+    default Page<User> toUserPage(Page<UserDto> userDtoPage) {
         return userDtoPage.map(this::toUser);
     }
 
-    UserDtoSet toUserDto(User body);
+    @Mapping(target = "createOn", ignore = true)
+    @Mapping(target = "updatedOn", ignore = true)
+    UserDto toUserDto(User body);
 }

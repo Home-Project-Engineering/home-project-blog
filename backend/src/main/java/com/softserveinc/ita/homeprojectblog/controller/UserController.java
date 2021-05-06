@@ -1,13 +1,12 @@
 package com.softserveinc.ita.homeprojectblog.controller;
 
-import com.softserveinc.ita.homeprojectblog.dto.UserDtoGet;
+import com.softserveinc.ita.homeprojectblog.dto.UserDto;
 import com.softserveinc.ita.homeprojectblog.mapper.UserMapperController;
-import com.softserveinc.ita.homeprojectblog.exceptions.NoSuchUserException;
-import com.softserveinc.ita.homeprojectblog.exceptions.NoSuchUsersException;
+import com.softserveinc.ita.homeprojectblog.exception.NoSuchUserException;
+import com.softserveinc.ita.homeprojectblog.exception.NoSuchUsersException;
 import com.softserveinc.ita.homeprojectblog.api.UsersApi;
 import com.softserveinc.ita.homeprojectblog.model.Comment;
 import com.softserveinc.ita.homeprojectblog.model.Post;
-import com.softserveinc.ita.homeprojectblog.model.Role;
 import com.softserveinc.ita.homeprojectblog.model.User;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
 import lombok.AccessLevel;
@@ -18,8 +17,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,14 +44,8 @@ public class UserController implements UsersApi {
     @Override // +
 //    @PreAuthorize("hasAuthority('developers:write')")
     public ResponseEntity<User> createUser(User body) {
-       if(body.getRole() == null){
-           var roleForUser = new Role();
-           roleForUser.setName(Role.NameEnum.BLOGGER);
-           body.setRole(roleForUser);
-       }
         var userDtoSet = userMapperController.toUserDto(body);
         var userDtoGet = userService.createUser(userDtoSet);
-
         return new ResponseEntity<>(userMapperController.toUser(userDtoGet), HttpStatus.CREATED);
     }
 
@@ -70,11 +61,7 @@ public class UserController implements UsersApi {
 
     @Override
     public ResponseEntity<User> getCurrentUser() {
-        var principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails) principal).getUsername();
-        var currentUserDto = userService.getUserByName(username);
-        var currentUser = userMapperController.toUser(currentUserDto);
-        return new ResponseEntity<>(currentUser, HttpStatus.OK);
+        return new ResponseEntity<>(userMapperController.toUser(userService.getCurrentUser()), HttpStatus.OK);
     }
 
     @Override
@@ -103,7 +90,7 @@ public class UserController implements UsersApi {
     @Override // +
     public ResponseEntity<List<User>> getUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
 
-        Page<UserDtoGet> userDtoPage = userService.getAllUsers(
+        Page<UserDto> userDtoPage = userService.getAllUsers(
                 id,
                 name,
                 sort, // UserAPI set default

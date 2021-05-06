@@ -1,7 +1,6 @@
 package com.softserveinc.ita.homeprojectblog.service;
 
-import com.softserveinc.ita.homeprojectblog.dto.UserDtoGet;
-import com.softserveinc.ita.homeprojectblog.dto.UserDtoSet;
+import com.softserveinc.ita.homeprojectblog.dto.UserDto;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
 
@@ -10,15 +9,17 @@ import java.math.BigDecimal;
 
 @Validated
 public interface UserService {
-    Page<UserDtoGet> getAllUsers(@Valid BigDecimal id, @Valid String name, @Valid String sort, @Valid Integer pageNum, @Valid Integer pageSize);
+    Page<UserDto> getAllUsers(@Valid BigDecimal id, @Valid String name, @Valid String sort, @Valid Integer pageNum, @Valid Integer pageSize);
 
-    UserDtoGet getUserById(BigDecimal id);
+    UserDto getUserById(BigDecimal id);
 
-    UserDtoGet getUserByName(String username);
+    UserDto getUserByName(String username);
 
-    UserDtoGet createUser(@Valid UserDtoSet bodyDto);
+    UserDto createUser(@Valid UserDto bodyDto);
 
-    UserDtoGet updateUser(UserDtoSet body, BigDecimal id);
+    UserDto updateUser(UserDto body, BigDecimal id);
 
     void deleteUser(BigDecimal id);
+
+    UserDto getCurrentUser();
 }
