@@ -14,7 +14,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 public class ViewPostDto {
-
     private Long id;
     private Set<ViewTagDto> tags = new HashSet<>();
     private String text;
@@ -24,29 +23,3 @@ public class ViewPostDto {
     private Date createdOn;
     private Date updatedOn;
 }
-//    {
-//        "id": 0,
-//            "tags": [
-//        {
-//            "id": 0,
-//                "name": "Java8"
-//        }
-//  ],
-//        "createdOn": "2017-07-21T17:32:28Z",
-//            "user": {
-//        "id": 0,
-//                "name": "John78",
-//                "firstName": "John",
-//                "lastName": "Smith",
-//                "email": "john.smith@example.com",
-//                "password": "passworD321",
-//                "role": {
-//            "name": "blogger"
-//        }
-//    },
-//        "text": "string",
-//            "title": "string",
-//            "previewAttachment": "string",
-//            "updatedOn": "2017-07-21T17:32:28Z"
-
-

@@ -5,17 +5,16 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CreatePostDto {
-    private Set<CreateTagDto> tags = new HashSet<>();
+public class ViewCommentDto {
+    private Long id;
     private String text;
-    private String title;
-    private String previewAttachment;
+    private ViewUserForPostDto user;
+    private Date createdOn;
+    private Date updatedOn;
 }
