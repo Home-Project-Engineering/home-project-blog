@@ -26,6 +26,7 @@ hs_err_pid*
 backend/blog/.openapi-generator/
 backend/blog/src/main/java/com/example/blog/generated/
 backend/blog/target/
+api-tests/target
 *.iml
 *.DS_Store
 
