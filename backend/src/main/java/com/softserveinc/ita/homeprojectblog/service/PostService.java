@@ -8,4 +8,6 @@ public interface PostService {
     PostDto createPost(PostDto postDto);
 
     PostDto getPost(BigDecimal id);
+
+
 }

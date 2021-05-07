@@ -43,7 +43,6 @@ public class PostController implements PostsApi {
     public ResponseEntity<Comment> createComment(BigDecimal postId, Comment comment) {
         var commentDto = commentMapperController.toCommentDto(comment);
         commentDto = commentService.createComment(postId, commentDto);
-
         return new ResponseEntity<>(commentMapperController.toComment(commentDto), HttpStatus.CREATED);
     }
 
@@ -56,7 +55,8 @@ public class PostController implements PostsApi {
 
     @Override
     public ResponseEntity<Comment> getComment(BigDecimal postId, BigDecimal id) {
-        return null;
+        var commentDto = commentService.getComment(postId, id);
+        return new ResponseEntity<>(commentMapperController.toComment(commentDto), HttpStatus.OK);
     }
 
     @Override

@@ -41,7 +41,7 @@ public class PostServiceImpl implements PostService {
 
         removeIdAndDuplicates(tags);
 
-        for (var i = 0; i <tags.size(); i++) {
+        for (var i = 0; i < tags.size(); i++) {
             Optional<TagEntity> tagOptional = tagRepository.findByName(tags.get(i).getName());
             if (tagOptional.isPresent()) {
                 tags.set(i, tagOptional.get());
@@ -63,6 +63,7 @@ public class PostServiceImpl implements PostService {
         var postEntity = postEntityOptional.orElse(null);
         return postMapperService.toPostDto(postEntity);
     }
+
 
     private void removeIdAndDuplicates(List<TagEntity> tags) {
         for (TagEntity tag : tags) {
