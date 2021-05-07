@@ -1,7 +1,7 @@
-package com.example.blog.backend.util.security;
+package com.example.blog.util.security;
 
-import com.example.blog.backend.repository.entities.UserEntity;
-import com.example.blog.backend.repository.repos.UserRepo;
+import com.example.blog.repository.entities.UserEntity;
+import com.example.blog.repository.repos.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

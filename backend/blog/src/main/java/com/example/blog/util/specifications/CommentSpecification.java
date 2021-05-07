@@ -1,6 +1,6 @@
-package com.example.blog.backend.util.specifications;
+package com.example.blog.util.specifications;
 
-import com.example.blog.backend.repository.entities.CommentEntity;
+import com.example.blog.repository.entities.CommentEntity;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 

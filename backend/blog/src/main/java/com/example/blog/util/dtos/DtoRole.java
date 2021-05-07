@@ -1,4 +1,4 @@
-package com.example.blog.backend.util.dtos;
+package com.example.blog.util.dtos;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;

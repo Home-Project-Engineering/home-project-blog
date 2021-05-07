@@ -1,12 +1,12 @@
-package com.example.blog.backend.util.mappers;
+package com.example.blog.util.mappers;
 
-import com.example.blog.backend.generated.model.Post;
-import com.example.blog.backend.generated.model.Role;
-import com.example.blog.backend.repository.entities.PostEntity;
-import com.example.blog.backend.repository.entities.UserEntity;
-import com.example.blog.backend.util.dtos.DtoPost;
-import com.example.blog.backend.util.dtos.DtoRole;
-import com.example.blog.backend.util.dtos.DtoUser;
+import com.example.blog.generated.model.Post;
+import com.example.blog.generated.model.Role;
+import com.example.blog.repository.entities.PostEntity;
+import com.example.blog.repository.entities.UserEntity;
+import com.example.blog.util.dtos.DtoPost;
+import com.example.blog.util.dtos.DtoRole;
+import com.example.blog.util.dtos.DtoUser;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

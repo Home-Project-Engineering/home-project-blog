@@ -1,6 +1,6 @@
-package com.example.blog.backend.util.dtos;
+package com.example.blog.util.dtos;
 
-import com.example.blog.backend.generated.model.Post;
+import com.example.blog.generated.model.Post;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

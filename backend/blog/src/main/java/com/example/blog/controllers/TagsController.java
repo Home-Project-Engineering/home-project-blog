@@ -1,11 +1,11 @@
-package com.example.blog.backend.controllers;
+package com.example.blog.controllers;
 
 
-import com.example.blog.backend.generated.api.TagsApi;
-import com.example.blog.backend.generated.model.Tag;
-import com.example.blog.backend.services.TagService;
-import com.example.blog.backend.util.dtos.DtoTag;
-import com.example.blog.backend.util.mappers.TagMapper;
+import com.example.blog.generated.api.TagsApi;
+import com.example.blog.generated.model.Tag;
+import com.example.blog.services.TagService;
+import com.example.blog.util.dtos.DtoTag;
+import com.example.blog.util.mappers.TagMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

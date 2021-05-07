@@ -1,6 +1,6 @@
-package com.example.blog.backend.repository.repos;
+package com.example.blog.repository.repos;
 
-import com.example.blog.backend.repository.entities.RoleEntity;
+import com.example.blog.repository.entities.RoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

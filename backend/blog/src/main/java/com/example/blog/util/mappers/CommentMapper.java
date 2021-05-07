@@ -1,10 +1,11 @@
-package com.example.blog.backend.util.mappers;
+package com.example.blog.util.mappers;
 
-import com.example.blog.backend.generated.model.Comment;
-import com.example.blog.backend.repository.entities.CommentEntity;
-import com.example.blog.backend.repository.entities.UserEntity;
-import com.example.blog.backend.util.dtos.DtoComment;
-import com.example.blog.backend.util.dtos.DtoUser;
+
+import com.example.blog.generated.model.Comment;
+import com.example.blog.repository.entities.CommentEntity;
+import com.example.blog.repository.entities.UserEntity;
+import com.example.blog.util.dtos.DtoComment;
+import com.example.blog.util.dtos.DtoUser;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;

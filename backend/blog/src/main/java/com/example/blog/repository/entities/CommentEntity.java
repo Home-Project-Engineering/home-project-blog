@@ -1,4 +1,4 @@
-package com.example.blog.backend.repository.entities;
+package com.example.blog.repository.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

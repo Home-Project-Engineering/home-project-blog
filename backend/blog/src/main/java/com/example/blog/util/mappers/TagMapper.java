@@ -1,8 +1,8 @@
-package com.example.blog.backend.util.mappers;
+package com.example.blog.util.mappers;
 
-import com.example.blog.backend.generated.model.Tag;
-import com.example.blog.backend.repository.entities.TagEntity;
-import com.example.blog.backend.util.dtos.DtoTag;
+import com.example.blog.generated.model.Tag;
+import com.example.blog.repository.entities.TagEntity;
+import com.example.blog.util.dtos.DtoTag;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 import org.springframework.data.domain.Page;

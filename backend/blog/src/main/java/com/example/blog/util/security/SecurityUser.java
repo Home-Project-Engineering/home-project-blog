@@ -1,6 +1,6 @@
-package com.example.blog.backend.util.security;
+package com.example.blog.util.security;
 
-import com.example.blog.backend.repository.entities.UserEntity;
+import com.example.blog.repository.entities.UserEntity;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

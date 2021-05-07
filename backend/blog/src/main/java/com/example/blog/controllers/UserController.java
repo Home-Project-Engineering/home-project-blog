@@ -1,16 +1,16 @@
-package com.example.blog.backend.controllers;
+package com.example.blog.controllers;
 
-import com.example.blog.backend.generated.api.UsersApi;
-import com.example.blog.backend.generated.model.*;
-import com.example.blog.backend.services.PostService;
-import com.example.blog.backend.services.UserService;
-import com.example.blog.backend.util.dtos.DtoComment;
-import com.example.blog.backend.util.dtos.DtoPost;
-import com.example.blog.backend.util.dtos.DtoRole;
-import com.example.blog.backend.util.dtos.DtoUser;
-import com.example.blog.backend.util.mappers.CommentMapper;
-import com.example.blog.backend.util.mappers.PostMapper;
-import com.example.blog.backend.util.mappers.UserMapper;
+import com.example.blog.generated.api.UsersApi;
+import com.example.blog.generated.model.*;
+import com.example.blog.services.PostService;
+import com.example.blog.services.UserService;
+import com.example.blog.util.dtos.DtoComment;
+import com.example.blog.util.dtos.DtoPost;
+import com.example.blog.util.dtos.DtoRole;
+import com.example.blog.util.dtos.DtoUser;
+import com.example.blog.util.mappers.CommentMapper;
+import com.example.blog.util.mappers.PostMapper;
+import com.example.blog.util.mappers.UserMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -201,7 +201,7 @@ public class UserController implements UsersApi {
 
     @Override
     @PermitAll
-    public ResponseEntity<Void> updateCurrentUserPassword(Password password) {
+    public ResponseEntity<Void> updateCurrentUserPassword(ChangePassword password) {
         userService.updateCurrentUserPassword(password.getNewPassword(), password.getOldPassword());
         return new ResponseEntity<>(HttpStatus.OK);
     }

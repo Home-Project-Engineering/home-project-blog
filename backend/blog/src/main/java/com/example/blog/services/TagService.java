@@ -1,11 +1,10 @@
-package com.example.blog.backend.services;
+package com.example.blog.services;
 
-
-import com.example.blog.backend.repository.entities.TagEntity;
-import com.example.blog.backend.repository.repos.TagRepo;
-import com.example.blog.backend.util.dtos.DtoTag;
-import com.example.blog.backend.util.mappers.TagMapper;
-import com.example.blog.backend.util.specifications.TagSpecification;
+import com.example.blog.repository.entities.TagEntity;
+import com.example.blog.repository.repos.TagRepo;
+import com.example.blog.util.dtos.DtoTag;
+import com.example.blog.util.mappers.TagMapper;
+import com.example.blog.util.specifications.TagSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

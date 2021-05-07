@@ -1,4 +1,4 @@
-package com.example.blog.backend.util.dtos;
+package com.example.blog.util.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

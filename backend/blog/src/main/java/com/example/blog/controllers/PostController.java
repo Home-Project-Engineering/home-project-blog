@@ -1,13 +1,14 @@
-package com.example.blog.backend.controllers;
+package com.example.blog.controllers;
 
-import com.example.blog.backend.generated.api.PostsApi;
-import com.example.blog.backend.generated.model.Comment;
-import com.example.blog.backend.generated.model.Post;
-import com.example.blog.backend.services.PostService;
-import com.example.blog.backend.util.dtos.DtoComment;
-import com.example.blog.backend.util.dtos.DtoPost;
-import com.example.blog.backend.util.mappers.CommentMapper;
-import com.example.blog.backend.util.mappers.PostMapper;
+
+import com.example.blog.generated.api.PostsApi;
+import com.example.blog.generated.model.Comment;
+import com.example.blog.generated.model.Post;
+import com.example.blog.services.PostService;
+import com.example.blog.util.dtos.DtoComment;
+import com.example.blog.util.dtos.DtoPost;
+import com.example.blog.util.mappers.CommentMapper;
+import com.example.blog.util.mappers.PostMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

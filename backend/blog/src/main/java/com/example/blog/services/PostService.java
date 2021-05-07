@@ -1,18 +1,18 @@
-package com.example.blog.backend.services;
+package com.example.blog.services;
 
 
-import com.example.blog.backend.repository.entities.CommentEntity;
-import com.example.blog.backend.repository.entities.PostEntity;
-import com.example.blog.backend.repository.repos.CommentRepo;
-import com.example.blog.backend.repository.repos.PostRepo;
-import com.example.blog.backend.repository.repos.TagRepo;
-import com.example.blog.backend.util.dtos.DtoComment;
-import com.example.blog.backend.util.dtos.DtoPost;
-import com.example.blog.backend.util.dtos.DtoTag;
-import com.example.blog.backend.util.mappers.CommentMapper;
-import com.example.blog.backend.util.mappers.PostMapper;
-import com.example.blog.backend.util.specifications.CommentSpecification;
-import com.example.blog.backend.util.specifications.PostSpecification;
+import com.example.blog.repository.entities.CommentEntity;
+import com.example.blog.repository.entities.PostEntity;
+import com.example.blog.repository.repos.CommentRepo;
+import com.example.blog.repository.repos.PostRepo;
+import com.example.blog.repository.repos.TagRepo;
+import com.example.blog.util.dtos.DtoComment;
+import com.example.blog.util.dtos.DtoPost;
+import com.example.blog.util.dtos.DtoTag;
+import com.example.blog.util.mappers.CommentMapper;
+import com.example.blog.util.mappers.PostMapper;
+import com.example.blog.util.specifications.CommentSpecification;
+import com.example.blog.util.specifications.PostSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
