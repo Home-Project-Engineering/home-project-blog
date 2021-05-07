@@ -13,8 +13,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -50,6 +54,13 @@ public class PostServiceImpl implements PostService {
         postEntity.setUser(userMapperService.toUserEntity(userService.getCurrentUser()));
         postRepository.save(postEntity);
 
+        return postMapperService.toPostDto(postEntity);
+    }
+
+    @Override
+    public PostDto getPost(BigDecimal id) {
+        var postEntityOptional = postRepository.findById(id);
+        var postEntity = postEntityOptional.orElse(null);
         return postMapperService.toPostDto(postEntity);
     }
 

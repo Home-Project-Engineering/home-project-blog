@@ -1,9 +1,11 @@
 package com.softserveinc.ita.homeprojectblog.controller;
 
 import com.softserveinc.ita.homeprojectblog.api.PostsApi;
+import com.softserveinc.ita.homeprojectblog.mapper.CommentMapperController;
 import com.softserveinc.ita.homeprojectblog.mapper.PostMapperController;
 import com.softserveinc.ita.homeprojectblog.model.Comment;
 import com.softserveinc.ita.homeprojectblog.model.Post;
+import com.softserveinc.ita.homeprojectblog.service.CommentService;
 import com.softserveinc.ita.homeprojectblog.service.PostService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +27,10 @@ import java.util.Optional;
 public class PostController implements PostsApi {
 
     PostMapperController postMapperController;
+    CommentMapperController commentMapperController;
 
     PostService postService;
+    CommentService commentService;
 
     NativeWebRequest request;
 
@@ -37,7 +41,10 @@ public class PostController implements PostsApi {
 
     @Override
     public ResponseEntity<Comment> createComment(BigDecimal postId, Comment comment) {
-        return PostsApi.super.createComment(postId, comment);
+        var commentDto = commentMapperController.toCommentDto(comment);
+        commentDto = commentService.createComment(postId, commentDto);
+
+        return new ResponseEntity<>(commentMapperController.toComment(commentDto), HttpStatus.CREATED);
     }
 
     @Override
@@ -59,7 +66,8 @@ public class PostController implements PostsApi {
 
     @Override
     public ResponseEntity<Post> getPost(BigDecimal id) {
-        return null;
+        var postDto = postService.getPost(id);
+        return new ResponseEntity<>(postMapperController.toPost(postDto), HttpStatus.OK);
     }
 
     @Override

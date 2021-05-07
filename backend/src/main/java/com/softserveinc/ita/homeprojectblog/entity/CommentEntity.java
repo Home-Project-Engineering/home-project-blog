@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="comment", schema = "public")
+@Table(name = "comment", schema = "public")
 public class CommentEntity {
     @Id
     @Column(name = "id")
@@ -22,10 +22,10 @@ public class CommentEntity {
     @Column(name = "text")
     private String text;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE})
     private PostEntity post;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
@@ -34,4 +34,16 @@ public class CommentEntity {
 
     @Column(name = "update_on")
     private OffsetDateTime updatedOn;
+
+    @Override
+    public String toString() {
+        return "CommentEntity{" +
+                "id=" + id + "\n" +
+                ", text='" + text + '\'' + "\n" +
+                ", post=" + post + "\n" +
+                ", user=" + user + "\n" +
+                ", createdOn=" + createdOn + "\n" +
+                ", updatedOn=" + updatedOn + "\n" +
+                '}';
+    }
 }
