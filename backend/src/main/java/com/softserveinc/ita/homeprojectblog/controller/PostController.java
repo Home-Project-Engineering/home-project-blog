@@ -1,6 +1,7 @@
 package com.softserveinc.ita.homeprojectblog.controller;
 
 import com.softserveinc.ita.homeprojectblog.api.PostsApi;
+import com.softserveinc.ita.homeprojectblog.dto.CommentDto;
 import com.softserveinc.ita.homeprojectblog.mapper.CommentMapperController;
 import com.softserveinc.ita.homeprojectblog.mapper.PostMapperController;
 import com.softserveinc.ita.homeprojectblog.model.Comment;
@@ -10,8 +11,11 @@ import com.softserveinc.ita.homeprojectblog.service.PostService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -34,34 +38,48 @@ public class PostController implements PostsApi {
 
     NativeWebRequest request;
 
-    @Override
+
+
+    @Override // +/-
     public Optional<NativeWebRequest> getRequest() {
         return Optional.ofNullable(request);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<Comment> createComment(BigDecimal postId, Comment comment) {
         var commentDto = commentMapperController.toCommentDto(comment);
         commentDto = commentService.createComment(postId, commentDto);
         return new ResponseEntity<>(commentMapperController.toComment(commentDto), HttpStatus.CREATED);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<Post> createPost(Post body) {
         var postDto = postMapperController.toPostDto(body);
         postDto = postService.createPost(postDto);
         return new ResponseEntity<>(postMapperController.toPost(postDto), HttpStatus.CREATED);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<Comment> getComment(BigDecimal postId, BigDecimal id) {
         var commentDto = commentService.getComment(postId, id);
         return new ResponseEntity<>(commentMapperController.toComment(commentDto), HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<List<Comment>> getComments(BigDecimal postId, BigDecimal id, String authorName, String sort, Integer pageNum, Integer pageSize) {
-        return PostsApi.super.getComments(postId, id, authorName, sort, pageNum, pageSize);
+    public ResponseEntity<List<Comment>> getComments(
+            BigDecimal postId, BigDecimal id, String authorName,
+            String sort, Integer pageNum, Integer pageSize) {
+
+        Page<CommentDto> commentPage = commentService.getComment(
+                postId, id, authorName,
+                sort, pageNum, pageSize);
+
+        Page<Comment> pageComment = commentMapperController.toCommentPage(commentPage);
+
+        MultiValueMap<String, String> headers = new HttpHeaders();
+        headers.add("X-Total-Count", String.valueOf(pageComment.getTotalElements()));
+
+        return new ResponseEntity<>(pageComment.getContent(), headers, HttpStatus.OK);
     }
 
     @Override

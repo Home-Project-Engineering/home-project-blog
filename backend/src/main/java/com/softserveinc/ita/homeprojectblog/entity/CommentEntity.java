@@ -35,15 +35,4 @@ public class CommentEntity {
     @Column(name = "update_on")
     private OffsetDateTime updatedOn;
 
-    @Override
-    public String toString() {
-        return "CommentEntity{" +
-                "id=" + id + "\n" +
-                ", text='" + text + '\'' + "\n" +
-                ", post=" + post + "\n" +
-                ", user=" + user + "\n" +
-                ", createdOn=" + createdOn + "\n" +
-                ", updatedOn=" + updatedOn + "\n" +
-                '}';
-    }
 }

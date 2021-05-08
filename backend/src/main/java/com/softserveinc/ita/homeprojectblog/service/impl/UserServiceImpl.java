@@ -7,6 +7,7 @@ import com.softserveinc.ita.homeprojectblog.repository.RoleRepository;
 import com.softserveinc.ita.homeprojectblog.repository.UserRepository;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
 import com.softserveinc.ita.homeprojectblog.mapper.UserMapperService;
+import com.softserveinc.ita.homeprojectblog.util.page.Sorter;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -35,25 +36,18 @@ public class UserServiceImpl implements UserService {
 
     PasswordEncoder passwordEncoder;
 
+    Sorter sorter;
+
     @Override
     public Page<UserDto> findUsers(Integer pageNum, Integer pageSize, String sort, Specification<UserEntity> specification) {
         pageNum--;
         Page<UserEntity> pageEntities = userRepository.findAll(specification, PageRequest
-                .of(pageNum, pageSize, getSorter(sort)));
+                .of(pageNum, pageSize, sorter.getSorter(sort)));
 
         return userMapperService.toUserDtoGetPage(pageEntities);
     }
 
-    private Sort getSorter(String sort) {
-        var str = new StringBuilder(sort);
 
-        if (str.charAt(0) == '-') {
-            str.deleteCharAt(0);
-            return Sort.by(Sort.Direction.DESC, str.toString());
-        }
-
-        return Sort.by(Sort.Direction.ASC, str.toString());
-    }
 
     @Override
     public UserDto getUserById(BigDecimal id) {
@@ -98,7 +92,6 @@ public class UserServiceImpl implements UserService {
 
         if (bodyDto.getPassword() == null) // update without password
             bodyDto.setPassword(getUserById(id).getPassword());
-
 
         var bodyEntity = userMapperService.toUserEntity(bodyDto);
         bodyEntity = userRepository.save(bodyEntity);

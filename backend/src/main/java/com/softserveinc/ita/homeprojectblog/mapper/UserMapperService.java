@@ -2,7 +2,6 @@ package com.softserveinc.ita.homeprojectblog.mapper;
 
 import com.softserveinc.ita.homeprojectblog.dto.UserDto;
 import com.softserveinc.ita.homeprojectblog.entity.UserEntity;
-import com.softserveinc.ita.homeprojectblog.model.User;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
 
@@ -17,5 +16,4 @@ public interface UserMapperService {
 
     UserDto toUserDto(UserEntity userEntity);
 
-    User toUser(UserDto currentUserDto);
 }

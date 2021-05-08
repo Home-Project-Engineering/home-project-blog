@@ -1,6 +1,7 @@
 package com.softserveinc.ita.homeprojectblog.controller;
 
 import com.softserveinc.ita.homeprojectblog.dto.UserDto;
+import com.softserveinc.ita.homeprojectblog.entity.UserEntity;
 import com.softserveinc.ita.homeprojectblog.mapper.UserMapperController;
 import com.softserveinc.ita.homeprojectblog.exception.NoSuchUserException;
 import com.softserveinc.ita.homeprojectblog.exception.NoSuchUsersException;
@@ -37,10 +38,14 @@ import java.util.Optional;
 public class UserController implements UsersApi {
 
     UserService userService;
+
     UserMapperController userMapperController;
+
     NativeWebRequest request;
+
+    //TODO remove UserEntity --> to service layer
     @Qualifier("entitySpecificationService")
-    EntitySpecificationService<com.softserveinc.ita.homeprojectblog.entity.UserEntity> entitySpecificationService;
+    EntitySpecificationService<UserEntity> entitySpecificationService;
 
     @Override
     public Optional<NativeWebRequest> getRequest() {
@@ -94,20 +99,17 @@ public class UserController implements UsersApi {
 
     @PreAuthorize("hasAuthority('user:management')")
     @Override // +
-    public ResponseEntity<List<User>> getUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
+    public ResponseEntity<List<User>> getUsers(BigDecimal id, String name,
+                                               String sort, Integer pageNum, Integer pageSize) {
         Map<String, String> predicateMap = new HashMap<>();
-        if (id != null) {
-            predicateMap.put("id", id.toString());
-        } else {
-            predicateMap.put("id", null);
-        }
+        predicateMap.put("id", id != null ? id.toString() : null);
         predicateMap.put("name", name);
         Page<UserDto> userDtoPage = userService.findUsers(
                 Optional.ofNullable(pageNum).orElse(1),
                 Optional.ofNullable(pageSize).orElse(10),
                 Optional.ofNullable(sort).orElse("-id"), // UserAPI set default too
                 entitySpecificationService.getSpecification(predicateMap)
-                );
+        );
 
         Page<User> userPage = userMapperController.toUserPage(userDtoPage);
 
