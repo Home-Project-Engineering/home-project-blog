@@ -66,6 +66,7 @@ public class UserServiceImpl implements UserService {
         return userMapperService.toUserDtoPage(pageEntities);
     }
 
+    // TODO refactor this
     @Override
     public Page<UserDto> findUsers(Integer pageNum, Integer pageSize, String sort, Specification<UserEntity> specification) {
 

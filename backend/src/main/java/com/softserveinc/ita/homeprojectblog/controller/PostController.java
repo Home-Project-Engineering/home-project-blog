@@ -62,7 +62,7 @@ public class PostController implements PostsApi {
         return new ResponseEntity<>(commentMapperController.toComment(commentDto), HttpStatus.OK);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<List<Comment>> getComments(
             BigDecimal postId, BigDecimal id, String authorName,
             String sort, Integer pageNum, Integer pageSize) {
@@ -79,15 +79,28 @@ public class PostController implements PostsApi {
         return new ResponseEntity<>(pageComment.getContent(), headers, HttpStatus.OK);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<Post> getPost(BigDecimal id) {
         var postDto = postService.getPost(id);
         return new ResponseEntity<>(postMapperController.toPost(postDto), HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<List<Post>> getPosts(BigDecimal id, String tagId, String tagName, String userId, String sort, Integer pageNum, Integer pageSize) {
-        return null;
+    @Override // +
+    public ResponseEntity<List<Post>> getPosts(
+            BigDecimal id, String tagId, String tagName, String authorName,
+            String sort, Integer pageNum, Integer pageSize) {
+
+        var postDtoPage = postService.getPosts(
+                id, tagId, tagName, authorName,
+                sort, pageNum, pageSize
+        );
+
+        var postPage = postMapperController.toPagePostDto(postDtoPage);
+
+        MultiValueMap<String, String> headers = new HttpHeaders();
+        headers.add("X-Total-Count", String.valueOf(postPage.getTotalElements()));
+
+        return new ResponseEntity<>(postPage.getContent(), headers, HttpStatus.OK);
     }
 
     @Override
