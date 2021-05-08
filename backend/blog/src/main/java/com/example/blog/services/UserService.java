@@ -131,14 +131,14 @@ public class UserService {
     public DtoUser updateUser(Long id, DtoUser dtoUser) {
         if (userRepo.findById(id).isEmpty())
             throw new EntityNotFoundException("User with id <" + id + "> is not exists");
-        UserEntity entity = UserMapper.INSTANCE.fromDto(dtoUser);
-        entity.setId(id);
-        entity.setPassword(passwordEncoder.encode(dtoUser.getPassword()));
-        entity.setRoleEntity(userRepo.findById(id).get().getRoleEntity());
-
+        UserEntity entity = userRepo.findById(id).get();
+        if (dtoUser.getName() != null) entity.setName((dtoUser.getName()));
+        if (dtoUser.getFirstName() != null) entity.setFirstName(dtoUser.getFirstName());
+        if (dtoUser.getLastName() != null) entity.setLastName(dtoUser.getLastName());
+        if (dtoUser.getEmail() != null) entity.setEmail(dtoUser.getEmail());
         userRepo.save(entity);
 
-        return UserMapper.INSTANCE.fromEntity(entity);
+        return UserMapper.INSTANCE.fromEntity(userRepo.findById(id).get());
     }
 
     public DtoRole getUserRole(Long id) {
