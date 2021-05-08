@@ -9,6 +9,7 @@ import com.softserveinc.ita.homeprojectblog.mapper.UserMapperService;
 import com.softserveinc.ita.homeprojectblog.repository.CommentRepository;
 import com.softserveinc.ita.homeprojectblog.repository.PostRepository;
 import com.softserveinc.ita.homeprojectblog.service.CommentService;
+import com.softserveinc.ita.homeprojectblog.util.page.Checkout;
 import com.softserveinc.ita.homeprojectblog.util.page.Sorter;
 import com.softserveinc.ita.homeprojectblog.util.query.EntitySpecificationService;
 import lombok.AccessLevel;
@@ -23,7 +24,6 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -44,6 +44,7 @@ public class CommentServiceImpl implements CommentService {
     EntitySpecificationService<CommentEntity> entitySpecificationService;
 
     Sorter sorter;
+    Checkout checkout;
 
     @Override
     public CommentDto createComment(BigDecimal postId, CommentDto commentDto) {
@@ -86,12 +87,11 @@ public class CommentServiceImpl implements CommentService {
         predicateMap.put("post.id", postId != null ? postId.toString() : null);
         predicateMap.put("user.name", authorName);
 
-        var pageNumNotNull = Optional.ofNullable(pageNum).orElse(1) - 1;
-        var pageSizeNotNull = Optional.ofNullable(pageSize).orElse(10);
-        var sortNotNull = Optional.ofNullable(sort).orElse("-id");
+        var check = checkout.checkoutAndSetDefaults(sort, pageNum, pageSize);
 
         var specification = entitySpecificationService.getSpecification(predicateMap);
-        var pageRequest = PageRequest.of(pageNumNotNull, pageSizeNotNull, sorter.getSorter(sortNotNull));
+        var pageRequest = PageRequest.of(check.getPageNum(), check.getPageSize(),
+                sorter.getSorter(check.getSort()));
 
         var pageEntities = commentRepository.findAll(specification, pageRequest);
 

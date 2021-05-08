@@ -1,21 +1,15 @@
 package com.softserveinc.ita.homeprojectblog.controller;
 
-import com.softserveinc.ita.homeprojectblog.dto.UserDto;
-import com.softserveinc.ita.homeprojectblog.entity.UserEntity;
-import com.softserveinc.ita.homeprojectblog.mapper.UserMapperController;
-import com.softserveinc.ita.homeprojectblog.exception.NoSuchUserException;
-import com.softserveinc.ita.homeprojectblog.exception.NoSuchUsersException;
 import com.softserveinc.ita.homeprojectblog.api.UsersApi;
+import com.softserveinc.ita.homeprojectblog.exception.NoSuchUserException;
+import com.softserveinc.ita.homeprojectblog.mapper.UserMapperController;
 import com.softserveinc.ita.homeprojectblog.model.Comment;
 import com.softserveinc.ita.homeprojectblog.model.Post;
 import com.softserveinc.ita.homeprojectblog.model.User;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
-import com.softserveinc.ita.homeprojectblog.util.query.EntitySpecificationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -42,10 +34,6 @@ public class UserController implements UsersApi {
     UserMapperController userMapperController;
 
     NativeWebRequest request;
-
-    //TODO remove UserEntity --> to service layer
-    @Qualifier("entitySpecificationService")
-    EntitySpecificationService<UserEntity> entitySpecificationService;
 
     @Override
     public Optional<NativeWebRequest> getRequest() {
@@ -101,24 +89,13 @@ public class UserController implements UsersApi {
     @Override // +
     public ResponseEntity<List<User>> getUsers(BigDecimal id, String name,
                                                String sort, Integer pageNum, Integer pageSize) {
-        Map<String, String> predicateMap = new HashMap<>();
-        predicateMap.put("id", id != null ? id.toString() : null);
-        predicateMap.put("name", name);
-        Page<UserDto> userDtoPage = userService.findUsers(
-                Optional.ofNullable(pageNum).orElse(1),
-                Optional.ofNullable(pageSize).orElse(10),
-                Optional.ofNullable(sort).orElse("-id"), // UserAPI set default too
-                entitySpecificationService.getSpecification(predicateMap)
-        );
 
-        Page<User> userPage = userMapperController.toUserPage(userDtoPage);
+        var userDtoPage = userService.getUsers(id, name, sort, pageNum, pageSize);
+
+        var userPage = userMapperController.toUserPage(userDtoPage);
 
         MultiValueMap<String, String> headers = new HttpHeaders();
         headers.add("X-Total-Count", String.valueOf(userPage.getTotalElements()));
-
-        if (userPage.getTotalElements() == 0) {
-            throw new NoSuchUsersException("There are no users for your request");
-        }
 
         return new ResponseEntity<>(userPage.getContent(), headers, HttpStatus.OK);
     }

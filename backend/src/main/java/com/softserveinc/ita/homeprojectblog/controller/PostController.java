@@ -1,7 +1,6 @@
 package com.softserveinc.ita.homeprojectblog.controller;
 
 import com.softserveinc.ita.homeprojectblog.api.PostsApi;
-import com.softserveinc.ita.homeprojectblog.dto.CommentDto;
 import com.softserveinc.ita.homeprojectblog.mapper.CommentMapperController;
 import com.softserveinc.ita.homeprojectblog.mapper.PostMapperController;
 import com.softserveinc.ita.homeprojectblog.model.Comment;
@@ -11,7 +10,6 @@ import com.softserveinc.ita.homeprojectblog.service.PostService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +35,6 @@ public class PostController implements PostsApi {
     CommentService commentService;
 
     NativeWebRequest request;
-
 
 
     @Override // +/-
@@ -70,11 +67,11 @@ public class PostController implements PostsApi {
             BigDecimal postId, BigDecimal id, String authorName,
             String sort, Integer pageNum, Integer pageSize) {
 
-        Page<CommentDto> commentPage = commentService.getComment(
+        var commentDtoPage = commentService.getComment(
                 postId, id, authorName,
                 sort, pageNum, pageSize);
 
-        Page<Comment> pageComment = commentMapperController.toCommentPage(commentPage);
+        var pageComment = commentMapperController.toCommentPage(commentDtoPage);
 
         MultiValueMap<String, String> headers = new HttpHeaders();
         headers.add("X-Total-Count", String.valueOf(pageComment.getTotalElements()));

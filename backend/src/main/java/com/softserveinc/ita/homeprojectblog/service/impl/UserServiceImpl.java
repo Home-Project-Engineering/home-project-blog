@@ -3,15 +3,19 @@ package com.softserveinc.ita.homeprojectblog.service.impl;
 import com.softserveinc.ita.homeprojectblog.dto.UserDto;
 import com.softserveinc.ita.homeprojectblog.entity.RoleEntity;
 import com.softserveinc.ita.homeprojectblog.entity.UserEntity;
+import com.softserveinc.ita.homeprojectblog.mapper.UserMapperService;
 import com.softserveinc.ita.homeprojectblog.repository.RoleRepository;
 import com.softserveinc.ita.homeprojectblog.repository.UserRepository;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
-import com.softserveinc.ita.homeprojectblog.mapper.UserMapperService;
+import com.softserveinc.ita.homeprojectblog.util.page.Checkout;
 import com.softserveinc.ita.homeprojectblog.util.page.Sorter;
+import com.softserveinc.ita.homeprojectblog.util.query.EntitySpecificationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.*;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +25,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -38,15 +44,37 @@ public class UserServiceImpl implements UserService {
 
     Sorter sorter;
 
+    Checkout checkout;
+
+    @Qualifier("entitySpecificationService")
+    EntitySpecificationService<UserEntity> entitySpecificationService;
+
+    @Override
+    public Page<UserDto> getUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
+        Map<String, String> predicateMap = new HashMap<>();
+        predicateMap.put("id", id != null ? id.toString() : null);
+        predicateMap.put("name", name);
+
+        var check = checkout.checkoutAndSetDefaults(sort, pageNum, pageSize);
+
+        var specification = entitySpecificationService.getSpecification(predicateMap);
+        var pageRequest = PageRequest.of(check.getPageNum(), check.getPageSize(),
+                sorter.getSorter(check.getSort()));
+
+        var pageEntities = userRepository.findAll(specification, pageRequest);
+
+        return userMapperService.toUserDtoPage(pageEntities);
+    }
+
     @Override
     public Page<UserDto> findUsers(Integer pageNum, Integer pageSize, String sort, Specification<UserEntity> specification) {
+
         pageNum--;
         Page<UserEntity> pageEntities = userRepository.findAll(specification, PageRequest
                 .of(pageNum, pageSize, sorter.getSorter(sort)));
 
-        return userMapperService.toUserDtoGetPage(pageEntities);
+        return userMapperService.toUserDtoPage(pageEntities);
     }
-
 
 
     @Override
@@ -73,9 +101,9 @@ public class UserServiceImpl implements UserService {
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
 
         Optional<RoleEntity> roleEntity = roleRepository.findByName(RoleEntity.NameEnum.BLOGGER);
-        if(roleEntity.isPresent()) {
+        if (roleEntity.isPresent()) {
             userEntity.setRole(roleEntity.get());
-        }else {
+        } else {
             userEntity.setRole(new RoleEntity());
         }
 

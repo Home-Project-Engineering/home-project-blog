@@ -10,7 +10,7 @@ public interface UserMapperService {
 
     UserEntity toUserEntity(UserDto userDto);
 
-    default Page<UserDto> toUserDtoGetPage(Page<UserEntity> userEntityPage) {
+    default Page<UserDto> toUserDtoPage(Page<UserEntity> userEntityPage) {
         return userEntityPage.map(this::toUserDto);
     }
 
