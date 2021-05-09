@@ -9,10 +9,10 @@ import com.softserveinc.ita.homeprojectblog.model.*;
 import com.softserveinc.ita.homeprojectblog.service.CommentService;
 import com.softserveinc.ita.homeprojectblog.service.PostService;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
+import com.softserveinc.ita.homeprojectblog.util.Boilerplate;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,6 +42,8 @@ public class UserController implements UsersApi {
     CommentService commentService;
     PostService postService;
 
+    Boilerplate boilerplate;
+
     @Override // +/-
     public Optional<NativeWebRequest> getRequest() {
         return Optional.ofNullable(request);
@@ -69,8 +71,7 @@ public class UserController implements UsersApi {
         var commentDtoPage = commentService.getCommentsByCurrentUser(id, sort, pageNum, pageSize);
         var commentPage = commentMapper.toCommentPage(commentDtoPage);
 
-        MultiValueMap<String, String> headers = new HttpHeaders();
-        headers.add("X-Total-Count", String.valueOf(commentPage.getTotalElements()));
+        MultiValueMap<String, String> headers = boilerplate.getXTotalCount(commentPage);
 
         return new ResponseEntity<>(commentPage.getContent(), headers, HttpStatus.OK);
     }
@@ -87,9 +88,18 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(postMapper.toPost(postDto), HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<List<Post>> getPostsByCurrentUser(BigDecimal id, String tagId, String tagName, String sort, Integer pageNum, Integer pageSize) {
-        return null;
+    @Override // +
+    public ResponseEntity<List<Post>> getPostsByCurrentUser(
+            BigDecimal id, String tagId, String tagName,
+            String sort, Integer pageNum, Integer pageSize) {
+
+        var postDtoPage = postService.getPostsByCurrentUser(id, tagId, tagName, sort, pageNum, pageSize);
+
+        var postPage = postMapper.toPostPage(postDtoPage);
+
+        MultiValueMap<String, String> headers = boilerplate.getXTotalCount(postPage);
+
+        return new ResponseEntity<>(postPage.getContent(), headers, HttpStatus.OK);
     }
 
     @Override // +
@@ -113,8 +123,7 @@ public class UserController implements UsersApi {
 
         var userPage = userMapper.toUserPage(userDtoPage);
 
-        MultiValueMap<String, String> headers = new HttpHeaders();
-        headers.add("X-Total-Count", String.valueOf(userPage.getTotalElements()));
+        MultiValueMap<String, String> headers = boilerplate.getXTotalCount(userPage);
 
         return new ResponseEntity<>(userPage.getContent(), headers, HttpStatus.OK);
     }

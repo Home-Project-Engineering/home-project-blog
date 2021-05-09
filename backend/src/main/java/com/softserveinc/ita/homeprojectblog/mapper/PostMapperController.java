@@ -16,7 +16,7 @@ public interface PostMapperController {
     @Mapping(source = "user", target = "author")
     Post toPost(PostDto postDto);
 
-    default Page<Post> toPagePostDto(Page<PostDto> postDtoPage){
+    default Page<Post> toPostPage(Page<PostDto> postDtoPage){
         return postDtoPage.map(this::toPost);
     }
 }

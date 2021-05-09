@@ -95,7 +95,7 @@ public class PostController implements PostsApi {
                 sort, pageNum, pageSize
         );
 
-        var postPage = postMapper.toPagePostDto(postDtoPage);
+        var postPage = postMapper.toPostPage(postDtoPage);
 
         MultiValueMap<String, String> headers = new HttpHeaders();
         headers.add("X-Total-Count", String.valueOf(postPage.getTotalElements()));

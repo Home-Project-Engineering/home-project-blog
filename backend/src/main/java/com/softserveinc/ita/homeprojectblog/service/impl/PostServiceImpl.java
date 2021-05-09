@@ -127,4 +127,29 @@ public class PostServiceImpl implements PostService {
         return postMapper.toPostDto(postEntity);
     }
 
+    @Override
+    public Page<PostDto> getPostsByCurrentUser(
+            BigDecimal id, String tagId, String tagName,
+            String sort, Integer pageNum, Integer pageSize) {
+
+        var userDto = userService.getCurrentUser();
+
+        Map<String, String> predicateMap = new HashMap<>();
+        predicateMap.put("user.id", userDto.getId() != null ? userDto.getId().toString() : null);
+        predicateMap.put("id", id != null ? id.toString() : null);
+        predicateMap.put("tags.id", tagId);
+        predicateMap.put("tags.name", tagName);
+
+        var check = checkout.checkoutAndSetDefaults(sort, pageNum, pageSize);
+
+        var specification = entitySpecificationService.getSpecification(predicateMap);
+
+        var pageRequest = PageRequest.of(check.getPageNum(), check.getPageSize(),
+                sorter.getSorter(check.getSort()));
+
+        var postEntityPage = postRepository.findAll(specification, pageRequest);
+
+        return postMapper.toPostDtoPage(postEntityPage);
+    }
+
 }
