@@ -22,11 +22,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import static com.softserveinc.ita.homeprojectblog.util.Constants.USER_NOT_FOUND_FORMAT;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -66,12 +69,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto getUserById(BigDecimal id) {
-        UserEntity userEntity = null;
-        Optional<UserEntity> optional = userRepository.findById(id);
-        if (optional.isPresent()) {
-            userEntity = optional.get();
-        }
+    public UserDto getUser(BigDecimal id) {
+        var userEntity = userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format(USER_NOT_FOUND_FORMAT, id)));
         return userMapperService.toUserDto(userEntity);
     }
 
@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
             bodyDto.setId(id);
 
         if (bodyDto.getPassword() == null) // update without password
-            bodyDto.setPassword(getUserById(id).getPassword());
+            bodyDto.setPassword(getUser(id).getPassword());
 
         var bodyEntity = userMapperService.toUserEntity(bodyDto);
         bodyEntity = userRepository.save(bodyEntity);

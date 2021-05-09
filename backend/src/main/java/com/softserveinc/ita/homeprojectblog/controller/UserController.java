@@ -1,7 +1,6 @@
 package com.softserveinc.ita.homeprojectblog.controller;
 
 import com.softserveinc.ita.homeprojectblog.api.UsersApi;
-import com.softserveinc.ita.homeprojectblog.exception.NoSuchUserException;
 import com.softserveinc.ita.homeprojectblog.mapper.CommentMapperController;
 import com.softserveinc.ita.homeprojectblog.mapper.PostMapperController;
 import com.softserveinc.ita.homeprojectblog.mapper.UserMapperController;
@@ -104,13 +103,7 @@ public class UserController implements UsersApi {
 
     @Override // +
     public ResponseEntity<User> getUser(BigDecimal id) {
-        var userDto = userService.getUserById(id);
-
-        if (userDto == null) {
-            throw new NoSuchUserException("There is no user with ID = " +
-                    id + " in Database");
-        }
-
+        var userDto = userService.getUser(id);
         return new ResponseEntity<>(userMapper.toUser(userDto), HttpStatus.OK);
     }
 

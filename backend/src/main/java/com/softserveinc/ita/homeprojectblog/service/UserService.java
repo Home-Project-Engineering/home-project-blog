@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 public interface UserService {
 
-    UserDto getUserById(BigDecimal id);
+    UserDto getUser(BigDecimal id);
 
     UserDto getUserByName(String username);
 
