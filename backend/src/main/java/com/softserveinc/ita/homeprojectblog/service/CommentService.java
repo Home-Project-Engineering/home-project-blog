@@ -18,4 +18,6 @@ public interface CommentService {
     CommentDto updateComment(BigDecimal postId, BigDecimal id, CommentDto commentDto);
 
     CommentDto getCommentByCurrentUser(BigDecimal id);
+
+    Page<CommentDto> getCommentsByCurrentUser(BigDecimal id, String sort, Integer pageNum, Integer pageSize);
 }

@@ -58,8 +58,17 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    public ResponseEntity<List<Comment>> getCommentsByCurrentUser(BigDecimal id, String sort, Integer pageNum, Integer pageSize) {
-        return null;
+    public ResponseEntity<List<Comment>> getCommentsByCurrentUser(
+            BigDecimal id,
+            String sort, Integer pageNum, Integer pageSize) {
+
+        var commentDtoPage = commentService.getCommentsByCurrentUser(id, sort, pageNum, pageSize);
+        var commentPage = commentMapper.toCommentPage(commentDtoPage);
+
+        MultiValueMap<String, String> headers = new HttpHeaders();
+        headers.add("X-Total-Count", String.valueOf(commentPage.getTotalElements()));
+
+        return new ResponseEntity<>(commentPage.getContent(), headers, HttpStatus.OK);
     }
 
     @Override

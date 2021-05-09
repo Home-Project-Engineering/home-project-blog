@@ -96,7 +96,6 @@ public class CommentServiceImpl implements CommentService {
     public void removeComment(BigDecimal postId, BigDecimal id) {
         var commentEntity = commentRepository.findOneByPostIdAndId(postId, id).orElseThrow(
                 () -> new EntityNotFoundException(String.format(COMMENT_FOR_POST_NOT_FOUND_FORMAT, id, postId)));
-
         commentRepository.deleteById(commentEntity.getId());
     }
 
@@ -113,9 +112,27 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDto getCommentByCurrentUser(BigDecimal id) {
         var userDto = userService.getCurrentUser();
-        var commentEntity = commentRepository.findByUserIdAndId(userDto.getId(),id)
-                .orElseThrow(()-> new EntityNotFoundException(
+        var commentEntity = commentRepository.findByUserIdAndId(userDto.getId(), id)
+                .orElseThrow(() -> new EntityNotFoundException(
                         String.format(COMMENT_FOR_USER_NOT_FOUND_FORMAT, userDto.getId(), id)));
         return commentMapper.toCommentDto(commentEntity);
+    }
+
+    @Override
+    public Page<CommentDto> getCommentsByCurrentUser(BigDecimal id, String sort, Integer pageNum, Integer pageSize) {
+        var userDto = userService.getCurrentUser();
+        Map<String, String> predicateMap = new HashMap<>();
+        predicateMap.put("id", id != null ? id.toString() : null);
+        predicateMap.put("user.id", userDto.getId() != null ? userDto.getId().toString() : null);
+
+        var check = checkout.checkoutAndSetDefaults(sort, pageNum, pageSize);
+
+        var specification = entitySpecificationService.getSpecification(predicateMap);
+        var pageRequest = PageRequest.of(check.getPageNum(), check.getPageSize(),
+                sorter.getSorter(check.getSort()));
+
+        var commentEntitiesPage = commentRepository.findAll(specification, pageRequest);
+
+        return commentMapper.toCommentDtoPage(commentEntitiesPage);
     }
 }

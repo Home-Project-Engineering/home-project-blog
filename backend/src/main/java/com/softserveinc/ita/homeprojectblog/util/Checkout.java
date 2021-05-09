@@ -21,9 +21,9 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Checkout {
-    String sort = null;
-    Integer pageNum = null;
-    Integer pageSize = null;
+    String sort;
+    Integer pageNum;
+    Integer pageSize;
 
 
     public Checkout checkoutAndSetDefaults(String sort, Integer pageNum, Integer pageSize) {
