@@ -7,7 +7,7 @@ import com.softserveinc.ita.homeprojectblog.mapper.PostMapperService;
 import com.softserveinc.ita.homeprojectblog.mapper.UserMapperService;
 import com.softserveinc.ita.homeprojectblog.repository.CommentRepository;
 import com.softserveinc.ita.homeprojectblog.service.CommentService;
-import com.softserveinc.ita.homeprojectblog.util.page.Checkout;
+import com.softserveinc.ita.homeprojectblog.util.Checkout;
 import com.softserveinc.ita.homeprojectblog.util.page.Sorter;
 import com.softserveinc.ita.homeprojectblog.util.query.EntitySpecificationService;
 import lombok.AccessLevel;

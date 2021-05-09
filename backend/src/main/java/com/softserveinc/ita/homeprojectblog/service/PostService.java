@@ -13,5 +13,7 @@ public interface PostService {
     Page<PostDto> getPosts(BigDecimal id, String tagId, String tagName, String authorName, String sort, Integer pageNum, Integer pageSize);
 
     void removePost(BigDecimal id);
+
+    PostDto updatePost(BigDecimal id, PostDto postDto);
 }
 

@@ -9,7 +9,7 @@ import com.softserveinc.ita.homeprojectblog.repository.PostRepository;
 import com.softserveinc.ita.homeprojectblog.repository.TagRepository;
 import com.softserveinc.ita.homeprojectblog.service.PostService;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
-import com.softserveinc.ita.homeprojectblog.util.page.Checkout;
+import com.softserveinc.ita.homeprojectblog.util.Checkout;
 import com.softserveinc.ita.homeprojectblog.util.page.Sorter;
 import com.softserveinc.ita.homeprojectblog.util.query.EntitySpecificationService;
 import lombok.AccessLevel;
@@ -25,6 +25,8 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.*;
 
+import static com.softserveinc.ita.homeprojectblog.util.Constants.POST_NOT_FOUND_FORMAT;
+
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -38,10 +40,10 @@ public class PostServiceImpl implements PostService {
 
     UserService userService;
 
-    Checkout checkout;
     @Qualifier("entitySpecificationService")
     EntitySpecificationService<PostEntity> entitySpecificationService;
     Sorter sorter;
+    Checkout checkout;
 
     @Override
     public PostDto createPost(PostDto postDto) {
@@ -49,16 +51,8 @@ public class PostServiceImpl implements PostService {
         var postEntity = postMapperService.toPostEntity(postDto);
         List<TagEntity> tags = postEntity.getTags();
 
-        removeIdAndDuplicates(tags);
-
-        for (var i = 0; i < tags.size(); i++) {
-            Optional<TagEntity> tagOptional = tagRepository.findByName(tags.get(i).getName());
-            if (tagOptional.isPresent()) {
-                tags.set(i, tagOptional.get());
-            } else {
-                tags.get(i).setCreateOn(OffsetDateTime.now());
-            }
-        }
+        checkout.removeIdAndRepeatsInList(tags);
+        checkout.setExistsTagsOrSetDateForNew(tagRepository, tags);
 
         postEntity.setCreatedOn(OffsetDateTime.now());
         postEntity.setUser(userMapperService.toUserEntity(userService.getCurrentUser()));
@@ -85,7 +79,7 @@ public class PostServiceImpl implements PostService {
         predicateMap.put("tags.name", tagName);
         predicateMap.put("user.name", authorName);
 
-        var check = checkout.checkoutAndSetDefaults(sort, pageNum, pageSize);
+        var check = this.checkout.checkoutAndSetDefaults(sort, pageNum, pageSize);
 
         var specification =
                 entitySpecificationService.getSpecification(predicateMap);
@@ -100,18 +94,25 @@ public class PostServiceImpl implements PostService {
     @Override
     public void removePost(BigDecimal id) {
         var postEntity = postRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("Post with id --> " + id + " --> is not found"));
+                () -> new EntityNotFoundException(String.format(POST_NOT_FOUND_FORMAT, id)));
         postRepository.deleteById(postEntity.getId());
     }
 
+    @Override
+    public PostDto updatePost(BigDecimal id, PostDto postDto) {
+        var oldPostEntity = postRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format(POST_NOT_FOUND_FORMAT, id)));
 
-    private void removeIdAndDuplicates(List<TagEntity> tags) {
-        for (TagEntity tag : tags) {
-            tag.setId(null);
-        }
+        var newPostEntity = postMapperService.toPostEntity(postDto);
 
-        Set<TagEntity> set = new HashSet<>(tags);
-        tags.clear();
-        tags.addAll(set);
+        checkout.removeIdAndRepeatsInList(newPostEntity.getTags());
+        checkout.setExistsTagsOrSetDateForNew(tagRepository, newPostEntity.getTags());
+
+        newPostEntity.setUpdatedOn(OffsetDateTime.now());
+        newPostEntity = postMapperService.toPostEntityFromNewAndOld(newPostEntity, oldPostEntity);
+
+        var postEntity = postRepository.save(newPostEntity);
+        return postMapperService.toPostDto(postEntity);
     }
+
 }
