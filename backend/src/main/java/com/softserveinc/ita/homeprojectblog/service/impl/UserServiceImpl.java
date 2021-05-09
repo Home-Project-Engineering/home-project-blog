@@ -16,7 +16,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -65,18 +64,6 @@ public class UserServiceImpl implements UserService {
 
         return userMapperService.toUserDtoPage(pageEntities);
     }
-
-    // TODO refactor this
-    @Override
-    public Page<UserDto> findUsers(Integer pageNum, Integer pageSize, String sort, Specification<UserEntity> specification) {
-
-        pageNum--;
-        Page<UserEntity> pageEntities = userRepository.findAll(specification, PageRequest
-                .of(pageNum, pageSize, sorter.getSorter(sort)));
-
-        return userMapperService.toUserDtoPage(pageEntities);
-    }
-
 
     @Override
     public UserDto getUserById(BigDecimal id) {

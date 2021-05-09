@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.softserveinc.ita.homeprojectblog.model.Error;
 
+import javax.persistence.EntityNotFoundException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -25,16 +27,15 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<Error> userException(NoSuchUserException exception) {
+    public ResponseEntity<Error> userException(EntityNotFoundException exception) {
         var error = new Error();
-        error.setCode("400");
+        error.setCode("404");
         error.setMessage(exception.getMessage());
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-
     @ExceptionHandler
-    public ResponseEntity<Error> userException(PostNotMatchException exception) {
+    public ResponseEntity<Error> userException(NoSuchUserException exception) {
         var error = new Error();
         error.setCode("400");
         error.setMessage(exception.getMessage());

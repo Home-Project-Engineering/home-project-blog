@@ -2,7 +2,6 @@ package com.softserveinc.ita.homeprojectblog.service.impl;
 
 import com.softserveinc.ita.homeprojectblog.dto.CommentDto;
 import com.softserveinc.ita.homeprojectblog.entity.CommentEntity;
-import com.softserveinc.ita.homeprojectblog.exception.PostNotMatchException;
 import com.softserveinc.ita.homeprojectblog.mapper.CommentMapperService;
 import com.softserveinc.ita.homeprojectblog.mapper.PostMapperService;
 import com.softserveinc.ita.homeprojectblog.mapper.UserMapperService;
@@ -20,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -64,16 +64,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDto getComment(BigDecimal postId, BigDecimal id) {
-        var commentEntityOptional = commentRepository.findById(id);
-        var commentEntity = commentEntityOptional.orElse(null);
-
-        if (commentEntity != null) {
-            BigDecimal postEntityId = commentEntity.getPost().getId();
-            if (!postId.equals(postEntityId)) {
-                throw new PostNotMatchException(
-                        "Post id in request don't match in comment payload");
-            }
-        }
+        var commentEntityOptional = commentRepository.findOneByPostIdAndId(postId, id);
+        var commentEntity = commentEntityOptional.orElseThrow(() -> new EntityNotFoundException(
+                "Comment with id --> " + id + ", in post with id --> " + postId + " --> is not found."));
 
         return commentMapperService.toCommentDto(commentEntity);
     }
@@ -96,5 +89,17 @@ public class CommentServiceImpl implements CommentService {
         var pageEntities = commentRepository.findAll(specification, pageRequest);
 
         return commentMapperService.toCommentDtoPage(pageEntities);
+    }
+
+    @Override
+    public void removeComment(BigDecimal postId, BigDecimal id) {
+        var commentEntity = commentRepository.findOneByPostIdAndId(postId, id).isPresent();
+
+        if (commentEntity) {
+            commentRepository.deleteById(id);
+        } else {
+            throw new EntityNotFoundException(
+                    "Comment with id --> " + id + ", in post with id --> " + postId + " --> is not found.");
+        }
     }
 }

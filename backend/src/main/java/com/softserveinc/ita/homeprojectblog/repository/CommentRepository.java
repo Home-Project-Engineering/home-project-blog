@@ -6,9 +6,11 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Repository
 public interface CommentRepository
         extends JpaRepository<CommentEntity, BigDecimal>, JpaSpecificationExecutor<CommentEntity> {
 
+    Optional<CommentEntity> findOneByPostIdAndId(BigDecimal postId, BigDecimal id);
 }
