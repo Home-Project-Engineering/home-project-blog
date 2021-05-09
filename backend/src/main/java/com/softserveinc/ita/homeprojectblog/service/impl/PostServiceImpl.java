@@ -23,17 +23,21 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import static com.softserveinc.ita.homeprojectblog.util.Constants.POST_FOR_USER_NOT_FOUND_FORMAT;
 import static com.softserveinc.ita.homeprojectblog.util.Constants.POST_NOT_FOUND_FORMAT;
+
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
-    PostMapperService postMapperService;
-    UserMapperService userMapperService;
+    PostMapperService postMapper;
+    UserMapperService userMapper;
 
     PostRepository postRepository;
     TagRepository tagRepository;
@@ -48,24 +52,24 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDto createPost(PostDto postDto) {
 
-        var postEntity = postMapperService.toPostEntity(postDto);
+        var postEntity = postMapper.toPostEntity(postDto);
         List<TagEntity> tags = postEntity.getTags();
 
         checkout.removeIdAndRepeatsInList(tags);
         checkout.setExistsTagsOrSetDateForNew(tagRepository, tags);
 
         postEntity.setCreatedOn(OffsetDateTime.now());
-        postEntity.setUser(userMapperService.toUserEntity(userService.getCurrentUser()));
+        postEntity.setUser(userMapper.toUserEntity(userService.getCurrentUser()));
         postRepository.save(postEntity);
 
-        return postMapperService.toPostDto(postEntity);
+        return postMapper.toPostDto(postEntity);
     }
 
     @Override
     public PostDto getPost(BigDecimal id) {
         var postEntityOptional = postRepository.findById(id);
         var postEntity = postEntityOptional.orElse(null);
-        return postMapperService.toPostDto(postEntity);
+        return postMapper.toPostDto(postEntity);
     }
 
     @Override
@@ -88,7 +92,7 @@ public class PostServiceImpl implements PostService {
 
         var postEntityPage = postRepository.findAll(specification, pageRequest);
 
-        return postMapperService.toPostDtoPage(postEntityPage);
+        return postMapper.toPostDtoPage(postEntityPage);
     }
 
     @Override
@@ -103,16 +107,24 @@ public class PostServiceImpl implements PostService {
         var oldPostEntity = postRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format(POST_NOT_FOUND_FORMAT, id)));
 
-        var newPostEntity = postMapperService.toPostEntity(postDto);
+        var newPostEntity = postMapper.toPostEntity(postDto);
 
         checkout.removeIdAndRepeatsInList(newPostEntity.getTags());
         checkout.setExistsTagsOrSetDateForNew(tagRepository, newPostEntity.getTags());
 
         newPostEntity.setUpdatedOn(OffsetDateTime.now());
-        newPostEntity = postMapperService.toPostEntityFromNewAndOld(newPostEntity, oldPostEntity);
+        newPostEntity = postMapper.toPostEntityFromNewAndOld(newPostEntity, oldPostEntity);
 
         var postEntity = postRepository.save(newPostEntity);
-        return postMapperService.toPostDto(postEntity);
+        return postMapper.toPostDto(postEntity);
+    }
+
+    @Override
+    public PostDto getPostByCurrentUser(BigDecimal id) {
+        var userDto = userService.getCurrentUser();
+        var postEntity = postRepository.findByUserIdAndId(userDto.getId(), id).orElseThrow(
+                () -> new EntityNotFoundException(String.format(POST_FOR_USER_NOT_FOUND_FORMAT, userDto.getId(), id)));
+        return postMapper.toPostDto(postEntity);
     }
 
 }

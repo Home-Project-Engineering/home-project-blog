@@ -14,6 +14,8 @@ public final class Constants {
             "Comment with id -->  %s, in post with id --> %s --> is not found.";
     public static final String COMMENT_FOR_USER_NOT_FOUND_FORMAT =
             "Comment for current user with id --> %s and with comment id -->  %s --> is not found.";
+    public static final String POST_FOR_USER_NOT_FOUND_FORMAT =
+            "Post for current user with id --> %s and with post id -->  %s --> is not found.";
     public static final String POST_NOT_FOUND_FORMAT = "Post with id --> %s --> is not found";
     public static final String TAG_NOT_FOUND_FORMAT = "Tag with id --> %s --> is not found";
 

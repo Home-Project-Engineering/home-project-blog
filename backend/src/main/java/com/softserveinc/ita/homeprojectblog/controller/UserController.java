@@ -3,9 +3,11 @@ package com.softserveinc.ita.homeprojectblog.controller;
 import com.softserveinc.ita.homeprojectblog.api.UsersApi;
 import com.softserveinc.ita.homeprojectblog.exception.NoSuchUserException;
 import com.softserveinc.ita.homeprojectblog.mapper.CommentMapperController;
+import com.softserveinc.ita.homeprojectblog.mapper.PostMapperController;
 import com.softserveinc.ita.homeprojectblog.mapper.UserMapperController;
 import com.softserveinc.ita.homeprojectblog.model.*;
 import com.softserveinc.ita.homeprojectblog.service.CommentService;
+import com.softserveinc.ita.homeprojectblog.service.PostService;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -33,10 +35,12 @@ public class UserController implements UsersApi {
 
     UserMapperController userMapper;
     CommentMapperController commentMapper;
+    PostMapperController postMapper;
 
     NativeWebRequest request;
 
     CommentService commentService;
+    PostService postService;
 
     @Override // +/-
     public Optional<NativeWebRequest> getRequest() {
@@ -77,9 +81,10 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(userMapper.toUser(userDto), HttpStatus.OK);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<Post> getPostByCurrentUser(BigDecimal id) {
-        return null;
+        var postDto = postService.getPostByCurrentUser(id);
+        return new ResponseEntity<>(postMapper.toPost(postDto), HttpStatus.OK);
     }
 
     @Override

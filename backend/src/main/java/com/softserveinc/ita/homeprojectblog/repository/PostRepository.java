@@ -6,8 +6,10 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Repository
 public interface PostRepository
         extends JpaRepository<PostEntity, BigDecimal>, JpaSpecificationExecutor<PostEntity> {
+    Optional<PostEntity> findByUserIdAndId(BigDecimal id, BigDecimal id1);
 }
