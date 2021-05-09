@@ -14,4 +14,6 @@ public interface CommentService {
     Page<CommentDto> getComment(BigDecimal postId, BigDecimal id, String authorName, String sort, Integer pageNum, Integer pageSize);
 
     void removeComment(BigDecimal postId, BigDecimal id);
+
+    CommentDto updateComment(BigDecimal postId, BigDecimal id, CommentDto commentDto);
 }

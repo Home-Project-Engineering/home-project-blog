@@ -8,6 +8,10 @@ public final class Constants {
     // regexp
     public static final String PASSWORD_REGEXP = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,32}";
 
+    // format
+    public static final String COMMENT_FOR_POST_NOT_FOUND_FORMAT =
+            "Comment with id -->  %s%n, in post with id --> %s%n + --> is not found.";
+
     private Constants() {
     }
 }

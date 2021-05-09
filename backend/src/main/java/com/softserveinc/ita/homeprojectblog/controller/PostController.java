@@ -109,7 +109,7 @@ public class PostController implements PostsApi {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<Void> removePost(BigDecimal id) {
         postService.removePost(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -117,7 +117,9 @@ public class PostController implements PostsApi {
 
     @Override
     public ResponseEntity<Comment> updateComment(BigDecimal postId, BigDecimal id, Comment comment) {
-        return PostsApi.super.updateComment(postId, id, comment);
+        var commentDto = commentMapperController.toCommentDto(comment);
+        var updatedCommentDto = commentService.updateComment(postId, id, commentDto);
+        return new ResponseEntity<>(commentMapperController.toComment(updatedCommentDto), HttpStatus.OK);
     }
 
     @Override

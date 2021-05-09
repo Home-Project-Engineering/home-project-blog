@@ -6,7 +6,6 @@ import com.softserveinc.ita.homeprojectblog.mapper.CommentMapperService;
 import com.softserveinc.ita.homeprojectblog.mapper.PostMapperService;
 import com.softserveinc.ita.homeprojectblog.mapper.UserMapperService;
 import com.softserveinc.ita.homeprojectblog.repository.CommentRepository;
-import com.softserveinc.ita.homeprojectblog.repository.PostRepository;
 import com.softserveinc.ita.homeprojectblog.service.CommentService;
 import com.softserveinc.ita.homeprojectblog.util.page.Checkout;
 import com.softserveinc.ita.homeprojectblog.util.page.Sorter;
@@ -25,6 +24,8 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.softserveinc.ita.homeprojectblog.util.Constants.COMMENT_FOR_POST_NOT_FOUND_FORMAT;
+
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -38,7 +39,6 @@ public class CommentServiceImpl implements CommentService {
     PostServiceImpl postService;
 
     CommentRepository commentRepository;
-    PostRepository postRepository;
 
     @Qualifier("entitySpecificationService")
     EntitySpecificationService<CommentEntity> entitySpecificationService;
@@ -66,7 +66,7 @@ public class CommentServiceImpl implements CommentService {
     public CommentDto getComment(BigDecimal postId, BigDecimal id) {
         var commentEntityOptional = commentRepository.findOneByPostIdAndId(postId, id);
         var commentEntity = commentEntityOptional.orElseThrow(() -> new EntityNotFoundException(
-                "Comment with id --> " + id + ", in post with id --> " + postId + " --> is not found."));
+                String.format(COMMENT_FOR_POST_NOT_FOUND_FORMAT, id, postId)));
 
         return commentMapperService.toCommentDto(commentEntity);
     }
@@ -94,9 +94,18 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void removeComment(BigDecimal postId, BigDecimal id) {
         var commentEntity = commentRepository.findOneByPostIdAndId(postId, id).orElseThrow(
-                () -> new EntityNotFoundException(
-                        "Comment with id --> " + id + ", in post with id --> " + postId + " --> is not found."));
+                () -> new EntityNotFoundException(String.format(COMMENT_FOR_POST_NOT_FOUND_FORMAT, id, postId)));
 
         commentRepository.deleteById(commentEntity.getId());
+    }
+
+    @Override
+    public CommentDto updateComment(BigDecimal postId, BigDecimal id, CommentDto commentDto) {
+        var oldCommentEntity = commentRepository.findOneByPostIdAndId(postId, id).orElseThrow(
+                () -> new EntityNotFoundException(String.format(COMMENT_FOR_POST_NOT_FOUND_FORMAT, id, postId)));
+        oldCommentEntity.setText(commentDto.getText());
+        oldCommentEntity.setUpdatedOn(OffsetDateTime.now());
+        var newCommentEntity = commentRepository.save(oldCommentEntity);
+        return commentMapperService.toCommentDto(newCommentEntity);
     }
 }
