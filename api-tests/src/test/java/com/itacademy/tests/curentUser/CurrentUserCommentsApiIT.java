@@ -54,8 +54,8 @@ public class CurrentUserCommentsApiIT {
         currentUserCommentsApi.removeCommentByCurrentUser(expected.getId());
 
         List<Comment> actualCommentsList = commentsApi.getComments(
-                expected.getId()
-                ,null
+                post.getId()
+                ,expected.getId()
                 ,null
                 ,"-id"
                 , 1

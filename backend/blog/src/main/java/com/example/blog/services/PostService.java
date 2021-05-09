@@ -122,7 +122,7 @@ public class PostService {
         if (!postRepo.existsById(id))
             throw new EntityNotFoundException("No Post with ID " + id);
 
-        if (!checkTagUniqueness(dtoPost.getTags())) {
+        if (dtoPost.getTags()!= null && !checkTagUniqueness(dtoPost.getTags())) {
             throw new ValidationException("Tags must be unique");
         }
 

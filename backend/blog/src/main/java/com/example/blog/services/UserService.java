@@ -190,10 +190,11 @@ public class UserService {
     }
 
     public DtoUser updateCurrentUser(DtoUser dtoUser) {
-        UserEntity entity = UserMapper.INSTANCE.fromDto(dtoUser);
-        entity.setPassword(passwordEncoder.encode(dtoUser.getPassword()));
-        entity.setRoleEntity(getCurrentUserEntity().getRoleEntity());
-        entity.setId(getCurrentUserEntity().getId());
+        UserEntity entity = userRepo.getOne(getCurrentUserEntity().getId());
+        if (dtoUser.getName() != null) entity.setName((dtoUser.getName()));
+        if (dtoUser.getFirstName() != null) entity.setFirstName(dtoUser.getFirstName());
+        if (dtoUser.getLastName() != null) entity.setLastName(dtoUser.getLastName());
+        if (dtoUser.getEmail() != null) entity.setEmail(dtoUser.getEmail());
         userRepo.save(entity);
 
         return UserMapper.INSTANCE.fromEntity(entity);

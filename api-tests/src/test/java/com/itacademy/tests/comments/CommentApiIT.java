@@ -31,12 +31,13 @@ public class CommentApiIT {
                 post.getId()
                 , null
                 , null
-                ,"-id"
-                ,1
-                ,10
+                , "-id"
+                , null
+                , null
         );
         assertThat(comments).isNotEmpty();
     }
+
     @Test
     void getComment() {
         Post post = postApi.createPost(createTestPost());
@@ -45,6 +46,7 @@ public class CommentApiIT {
         assertComment(comment, actual);
 
     }
+
     @Test
     void createComment() {
         Post post = postApi.createPost(createTestPost());
@@ -52,6 +54,7 @@ public class CommentApiIT {
         Comment comment = commentsApi.createComment(post.getId(), expected);
         assertComment(expected, comment);
     }
+
     @Test
     void updateComment() {
         Post post = postApi.createPost(createTestPost());
@@ -59,9 +62,10 @@ public class CommentApiIT {
 
         Comment updateComment = new Comment()
                 .text("newText");
-        Comment updated = commentsApi.updateComment(post.getId(),comment.getId(), updateComment);
+        Comment updated = commentsApi.updateComment(post.getId(), comment.getId(), updateComment);
         assertComment(comment, updateComment, updated);
     }
+
     @Test
     void removeComment() {
         Post post = postApi.createPost(createTestPost());
@@ -70,9 +74,9 @@ public class CommentApiIT {
 
         List<Comment> actualCommentsList = commentsApi.getComments(
                 post.getId()
-                ,expected.getId()
-                ,null
-                ,"-id"
+                , expected.getId()
+                , null
+                , "-id"
                 , 1
                 , 10);
 
@@ -80,6 +84,7 @@ public class CommentApiIT {
         assertThatExceptionOfType(ApiException.class)
                 .isThrownBy(() -> commentsApi.getComment(post.getId(), expected.getId()));
     }
+
     private List<Comment> saveListComment(BigDecimal postId) throws ApiException {
 
         List<Comment> list = createCommentList();
@@ -98,6 +103,7 @@ public class CommentApiIT {
         list.add(createTestComment());
         return list;
     }
+
     private Post createTestPost() {
         return new Post().
                 title(RandomStringUtils.randomAlphabetic(5)).
@@ -106,14 +112,17 @@ public class CommentApiIT {
                 tags(Arrays.asList(new Tag().name(RandomStringUtils.randomAlphabetic(5))
                         , new Tag().name(RandomStringUtils.randomAlphabetic(5))));
     }
+
     private Comment createTestComment() {
         return new Comment().
                 text(RandomStringUtils.randomAlphabetic(5));
     }
+
     private void assertComment(Comment expected, Comment actual) {
         assertNotNull(expected);
         assertEquals(expected.getText(), actual.getText());
     }
+
     private void assertComment(Comment saved, Comment update, Comment updated) {
         assertNotNull(updated);
         assertNotEquals(saved, updated);

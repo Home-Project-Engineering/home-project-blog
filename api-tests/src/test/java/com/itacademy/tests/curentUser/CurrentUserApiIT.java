@@ -30,8 +30,8 @@ class CurrentUserApiIT {
                 .getCurrentUser();
         User updateUser = new User()
                 .email(savedUser.getEmail())
-                .firstName("updatedFirstName")
-                .lastName("updatedLastName")
+                .firstName(RandomStringUtils.randomAlphabetic(5))
+                .lastName(RandomStringUtils.randomAlphabetic(5))
                 .name(savedUser.getName());
 
         User updated = currentUserApi.updateCurrentUser(updateUser);

@@ -29,13 +29,13 @@ public class PostApiIT {
     @Test
     void removePost() {
         Post expectedPost = postsApi.createPost(createTestPost());
-            postsApi.removePost(expectedPost.getId());
+        postsApi.removePost(expectedPost.getId());
 
         List<Post> actualPostsList = postsApi.getPosts(
                 expectedPost.getId()
-                ,null
-                ,null
-                ,null
+                , null
+                , null
+                , null
                 , "-id"
                 , 1
                 , 100);
@@ -49,15 +49,15 @@ public class PostApiIT {
     @Test
     void getPosts() {
         saveListPost();
-            List<Post> posts = postsApi.getPosts(
-                    null
-                    , null
-                    , null
-                    , null
-                    , "-id"
-                    , 1
-                    , 10
-            );
+        List<Post> posts = postsApi.getPosts(
+                null
+                , null
+                , null
+                , null
+                , "-id"
+                , 1
+                , 10
+        );
         assertThat(posts).isNotEmpty();
     }
 
@@ -70,14 +70,14 @@ public class PostApiIT {
     }
 
 
-
     @org.junit.jupiter.api.Test
     void updatePost() {
         Post post = postsApi.createPost(createTestPost());
         Post updatePost = new Post()
-                .previewAttachment("newPreviewAttachment")
-                .title("newTitle")
-                .text("newText");
+                .previewAttachment("updatedPreviewAttachment")
+                .title("updatedTitle")
+                .text("updatedText")
+                .tags(Arrays.asList(new Tag().name(RandomStringUtils.randomAlphabetic(5))));
         Post updated = postsApi.updatePost(post.getId(), updatePost);
         assertPost(post, updatePost, updated);
     }
@@ -100,6 +100,7 @@ public class PostApiIT {
         list.add(createTestPost());
         return list;
     }
+
     private Post createTestPost() {
         return new Post().
                 title(RandomStringUtils.randomAlphabetic(5)).
@@ -108,12 +109,14 @@ public class PostApiIT {
                 tags(Arrays.asList(new Tag().name(RandomStringUtils.randomAlphabetic(5))
                         , new Tag().name(RandomStringUtils.randomAlphabetic(5))));
     }
+
     private void assertPost(Post saved, Post update, Post updated) {
         assertNotNull(updated);
         assertNotEquals(saved, updated);
         assertEquals(update.getText(), updated.getText());
         assertEquals(update.getTitle(), updated.getTitle());
     }
+
     private void assertPost(Post expected, Post actual) {
         assertNotNull(expected);
         assertEquals(expected.getTitle(), actual.getTitle());
