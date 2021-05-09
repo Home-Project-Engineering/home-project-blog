@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.*;
@@ -94,6 +95,13 @@ public class PostServiceImpl implements PostService {
         var postEntityPage = postRepository.findAll(specification, pageRequest);
 
         return postMapperService.toPostDtoPage(postEntityPage);
+    }
+
+    @Override
+    public void removePost(BigDecimal id) {
+        var postEntity = postRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Post with id --> " + id + " --> is not found"));
+        postRepository.deleteById(postEntity.getId());
     }
 
 

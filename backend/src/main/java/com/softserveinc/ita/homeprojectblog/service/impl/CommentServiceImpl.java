@@ -93,13 +93,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void removeComment(BigDecimal postId, BigDecimal id) {
-        var commentEntity = commentRepository.findOneByPostIdAndId(postId, id).isPresent();
+        var commentEntity = commentRepository.findOneByPostIdAndId(postId, id).orElseThrow(
+                () -> new EntityNotFoundException(
+                        "Comment with id --> " + id + ", in post with id --> " + postId + " --> is not found."));
 
-        if (commentEntity) {
-            commentRepository.deleteById(id);
-        } else {
-            throw new EntityNotFoundException(
-                    "Comment with id --> " + id + ", in post with id --> " + postId + " --> is not found.");
-        }
+        commentRepository.deleteById(commentEntity.getId());
     }
 }

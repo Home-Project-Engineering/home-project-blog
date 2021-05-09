@@ -103,16 +103,16 @@ public class PostController implements PostsApi {
         return new ResponseEntity<>(postPage.getContent(), headers, HttpStatus.OK);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<Void> removeComment(BigDecimal postId, BigDecimal id) {
         commentService.removeComment(postId, id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
     @Override
     public ResponseEntity<Void> removePost(BigDecimal id) {
-        return null;
+        postService.removePost(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override

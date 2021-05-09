@@ -11,5 +11,7 @@ public interface PostService {
     PostDto getPost(BigDecimal id);
 
     Page<PostDto> getPosts(BigDecimal id, String tagId, String tagName, String authorName, String sort, Integer pageNum, Integer pageSize);
+
+    void removePost(BigDecimal id);
 }
 
