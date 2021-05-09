@@ -57,7 +57,7 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(commentMapper.toComment(commentDto), HttpStatus.OK);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<List<Comment>> getCommentsByCurrentUser(
             BigDecimal id,
             String sort, Integer pageNum, Integer pageSize) {
@@ -71,9 +71,10 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(commentPage.getContent(), headers, HttpStatus.OK);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<User> getCurrentUser() {
-        return new ResponseEntity<>(userMapper.toUser(userService.getCurrentUser()), HttpStatus.OK);
+        var userDto = userService.getCurrentUser();
+        return new ResponseEntity<>(userMapper.toUser(userDto), HttpStatus.OK);
     }
 
     @Override
