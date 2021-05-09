@@ -37,7 +37,7 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public TagDto getTag(BigDecimal id) {
-        var tagEntity = tagRepository.findById(Long.valueOf(id.toString())).orElseThrow(
+        var tagEntity = tagRepository.findById(id.longValue()).orElseThrow(
                 () -> new EntityNotFoundException(String.format(TAG_NOT_FOUND_FORMAT, id)));
         return tagMapper.toTagDto(tagEntity);
     }
@@ -52,10 +52,17 @@ public class TagServiceImpl implements TagService {
         var check = checkout.checkoutAndSetDefaults(sort, pageNum, pageSize);
         var specification = entitySpecificationService.getSpecification(predicateMap);
         var pageRequest =
-                PageRequest.of(check.getPageNum(),check.getPageSize(), sorter.getSorter(check.getSort()));
+                PageRequest.of(check.getPageNum(), check.getPageSize(), sorter.getSorter(check.getSort()));
 
         var tagEntityPage = tagRepository.findAll(specification, pageRequest);
 
         return tagMapper.toTagDtoPage(tagEntityPage);
+    }
+
+    @Override
+    public void removeTag(BigDecimal id) {
+        var tagEntity = tagRepository.findById(id.longValue())
+                .orElseThrow(() -> new EntityNotFoundException(String.format(TAG_NOT_FOUND_FORMAT, id)));
+        tagRepository.deleteById(tagEntity.getId());
     }
 }

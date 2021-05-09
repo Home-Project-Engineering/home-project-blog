@@ -55,8 +55,9 @@ public class TagController implements TagsApi {
         return new ResponseEntity<>(tagPage.getContent(), headers, HttpStatus.OK);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<Void> removeTag(BigDecimal id) {
-        return null;
+        tagService.removeTag(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

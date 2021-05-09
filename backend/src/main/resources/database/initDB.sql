@@ -54,7 +54,7 @@ create table post_tags
     post_id BIGINT NOT NULL,
     tags_id BIGINT NOT NULL,
     FOREIGN KEY (post_id) REFERENCES post (id) ON DELETE CASCADE,
-    FOREIGN KEY (tags_id) REFERENCES tag (id)
+    FOREIGN KEY (tags_id) REFERENCES tag (id) ON DELETE CASCADE
 );
 
 -- DROP TABLE IF EXISTS "comment";
