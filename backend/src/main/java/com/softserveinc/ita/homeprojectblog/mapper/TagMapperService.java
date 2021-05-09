@@ -1,11 +1,12 @@
 package com.softserveinc.ita.homeprojectblog.mapper;
 
 import com.softserveinc.ita.homeprojectblog.dto.TagDto;
-import com.softserveinc.ita.homeprojectblog.model.Tag;
+import com.softserveinc.ita.homeprojectblog.entity.TagEntity;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface TagMapperController {
+public interface TagMapperService {
 
-    Tag toTag(TagDto tagDto);
+    TagDto toTagDto(TagEntity tagEntity);
+
 }

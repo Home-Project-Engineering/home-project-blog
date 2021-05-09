@@ -28,8 +28,8 @@ import java.util.Optional;
 @RequestMapping("${openapi.homeProjectBlogService.base-path:/api/1}")
 public class PostController implements PostsApi {
 
-    PostMapperController postMapperController;
-    CommentMapperController commentMapperController;
+    PostMapperController postMapper;
+    CommentMapperController commentMapper;
 
     PostService postService;
     CommentService commentService;
@@ -44,22 +44,22 @@ public class PostController implements PostsApi {
 
     @Override // +
     public ResponseEntity<Comment> createComment(BigDecimal postId, Comment comment) {
-        var commentDto = commentMapperController.toCommentDto(comment);
+        var commentDto = commentMapper.toCommentDto(comment);
         commentDto = commentService.createComment(postId, commentDto);
-        return new ResponseEntity<>(commentMapperController.toComment(commentDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(commentMapper.toComment(commentDto), HttpStatus.CREATED);
     }
 
     @Override // +
     public ResponseEntity<Post> createPost(Post body) {
-        var postDto = postMapperController.toPostDto(body);
+        var postDto = postMapper.toPostDto(body);
         postDto = postService.createPost(postDto);
-        return new ResponseEntity<>(postMapperController.toPost(postDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(postMapper.toPost(postDto), HttpStatus.CREATED);
     }
 
     @Override // +
     public ResponseEntity<Comment> getComment(BigDecimal postId, BigDecimal id) {
         var commentDto = commentService.getComment(postId, id);
-        return new ResponseEntity<>(commentMapperController.toComment(commentDto), HttpStatus.OK);
+        return new ResponseEntity<>(commentMapper.toComment(commentDto), HttpStatus.OK);
     }
 
     @Override // +
@@ -71,7 +71,7 @@ public class PostController implements PostsApi {
                 postId, id, authorName,
                 sort, pageNum, pageSize);
 
-        var pageComment = commentMapperController.toCommentPage(commentDtoPage);
+        var pageComment = commentMapper.toCommentPage(commentDtoPage);
 
         MultiValueMap<String, String> headers = new HttpHeaders();
         headers.add("X-Total-Count", String.valueOf(pageComment.getTotalElements()));
@@ -82,7 +82,7 @@ public class PostController implements PostsApi {
     @Override // +
     public ResponseEntity<Post> getPost(BigDecimal id) {
         var postDto = postService.getPost(id);
-        return new ResponseEntity<>(postMapperController.toPost(postDto), HttpStatus.OK);
+        return new ResponseEntity<>(postMapper.toPost(postDto), HttpStatus.OK);
     }
 
     @Override // +
@@ -95,7 +95,7 @@ public class PostController implements PostsApi {
                 sort, pageNum, pageSize
         );
 
-        var postPage = postMapperController.toPagePostDto(postDtoPage);
+        var postPage = postMapper.toPagePostDto(postDtoPage);
 
         MultiValueMap<String, String> headers = new HttpHeaders();
         headers.add("X-Total-Count", String.valueOf(postPage.getTotalElements()));
@@ -117,15 +117,15 @@ public class PostController implements PostsApi {
 
     @Override // +
     public ResponseEntity<Comment> updateComment(BigDecimal postId, BigDecimal id, Comment comment) {
-        var commentDto = commentMapperController.toCommentDto(comment);
+        var commentDto = commentMapper.toCommentDto(comment);
         var updatedCommentDto = commentService.updateComment(postId, id, commentDto);
-        return new ResponseEntity<>(commentMapperController.toComment(updatedCommentDto), HttpStatus.OK);
+        return new ResponseEntity<>(commentMapper.toComment(updatedCommentDto), HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<Post> updatePost(BigDecimal id, Post post) {
-        var postDto = postMapperController.toPostDto(post);
+        var postDto = postMapper.toPostDto(post);
         var changedPostDto = postService.updatePost(id, postDto);
-        return new ResponseEntity<>(postMapperController.toPost(changedPostDto), HttpStatus.OK);
+        return new ResponseEntity<>(postMapper.toPost(changedPostDto), HttpStatus.OK);
     }
 }
