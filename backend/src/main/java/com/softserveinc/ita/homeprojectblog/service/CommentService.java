@@ -16,4 +16,6 @@ public interface CommentService {
     void removeComment(BigDecimal postId, BigDecimal id);
 
     CommentDto updateComment(BigDecimal postId, BigDecimal id, CommentDto commentDto);
+
+    CommentDto getCommentByCurrentUser(BigDecimal id);
 }

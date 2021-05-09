@@ -122,7 +122,7 @@ public class PostController implements PostsApi {
         return new ResponseEntity<>(commentMapper.toComment(updatedCommentDto), HttpStatus.OK);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<Post> updatePost(BigDecimal id, Post post) {
         var postDto = postMapper.toPostDto(post);
         var changedPostDto = postService.updatePost(id, postDto);

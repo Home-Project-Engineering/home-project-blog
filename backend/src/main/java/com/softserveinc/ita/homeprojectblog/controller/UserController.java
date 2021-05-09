@@ -2,10 +2,10 @@ package com.softserveinc.ita.homeprojectblog.controller;
 
 import com.softserveinc.ita.homeprojectblog.api.UsersApi;
 import com.softserveinc.ita.homeprojectblog.exception.NoSuchUserException;
+import com.softserveinc.ita.homeprojectblog.mapper.CommentMapperController;
 import com.softserveinc.ita.homeprojectblog.mapper.UserMapperController;
-import com.softserveinc.ita.homeprojectblog.model.Comment;
-import com.softserveinc.ita.homeprojectblog.model.Post;
-import com.softserveinc.ita.homeprojectblog.model.User;
+import com.softserveinc.ita.homeprojectblog.model.*;
+import com.softserveinc.ita.homeprojectblog.service.CommentService;
 import com.softserveinc.ita.homeprojectblog.service.UserService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -31,11 +31,14 @@ public class UserController implements UsersApi {
 
     UserService userService;
 
-    UserMapperController userMapperController;
+    UserMapperController userMapper;
+    CommentMapperController commentMapper;
 
     NativeWebRequest request;
 
-    @Override
+    CommentService commentService;
+
+    @Override // +/-
     public Optional<NativeWebRequest> getRequest() {
         return Optional.ofNullable(request);
     }
@@ -43,14 +46,15 @@ public class UserController implements UsersApi {
     @Override // +
 //    @PreAuthorize("hasAuthority('developers:write')")
     public ResponseEntity<User> createUser(User body) {
-        var userDtoSet = userMapperController.toUserDto(body);
+        var userDtoSet = userMapper.toUserDto(body);
         var userDtoGet = userService.createUser(userDtoSet);
-        return new ResponseEntity<>(userMapperController.toUser(userDtoGet), HttpStatus.CREATED);
+        return new ResponseEntity<>(userMapper.toUser(userDtoGet), HttpStatus.CREATED);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<Comment> getCommentByCurrentUser(BigDecimal id) {
-        return null;
+        var commentDto = commentService.getCommentByCurrentUser(id);
+        return new ResponseEntity<>(commentMapper.toComment(commentDto), HttpStatus.OK);
     }
 
     @Override
@@ -60,7 +64,7 @@ public class UserController implements UsersApi {
 
     @Override
     public ResponseEntity<User> getCurrentUser() {
-        return new ResponseEntity<>(userMapperController.toUser(userService.getCurrentUser()), HttpStatus.OK);
+        return new ResponseEntity<>(userMapper.toUser(userService.getCurrentUser()), HttpStatus.OK);
     }
 
     @Override
@@ -82,7 +86,7 @@ public class UserController implements UsersApi {
                     id + " in Database");
         }
 
-        return new ResponseEntity<>(userMapperController.toUser(userDto), HttpStatus.OK);
+        return new ResponseEntity<>(userMapper.toUser(userDto), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('user:management')")
@@ -92,7 +96,7 @@ public class UserController implements UsersApi {
 
         var userDtoPage = userService.getUsers(id, name, sort, pageNum, pageSize);
 
-        var userPage = userMapperController.toUserPage(userDtoPage);
+        var userPage = userMapper.toUserPage(userDtoPage);
 
         MultiValueMap<String, String> headers = new HttpHeaders();
         headers.add("X-Total-Count", String.valueOf(userPage.getTotalElements()));
@@ -131,11 +135,26 @@ public class UserController implements UsersApi {
         return UsersApi.super.updatePostByCurrentUser(id, post);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<User> updateUser(BigDecimal id, User user) {
-        var userDtoSet = userMapperController.toUserDto(user);
+        var userDtoSet = userMapper.toUserDto(user);
         var userDtoGet = userService.updateUser(userDtoSet, id);
 
-        return new ResponseEntity<>(userMapperController.toUser(userDtoGet), HttpStatus.OK);
+        return new ResponseEntity<>(userMapper.toUser(userDtoGet), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<Role> getUserRole(BigDecimal id) {
+        return UsersApi.super.getUserRole(id);
+    }
+
+    @Override
+    public ResponseEntity<Void> updateCurrentUserPassword(Password password) {
+        return UsersApi.super.updateCurrentUserPassword(password);
+    }
+
+    @Override
+    public ResponseEntity<Role> updateUserRole(BigDecimal id, Role role) {
+        return UsersApi.super.updateUserRole(id, role);
     }
 }

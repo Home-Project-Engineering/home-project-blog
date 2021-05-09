@@ -25,15 +25,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.softserveinc.ita.homeprojectblog.util.Constants.COMMENT_FOR_POST_NOT_FOUND_FORMAT;
+import static com.softserveinc.ita.homeprojectblog.util.Constants.COMMENT_FOR_USER_NOT_FOUND_FORMAT;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
 public class CommentServiceImpl implements CommentService {
 
-    CommentMapperService commentMapperService;
-    UserMapperService userMapperService;
-    PostMapperService postMapperService;
+    CommentMapperService commentMapper;
+    UserMapperService userMapper;
+    PostMapperService postMapper;
 
     UserServiceImpl userService;
     PostServiceImpl postService;
@@ -48,18 +49,18 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDto createComment(BigDecimal postId, CommentDto commentDto) {
-        var commentEntity = commentMapperService.toCommentEntity(commentDto);
+        var commentEntity = commentMapper.toCommentEntity(commentDto);
         var postDto = postService.getPost(postId);
-        var postEntity = postMapperService.toPostEntity(postDto);
+        var postEntity = postMapper.toPostEntity(postDto);
         commentEntity.setPost(postEntity);
 
         var currentUser = userService.getCurrentUser();
-        commentEntity.setUser(userMapperService.toUserEntity(currentUser));
+        commentEntity.setUser(userMapper.toUserEntity(currentUser));
 
         commentEntity.setCreatedOn(OffsetDateTime.now());
         var saveEntity = commentRepository.save(commentEntity);
 
-        return commentMapperService.toCommentDto(saveEntity);
+        return commentMapper.toCommentDto(saveEntity);
     }
 
     @Override
@@ -68,7 +69,7 @@ public class CommentServiceImpl implements CommentService {
         var commentEntity = commentEntityOptional.orElseThrow(() -> new EntityNotFoundException(
                 String.format(COMMENT_FOR_POST_NOT_FOUND_FORMAT, id, postId)));
 
-        return commentMapperService.toCommentDto(commentEntity);
+        return commentMapper.toCommentDto(commentEntity);
     }
 
     @Override
@@ -88,7 +89,7 @@ public class CommentServiceImpl implements CommentService {
 
         var pageEntities = commentRepository.findAll(specification, pageRequest);
 
-        return commentMapperService.toCommentDtoPage(pageEntities);
+        return commentMapper.toCommentDtoPage(pageEntities);
     }
 
     @Override
@@ -106,6 +107,15 @@ public class CommentServiceImpl implements CommentService {
         oldCommentEntity.setText(commentDto.getText());
         oldCommentEntity.setUpdatedOn(OffsetDateTime.now());
         var newCommentEntity = commentRepository.save(oldCommentEntity);
-        return commentMapperService.toCommentDto(newCommentEntity);
+        return commentMapper.toCommentDto(newCommentEntity);
+    }
+
+    @Override
+    public CommentDto getCommentByCurrentUser(BigDecimal id) {
+        var userDto = userService.getCurrentUser();
+        var commentEntity = commentRepository.findByUserIdAndId(userDto.getId(),id)
+                .orElseThrow(()-> new EntityNotFoundException(
+                        String.format(COMMENT_FOR_USER_NOT_FOUND_FORMAT, userDto.getId(), id)));
+        return commentMapper.toCommentDto(commentEntity);
     }
 }
