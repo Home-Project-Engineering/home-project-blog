@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.softserveinc.ita.homeprojectblog.util.Constants.POST_FOR_USER_NOT_FOUND_FORMAT;
+import static com.softserveinc.ita.homeprojectblog.util.Constants.POST_OF_USER_NOT_FOUND_FORMAT;
 import static com.softserveinc.ita.homeprojectblog.util.Constants.POST_NOT_FOUND_FORMAT;
 
 
@@ -123,7 +123,7 @@ public class PostServiceImpl implements PostService {
     public PostDto getPostByCurrentUser(BigDecimal id) {
         var userDto = userService.getCurrentUser();
         var postEntity = postRepository.findByUserIdAndId(userDto.getId(), id).orElseThrow(
-                () -> new EntityNotFoundException(String.format(POST_FOR_USER_NOT_FOUND_FORMAT, userDto.getId(), id)));
+                () -> new EntityNotFoundException(String.format(POST_OF_USER_NOT_FOUND_FORMAT, userDto.getId(), id)));
         return postMapper.toPostDto(postEntity);
     }
 

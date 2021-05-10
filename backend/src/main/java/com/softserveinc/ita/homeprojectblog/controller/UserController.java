@@ -121,9 +121,10 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(userPage.getContent(), headers, HttpStatus.OK);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<Void> removeCommentByCurrentUser(BigDecimal id) {
-        return null;
+        commentService.removeCommentByCurrentUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override

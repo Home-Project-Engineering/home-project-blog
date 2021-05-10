@@ -20,4 +20,6 @@ public interface CommentService {
     CommentDto getCommentByCurrentUser(BigDecimal id);
 
     Page<CommentDto> getCommentsByCurrentUser(BigDecimal id, String sort, Integer pageNum, Integer pageSize);
+
+    void removeCommentByCurrentUser(BigDecimal id);
 }
