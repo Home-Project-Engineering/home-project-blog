@@ -135,7 +135,7 @@ public class UserController implements UsersApi {
 
     @Override // +
     public ResponseEntity<Void> removeUser(BigDecimal id) {
-        userService.deleteUser(id);
+        userService.removeUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

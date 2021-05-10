@@ -116,8 +116,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(BigDecimal id) {
-        userRepository.deleteById(id);
+    public void removeUser(BigDecimal id) {
+        var userDto = getCurrentUser();
+        var userEntity = userRepository.findById(userDto.getId()).orElseThrow(
+                () -> new EntityNotFoundException(String.format(USER_NOT_FOUND_FORMAT, userDto.getId())));
+        userRepository.deleteById(userEntity.getId());
     }
 
     @Override

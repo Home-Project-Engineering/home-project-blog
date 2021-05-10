@@ -15,7 +15,7 @@ public interface UserService {
 
     UserDto updateUser(UserDto body, BigDecimal id);
 
-    void deleteUser(BigDecimal id);
+    void removeUser(BigDecimal id);
 
     UserDto getCurrentUser();
 
