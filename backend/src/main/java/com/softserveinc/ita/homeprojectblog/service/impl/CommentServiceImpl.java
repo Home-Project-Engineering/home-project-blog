@@ -65,7 +65,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDto getComment(BigDecimal postId, BigDecimal id) {
-        var commentEntityOptional = commentRepository.findOneByPostIdAndId(postId, id);
+        var commentEntityOptional = commentRepository.findByPostIdAndId(postId, id);
         var commentEntity = commentEntityOptional.orElseThrow(() -> new EntityNotFoundException(
                 String.format(COMMENT_OF_POST_NOT_FOUND_FORMAT, id, postId)));
 
@@ -94,14 +94,14 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void removeComment(BigDecimal postId, BigDecimal id) {
-        var commentEntity = commentRepository.findOneByPostIdAndId(postId, id).orElseThrow(
+        var commentEntity = commentRepository.findByPostIdAndId(postId, id).orElseThrow(
                 () -> new EntityNotFoundException(String.format(COMMENT_OF_POST_NOT_FOUND_FORMAT, id, postId)));
         commentRepository.deleteById(commentEntity.getId());
     }
 
     @Override
     public CommentDto updateComment(BigDecimal postId, BigDecimal id, CommentDto commentDto) {
-        var oldCommentEntity = commentRepository.findOneByPostIdAndId(postId, id).orElseThrow(
+        var oldCommentEntity = commentRepository.findByPostIdAndId(postId, id).orElseThrow(
                 () -> new EntityNotFoundException(String.format(COMMENT_OF_POST_NOT_FOUND_FORMAT, id, postId)));
         oldCommentEntity.setText(commentDto.getText());
         oldCommentEntity.setUpdatedOn(OffsetDateTime.now());
@@ -143,5 +143,18 @@ public class CommentServiceImpl implements CommentService {
                 () -> new EntityNotFoundException(String.format(
                         COMMENT_OF_USER_NOT_FOUND_FORMAT, userDto.getId(), id)));
         commentRepository.deleteById(commentEntity.getId());
+    }
+
+    @Override
+    public CommentDto updateCommentByCurrentUser(BigDecimal id, CommentDto comment) { // text
+        var userDto = userService.getCurrentUser();
+        var commentEntity = commentRepository.findByUserIdAndId(userDto.getId(), id).orElseThrow(
+                () -> new EntityNotFoundException(String.format(COMMENT_OF_USER_NOT_FOUND_FORMAT, userDto.getId(), id)));
+
+        commentEntity.setText(comment.getText());
+        commentEntity.setUpdatedOn(OffsetDateTime.now());
+
+        var updatedCommentEntity = commentRepository.save(commentEntity);
+        return commentMapper.toCommentDto(updatedCommentEntity);
     }
 }

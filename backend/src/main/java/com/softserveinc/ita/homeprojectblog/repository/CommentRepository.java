@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface CommentRepository
         extends JpaRepository<CommentEntity, BigDecimal>, JpaSpecificationExecutor<CommentEntity> {
 
-    Optional<CommentEntity> findOneByPostIdAndId(BigDecimal postId, BigDecimal id);
+    Optional<CommentEntity> findByPostIdAndId(BigDecimal postId, BigDecimal id);
 
     Optional<CommentEntity> findByUserIdAndId(BigDecimal id, BigDecimal id1);
 }

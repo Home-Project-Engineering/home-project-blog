@@ -139,9 +139,11 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<Comment> updateCommentByCurrentUser(BigDecimal id, Comment comment) {
-        return UsersApi.super.updateCommentByCurrentUser(id, comment);
+        var commentDto = commentMapper.toCommentDto(comment);
+        var updatedCommentDto = commentService.updateCommentByCurrentUser(id, commentDto);
+        return new ResponseEntity<>(commentMapper.toComment(updatedCommentDto), HttpStatus.OK);
     }
 
     @Override
