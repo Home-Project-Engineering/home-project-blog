@@ -171,4 +171,5 @@ public class UserServiceImpl implements UserService {
         String username = ((UserDetails) principal).getUsername();
         return getUserByName(username);
     }
+
 }

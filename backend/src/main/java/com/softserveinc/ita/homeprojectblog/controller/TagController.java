@@ -28,6 +28,7 @@ public class TagController implements TagsApi {
     NativeWebRequest request;
 
     TagService tagService;
+
     TagMapperController tagMapper;
 
     Boilerplate boilerplate;
@@ -59,4 +60,5 @@ public class TagController implements TagsApi {
         tagService.removeTag(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 }

@@ -30,16 +30,15 @@ import java.util.Optional;
 @RequestMapping("${openapi.homeProjectBlogService.base-path:/api/1}")
 public class UserController implements UsersApi {
 
+    NativeWebRequest request;
+
     UserService userService;
+    CommentService commentService;
+    PostService postService;
 
     UserMapperController userMapper;
     CommentMapperController commentMapper;
     PostMapperController postMapper;
-
-    NativeWebRequest request;
-
-    CommentService commentService;
-    PostService postService;
 
     Boilerplate boilerplate;
 
