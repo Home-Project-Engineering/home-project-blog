@@ -78,12 +78,11 @@ paths:
         - Current User
       summary: Update password on a Current User
       operationId: updateCurrentUserPassword
-
       requestBody:
-        $ref: '#/components/requestBodies/PasswordBody'
+        $ref: '#/components/requestBodies/ChangePasswordBody'
       responses:
-        "200":
-          $ref: '#/components/responses/PasswordUpdatedResponse'
+        "204":
+          $ref: '#/components/responses/NoContentResponse'
         "400":
           $ref: '#/components/responses/ValidationError'
         "default":
@@ -760,18 +759,17 @@ components:
           readOnly: true
 
     Author:
-      description: A representation of User entity for posts and comments
+      description: A representation of Author entity.
       properties:
         name:
-          description: The alias of the user.
+          description: The Author nickname.
           type: string
         firstName:
-          description: The name of the user.
+          description: The first name of the Author.
           type: string
         lastName:
-          description: The lastName of the User.
+          description: The last name of the Author.
           type: string
-
 
     Comment:
       description: A representation of Comment entity.
@@ -831,20 +829,28 @@ components:
           description: The message of an error that describes the Error.
           type: string
           readOnly: true
-    Password:
+
+    ChangePassword:
+      type: object
+      description: Representation of Change Password entity.
       required:
         - oldPassword
         - newPassword
-      type: object
       properties:
         oldPassword:
           type: string
+          description: Existing password.
         newPassword:
           type: string
+          description: >-
+            The password of the User. MUST contain a mix of upper and lower case letters,
+            as well as digits.
+          format: password
+          minLength: 8
+          pattern: '^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}$'
+          example: passworD321
 
   responses:
-    PasswordUpdatedResponse:
-      description: The password was succesfully updated.
     NoContentResponse:
       description: The request was succesfully processed.
     TagResponse:
@@ -977,13 +983,12 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/Role"
-    PasswordBody:
+    ChangePasswordBody:
       required: true
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Password"
-
+            $ref: "#/components/schemas/ChangePassword"
 
   parameters:
     p_id:
