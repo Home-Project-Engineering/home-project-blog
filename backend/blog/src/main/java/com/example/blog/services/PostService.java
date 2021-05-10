@@ -122,7 +122,7 @@ public class PostService {
         if (!postRepo.existsById(id))
             throw new EntityNotFoundException("No Post with ID " + id);
 
-        if (dtoPost.getTags()!= null && !checkTagUniqueness(dtoPost.getTags())) {
+        if (!checkTagUniqueness(dtoPost.getTags())) {
             throw new ValidationException("Tags must be unique");
         }
 
@@ -154,7 +154,7 @@ public class PostService {
 
         Page<PostEntity> page;
         if (pageNum != null && pageSize != null) {
-            page = postRepo.findAll(specification, PageRequest.of(pageNum, pageSize, getSorter(sort)));
+            page = postRepo.findAll(specification, PageRequest.of(pageNum - 1, pageSize, getSorter(sort)));
         } else {
             page = postRepo.findAll(specification, PageRequest.of(0, 50, getSorter(sort)));
         }
@@ -172,7 +172,7 @@ public class PostService {
 
         Page<CommentEntity> page;
         if (pageNum != null && pageSize != null) {
-            page = commentRepo.findAll(specification, PageRequest.of(pageNum, pageSize, getSorter(sort)));
+            page = commentRepo.findAll(specification, PageRequest.of(pageNum - 1, pageSize, getSorter(sort)));
         } else {
             page = commentRepo.findAll(specification, PageRequest.of(0, 50, getSorter(sort)));
         }
@@ -228,7 +228,7 @@ public class PostService {
 
         Page<CommentEntity> page;
         if (pageNum != null && pageSize != null) {
-            page = commentRepo.findAll(specification, PageRequest.of(pageNum, pageSize, getSorter(sort)));
+            page = commentRepo.findAll(specification, PageRequest.of(pageNum - 1, pageSize, getSorter(sort)));
         } else {
             page = commentRepo.findAll(specification, PageRequest.of(0, 50, getSorter(sort)));
         }

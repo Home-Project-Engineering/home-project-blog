@@ -46,7 +46,7 @@ public class TagService {
         Page<TagEntity> page;
 
         if (pageNum != null && pageSize != null) {
-            page = tagRepo.findAll(spec, PageRequest.of(pageNum, pageSize, getSorter(sort)));
+            page = tagRepo.findAll(spec, PageRequest.of(pageNum - 1, pageSize, getSorter(sort)));
         } else {
             page = tagRepo.findAll(spec, PageRequest.of(0, 50, getSorter(sort)));
         }

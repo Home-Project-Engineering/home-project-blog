@@ -99,7 +99,7 @@ public class UserService {
         Page<UserEntity> page;
 
         if (pageNum != null && pageSize != null) {
-            page = userRepo.findAll(spec, PageRequest.of(pageNum, pageSize, getSorter(sort)));
+            page = userRepo.findAll(spec, PageRequest.of(pageNum - 1, pageSize, getSorter(sort)));
         } else {
             page = userRepo.findAll(spec, PageRequest.of(0, 50, getSorter(sort)));
         }
@@ -282,7 +282,7 @@ public class UserService {
         Page<PostEntity> page;
 
         if (pageNum != null && pageSize != null) {
-            page = postRepo.findAll(spec, PageRequest.of(pageNum, pageSize, getSorter(sort)));
+            page = postRepo.findAll(spec, PageRequest.of(pageNum - 1, pageSize, getSorter(sort)));
         } else {
             page = postRepo.findAll(spec, PageRequest.of(0, 50, getSorter(sort)));
         }

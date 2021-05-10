@@ -6,11 +6,11 @@ import com.softserveinc.ita.homeproject.blog.client.api.PostsApi;
 import com.softserveinc.ita.homeproject.blog.client.model.Post;
 import com.softserveinc.ita.homeproject.blog.client.model.Tag;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -61,6 +61,50 @@ public class PostApiIT {
         assertThat(posts).isNotEmpty();
     }
 
+    @Test
+    void postsShouldHaveOnlyConcretePost() {
+        List<Post> saved = saveListPost();
+        List<Post> posts = postsApi.getPosts(
+                saved.get(0).getId()
+                , null
+                , null
+                , null
+                , "-id"
+                , 1
+                , 10
+        );
+        assertThat(posts).containsOnly(posts.get(0));
+    }
+
+    @Test
+    void postsShouldBeSortedByDescId() {
+
+        List<Post> posts = postsApi.getPosts(
+                null
+                , null
+                , null
+                , null
+                , "-id"
+                , 1
+                , 10
+        );
+
+        assertThat(posts).isSortedAccordingTo(Comparator.comparing(Post::getId));
+    }
+
+    @Test
+    void postsShouldBeSortedByAscId() {
+        List<Post> posts = postsApi.getPosts(
+                null
+                , null
+                , null
+                , null
+                , "id"
+                , 1
+                , 10
+        );
+        assertThat(posts).isSortedAccordingTo(Comparator.comparing(Post::getId).reversed());
+    }
 
     @Test
     void getPost() {

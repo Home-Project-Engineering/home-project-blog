@@ -83,7 +83,7 @@ class UserApiIT {
                 .requireNonNull(u.getId())));
     }
     @Test
-    void getAllUsersDescSortByFirstNameTest() throws ApiException {
+    void getAllUsersDescSortByNameTest() throws ApiException {
         saveListUser();
 
         List<User> actualListUsers = userApi.getUsers(

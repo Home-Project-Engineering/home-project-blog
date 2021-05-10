@@ -32,8 +32,8 @@ public class CommentApiIT {
                 , null
                 , null
                 , "-id"
-                , null
-                , null
+                , 1
+                , 10
         );
         assertThat(comments).isNotEmpty();
     }
