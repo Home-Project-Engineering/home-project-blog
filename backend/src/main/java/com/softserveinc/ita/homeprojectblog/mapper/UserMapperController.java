@@ -27,4 +27,7 @@ public interface UserMapperController {
     Role toRole(RoleDto roleDto);
 
     PasswordDto toPasswordDto(Password password);
+
+    @Mapping(target = "id", ignore = true)
+    RoleDto toRoleDto(Role role);
 }

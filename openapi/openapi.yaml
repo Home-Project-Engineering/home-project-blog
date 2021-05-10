@@ -1,9 +1,9 @@
 openapi: 3.0.3
 
 info:
-  version: 1.1.1.0.0.1.0
+  version: 1.1.1.0.0.2.0
 #  version: usable.khoma.ben.val.lid.vld.sash
-#  own addition until commit --> 2/2021.05.06
+#  own addition until commit --> 3/2021.05.10
   title: Home Project Blog Service
   description: |
     Blog for the Home Project engineers
@@ -374,7 +374,7 @@ paths:
       tags:
         - Users
       summary: Update User Role
-      description: Updates Role on a User that exists in the system by the specified ID.
+      description: Updates Role on a User that exists in the system by the specified userID.
       operationId: updateUserRole
       requestBody:
         $ref: '#/components/requestBodies/RoleBody'

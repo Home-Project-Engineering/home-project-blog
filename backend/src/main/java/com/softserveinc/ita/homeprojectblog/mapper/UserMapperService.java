@@ -1,6 +1,8 @@
 package com.softserveinc.ita.homeprojectblog.mapper;
 
+import com.softserveinc.ita.homeprojectblog.dto.RoleDto;
 import com.softserveinc.ita.homeprojectblog.dto.UserDto;
+import com.softserveinc.ita.homeprojectblog.entity.RoleEntity;
 import com.softserveinc.ita.homeprojectblog.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -27,4 +29,8 @@ public interface UserMapperService {
     @Mapping(target = "password", source = "userDto.password")
     @Mapping(target = "updatedOn", ignore = true)
     UserEntity toUserEntityFromUsersDto(UserDto currentUserDto, UserDto userDto);
+
+    RoleEntity toRoleEntity(RoleDto roleDto);
+
+    RoleDto toRoleDto(RoleEntity role);
 }

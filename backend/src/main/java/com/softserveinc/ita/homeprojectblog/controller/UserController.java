@@ -181,8 +181,10 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<Role> updateUserRole(BigDecimal id, Role role) {
-        return UsersApi.super.updateUserRole(id, role);
+        var roleDto = userMapper.toRoleDto(role);
+        var updatedRoleDto = userService.updateUserRole(id, roleDto);
+        return new ResponseEntity<>(userMapper.toRole(updatedRoleDto), HttpStatus.OK);
     }
 }

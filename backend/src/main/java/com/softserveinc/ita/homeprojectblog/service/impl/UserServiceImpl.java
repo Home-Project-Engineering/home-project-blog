@@ -103,6 +103,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public RoleDto updateUserRole(BigDecimal id, RoleDto roleDto) {
+        var userDto = getUser(id);
+        var userEntity = userMapper.toUserEntity(userDto);
+        var roleEntity = roleRepository.findByName(RoleEntity.NameEnum.valueOf(roleDto.getName().name())).orElseThrow(
+                () -> new EntityNotFoundException(String.format(ROLE_NOT_EXIST, roleDto.getName().name())));
+        userEntity.setRole(roleEntity);
+        userEntity.setUpdatedOn(OffsetDateTime.now());
+        var updatedUserEntity = userRepository.save(userEntity);
+        return userMapper.toRoleDto(updatedUserEntity.getRole());
+    }
+
+    @Override
     public UserDto getUser(BigDecimal id) {
         var userEntity = userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format(USER_NOT_FOUND_FORMAT, id)));

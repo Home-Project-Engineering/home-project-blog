@@ -31,4 +31,6 @@ public interface UserService {
     RoleDto getUserRole(BigDecimal id);
 
     void updateCurrentUserPassword(@Valid PasswordDto passwordDto);
+
+    RoleDto updateUserRole(BigDecimal id, RoleDto roleDto);
 }
