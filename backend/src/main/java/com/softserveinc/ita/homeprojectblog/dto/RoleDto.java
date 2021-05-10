@@ -1,17 +1,18 @@
 package com.softserveinc.ita.homeprojectblog.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class RoleDto {
 
-  private NameEnum name;
+  Long id;
+
+  NameEnum name;
 
   public enum NameEnum {
     BLOGGER,

@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static com.softserveinc.ita.homeprojectblog.util.Constants.USER_NOT_EXIST;
 import static com.softserveinc.ita.homeprojectblog.util.Constants.USER_NOT_FOUND_FORMAT;
 
 @Service
@@ -40,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     RoleRepository roleRepository;
 
-    UserMapperService userMapperService;
+    UserMapperService userMapper;
 
     PasswordEncoder passwordEncoder;
 
@@ -65,27 +66,40 @@ public class UserServiceImpl implements UserService {
 
         var pageEntities = userRepository.findAll(specification, pageRequest);
 
-        return userMapperService.toUserDtoPage(pageEntities);
+        return userMapper.toUserDtoPage(pageEntities);
+    }
+
+    @Override
+    public UserDto updateCurrentUser(UserDto userDto) {
+        var currentUserDto = getCurrentUser();
+
+        var userEntity = userMapper.toUserEntityFromUsersDto(currentUserDto, userDto);
+
+        userEntity.setUpdatedOn(OffsetDateTime.now());
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+
+        var updatedUserEntity = userRepository.save(userEntity);
+        return userMapper.toUserDto(updatedUserEntity);
     }
 
     @Override
     public UserDto getUser(BigDecimal id) {
         var userEntity = userRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format(USER_NOT_FOUND_FORMAT, id)));
-        return userMapperService.toUserDto(userEntity);
+        return userMapper.toUserDto(userEntity);
     }
 
     @Override
     public UserDto getUserByName(String username) {
         var currentUserEntity = userRepository.findByName(username).orElseThrow(() ->
-                new UsernameNotFoundException("User does not exists"));
-        return userMapperService.toUserDto(currentUserEntity);
+                new UsernameNotFoundException(USER_NOT_EXIST));
+        return userMapper.toUserDto(currentUserEntity);
     }
 
     @Override
     public UserDto createUser(UserDto userDto) {
 
-        var userEntity = userMapperService.toUserEntity(userDto);
+        var userEntity = userMapper.toUserEntity(userDto);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
 
         Optional<RoleEntity> roleEntity = roleRepository.findByName(RoleEntity.NameEnum.BLOGGER);
@@ -98,7 +112,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setCreateOn(OffsetDateTime.now());
 
         userRepository.save(userEntity);
-        return userMapperService.toUserDto(userEntity);
+        return userMapper.toUserDto(userEntity);
     }
 
     @Override
@@ -109,10 +123,10 @@ public class UserServiceImpl implements UserService {
         if (bodyDto.getPassword() == null) // update without password
             bodyDto.setPassword(getUser(id).getPassword());
 
-        var bodyEntity = userMapperService.toUserEntity(bodyDto);
+        var bodyEntity = userMapper.toUserEntity(bodyDto);
         bodyEntity = userRepository.save(bodyEntity);
 
-        return userMapperService.toUserDto(bodyEntity);
+        return userMapper.toUserDto(bodyEntity);
     }
 
     @Override

@@ -49,7 +49,7 @@ public class UserEntity {
     @Column(name = "update_on")
     private OffsetDateTime updatedOn;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 

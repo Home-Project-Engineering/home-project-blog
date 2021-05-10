@@ -146,9 +146,11 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(commentMapper.toComment(updatedCommentDto), HttpStatus.OK);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<User> updateCurrentUser(User body) {
-        return null;
+        var userDto = userMapper.toUserDto(body);
+        var updatedUserDto = userService.updateCurrentUser(userDto);
+        return new ResponseEntity<>(userMapper.toUser(updatedUserDto), HttpStatus.OK);
     }
 
     @Override
@@ -160,7 +162,6 @@ public class UserController implements UsersApi {
     public ResponseEntity<User> updateUser(BigDecimal id, User user) {
         var userDtoSet = userMapper.toUserDto(user);
         var userDtoGet = userService.updateUser(userDtoSet, id);
-
         return new ResponseEntity<>(userMapper.toUser(userDtoGet), HttpStatus.OK);
     }
 

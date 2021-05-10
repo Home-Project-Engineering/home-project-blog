@@ -20,4 +20,6 @@ public interface UserService {
     UserDto getCurrentUser();
 
     Page<UserDto> getUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize);
+
+    UserDto updateCurrentUser(UserDto userDto);
 }

@@ -1,10 +1,12 @@
 package com.softserveinc.ita.homeprojectblog.util;
 
 public final class Constants {
-    // messages
+    // message
     public static final String WRONG_PASSWORD_PATTERN =
             "The password must include small and large letters and at least one digit";
     public static final String WRONG_PASSWORD_SIZE = "The password should be between 8 and 32 characters";
+    public static final String USER_NOT_EXIST = "User does not exist";
+
 
     // regexp
     public static final String PASSWORD_REGEXP = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,32}";

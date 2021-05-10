@@ -3,6 +3,7 @@ package com.softserveinc.ita.homeprojectblog.mapper;
 import com.softserveinc.ita.homeprojectblog.dto.UserDto;
 import com.softserveinc.ita.homeprojectblog.entity.UserEntity;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.springframework.data.domain.Page;
 
 @Mapper(componentModel = "spring")
@@ -16,4 +17,14 @@ public interface UserMapperService {
 
     UserDto toUserDto(UserEntity userEntity);
 
+    @Mapping(target = "id", source = "currentUserDto.id")
+    @Mapping(target = "role", source = "currentUserDto.role")
+    @Mapping(target = "createOn", source = "currentUserDto.createOn")
+    @Mapping(target = "email", source = "userDto.email")
+    @Mapping(target = "name", source = "userDto.name")
+    @Mapping(target = "firstName", source = "userDto.firstName")
+    @Mapping(target = "lastName", source = "userDto.lastName")
+    @Mapping(target = "password", source = "userDto.password")
+    @Mapping(target = "updatedOn", ignore = true)
+    UserEntity toUserEntityFromUsersDto(UserDto currentUserDto, UserDto userDto);
 }
