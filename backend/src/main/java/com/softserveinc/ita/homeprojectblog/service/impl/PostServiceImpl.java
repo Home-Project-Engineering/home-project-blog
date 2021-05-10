@@ -160,4 +160,22 @@ public class PostServiceImpl implements PostService {
         postRepository.deleteById(postEntity.getId());
     }
 
+    @Override
+    public PostDto updatePostByCurrentUser(BigDecimal id, PostDto postDto) {
+        var userDto = userService.getCurrentUser();
+        var oldPostEntity = postRepository.findByUserIdAndId(userDto.getId(), id).orElseThrow(
+                () -> new EntityNotFoundException(String.format(POST_OF_USER_NOT_FOUND_FORMAT, userDto.getId(), id)));
+
+        var newPostEntity = postMapper.toPostEntity(postDto);
+
+        checkout.removeIdAndRepeatsInList(newPostEntity.getTags());
+        checkout.setExistsTagsOrSetDateForNew(tagRepository, newPostEntity.getTags());
+
+        newPostEntity.setUpdatedOn(OffsetDateTime.now());
+        newPostEntity = postMapper.toPostEntityFromNewAndOld(newPostEntity, oldPostEntity);
+
+        var postEntity = postRepository.save(newPostEntity);
+        return postMapper.toPostDto(postEntity);
+    }
+
 }

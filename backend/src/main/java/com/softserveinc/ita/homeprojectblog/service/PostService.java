@@ -22,5 +22,6 @@ public interface PostService {
 
     void removePostByCurrentUser(BigDecimal id);
 
+    PostDto updatePostByCurrentUser(BigDecimal id, PostDto postDto);
 }
 

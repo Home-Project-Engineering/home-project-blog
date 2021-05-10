@@ -109,8 +109,9 @@ public class UserController implements UsersApi {
 
     @PreAuthorize("hasAuthority('user:management')")
     @Override // +
-    public ResponseEntity<List<User>> getUsers(BigDecimal id, String name,
-                                               String sort, Integer pageNum, Integer pageSize) {
+    public ResponseEntity<List<User>> getUsers(
+            BigDecimal id, String name,
+            String sort, Integer pageNum, Integer pageSize) {
 
         var userDtoPage = userService.getUsers(id, name, sort, pageNum, pageSize);
 
@@ -153,9 +154,11 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(userMapper.toUser(updatedUserDto), HttpStatus.OK);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<Post> updatePostByCurrentUser(BigDecimal id, Post post) {
-        return UsersApi.super.updatePostByCurrentUser(id, post);
+        var postDto = postMapper.toPostDto(post);
+        var updatedPostDto = postService.updatePostByCurrentUser(id, postDto);
+        return new ResponseEntity<>(postMapper.toPost(updatedPostDto), HttpStatus.OK);
     }
 
     @Override // +
