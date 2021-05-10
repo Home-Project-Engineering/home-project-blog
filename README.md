@@ -27,6 +27,7 @@ Resources in the application must be restricted via the following role matrix.
 | *__Current User__*                                 |       |           |         |     |
 | See information about current User.                | V     | V         | V       |     |
 | Update information connected to current User.      | V     | V         | V       |     |
+| Change password.                                   | V     | V         | V       |     |
 | *__Comments of Current User__*                     |       |           |         |     |
 | See all comments assosiated with current user.     | V     | V         | V       |     |
 | See specific comment assosiated with current user. | V     | V         | V       |     |
