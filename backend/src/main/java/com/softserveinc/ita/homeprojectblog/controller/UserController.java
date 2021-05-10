@@ -66,12 +66,9 @@ public class UserController implements UsersApi {
     public ResponseEntity<List<Comment>> getCommentsByCurrentUser(
             BigDecimal id,
             String sort, Integer pageNum, Integer pageSize) {
-
         var commentDtoPage = commentService.getCommentsByCurrentUser(id, sort, pageNum, pageSize);
         var commentPage = commentMapper.toCommentPage(commentDtoPage);
-
         MultiValueMap<String, String> headers = boilerplate.getXTotalCount(commentPage);
-
         return new ResponseEntity<>(commentPage.getContent(), headers, HttpStatus.OK);
     }
 
@@ -91,13 +88,9 @@ public class UserController implements UsersApi {
     public ResponseEntity<List<Post>> getPostsByCurrentUser(
             BigDecimal id, String tagId, String tagName,
             String sort, Integer pageNum, Integer pageSize) {
-
         var postDtoPage = postService.getPostsByCurrentUser(id, tagId, tagName, sort, pageNum, pageSize);
-
         var postPage = postMapper.toPostPage(postDtoPage);
-
         MultiValueMap<String, String> headers = boilerplate.getXTotalCount(postPage);
-
         return new ResponseEntity<>(postPage.getContent(), headers, HttpStatus.OK);
     }
 
@@ -112,13 +105,9 @@ public class UserController implements UsersApi {
     public ResponseEntity<List<User>> getUsers(
             BigDecimal id, String name,
             String sort, Integer pageNum, Integer pageSize) {
-
         var userDtoPage = userService.getUsers(id, name, sort, pageNum, pageSize);
-
         var userPage = userMapper.toUserPage(userDtoPage);
-
         MultiValueMap<String, String> headers = boilerplate.getXTotalCount(userPage);
-
         return new ResponseEntity<>(userPage.getContent(), headers, HttpStatus.OK);
     }
 

@@ -19,4 +19,5 @@ public interface PostMapperController {
     default Page<Post> toPostPage(Page<PostDto> postDtoPage){
         return postDtoPage.map(this::toPost);
     }
+
 }

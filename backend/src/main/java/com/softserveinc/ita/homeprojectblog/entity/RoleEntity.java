@@ -61,5 +61,5 @@ public class RoleEntity {
                     .collect(Collectors.toSet());
         }
     }
-}
 
+}

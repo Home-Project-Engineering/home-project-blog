@@ -11,5 +11,7 @@ import java.util.Optional;
 @Repository
 public interface PostRepository
         extends JpaRepository<PostEntity, BigDecimal>, JpaSpecificationExecutor<PostEntity> {
+
     Optional<PostEntity> findByUserIdAndId(BigDecimal id, BigDecimal id1);
+
 }

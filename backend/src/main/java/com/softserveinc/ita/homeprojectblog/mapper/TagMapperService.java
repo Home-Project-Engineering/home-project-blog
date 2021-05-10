@@ -13,4 +13,5 @@ public interface TagMapperService {
     default Page<TagDto> toTagDtoPage(Page<TagEntity> tagEntityPage) {
         return tagEntityPage.map(this::toTagDto);
     }
+
 }

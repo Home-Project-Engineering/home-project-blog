@@ -12,9 +12,8 @@ import java.util.List;
 
 @Data
 @AllArgsConstructor
-public class SecurityUser
-        implements UserDetails
-{
+public class SecurityUser implements UserDetails {
+
     private final String username;
 
     private final String password;
@@ -58,7 +57,7 @@ public class SecurityUser
         return true;
     }
 
-    public static UserDetails fromUser(UserEntity user){
+    public static UserDetails fromUser(UserEntity user) {
         return new org.springframework.security.core.userdetails.User(
                 user.getName(),
                 user.getPassword(),

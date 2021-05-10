@@ -51,8 +51,8 @@ public class TagServiceImpl implements TagService {
 
         var check = checkout.checkoutAndSetDefaults(sort, pageNum, pageSize);
         var specification = entitySpecificationService.getSpecification(predicateMap);
-        var pageRequest =
-                PageRequest.of(check.getPageNum(), check.getPageSize(), sorter.getSorter(check.getSort()));
+        var pageRequest = PageRequest.of(check.getPageNum(), check.getPageSize(),
+                sorter.getSorter(check.getSort()));
 
         var tagEntityPage = tagRepository.findAll(specification, pageRequest);
 
@@ -65,4 +65,5 @@ public class TagServiceImpl implements TagService {
                 .orElseThrow(() -> new EntityNotFoundException(String.format(TAG_NOT_FOUND_FORMAT, id)));
         tagRepository.deleteById(tagEntity.getId());
     }
+
 }

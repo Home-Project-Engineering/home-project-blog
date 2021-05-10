@@ -15,4 +15,5 @@ public interface CommentMapperController {
     default Page<Comment> toCommentPage(Page<CommentDto> commentDtoPage) {
         return commentDtoPage.map(this::toComment);
     }
+
 }

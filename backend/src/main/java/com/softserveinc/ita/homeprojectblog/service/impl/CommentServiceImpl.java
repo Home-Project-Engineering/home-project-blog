@@ -157,4 +157,5 @@ public class CommentServiceImpl implements CommentService {
         var updatedCommentEntity = commentRepository.save(commentEntity);
         return commentMapper.toCommentDto(updatedCommentEntity);
     }
+
 }

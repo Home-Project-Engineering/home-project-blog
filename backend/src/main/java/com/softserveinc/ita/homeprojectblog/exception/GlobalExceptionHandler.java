@@ -35,22 +35,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler
-    public ResponseEntity<Error> userException(NoSuchUserException exception) {
-        var error = new Error();
-        error.setCode("400");
-        error.setMessage(exception.getMessage());
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<Error> usersException(NoSuchUsersException exception) {
-        var error = new Error();
-        error.setCode("400");
-        error.setMessage(exception.getMessage());
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
-
     @ExceptionHandler(value = {org.springframework.dao.DataIntegrityViolationException.class,
             org.hibernate.exception.ConstraintViolationException.class})
     public ResponseEntity<Error> hibernateValidationException(ConstraintViolationException e) {
@@ -85,7 +69,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
-     @ExceptionHandler
+    @ExceptionHandler
     public ResponseEntity<Error> springframeworkValidationException(ValidationException e) {
         var error = new Error();
         error.setCode("400");

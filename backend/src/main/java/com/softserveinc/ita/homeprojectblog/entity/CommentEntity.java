@@ -14,6 +14,7 @@ import java.time.OffsetDateTime;
 @Entity
 @Table(name = "comment", schema = "public")
 public class CommentEntity {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

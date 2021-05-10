@@ -4,10 +4,10 @@ import com.softserveinc.ita.homeprojectblog.api.TagsApi;
 import com.softserveinc.ita.homeprojectblog.mapper.TagMapperController;
 import com.softserveinc.ita.homeprojectblog.model.Tag;
 import com.softserveinc.ita.homeprojectblog.service.TagService;
+import com.softserveinc.ita.homeprojectblog.util.Boilerplate;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
@@ -30,6 +30,8 @@ public class TagController implements TagsApi {
     TagService tagService;
     TagMapperController tagMapper;
 
+    Boilerplate boilerplate;
+
     @Override // +/-
     public Optional<NativeWebRequest> getRequest() {
         return Optional.ofNullable(request);
@@ -42,16 +44,13 @@ public class TagController implements TagsApi {
     }
 
     @Override // +
-    public ResponseEntity<List<Tag>> getTags(BigDecimal id, String name,
-                                             String sort, Integer pageNum, Integer pageSize) {
+    public ResponseEntity<List<Tag>> getTags(
+            BigDecimal id, String name,
+            String sort, Integer pageNum, Integer pageSize) {
 
         var tagDtoPage = tagService.getTags(id, name, sort, pageNum, pageSize);
-
         var tagPage = tagMapper.toTagPage(tagDtoPage);
-
-        MultiValueMap<String, String> headers = new HttpHeaders();
-        headers.add("X-Total-Count", String.valueOf(tagPage.getTotalElements()));
-
+        MultiValueMap<String, String> headers = boilerplate.getXTotalCount(tagPage);
         return new ResponseEntity<>(tagPage.getContent(), headers, HttpStatus.OK);
     }
 

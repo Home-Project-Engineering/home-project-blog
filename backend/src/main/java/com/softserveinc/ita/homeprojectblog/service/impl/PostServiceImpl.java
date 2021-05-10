@@ -107,16 +107,7 @@ public class PostServiceImpl implements PostService {
         var oldPostEntity = postRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(String.format(POST_NOT_FOUND_FORMAT, id)));
 
-        var newPostEntity = postMapper.toPostEntity(postDto);
-
-        checkout.removeIdAndRepeatsInList(newPostEntity.getTags());
-        checkout.setExistsTagsOrSetDateForNew(tagRepository, newPostEntity.getTags());
-
-        newPostEntity.setUpdatedOn(OffsetDateTime.now());
-        newPostEntity = postMapper.toPostEntityFromNewAndOld(newPostEntity, oldPostEntity);
-
-        var postEntity = postRepository.save(newPostEntity);
-        return postMapper.toPostDto(postEntity);
+        return getUpdatedPostDto(postDto, oldPostEntity);
     }
 
     @Override
@@ -166,6 +157,10 @@ public class PostServiceImpl implements PostService {
         var oldPostEntity = postRepository.findByUserIdAndId(userDto.getId(), id).orElseThrow(
                 () -> new EntityNotFoundException(String.format(POST_OF_USER_NOT_FOUND_FORMAT, userDto.getId(), id)));
 
+        return getUpdatedPostDto(postDto, oldPostEntity);
+    }
+
+    private PostDto getUpdatedPostDto(PostDto postDto, PostEntity oldPostEntity) {
         var newPostEntity = postMapper.toPostEntity(postDto);
 
         checkout.removeIdAndRepeatsInList(newPostEntity.getTags());

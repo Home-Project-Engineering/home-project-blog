@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="post", schema = "public")
+@Table(name = "post", schema = "public")
 public class PostEntity {
 
     @Id
@@ -48,4 +48,5 @@ public class PostEntity {
 
     @Column(name = "update_on")
     private OffsetDateTime updatedOn;
+
 }

@@ -1,13 +1,15 @@
 package com.softserveinc.ita.homeprojectblog.util.query;
 
-import com.softserveinc.ita.homeprojectblog.exception.NoSuchUsersException;
 import io.github.perplexhub.rsql.RSQLJPASupport;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.softserveinc.ita.homeprojectblog.util.Constants.USER_NOT_EXIST;
 
 @Component("entitySpecificationService")
 public class EntitySpecificationService<T> {
@@ -27,7 +29,7 @@ public class EntitySpecificationService<T> {
         Specification<T> filterSpecification = RSQLJPASupport.toSpecification(toRSQLString(filter));
 
         return Optional.of(filterSpecification).orElseThrow(() ->
-                new NoSuchUsersException("User does not exists"));
-
+                new EntityNotFoundException(USER_NOT_EXIST));
     }
+
 }

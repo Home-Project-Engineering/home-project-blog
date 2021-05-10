@@ -15,4 +15,5 @@ public interface CommentRepository
     Optional<CommentEntity> findByPostIdAndId(BigDecimal postId, BigDecimal id);
 
     Optional<CommentEntity> findByUserIdAndId(BigDecimal id, BigDecimal id1);
+
 }

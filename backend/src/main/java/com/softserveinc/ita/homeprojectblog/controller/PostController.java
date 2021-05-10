@@ -7,10 +7,10 @@ import com.softserveinc.ita.homeprojectblog.model.Comment;
 import com.softserveinc.ita.homeprojectblog.model.Post;
 import com.softserveinc.ita.homeprojectblog.service.CommentService;
 import com.softserveinc.ita.homeprojectblog.service.PostService;
+import com.softserveinc.ita.homeprojectblog.util.Boilerplate;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MultiValueMap;
@@ -35,6 +35,8 @@ public class PostController implements PostsApi {
     CommentService commentService;
 
     NativeWebRequest request;
+
+    Boilerplate boilerplate;
 
 
     @Override // +/-
@@ -71,12 +73,9 @@ public class PostController implements PostsApi {
                 postId, id, authorName,
                 sort, pageNum, pageSize);
 
-        var pageComment = commentMapper.toCommentPage(commentDtoPage);
-
-        MultiValueMap<String, String> headers = new HttpHeaders();
-        headers.add("X-Total-Count", String.valueOf(pageComment.getTotalElements()));
-
-        return new ResponseEntity<>(pageComment.getContent(), headers, HttpStatus.OK);
+        var commentPage = commentMapper.toCommentPage(commentDtoPage);
+        MultiValueMap<String, String> headers = boilerplate.getXTotalCount(commentPage);
+        return new ResponseEntity<>(commentPage.getContent(), headers, HttpStatus.OK);
     }
 
     @Override // +
@@ -92,14 +91,10 @@ public class PostController implements PostsApi {
 
         var postDtoPage = postService.getPosts(
                 id, tagId, tagName, authorName,
-                sort, pageNum, pageSize
-        );
+                sort, pageNum, pageSize);
 
         var postPage = postMapper.toPostPage(postDtoPage);
-
-        MultiValueMap<String, String> headers = new HttpHeaders();
-        headers.add("X-Total-Count", String.valueOf(postPage.getTotalElements()));
-
+        MultiValueMap<String, String> headers = boilerplate.getXTotalCount(postPage);
         return new ResponseEntity<>(postPage.getContent(), headers, HttpStatus.OK);
     }
 

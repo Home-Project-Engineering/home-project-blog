@@ -61,7 +61,6 @@ public class UserServiceImpl implements UserService {
         predicateMap.put("name", name);
 
         var check = checkout.checkoutAndSetDefaults(sort, pageNum, pageSize);
-
         var specification = entitySpecificationService.getSpecification(predicateMap);
         var pageRequest = PageRequest.of(check.getPageNum(), check.getPageSize(),
                 sorter.getSorter(check.getSort()));
@@ -134,13 +133,10 @@ public class UserServiceImpl implements UserService {
         var userEntity = userMapper.toUserEntity(userDto);
         userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
 
-        Optional<RoleEntity> roleEntity = roleRepository.findByName(RoleEntity.NameEnum.BLOGGER);
-        if (roleEntity.isPresent()) {
-            userEntity.setRole(roleEntity.get());
-        } else {
-            userEntity.setRole(new RoleEntity());
-        }
+        var roleEntity = roleRepository.findByName(RoleEntity.NameEnum.BLOGGER)
+                .orElse(new RoleEntity(null, RoleEntity.NameEnum.BLOGGER));
 
+        userEntity.setRole(roleEntity);
         userEntity.setCreateOn(OffsetDateTime.now());
 
         userRepository.save(userEntity);

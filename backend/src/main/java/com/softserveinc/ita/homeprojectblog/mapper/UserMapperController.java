@@ -30,4 +30,5 @@ public interface UserMapperController {
 
     @Mapping(target = "id", ignore = true)
     RoleDto toRoleDto(Role role);
+
 }

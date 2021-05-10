@@ -10,15 +10,15 @@ import org.springframework.stereotype.Service;
 
 @Service("userDetailsServiceImpl")
 @AllArgsConstructor
-public class UserDetailsServiceImpl
-        implements UserDetailsService
-{
+public class UserDetailsServiceImpl implements UserDetailsService {
+
     private final UserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        UserEntity user = userRepository.findByName(name).orElseThrow(()->
+        UserEntity user = userRepository.findByName(name).orElseThrow(() ->
                 new UsernameNotFoundException("User does not exists"));
         return SecurityUser.fromUser(user);
     }
+
 }

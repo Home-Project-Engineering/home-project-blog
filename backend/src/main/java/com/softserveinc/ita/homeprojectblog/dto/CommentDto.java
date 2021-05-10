@@ -12,6 +12,7 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentDto {
+
   private BigDecimal id;
 
   private Author author;
@@ -21,7 +22,6 @@ public class CommentDto {
   private OffsetDateTime createdOn;
 
   private OffsetDateTime updatedOn;
-
 
 }
 

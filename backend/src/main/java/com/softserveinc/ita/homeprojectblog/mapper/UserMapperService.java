@@ -33,4 +33,5 @@ public interface UserMapperService {
     RoleEntity toRoleEntity(RoleDto roleDto);
 
     RoleDto toRoleDto(RoleEntity role);
+
 }
