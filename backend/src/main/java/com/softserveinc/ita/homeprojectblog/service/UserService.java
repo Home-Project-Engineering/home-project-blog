@@ -1,5 +1,6 @@
 package com.softserveinc.ita.homeprojectblog.service;
 
+import com.softserveinc.ita.homeprojectblog.dto.RoleDto;
 import com.softserveinc.ita.homeprojectblog.dto.UserDto;
 import org.springframework.data.domain.Page;
 
@@ -22,4 +23,6 @@ public interface UserService {
     Page<UserDto> getUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize);
 
     UserDto updateCurrentUser(UserDto userDto);
+
+    RoleDto getUserRole(BigDecimal id);
 }

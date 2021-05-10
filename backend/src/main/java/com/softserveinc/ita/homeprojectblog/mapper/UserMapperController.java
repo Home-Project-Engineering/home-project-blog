@@ -1,6 +1,8 @@
 package com.softserveinc.ita.homeprojectblog.mapper;
 
+import com.softserveinc.ita.homeprojectblog.dto.RoleDto;
 import com.softserveinc.ita.homeprojectblog.dto.UserDto;
+import com.softserveinc.ita.homeprojectblog.model.Role;
 import com.softserveinc.ita.homeprojectblog.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -19,4 +21,6 @@ public interface UserMapperController {
     @Mapping(target = "createOn", ignore = true)
     @Mapping(target = "updatedOn", ignore = true)
     UserDto toUserDto(User body);
+
+    Role toRole(RoleDto roleDto);
 }

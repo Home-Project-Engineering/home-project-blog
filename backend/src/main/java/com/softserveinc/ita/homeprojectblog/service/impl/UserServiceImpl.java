@@ -1,5 +1,6 @@
 package com.softserveinc.ita.homeprojectblog.service.impl;
 
+import com.softserveinc.ita.homeprojectblog.dto.RoleDto;
 import com.softserveinc.ita.homeprojectblog.dto.UserDto;
 import com.softserveinc.ita.homeprojectblog.entity.RoleEntity;
 import com.softserveinc.ita.homeprojectblog.entity.UserEntity;
@@ -29,8 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import static com.softserveinc.ita.homeprojectblog.util.Constants.USER_NOT_EXIST;
-import static com.softserveinc.ita.homeprojectblog.util.Constants.USER_NOT_FOUND_FORMAT;
+import static com.softserveinc.ita.homeprojectblog.util.Constants.*;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -80,6 +80,13 @@ public class UserServiceImpl implements UserService {
 
         var updatedUserEntity = userRepository.save(userEntity);
         return userMapper.toUserDto(updatedUserEntity);
+    }
+
+    @Override
+    public RoleDto getUserRole(BigDecimal id) {
+        var userDto = getUser(id);
+        return Optional.of(userDto.getRole()).orElseThrow(
+                () -> new EntityNotFoundException(String.format(USER_ROLE_NOT_EXIST, id)));
     }
 
     @Override

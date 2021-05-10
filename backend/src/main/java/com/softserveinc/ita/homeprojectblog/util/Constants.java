@@ -21,6 +21,8 @@ public final class Constants {
     public static final String POST_NOT_FOUND_FORMAT = "Post with id --> %s --> is not found in Database";
     public static final String TAG_NOT_FOUND_FORMAT = "Tag with id --> %s --> is not found in Database";
     public static final String USER_NOT_FOUND_FORMAT = "There is no user with ID --> %s in Database";
+    public static final String USER_ROLE_NOT_EXIST = "Role for current user --> %s does not exist";
+
 
     private Constants() {
     }
