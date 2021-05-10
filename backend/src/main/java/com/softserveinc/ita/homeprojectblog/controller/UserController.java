@@ -127,9 +127,10 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<Void> removePostByCurrentUser(BigDecimal id) {
-        return null;
+        postService.removePostByCurrentUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override // +

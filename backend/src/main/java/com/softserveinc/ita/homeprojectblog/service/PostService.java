@@ -19,5 +19,8 @@ public interface PostService {
     PostDto getPostByCurrentUser(BigDecimal id);
 
     Page<PostDto> getPostsByCurrentUser(BigDecimal id, String tagId, String tagName, String sort, Integer pageNum, Integer pageSize);
+
+    void removePostByCurrentUser(BigDecimal id);
+
 }
 
