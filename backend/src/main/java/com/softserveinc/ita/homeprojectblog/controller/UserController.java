@@ -174,9 +174,11 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(userMapper.toRole(roleDto), HttpStatus.OK);
     }
 
-    @Override
+    @Override // +
     public ResponseEntity<Void> updateCurrentUserPassword(Password password) {
-        return UsersApi.super.updateCurrentUserPassword(password);
+        var passwordDto = userMapper.toPasswordDto(password);
+        userService.updateCurrentUserPassword(passwordDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override

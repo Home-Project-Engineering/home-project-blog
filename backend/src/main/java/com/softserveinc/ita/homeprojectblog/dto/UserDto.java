@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-import static com.softserveinc.ita.homeprojectblog.util.Constants.*;
+import static com.softserveinc.ita.homeprojectblog.util.Constants.PASSWORD_REGEXP;
+import static com.softserveinc.ita.homeprojectblog.util.Constants.WRONG_PASSWORD_PATTERN;
 
 @Data
 @NoArgsConstructor
@@ -33,8 +33,6 @@ public class UserDto {
 
     @Pattern(regexp = PASSWORD_REGEXP,
             message = WRONG_PASSWORD_PATTERN)
-    @Size(min = 8, max = 255,
-            message = WRONG_PASSWORD_SIZE)
     private String password;
 
     private OffsetDateTime createOn;

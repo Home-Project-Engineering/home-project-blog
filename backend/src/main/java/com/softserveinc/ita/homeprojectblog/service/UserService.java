@@ -1,11 +1,15 @@
 package com.softserveinc.ita.homeprojectblog.service;
 
+import com.softserveinc.ita.homeprojectblog.dto.PasswordDto;
 import com.softserveinc.ita.homeprojectblog.dto.RoleDto;
 import com.softserveinc.ita.homeprojectblog.dto.UserDto;
 import org.springframework.data.domain.Page;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
 
+@Validated
 public interface UserService {
 
     UserDto getUser(BigDecimal id);
@@ -25,4 +29,6 @@ public interface UserService {
     UserDto updateCurrentUser(UserDto userDto);
 
     RoleDto getUserRole(BigDecimal id);
+
+    void updateCurrentUserPassword(@Valid PasswordDto passwordDto);
 }

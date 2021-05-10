@@ -3,13 +3,15 @@ package com.softserveinc.ita.homeprojectblog.util;
 public final class Constants {
     // message
     public static final String WRONG_PASSWORD_PATTERN =
-            "The password must include small and large letters and at least one digit";
-    public static final String WRONG_PASSWORD_SIZE = "The password should be between 8 and 32 characters";
+            "The password must include small and large letters and at least one digit\n" +
+                    "also the password should be between 8 and 32 characters";
     public static final String USER_NOT_EXIST = "User does not exist";
+    public static final String INCORRECT_OLD_PASSWORD = "Old password is incorrect";
 
 
     // regexp
     public static final String PASSWORD_REGEXP = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,32}";
+
 
     // format
     public static final String COMMENT_OF_POST_NOT_FOUND_FORMAT =

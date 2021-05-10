@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.softserveinc.ita.homeprojectblog.model.Error;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ValidationException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -81,6 +82,14 @@ public class GlobalExceptionHandler {
         var error = new Error();
         error.setCode("400");
         error.setMessage(e.getMessage().split(": \\[")[1].split("; ")[0]);
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+     @ExceptionHandler
+    public ResponseEntity<Error> springframeworkValidationException(ValidationException e) {
+        var error = new Error();
+        error.setCode("400");
+        error.setMessage(e.getMessage());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 

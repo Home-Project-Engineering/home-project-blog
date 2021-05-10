@@ -1,5 +1,6 @@
 package com.softserveinc.ita.homeprojectblog.service.impl;
 
+import com.softserveinc.ita.homeprojectblog.dto.PasswordDto;
 import com.softserveinc.ita.homeprojectblog.dto.RoleDto;
 import com.softserveinc.ita.homeprojectblog.dto.UserDto;
 import com.softserveinc.ita.homeprojectblog.entity.RoleEntity;
@@ -24,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ValidationException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -87,6 +89,17 @@ public class UserServiceImpl implements UserService {
         var userDto = getUser(id);
         return Optional.of(userDto.getRole()).orElseThrow(
                 () -> new EntityNotFoundException(String.format(USER_ROLE_NOT_EXIST, id)));
+    }
+
+    @Override
+    public void updateCurrentUserPassword(PasswordDto passwordDto) {
+        var userDto = getCurrentUser();
+        if (passwordEncoder.matches(passwordDto.getOldPassword(), userDto.getPassword())) {
+            userDto.setPassword(passwordDto.getNewPassword());
+        } else {
+            throw new ValidationException(INCORRECT_OLD_PASSWORD);
+        }
+        updateCurrentUser(userDto);
     }
 
     @Override
