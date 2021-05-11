@@ -66,11 +66,21 @@ alter table if exists comments add constraint FK_comments_author_id foreign key 
 alter table if exists comments add constraint FK_comments_pist_id foreign key (post_id) references posts;
 
 alter table if exists posts add constraint FK_posts_author_id foreign key (author_id) references users
-    on delete set null;
+    on
+delete
+set null;
 
 alter table if exists posts_tags add constraint FK_posts_tags_tag_id foreign key (tag_id) references tags
-    on delete cascade;
+    on
+delete
+cascade;
 
 alter table if exists posts_tags add constraint FK_posts_tags_post_id foreign key (post_id) references posts
-    on delete cascade;
+    on
+delete
+cascade;
 alter table if exists users add constraint FK_users_role_entity_id foreign key (role_entity_id) references roles;
+
+insert into roles (id, name) values (1, 'ADMIN');
+insert into users (id, email, first_name, last_name, name, password, role_entity_id)
+values (1, 'val@example.com', 'va', 'lerii', 'mitia', '$2a$12$E.0Zh7XZ7vKsrOHtSGFrA.RmaRuN9xSOnb3qjmIB5JQ05XK1VC/U.', 1);

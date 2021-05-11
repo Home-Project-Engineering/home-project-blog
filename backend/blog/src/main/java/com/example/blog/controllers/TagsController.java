@@ -45,7 +45,7 @@ public class TagsController implements TagsApi {
         List<Tag> tags = TagMapper.INSTANCE.toModels(tagPage.getContent());
 
         HttpHeaders respHeaders = new HttpHeaders();
-        respHeaders.set("X-Total-Count", String.valueOf(tagPage.getTotalPages()));
+        respHeaders.set("X-Total-Count", String.valueOf(tagPage.getTotalElements()));
 
         return new ResponseEntity<>(tags, respHeaders, HttpStatus.OK);
     }

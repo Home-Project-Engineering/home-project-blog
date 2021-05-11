@@ -62,7 +62,6 @@ public class PostService {
                 entity.getTags().add(tagRepo.findByName(tag.getName()).get());
             }
         }
-
         entity.setAuthor(userService.getCurrentUserEntity());
         entity.setCreatedOn(OffsetDateTime.now());
 
@@ -137,6 +136,7 @@ public class PostService {
         entity.setId(id);
         entity.setUpdatedOn(OffsetDateTime.now());
         entity.setCreatedOn(postRepo.findById(id).get().getCreatedOn());
+        entity.setAuthor(userService.getCurrentUserEntity());
 
         postRepo.save(entity);
 
@@ -186,7 +186,12 @@ public class PostService {
         if (!commentRepo.existsById(id))
             throw new EntityNotFoundException("No Comment with ID " + id);
 
-        CommentEntity entity = CommentMapper.INSTANCE.toEntity(dtoComment);
+        CommentEntity entity = commentRepo.getOne(id);
+        if (dtoComment.getText() == null) {
+            entity.setText("");
+        } else {
+            entity.setText(dtoComment.getText());
+        }
         entity.setId(id);
         entity.setUpdatedOn(OffsetDateTime.now());
         entity.setCreatedOn(commentRepo.findById(id).get().getCreatedOn());

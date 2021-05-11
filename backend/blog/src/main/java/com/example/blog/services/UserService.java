@@ -18,6 +18,7 @@ import com.example.blog.util.mappers.UserMapper;
 import com.example.blog.util.specifications.CommentSpecification;
 import com.example.blog.util.specifications.PostSpecification;
 import com.example.blog.util.specifications.UserSpecification;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -30,6 +31,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.validation.ValidationException;
 import java.net.PasswordAuthentication;
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 @Service
@@ -64,6 +66,12 @@ public class UserService {
     }
 
     public DtoUser createUser(DtoUser dtoUser) {
+        if (userRepo.findByEmail(dtoUser.getEmail()).isPresent()) {
+            throw new DataIntegrityViolationException("Данный email уже занят");
+        }
+        if (userRepo.findByName(dtoUser.getName()).isPresent()) {
+            throw new DataIntegrityViolationException("Данный name уже занят");
+        }
         UserEntity entity = UserMapper.INSTANCE.fromDto(dtoUser);
         entity.setPassword(passwordEncoder.encode(dtoUser.getPassword()));
 
@@ -227,11 +235,12 @@ public class UserService {
                 postSpec.userId(getCurrentUserEntity().getId().toString())
                         .and(postSpec.id(id));
 
-        PostEntity postEntity = postRepo.findOne(specification)
+        postRepo.findOne(specification)
                 .orElseThrow(() -> new EntityNotFoundException("No Post with ID " + id));
-
-        postEntity = PostMapper.INSTANCE.toEntity(postDto);
+        PostEntity postEntity = PostMapper.INSTANCE.toEntity(postDto);
         postEntity.setId(id);
+        postEntity.setCreatedOn(postRepo.findById(id).get().getCreatedOn());
+        postEntity.setUpdatedOn(OffsetDateTime.now());
         postRepo.save(postEntity);
 
         return PostMapper.INSTANCE.toDtoFromEntity(postEntity);
@@ -242,11 +251,12 @@ public class UserService {
                 commentSpec.userId(getCurrentUserEntity().getId().toString())
                         .and(commentSpec.id(id));
 
-        CommentEntity commentEntity = commentRepo.findOne(specification)
+        commentRepo.findOne(specification)
                 .orElseThrow(() -> new EntityNotFoundException("No Comment with ID " + id));
-
-        commentEntity = CommentMapper.INSTANCE.toEntity(dtoComment);
+        CommentEntity commentEntity = CommentMapper.INSTANCE.toEntity(dtoComment);
         commentEntity.setId(id);
+        commentEntity.setCreatedOn(commentRepo.findById(id).get().getCreatedOn());
+        commentEntity.setUpdatedOn(OffsetDateTime.now());
         commentRepo.save(commentEntity);
 
         return CommentMapper.INSTANCE.toDtoFromEntity(commentEntity);

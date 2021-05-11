@@ -4,7 +4,6 @@ import com.itacademy.tests.utils.ApiClientUtil;
 import com.softserveinc.ita.homeproject.blog.client.api.CurrentUserApi;
 import com.softserveinc.ita.homeproject.blog.client.api.UsersApi;
 import com.softserveinc.ita.homeproject.blog.client.model.ChangePassword;
-import com.softserveinc.ita.homeproject.blog.client.model.Password;
 import com.softserveinc.ita.homeproject.blog.client.model.User;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
@@ -14,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CurrentUserApiIT {
 
-    private final CurrentUserApi currentUserApi = new CurrentUserApi(ApiClientUtil.getClient());
-    private final UsersApi usersApi = new UsersApi(ApiClientUtil.getClient());
+    private final CurrentUserApi currentUserApi = new CurrentUserApi(ApiClientUtil.getAdminClient());
+    private final UsersApi usersApi = new UsersApi(ApiClientUtil.getAdminClient());
 
     @Test
     void getCurrentUser() {

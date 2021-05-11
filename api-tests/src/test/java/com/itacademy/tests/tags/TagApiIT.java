@@ -9,7 +9,6 @@ import com.softserveinc.ita.homeproject.blog.client.model.Tag;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,8 +16,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TagApiIT {
-    TagsApi tagsApi = new TagsApi(ApiClientUtil.getClient());
-    PostsApi postsApi = new PostsApi(ApiClientUtil.getClient());
+    TagsApi tagsApi = new TagsApi(ApiClientUtil.getAdminClient());
+    PostsApi postsApi = new PostsApi(ApiClientUtil.getAdminClient());
 
     @Test
     void removeTag() {

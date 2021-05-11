@@ -68,7 +68,7 @@ public class UserController implements UsersApi {
         List<Comment> comments = CommentMapper.INSTANCE.toModels(dtoComments.getContent());
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("X-Total-Count", String.valueOf(dtoComments.getTotalPages()));
+        httpHeaders.add("X-Total-Count", String.valueOf(dtoComments.getTotalElements()));
 
         return new ResponseEntity<>(comments, httpHeaders, HttpStatus.OK);
     }
@@ -103,7 +103,7 @@ public class UserController implements UsersApi {
         List<Post> posts = PostMapper.INSTANCE.toModels(page.getContent());
 
         HttpHeaders respHeaders = new HttpHeaders();
-        respHeaders.set("X-Total-Count", String.valueOf(page.getTotalPages()));
+        respHeaders.set("X-Total-Count", String.valueOf(page.getTotalElements()));
 
 
         return new ResponseEntity<>(posts, respHeaders, HttpStatus.OK);
@@ -131,7 +131,7 @@ public class UserController implements UsersApi {
         List<User> users = UserMapper.INSTANCE.toListUsers(page.getContent());
 
         HttpHeaders respHeaders = new HttpHeaders();
-        respHeaders.set("X-Total-Count", String.valueOf(page.getTotalPages()));
+        respHeaders.set("X-Total-Count", String.valueOf(page.getTotalElements()));
 
 
         return new ResponseEntity<>(users, respHeaders, HttpStatus.OK);

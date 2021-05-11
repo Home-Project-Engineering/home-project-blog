@@ -25,7 +25,7 @@ public final class ApiClientUtil {
         return client;
     }
 
-    public static ApiClient getClient() {
+    public static ApiClient getAdminClient() {
         ApiClient client = new ApiClient();
         setLoggingFeature(client);
         setServers(client);

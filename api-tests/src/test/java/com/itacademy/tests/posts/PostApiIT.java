@@ -6,18 +6,16 @@ import com.softserveinc.ita.homeproject.blog.client.api.PostsApi;
 import com.softserveinc.ita.homeproject.blog.client.model.Post;
 import com.softserveinc.ita.homeproject.blog.client.model.Tag;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PostApiIT {
-    PostsApi postsApi = new PostsApi(ApiClientUtil.getClient());
+    PostsApi postsApi = new PostsApi(ApiClientUtil.getAdminClient());
 
     @Test
     void createPost() {

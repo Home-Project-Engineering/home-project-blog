@@ -20,8 +20,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CommentApiIT {
-    private final CommentsApi commentsApi = new CommentsApi(ApiClientUtil.getClient());
-    private final PostsApi postApi = new PostsApi(ApiClientUtil.getClient());
+    private final CommentsApi commentsApi = new CommentsApi(ApiClientUtil.getAdminClient());
+    private final PostsApi postApi = new PostsApi(ApiClientUtil.getAdminClient());
 
     @Test
     void getComments() {

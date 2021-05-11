@@ -1,4 +1,4 @@
-package com.example.blog.backend.util.exceptions;
+package com.example.blog.util.exceptions;
 
 import javassist.NotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -66,6 +66,14 @@ public class BlogExceptionHandler {
 
     @ExceptionHandler(value = {ValidationException.class})
     public ResponseEntity<Object> noSuchUserException(ValidationException e) {
+        Error error = new Error();
+        error.setCode("400");
+        error.setMessage(e.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = {DataIntegrityViolationException.class})
+    public ResponseEntity<Object> violationException(DataIntegrityViolationException e) {
         Error error = new Error();
         error.setCode("400");
         error.setMessage(e.getMessage());

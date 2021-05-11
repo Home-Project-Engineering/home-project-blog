@@ -76,7 +76,7 @@ public class PostController implements PostsApi {
         List<Comment> comments = CommentMapper.INSTANCE.toModels(dtoComments.getContent());
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("X-Total-Count", String.valueOf(dtoComments.getTotalPages()));
+        httpHeaders.add("X-Total-Count", String.valueOf(dtoComments.getTotalElements()));
 
         return new ResponseEntity<>(comments, httpHeaders, HttpStatus.OK);
     }
@@ -110,7 +110,7 @@ public class PostController implements PostsApi {
         }
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("X-Total-Count", String.valueOf(dtoPosts.getTotalPages()));
+        httpHeaders.add("X-Total-Count", String.valueOf(dtoPosts.getTotalElements()));
 
         List<Post> posts = PostMapper.INSTANCE.toModels(dtoPosts.getContent());
 
