@@ -4,16 +4,20 @@ import com.softserveinc.ita.home.home_project_blog.repository.CommentRepository;
 import com.softserveinc.ita.home.home_project_blog.repository.entity.Comment;
 import com.softserveinc.ita.home.home_project_blog.service.dto.CommentDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.CommentMapperService;
+import com.softserveinc.ita.home.home_project_blog.specification.SpecificationService;
 import com.softserveinc.ita.home.home_project_blog.validation.MismatchException;
 import com.softserveinc.ita.home.home_project_blog.validation.Const;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @Validated
 @RequiredArgsConstructor
@@ -24,22 +28,19 @@ public class CommentService implements ICommentService {
     private final CommentRepository commentRepository;
     private final CommentMapperService mapper;
     private final IUserService userService;
+    private final SpecificationService<Comment> commentSpecificationService;
 
     @Override
     public Page<CommentDto> findAll(Long post_id, Long id, String user_name, Long user_id, Integer pageNum, Integer pageSize, String sort) {
         Pageable paging = GeneralService.pagination(pageNum, pageSize, sort);
-        Page<Comment> commentsPage;
-//        if ((title != null) && (id != null)) {
-//            commentsPage = repository.findByTitleAndId(title, id, paging);
-//        } else if (title != null) {
-//            commentsPage = repository.findByTitle(title, paging);
-//        } else
-        if (id != null) {
-            commentsPage = commentRepository.findById(id, paging);
-        } else {
-            commentsPage = commentRepository.findAll(paging);
-        }
-        return mapper.toPageCommentDto(commentsPage);
+        Map<String, String> filter = new HashMap<>();
+        filter.put("id", id!=null?id.toString():null);
+        filter.put("post.id", post_id!=null?post_id.toString():null);
+        filter.put("user.name", user_name);
+        filter.put("user.id", user_id!=null?user_id.toString():null);
+        Specification<Comment> specification = commentSpecificationService.getSpecification(filter);
+        Page<Comment> pageComment = commentRepository.findAll(specification, paging);
+        return mapper.toPageCommentDto(pageComment);
     }
 
     @Override

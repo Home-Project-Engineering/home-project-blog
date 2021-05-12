@@ -4,18 +4,18 @@ import com.softserveinc.ita.home.home_project_blog.repository.TagRepository;
 import com.softserveinc.ita.home.home_project_blog.repository.entity.Tag;
 import com.softserveinc.ita.home.home_project_blog.service.dto.TagDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.TagMapperService;
+import com.softserveinc.ita.home.home_project_blog.specification.SpecificationService;
 import com.softserveinc.ita.home.home_project_blog.validation.Const;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Validated
 @RequiredArgsConstructor
@@ -24,23 +24,17 @@ public class TagService implements ITagService {
 
     private final TagRepository tagRepository;
     private final TagMapperService mapper;
-    private final TagMapperService tagMapper;
-    private final IUserService userService;
+    private final SpecificationService<Tag> tagSpecificationService;
 
     @Override
     public Page<TagDto> findAll(Long id, String name, Integer pageNum, Integer pageSize, String sort) {
         Pageable paging = GeneralService.pagination(pageNum, pageSize, sort);
-        Page<Tag> postsPage;
-        if ((name != null) && (id != null)) {
-            postsPage = tagRepository.findByNameAndId(name, id, paging);
-        } else if (id != null) {
-            postsPage = tagRepository.findById(id, paging);
-        } else if (name != null) {
-            postsPage = tagRepository.findByName(name, paging);
-        } else {
-            postsPage = tagRepository.findAll(paging);
-        }
-        return mapper.toPageTagDto(postsPage);
+        Map<String, String> filter = new HashMap<>();
+        filter.put("id", id!=null?id.toString():null);
+        filter.put("name", name);
+        Specification<Tag> specification = tagSpecificationService.getSpecification(filter);
+        Page<Tag> pageTag = tagRepository.findAll(specification, paging);
+        return mapper.toPageTagDto(pageTag);
     }
 
     @Override

@@ -5,12 +5,14 @@ import com.softserveinc.ita.home.home_project_blog.security.model.Role;
 import com.softserveinc.ita.home.home_project_blog.repository.entity.User;
 import com.softserveinc.ita.home.home_project_blog.service.dto.UserDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.UserMapperService;
+import com.softserveinc.ita.home.home_project_blog.specification.SpecificationService;
 import com.softserveinc.ita.home.home_project_blog.validation.Const;
 import com.softserveinc.ita.home.home_project_blog.validation.NotAuthorizedException;
 import com.softserveinc.ita.home.home_project_blog.validation.NotUniqueException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +22,8 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @Validated
 @RequiredArgsConstructor
@@ -29,21 +33,18 @@ public class UserService implements IUserService {
     private final UserRepository repository;
     private final UserMapperService mapper;
     private final PasswordEncoder passwordEncoder;
+    SpecificationService<User> userSpecificationService;
 
     @Override
     public Page<UserDto> findAll(Long id, String name, Integer pageNum, Integer pageSize, String sort) {
         Pageable paging = GeneralService.pagination(pageNum, pageSize, sort);
-        Page<User> usersPage;
-        if ((name != null) && (id != null)) {
-            usersPage = repository.findByNameAndId(name, id, paging);
-        } else if (name != null) {
-            usersPage = repository.findByName(name, paging);
-        } else if (id != null) {
-            usersPage = repository.findById(id, paging);
-        } else {
-            usersPage = repository.findAll(paging);
-        }
-        return mapper.toPageUserDto(usersPage);
+        Map<String, String> filter = new HashMap<>();
+        filter.put("id", id!=null?id.toString():null);
+        filter.put("name", name);
+
+        Specification<User> specification = userSpecificationService.getSpecification(filter);
+        Page<User> pageUser = repository.findAll(specification, paging);
+        return mapper.toPageUserDto(pageUser);
     }
 
     @Override
