@@ -832,6 +832,16 @@ components:
           description: The message of an error that describes the Error.
           type: string
           readOnly: true
+    Password:
+      required:
+        - oldPassword
+        - newPassword
+      type: object
+      properties:
+        oldPassword:
+          type: string
+        newPassword:
+          type: string
 
     ChangePassword:
       type: object
@@ -854,6 +864,8 @@ components:
           example: passworD321
 
   responses:
+    PasswordUpdatedResponse:
+      description: The password was succesfully updated.
     NoContentResponse:
       description: The request was succesfully processed.
     TagResponse:
