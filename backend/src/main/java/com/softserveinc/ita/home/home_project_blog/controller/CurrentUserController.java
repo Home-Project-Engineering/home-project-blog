@@ -1,12 +1,11 @@
 package com.softserveinc.ita.home.home_project_blog.controller;
 
-import com.softserveinc.ita.home.home_project_blog.controller.dto.CreatePostDto;
-import com.softserveinc.ita.home.home_project_blog.controller.dto.UpdateUserDto;
-import com.softserveinc.ita.home.home_project_blog.controller.dto.ViewPostDto;
-import com.softserveinc.ita.home.home_project_blog.controller.dto.ViewUserDto;
+import com.softserveinc.ita.home.home_project_blog.controller.dto.*;
+import com.softserveinc.ita.home.home_project_blog.controller.mapper.CommentMapperController;
 import com.softserveinc.ita.home.home_project_blog.controller.mapper.PostMapperController;
 import com.softserveinc.ita.home.home_project_blog.controller.mapper.UserMapperController;
 import com.softserveinc.ita.home.home_project_blog.service.GeneralService;
+import com.softserveinc.ita.home.home_project_blog.service.ICommentService;
 import com.softserveinc.ita.home.home_project_blog.service.IPostService;
 import com.softserveinc.ita.home.home_project_blog.service.IUserService;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +25,12 @@ import java.util.List;
 public class CurrentUserController {
     private final IUserService userService;
     private final IPostService postService;
+    private final ICommentService commentService;
     private final GeneralService<ViewPostDto> generalPostService;
+    private final GeneralService<ViewCommentDto> generalCommentService;
     private final UserMapperController userMapper;
     private final PostMapperController postMapper;
+    private final CommentMapperController commentMapper;
 
     @GetMapping(produces = "application/json")
     public ResponseEntity<ViewUserDto> getCurrentUser() {
@@ -69,5 +71,35 @@ public class CurrentUserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping(path = "/comments", produces = "application/json")
+    public ResponseEntity<List<ViewCommentDto>> getAllComments(
+            @RequestParam(required = false) Long id,
+            @RequestParam(defaultValue = "0") Integer page_num,
+            @RequestParam(defaultValue = "50") Integer page_size,
+            @RequestParam(defaultValue = "-id") String sort
+    ) {
+        return generalCommentService.toResponseEntity(commentMapper.toPageViewCommentDto(
+                commentService.findAll(null, id, null, userService.getCurrentUser().getId(), page_num, page_size, sort)));
+    }
 
+    @GetMapping(path = "/comments/{id}", produces = "application/json")
+    public ResponseEntity<ViewCommentDto> getCommentById(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(commentMapper.toViewCommentDto(commentService.getCommentByIdByCurrentUser(id)), HttpStatus.OK);
+    }
+
+    @PutMapping(path = "/comments/{id}", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<ViewCommentDto> updateComment(@PathVariable Long id,
+                                                        @Valid @RequestBody CreateCommentDto comment) {
+        return new ResponseEntity<>(
+                commentMapper.toViewCommentDto(
+                commentService.updateCommentByCurrentUser(id, commentMapper.toCommentDto(comment))),
+                HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping(path = "/comments/{id}", produces = "application/json")
+    public ResponseEntity<ViewCommentDto> deleteComment(@PathVariable Long id) {
+        commentService.deleteCommentByCurrentUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

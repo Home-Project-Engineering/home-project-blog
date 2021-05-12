@@ -3,6 +3,7 @@ package com.softserveinc.ita.home.home_project_blog.service;
 import com.softserveinc.ita.home.home_project_blog.repository.CommentRepository;
 import com.softserveinc.ita.home.home_project_blog.repository.entity.Comment;
 import com.softserveinc.ita.home.home_project_blog.service.dto.CommentDto;
+import com.softserveinc.ita.home.home_project_blog.service.dto.PostDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.CommentMapperService;
 import com.softserveinc.ita.home.home_project_blog.specification.SpecificationService;
 import com.softserveinc.ita.home.home_project_blog.validation.MismatchException;
@@ -43,11 +44,14 @@ public class CommentService implements ICommentService {
         return mapper.toPageCommentDto(pageComment);
     }
 
-    @Override
-    public CommentDto getById(Long post_id, Long id) {
-        CommentDto comment = mapper.toCommentDto(commentRepository.findById(id).orElseThrow(
+    private CommentDto getById(Long comment_id){
+        return mapper.toCommentDto(commentRepository.findById(comment_id).orElseThrow(
                 () -> new EntityNotFoundException(Const.COMMENT_DOESNT_EXIST)));
-        //todo equals comments!!!! Does it work?
+    }
+
+    @Override
+    public CommentDto getById(Long post_id, Long comment_id) {
+        CommentDto comment = getById(comment_id);
         if (!comment.getPost().equals(postService.getById(post_id))) {
             throw new MismatchException(Const.COMMENT_DOESNT_ADHERE_TO_THE_POST);
         }
@@ -61,21 +65,41 @@ public class CommentService implements ICommentService {
         return mapper.toCommentDto(commentRepository.save(mapper.toComment(comment)));
     }
 
-    @Override
-    public CommentDto update(Long post_id, Long id, @Valid CommentDto comment) {
-        CommentDto oldComment = getById(post_id, id);
-        oldComment.setText(comment.getText());
+    private CommentDto update(@Valid CommentDto oldComment, @Valid CommentDto newComment) {
+        oldComment.setText(newComment.getText());
         return mapper.toCommentDto(commentRepository.save(mapper.toComment(oldComment)));
     }
 
-//    @Override
-//    public CommentDto updateCurrentComment(@Valid CommentDto comment) {
-//        return updateDto(getCurrentComment(), comment);
-//    }
+    @Override
+    public CommentDto update(Long post_id, Long comment_id, @Valid CommentDto comment) {
+        return update(getById(post_id,comment_id), comment);
+    }
 
     @Override
     public void delete(Long post_id, Long id) {
         getById(post_id, id);
         commentRepository.deleteById(id);
+    }
+
+    //***************CURRENT USER*************************
+
+    @Override
+    public CommentDto getCommentByIdByCurrentUser(Long comment_id) {
+        CommentDto comment = getById(comment_id);
+        if (!comment.getUser().equals(userService.getCurrentUser())) {
+            throw new MismatchException(Const.COMMENT_DOESNT_ADHERE_TO_THE_USER);
+        }
+        return comment;
+    }
+
+    @Override
+    public CommentDto updateCommentByCurrentUser(Long comment_id, @Valid CommentDto comment) {
+        return update(getCommentByIdByCurrentUser(comment_id), comment);
+    }
+
+    @Override
+    public void deleteCommentByCurrentUser(Long comment_id) {
+        getCommentByIdByCurrentUser(comment_id);
+        commentRepository.deleteById(comment_id);
     }
 }

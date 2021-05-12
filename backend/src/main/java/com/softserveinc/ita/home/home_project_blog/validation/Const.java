@@ -18,6 +18,7 @@ public interface Const {
     String WRONG_PASSWORD = "Password should contain at least one figure, one lowercase and one uppercase letter. "
             + WRONG_PASSWORD_LENGTH;
     String COMMENT_DOESNT_ADHERE_TO_THE_POST = "This comment doesn't adhere to the post.";
+    String COMMENT_DOESNT_ADHERE_TO_THE_USER = "This comment doesn't adhere to the user.";
     String POST_DOESNT_ADHERE_TO_THE_USER = "This post doesn't adhere to the user.";
     String PASSWORD_PATTERN = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[0-9a-zA-Z]{8,}";
 }
