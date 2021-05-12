@@ -4,15 +4,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <artifactId>home-project-blog</artifactId>
+    <groupId>com.softserveink.ita.homeprojectblog</groupId>
+    <version>${revision}</version>
+  </parent>
+
   <groupId>com.softserveinc.ita.homeproject</groupId>
   <artifactId>home-project-blog-api-tests</artifactId>
-  <version>${revision}</version>
 
   <name>Home project blog api tests</name>
   <description>This module is intended to test backend of Home Project Blog application.</description>
 
   <properties>
-    <revision>0.1.0-SNAPSHOT</revision>
 
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>11</maven.compiler.source>
