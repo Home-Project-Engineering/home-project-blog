@@ -44,16 +44,6 @@ public class CommentsController {
         return new ResponseEntity<>(mapper.toViewCommentDto(commentService.getById(post_id, id)), HttpStatus.OK);
     }
 
-    //
-//    @GetMapping(path = "/current", produces = "application/json")
-//    public ResponseEntity<ViewCommentDto> getCurrentComment() {
-//        return new ResponseEntity<>(mapper.toViewCommentDto(commentService.getCurrentComment()), HttpStatus.OK);
-//    }
-//
-//    @PutMapping(path = "/current", consumes = "application/json", produces = "application/json")
-//    public ResponseEntity<ViewCommentDto> updateCurrentComment(@Valid @RequestBody UpdateCommentDto comment) {
-//        return new ResponseEntity<>(mapper.toViewCommentDto(commentService.updateCurrentComment(mapper.UpdateToCommentDto(comment))), HttpStatus.OK);
-//    }
     @PreAuthorize("hasAuthority('comments:create')")
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseBody
