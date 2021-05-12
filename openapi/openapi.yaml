@@ -1,9 +1,12 @@
 openapi: 3.0.3
 
 info:
-  version: 1.1.1.0.0.2.0
-#  version: usable.khoma.ben.val.lid.vld.sash
-#  own addition until commit --> 3/2021.05.10
+  version: 1.1.1
+  #  version: usable.khoma.team
+
+  #  team version --> 1.0.0.2.0
+  #  team version --> ben.val.lid.vld.sash
+  #  vld addition until commit --> 2/2021.05.10
   title: Home Project Blog Service
   description: |
     Blog for the Home Project engineers
@@ -15,7 +18,7 @@ servers:
   - url: http://localhost:8080/api/1
 
 security:
-  - basicAuth: []
+  - basicAuth: [ ]
 
 tags:
   - name: Current User

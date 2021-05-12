@@ -19,7 +19,7 @@
     </description>
 
     <name>backend</name>
-    <version>1.1.1.0.0.1.0</version>
+    <version>1.1.1</version>
 
     <properties>
         <springfox-version>2.9.2</springfox-version>
@@ -42,7 +42,6 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
 
 
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-devtools -->
@@ -154,7 +153,6 @@
         <!-- /Bean Validation API support -->
 
 
-
     </dependencies>
 
     <build>
@@ -191,11 +189,11 @@
                         </goals>
                         <configuration>
                             <generatorName>spring</generatorName>
-                            <!--<inputSpec>${project.parent.basedir}/openapi/openapi.yaml</inputSpec>-->
-                            <!--                            <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>-->
-                            <inputSpec>
+                            <inputSpec>${project.parent.basedir}/openapi/openapi.yaml</inputSpec>
+                            <!--<inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>-->
+                            <!--<inputSpec>
                                 https://raw.githubusercontent.com/BenAvleck/home-project-blog/main/openapi/openapi.yaml
-                            </inputSpec>
+                            </inputSpec>-->
                             <output>${project.basedir}</output>
                             <skipValidateSpec>true</skipValidateSpec>
                             <skipOverwrite>true</skipOverwrite>
