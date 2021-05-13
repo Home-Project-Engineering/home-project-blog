@@ -16,7 +16,7 @@ public class GeneralService<T> {
     public static Pageable pagination(Integer pageNum, Integer pageSize, String sortBy) {
         Pageable paging;
         if (sortBy.charAt(0) == '-') {
-            paging = PageRequest.of(pageNum, pageSize, Sort.by(sortBy.substring(1)).descending());
+            paging = PageRequest.of(pageNum - 1, pageSize, Sort.by(sortBy.substring(1)).descending());
         } else {
             if (sortBy.charAt(0) == '+') {
                 sortBy = sortBy.substring(1);
@@ -26,7 +26,7 @@ public class GeneralService<T> {
         return paging;
     }
 
-    public ResponseEntity<List<T>> toResponseEntity (Page<T> page) {
+    public ResponseEntity<List<T>> toResponseEntity(Page<T> page) {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("X-Total-Count",
                 String.valueOf(page.getTotalElements()));

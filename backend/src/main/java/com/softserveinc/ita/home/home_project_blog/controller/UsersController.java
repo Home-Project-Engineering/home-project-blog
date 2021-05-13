@@ -31,7 +31,7 @@ public class UsersController {
     public ResponseEntity<List<ViewUserDto>> getAllUsers(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String name,
-            @RequestParam(defaultValue = "0") Integer page_num,
+            @RequestParam(defaultValue = "1") Integer page_num,
             @RequestParam(defaultValue = "50") Integer page_size,
             @RequestParam(defaultValue = "-id") String sort
     ) {

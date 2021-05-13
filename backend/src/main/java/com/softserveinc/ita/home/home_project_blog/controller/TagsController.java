@@ -1,13 +1,10 @@
 package com.softserveinc.ita.home.home_project_blog.controller;
 
 import com.softserveinc.ita.home.home_project_blog.controller.dto.ViewTagDto;
-import com.softserveinc.ita.home.home_project_blog.controller.dto.ViewUserDto;
 import com.softserveinc.ita.home.home_project_blog.controller.mapper.TagMapperController;
 import com.softserveinc.ita.home.home_project_blog.service.GeneralService;
 import com.softserveinc.ita.home.home_project_blog.service.ITagService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,7 +27,7 @@ public class TagsController {
     public ResponseEntity<List<ViewTagDto>> getAllTags(
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String name,
-            @RequestParam(defaultValue = "0") Integer page_num,
+            @RequestParam(defaultValue = "1") Integer page_num,
             @RequestParam(defaultValue = "50") Integer page_size,
             @RequestParam(defaultValue = "-id") String sort
     ) {

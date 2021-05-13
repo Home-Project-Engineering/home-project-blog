@@ -30,7 +30,7 @@ public class CommentsController {
             @RequestParam(required = false) Long id,
             @RequestParam(required = false) String user_name,
             @RequestParam(required = false) Long user_id,
-            @RequestParam(defaultValue = "0") Integer page_num,
+            @RequestParam(defaultValue = "1") Integer page_num,
             @RequestParam(defaultValue = "50") Integer page_size,
             @RequestParam(defaultValue = "-id") String sort,
             @PathVariable("post_id") Long post_id

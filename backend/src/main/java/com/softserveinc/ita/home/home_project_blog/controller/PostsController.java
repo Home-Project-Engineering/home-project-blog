@@ -32,7 +32,7 @@ public class PostsController {
             @RequestParam(required = false) Long tag_id,
             @RequestParam(required = false) String tag_name,
             @RequestParam(required = false) Long user_id,
-            @RequestParam(defaultValue = "0") Integer page_num,
+            @RequestParam(defaultValue = "1") Integer page_num,
             @RequestParam(defaultValue = "50") Integer page_size,
             @RequestParam(defaultValue = "-id") String sort
     ) {
