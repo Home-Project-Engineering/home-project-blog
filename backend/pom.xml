@@ -19,7 +19,7 @@
     </description>
 
     <name>backend</name>
-    <version>1.1.1.0.0.1.0</version>
+    <version>1.1.1</version>
 
     <properties>
         <springfox-version>2.9.2</springfox-version>
@@ -160,17 +160,6 @@
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
