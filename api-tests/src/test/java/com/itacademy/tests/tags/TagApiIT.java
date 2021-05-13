@@ -13,7 +13,8 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class TagApiIT {
     TagsApi tagsApi = new TagsApi(ApiClientUtil.getAdminClient());
@@ -49,7 +50,7 @@ public class TagApiIT {
                 , 1
                 , 10
         );
-        assertThat(tags).isSortedAccordingTo(Comparator.comparing(Tag::getName));
+        assertThat(tags).isSortedAccordingTo((o1, o2) -> o1.getName().compareToIgnoreCase(o2.getName()));
     }
 
     @Test
@@ -61,7 +62,7 @@ public class TagApiIT {
                 , 1
                 , 10
         );
-        assertThat(tags).isSortedAccordingTo(Comparator.comparing(Tag::getName).reversed());
+        assertThat(tags).isSortedAccordingTo((o1, o2) -> o2.getName().compareToIgnoreCase(o1.getName()));
     }
 
     @Test

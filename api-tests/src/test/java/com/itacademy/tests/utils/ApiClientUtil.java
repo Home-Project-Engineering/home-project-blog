@@ -12,8 +12,8 @@ import java.util.logging.Logger;
 
 public final class ApiClientUtil {
     private static final String APPLICATION_EXTERNAL_PORT = System.getProperty("blog.application.external.port", "8080");
-    private static final String APPLICATION_ADMIN_EMAIL = System.getProperty("blog.application.admin.username", "val@example.com");
-    private static final String APPLICATION_ADMIN_PASSWORD = System.getProperty("blog.application.admin.password", "Dfkthrf17");
+    private static final String APPLICATION_ADMIN_NAME = System.getProperty("blog.application.admin.username", "Tertey");
+    private static final String APPLICATION_ADMIN_PASSWORD = System.getProperty("blog.application.admin.password", "passworD321");
     private static final String VERBOSE_LOGGING = System.getProperty("verbose.tests.logging", "true");
 
     public static ApiClient getClient(String email, String password) {
@@ -29,7 +29,7 @@ public final class ApiClientUtil {
         ApiClient client = new ApiClient();
         setLoggingFeature(client);
         setServers(client);
-        client.setUsername(APPLICATION_ADMIN_EMAIL);
+        client.setUsername(APPLICATION_ADMIN_NAME);
         client.setPassword(APPLICATION_ADMIN_PASSWORD);
         return client;
     }

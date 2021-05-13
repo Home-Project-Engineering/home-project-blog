@@ -8,7 +8,10 @@ import com.softserveinc.ita.homeproject.blog.client.model.Tag;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -87,7 +90,7 @@ public class PostApiIT {
                 , 10
         );
 
-        assertThat(posts).isSortedAccordingTo(Comparator.comparing(Post::getId));
+        assertThat(posts).isSortedAccordingTo(Comparator.comparing(Post::getId).reversed());
     }
 
     @Test
@@ -101,7 +104,7 @@ public class PostApiIT {
                 , 1
                 , 10
         );
-        assertThat(posts).isSortedAccordingTo(Comparator.comparing(Post::getId).reversed());
+        assertThat(posts).isSortedAccordingTo(Comparator.comparing(Post::getId));
     }
 
     @Test
@@ -112,7 +115,7 @@ public class PostApiIT {
     }
 
 
-    @org.junit.jupiter.api.Test
+    @Test
     void updatePost() {
         Post post = postsApi.createPost(createTestPost());
         Post updatePost = new Post()

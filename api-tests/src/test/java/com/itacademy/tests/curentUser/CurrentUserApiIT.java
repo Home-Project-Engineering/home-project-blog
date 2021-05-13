@@ -22,7 +22,6 @@ class CurrentUserApiIT {
         assertNotNull(user);
     }
 
-
     @Test
     void updateCurrentUser() {
         User savedUser = currentUserApi
@@ -35,12 +34,14 @@ class CurrentUserApiIT {
 
         User updated = currentUserApi.updateCurrentUser(updateUser);
         assertUser(savedUser, updateUser, updated);
+        savedUser.setPassword("passworD321");
+        currentUserApi.updateCurrentUser(savedUser);
     }
 
     @Test
     void updateCurrentUserPassword() {
         User expected = usersApi.createUser(createTestUser());
-        CurrentUserApi currentUserApiForUpdatePassword = new CurrentUserApi(ApiClientUtil.getClient(expected.getEmail(), "passworD321"));
+        CurrentUserApi currentUserApiForUpdatePassword = new CurrentUserApi(ApiClientUtil.getClient(expected.getName(), "passworD321"));
         String newPassword = "newPassworD321";
         currentUserApiForUpdatePassword.updateCurrentUserPassword(new ChangePassword().oldPassword("passworD321").newPassword(newPassword));
         currentUserApiForUpdatePassword.getApiClient().setPassword(newPassword);

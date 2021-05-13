@@ -53,6 +53,7 @@ public class CurrentUserPostsApiIT {
         assertThatExceptionOfType(ApiException.class)
                 .isThrownBy(() -> postsApi.getPost(expectedPost.getId()));
     }
+
     @Test
     void getPostsByCurrentUser() {
         saveListPost();
