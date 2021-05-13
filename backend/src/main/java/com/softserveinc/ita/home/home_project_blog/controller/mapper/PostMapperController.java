@@ -19,8 +19,6 @@ public interface PostMapperController {
 
     ViewPostDto toViewPostDto(PostDto post);
 
-    List<ViewPostDto> toViewPostDtos(List<PostDto> posts);
-
     default Page<ViewPostDto> toPageViewPostDto(Page<PostDto> posts) {
         return posts.map(this::toViewPostDto);
     }
