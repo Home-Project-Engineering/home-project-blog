@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS "user"
     update_on  TIMESTAMPTZ  NULL,
     role_id    smallint     NOT NULL,
     PRIMARY KEY (id),
-    foreign key (role_id) references role (id)
+    foreign key (role_id) REFERENCES role (id)
 );
 
 -- DROP TABLE IF EXISTS "tag";
@@ -40,12 +40,12 @@ CREATE TABLE IF NOT EXISTS "post"
     id                 BIGSERIAL    NOT NULL,
     title              VARCHAR(250) NOT NULL,
     preview_attachment TEXT         NOT NULL,
-    user_id            BIGINT       NOT NULL,
+    user_id            BIGINT,
     create_on          TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     text               TEXT         NOT NULL,
     update_on          TIMESTAMPTZ  NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES "user" (id)
+    FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE SET NULL
 );
 
 -- DROP TABLE IF EXISTS "post";
@@ -63,12 +63,12 @@ CREATE TABLE IF NOT EXISTS "comment"
     id        BIGSERIAL   NOT NULL,
     text      TEXT        NOT NULL,
     post_id   BIGINT      NOT NULL,
-    user_id   BIGINT      NOT NULL,
+    user_id   BIGINT,
 --     tags_id   BIGINT      NOT NULL,
     create_on TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_on TIMESTAMPTZ NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES "user" (id),
+    FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE SET NULL,
     FOREIGN KEY (post_id) REFERENCES "post" (id)
 );
 

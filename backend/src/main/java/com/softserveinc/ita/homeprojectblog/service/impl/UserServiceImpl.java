@@ -73,11 +73,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto updateCurrentUser(UserDto userDto) {
         var currentUserDto = getCurrentUser();
-
         var userEntity = userMapper.toUserEntityFromUsersDto(currentUserDto, userDto);
-
         userEntity.setUpdatedOn(OffsetDateTime.now());
-        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
 
         var updatedUserEntity = userRepository.save(userEntity);
         return userMapper.toUserDto(updatedUserEntity);
@@ -87,18 +84,18 @@ public class UserServiceImpl implements UserService {
     public RoleDto getUserRole(BigDecimal id) {
         var userDto = getUser(id);
         return Optional.of(userDto.getRole()).orElseThrow(
-                () -> new EntityNotFoundException(String.format(USER_ROLE_NOT_EXIST, id)));
+                () -> new EntityNotFoundException(String.format(USER_ROLE_NOT_EXIST_FORMAT, id)));
     }
 
     @Override
     public void updateCurrentUserPassword(PasswordDto passwordDto) {
         var userDto = getCurrentUser();
         if (passwordEncoder.matches(passwordDto.getOldPassword(), userDto.getPassword())) {
-            userDto.setPassword(passwordDto.getNewPassword());
+            userDto.setPassword(passwordEncoder.encode(passwordDto.getNewPassword()));
         } else {
             throw new ValidationException(INCORRECT_OLD_PASSWORD);
         }
-        updateCurrentUser(userDto);
+        userRepository.save(userMapper.toUserEntity(userDto));
     }
 
     @Override
@@ -106,7 +103,7 @@ public class UserServiceImpl implements UserService {
         var userDto = getUser(id);
         var userEntity = userMapper.toUserEntity(userDto);
         var roleEntity = roleRepository.findByName(RoleEntity.NameEnum.valueOf(roleDto.getName().name())).orElseThrow(
-                () -> new EntityNotFoundException(String.format(ROLE_NOT_EXIST, roleDto.getName().name())));
+                () -> new EntityNotFoundException(String.format(ROLE_NOT_EXIST_FORMAT, roleDto.getName().name())));
         userEntity.setRole(roleEntity);
         userEntity.setUpdatedOn(OffsetDateTime.now());
         var updatedUserEntity = userRepository.save(userEntity);
@@ -145,23 +142,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updateUser(UserDto bodyDto, BigDecimal id) {
-        if (bodyDto.getId() == null)
-            bodyDto.setId(id);
+        var oldUserEntity = userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format(USER_NOT_FOUND_FORMAT, id)));
+        var newUserEntity = userMapper.toUserEntity(bodyDto);
 
-        if (bodyDto.getPassword() == null) // update without password
-            bodyDto.setPassword(getUser(id).getPassword());
+        var userEntity = userMapper.toUserEntityFromUsersEntity(newUserEntity, oldUserEntity);
+        userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+        userEntity.setUpdatedOn(OffsetDateTime.now());
 
-        var bodyEntity = userMapper.toUserEntity(bodyDto);
-        bodyEntity = userRepository.save(bodyEntity);
-
-        return userMapper.toUserDto(bodyEntity);
+        var savedUserEntity = userRepository.save(userEntity);
+        return userMapper.toUserDto(savedUserEntity);
     }
 
     @Override
     public void removeUser(BigDecimal id) {
-        var userDto = getCurrentUser();
-        var userEntity = userRepository.findById(userDto.getId()).orElseThrow(
-                () -> new EntityNotFoundException(String.format(USER_NOT_FOUND_FORMAT, userDto.getId())));
+        var userEntity = userRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(String.format(USER_NOT_FOUND_FORMAT, id)));
         userRepository.deleteById(userEntity.getId());
     }
 

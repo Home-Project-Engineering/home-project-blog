@@ -26,12 +26,22 @@ public interface UserMapperService {
     @Mapping(target = "name", source = "userDto.name")
     @Mapping(target = "firstName", source = "userDto.firstName")
     @Mapping(target = "lastName", source = "userDto.lastName")
-    @Mapping(target = "password", source = "userDto.password")
+    @Mapping(target = "password", source = "currentUserDto.password")
     @Mapping(target = "updatedOn", ignore = true)
     UserEntity toUserEntityFromUsersDto(UserDto currentUserDto, UserDto userDto);
 
-    RoleEntity toRoleEntity(RoleDto roleDto);
-
     RoleDto toRoleDto(RoleEntity role);
 
+
+
+    @Mapping(target = "id", source = "oldUserEntity.id")
+    @Mapping(target = "role", source = "oldUserEntity.role")
+    @Mapping(target = "createOn", source = "oldUserEntity.createOn")
+    @Mapping(target = "email", source = "newUserEntity.email")
+    @Mapping(target = "name", source = "newUserEntity.name")
+    @Mapping(target = "firstName", source = "newUserEntity.firstName")
+    @Mapping(target = "lastName", source = "newUserEntity.lastName")
+    @Mapping(target = "password", source = "oldUserEntity.password")
+    @Mapping(target = "updatedOn", ignore = true)
+    UserEntity toUserEntityFromUsersEntity(UserEntity newUserEntity, UserEntity oldUserEntity);
 }

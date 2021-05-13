@@ -12,7 +12,6 @@ public class Sorter {
             str.deleteCharAt(0);
             return Sort.by(Sort.Direction.DESC, str.toString());
         }
-
         return Sort.by(Sort.Direction.ASC, str.toString());
     }
 }

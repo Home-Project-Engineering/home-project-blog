@@ -27,8 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.softserveinc.ita.homeprojectblog.util.Constants.POST_NOT_FOUND_FORMAT;
-import static com.softserveinc.ita.homeprojectblog.util.Constants.POST_OF_USER_NOT_FOUND_FORMAT;
+import static com.softserveinc.ita.homeprojectblog.util.Constants.*;
 
 
 @Service
@@ -68,7 +67,8 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDto getPost(BigDecimal id) {
         var postEntityOptional = postRepository.findById(id);
-        var postEntity = postEntityOptional.orElse(null);
+        var postEntity = postEntityOptional.orElseThrow(
+                () -> new EntityNotFoundException(String.format(POST_NOT_FOUND_FORMAT, id)));
         return postMapper.toPostDto(postEntity);
     }
 
@@ -134,11 +134,13 @@ public class PostServiceImpl implements PostService {
         var check = checkout.checkoutAndSetDefaults(sort, pageNum, pageSize);
 
         var specification = entitySpecificationService.getSpecification(predicateMap);
-
         var pageRequest = PageRequest.of(check.getPageNum(), check.getPageSize(),
                 sorter.getSorter(check.getSort()));
 
         var postEntityPage = postRepository.findAll(specification, pageRequest);
+
+        if(postEntityPage.isEmpty())
+            throw new EntityNotFoundException(POSTS_NOT_FOUND);
 
         return postMapper.toPostDtoPage(postEntityPage);
     }
@@ -163,8 +165,10 @@ public class PostServiceImpl implements PostService {
     private PostDto getUpdatedPostDto(PostDto postDto, PostEntity oldPostEntity) {
         var newPostEntity = postMapper.toPostEntity(postDto);
 
-        checkout.removeIdAndRepeatsInList(newPostEntity.getTags());
-        checkout.setExistsTagsOrSetDateForNew(tagRepository, newPostEntity.getTags());
+        if (newPostEntity.getTags() != null) {
+            checkout.removeIdAndRepeatsInList(newPostEntity.getTags());
+            checkout.setExistsTagsOrSetDateForNew(tagRepository, newPostEntity.getTags());
+        }
 
         newPostEntity.setUpdatedOn(OffsetDateTime.now());
         newPostEntity = postMapper.toPostEntityFromNewAndOld(newPostEntity, oldPostEntity);
