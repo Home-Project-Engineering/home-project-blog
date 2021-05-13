@@ -15,7 +15,6 @@ public interface PostMapperController {
 
     PostMapperController INSTANCE = Mappers.getMapper( PostMapperController.class );
 
-    //@Mapping(target = "role", constant = ROLE.BLOGGER.name())
     PostDto toPostDto(CreatePostDto post);
 
     ViewPostDto toViewPostDto(PostDto post);

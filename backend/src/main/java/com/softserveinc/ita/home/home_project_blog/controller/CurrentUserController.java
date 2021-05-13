@@ -68,7 +68,7 @@ public class CurrentUserController {
     @DeleteMapping(path = "/posts/{post_id}", produces = "application/json")
     public ResponseEntity<ViewPostDto> deletePostByCurrentUser(@PathVariable("post_id") Long post_id) {
         postService.deletePostByCurrentUser(post_id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping(path = "/comments", produces = "application/json")
