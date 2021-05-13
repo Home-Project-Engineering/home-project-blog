@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,7 +51,6 @@ public class PostController implements PostsApi {
     }
 
     @Override
-    @PermitAll
     public ResponseEntity<Comment> getComment(BigDecimal postId, BigDecimal id) {
         DtoComment dtoComment = postService.getComment(postId.longValue(), id.longValue());
         Comment comment = CommentMapper.INSTANCE.toModel(dtoComment);
@@ -59,7 +59,6 @@ public class PostController implements PostsApi {
 
     }
     @Override
-    @PermitAll
     public ResponseEntity<List<Comment>> getComments(@PathVariable("post_id") BigDecimal postId,
                                                      BigDecimal id,
                                                      @PathVariable("author_name") String authorName,
@@ -82,7 +81,6 @@ public class PostController implements PostsApi {
     }
 
     @Override
-    @PermitAll
     public ResponseEntity<Post> getPost(BigDecimal id) {
 
         DtoPost dtoPost = postService.getPost(id.longValue());
@@ -93,7 +91,6 @@ public class PostController implements PostsApi {
     }
 
     @Override
-    @PermitAll
     public ResponseEntity<List<Post>> getPosts(@PathVariable("post_id") BigDecimal id,
                                                @PathVariable("tag_id") String tagId,
                                                @PathVariable("tag_name") String tagName,
@@ -118,7 +115,7 @@ public class PostController implements PostsApi {
     }
 
     @Override
-    @PermitAll
+    @PreAuthorize("hasAuthority('update:posts:comment:tag')")
     public ResponseEntity<Void> removeComment(BigDecimal postId, BigDecimal id) {
 
         postService.removeComment(postId.longValue(), id.longValue());
@@ -127,7 +124,7 @@ public class PostController implements PostsApi {
 
 
     @Override
-    @PermitAll
+    @PreAuthorize("hasAuthority('update:posts:comment:tag')")
     public ResponseEntity<Void> removePost(BigDecimal id) {
 
         postService.removePost(id.longValue());
@@ -135,7 +132,7 @@ public class PostController implements PostsApi {
     }
 
     @Override
-    @PermitAll
+    @PreAuthorize("hasAuthority('update:posts:comment:tag')")
     public ResponseEntity<Comment> updateComment(BigDecimal postId, BigDecimal id, Comment comment) {
 
         DtoComment dtoComment = CommentMapper.INSTANCE.toDto(comment);
@@ -146,7 +143,7 @@ public class PostController implements PostsApi {
     }
 
     @Override
-    @PermitAll
+    @PreAuthorize("hasAuthority('update:posts:comment:tag')")
     public ResponseEntity<Post> updatePost(BigDecimal id, Post post) {
 
         DtoPost dtoPost = PostMapper.INSTANCE.toDto(post);
