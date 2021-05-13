@@ -3,9 +3,11 @@ package com.example.blog.repository.entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.mapping.Collection;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,16 +32,17 @@ public class RoleEntity {
                 Permission.CUR_USER_ACTION,
                 Permission.CREATE_POST_COMMENT)),
 
-        MODERATOR(Set.of(Permission.CREATE_USER,
+        MODERATOR((Set.of(Permission.CREATE_USER,
                 Permission.SEE_POST_COMMENT_TAG,
                 Permission.CUR_USER_ACTION,
                 Permission.CREATE_POST_COMMENT,
-                Permission.DELETE_UPDATE_POST_COMMENT_TAG)),
+                Permission.UPDATE_POST_COMMENT_TAG))),
 
         ADMIN(Set.of(Permission.CREATE_USER,
                 Permission.SEE_POST_COMMENT_TAG,
                 Permission.CUR_USER_ACTION,
                 Permission.CREATE_POST_COMMENT,
+                Permission.UPDATE_POST_COMMENT_TAG,
                 Permission.DELETE_UPDATE_POST_COMMENT_TAG,
                 Permission.MANAGE_USER));
 

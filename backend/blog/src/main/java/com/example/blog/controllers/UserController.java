@@ -110,7 +110,7 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('delete:update:posts:comment:tag')")
+    @PreAuthorize("hasAuthority('delete:update:posts:comment:tag')")
     public ResponseEntity<User> getUser(BigDecimal id) {
         DtoUser dtoUser = userService.getUser(id.longValue());
         User u = UserMapper.INSTANCE.fromDtoToUser(dtoUser);
@@ -119,7 +119,7 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('delete:update:posts:comment:tag')")
+    @PreAuthorize("hasAuthority('delete:update:posts:comment:tag')")
     public ResponseEntity<List<User>> getUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
         Page<DtoUser> page;
         if (id == null) {
@@ -152,7 +152,7 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('delete:update:posts:comment:tag')")
+    @PreAuthorize("hasAuthority('delete:update:posts:comment:tag')")
     public ResponseEntity<Role> getUserRole(BigDecimal id) {
 
         DtoRole dtoRole = userService.getUserRole(id.longValue());
@@ -162,7 +162,7 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('delete:update:posts:comment:tag')")
+    @PreAuthorize("hasAuthority('delete:update:posts:comment:tag')")
     public ResponseEntity<Role> updateUserRole(BigDecimal id, Role role) {
         DtoRole dtoRole = UserMapper.INSTANCE.convertToDto(role);
 
@@ -173,7 +173,7 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('delete:update:posts:comment:tag')")
+    @PreAuthorize("hasAuthority('delete:update:posts:comment:tag')")
     public ResponseEntity<Void> removeUser(BigDecimal id) {
         userService.removeUser(id.longValue());
 
@@ -217,7 +217,7 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    @PreAuthorize("hasAnyAuthority('delete:update:posts:comment:tag')")
+    @PreAuthorize("hasAuthority('update:posts:comment:tag')")
     public ResponseEntity<User> updateUser(BigDecimal id, User user) {
 
         DtoUser dtoUser = UserMapper.INSTANCE.fromUser(user);

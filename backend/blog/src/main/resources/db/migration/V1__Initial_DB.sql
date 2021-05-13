@@ -82,5 +82,11 @@ cascade;
 alter table if exists users add constraint FK_users_role_entity_id foreign key (role_entity_id) references roles;
 
 insert into roles (id, name) values (1, 'ADMIN');
+insert into roles (id, name) values (2, 'MODERATOR');
+insert into roles (id, name) values (3, 'BLOGGER');
 insert into users (id, email, first_name, last_name, name, password, role_entity_id)
-values (1, 'val@example.com', 'va', 'lerii', 'mitia', '$2a$12$E.0Zh7XZ7vKsrOHtSGFrA.RmaRuN9xSOnb3qjmIB5JQ05XK1VC/U.', 1);
+values (1, 'v_admin@example.com', 'va', 'lerii', 'mitia_a', '$2a$12$E.0Zh7XZ7vKsrOHtSGFrA.RmaRuN9xSOnb3qjmIB5JQ05XK1VC/U.', 1);
+insert into users (id, email, first_name, last_name, name, password, role_entity_id)
+values (2, 'v_moderator@example.com', 'va', 'lerii', 'mitia_m', '$2a$12$E.0Zh7XZ7vKsrOHtSGFrA.RmaRuN9xSOnb3qjmIB5JQ05XK1VC/U.', 2);
+insert into users (id, email, first_name, last_name, name, password, role_entity_id)
+values (3, 'v_blogger@example.com', 'va', 'lerii', 'mitia_b', '$2a$12$E.0Zh7XZ7vKsrOHtSGFrA.RmaRuN9xSOnb3qjmIB5JQ05XK1VC/U.', 3);
