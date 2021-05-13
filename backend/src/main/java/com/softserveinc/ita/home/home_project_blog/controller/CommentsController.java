@@ -51,14 +51,14 @@ public class CommentsController {
         return new ResponseEntity<>(mapper.toViewCommentDto(commentService.createComment(post_id, mapper.toCommentDto(comment))), HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAuthority('comments:update')")
+    @PreAuthorize("hasAuthority('comments:update:delete')")
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ViewCommentDto> updateComment(@PathVariable Long id, @PathVariable("post_id") Long post_id,
                                                         @Valid @RequestBody CreateCommentDto comment) {
         return new ResponseEntity<>(mapper.toViewCommentDto(commentService.update(post_id, id, mapper.toCommentDto(comment))), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('comments:update')")
+    @PreAuthorize("hasAuthority('comments:update:delete')")
     @DeleteMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<ViewCommentDto> deleteComment(@PathVariable Long id, @PathVariable("post_id") Long post_id) {
         commentService.delete(post_id, id);

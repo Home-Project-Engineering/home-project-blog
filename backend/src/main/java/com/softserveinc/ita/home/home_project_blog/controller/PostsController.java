@@ -5,6 +5,7 @@ import com.softserveinc.ita.home.home_project_blog.controller.dto.ViewPostDto;
 import com.softserveinc.ita.home.home_project_blog.controller.mapper.PostMapperController;
 import com.softserveinc.ita.home.home_project_blog.service.GeneralService;
 import com.softserveinc.ita.home.home_project_blog.service.IPostService;
+import com.softserveinc.ita.home.home_project_blog.service.dto.PostDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,19 +42,12 @@ public class PostsController {
 
     @GetMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<ViewPostDto> getPostById(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(mapper.toViewPostDto(postService.getById(id)), HttpStatus.OK);
+        PostDto post = postService.getById(id);
+        ViewPostDto ViewPost = mapper.toViewPostDto(post);
+        return new ResponseEntity<>(ViewPost, HttpStatus.OK);
+//        return new ResponseEntity<>(mapper.toViewPostDto(postService.getById(id)), HttpStatus.OK);
     }
 
-    //
-//    @GetMapping(path = "/current", produces = "application/json")
-//    public ResponseEntity<ViewPostDto> getCurrentPost() {
-//        return new ResponseEntity<>(mapper.toViewPostDto(postService.getCurrentPost()), HttpStatus.OK);
-//    }
-//
-//    @PutMapping(path = "/current", consumes = "application/json", produces = "application/json")
-//    public ResponseEntity<ViewPostDto> updateCurrentPost(@Valid @RequestBody UpdatePostDto post) {
-//        return new ResponseEntity<>(mapper.toViewPostDto(postService.updateCurrentPost(mapper.UpdateToPostDto(post))), HttpStatus.OK);
-//    }
     @PreAuthorize("hasAuthority('posts:create')")
     @PostMapping(consumes = "application/json", produces = "application/json")
     @ResponseBody
@@ -61,14 +55,14 @@ public class PostsController {
         return new ResponseEntity<>(mapper.toViewPostDto(postService.save(mapper.toPostDto(post))), HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAuthority('posts:update')")
+    @PreAuthorize("hasAuthority('posts:update:delete')")
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ViewPostDto> updatePost(@PathVariable Long id,
                                                   @Valid @RequestBody CreatePostDto post) {
         return new ResponseEntity<>(mapper.toViewPostDto(postService.update(id, mapper.toPostDto(post))), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('posts:update')")
+    @PreAuthorize("hasAuthority('posts:update:delete')")
     @DeleteMapping(path = "/{id}", produces = "application/json")
     public ResponseEntity<ViewPostDto> deletePost(@PathVariable Long id) {
         postService.delete(id);

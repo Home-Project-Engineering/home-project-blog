@@ -6,9 +6,25 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public enum Role {
-    ADMIN(Set.of(Permission.USERS, Permission.POSTS_CREATE, Permission.POSTS_UPDATE, Permission.COMMENTS_CREATE, Permission.COMMENTS_UPDATE, Permission.TAGS_DELETE)),
-    MODERATOR(Set.of(Permission.POSTS_CREATE, Permission.POSTS_UPDATE, Permission.COMMENTS_CREATE, Permission.COMMENTS_UPDATE, Permission.TAGS_DELETE)),
-    BLOGGER(Set.of(Permission.POSTS_CREATE, Permission.COMMENTS_CREATE));
+    ADMIN(Set.of(
+            Permission.USERS,
+            Permission.POSTS_CREATE,
+            Permission.POSTS_UPDATE_DELETE,
+            Permission.COMMENTS_CREATE,
+            Permission.COMMENTS_UPDATE_DELETE,
+            Permission.TAGS_DELETE
+    )),
+    MODERATOR(Set.of(
+            Permission.POSTS_CREATE,
+            Permission.POSTS_UPDATE_DELETE,
+            Permission.COMMENTS_CREATE,
+            Permission.COMMENTS_UPDATE_DELETE,
+            Permission.TAGS_DELETE
+    )),
+    BLOGGER(Set.of(
+            Permission.POSTS_CREATE,
+            Permission.COMMENTS_CREATE
+    ));
 
     private final Set<Permission> permissions;
 
