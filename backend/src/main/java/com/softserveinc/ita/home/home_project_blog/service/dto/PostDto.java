@@ -17,7 +17,7 @@ import java.util.Set;
 @Builder
 @Validated
 public class PostDto {
-    private long id;
+    private Long id;
     private Set<TagDto> tags = new HashSet<>();
     private String text;
     private String title;

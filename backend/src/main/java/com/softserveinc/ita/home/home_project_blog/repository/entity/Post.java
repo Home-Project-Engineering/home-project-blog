@@ -22,7 +22,7 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false)
-    private long id;
+    private Long id;
 
     @ManyToMany
     @JoinTable(

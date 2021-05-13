@@ -1,8 +1,8 @@
 package com.softserveinc.ita.home.home_project_blog.service;
 
 import com.softserveinc.ita.home.home_project_blog.repository.UserRepository;
-import com.softserveinc.ita.home.home_project_blog.security.model.Role;
 import com.softserveinc.ita.home.home_project_blog.repository.entity.User;
+import com.softserveinc.ita.home.home_project_blog.security.model.Role;
 import com.softserveinc.ita.home.home_project_blog.service.dto.UserDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.UserMapperService;
 import com.softserveinc.ita.home.home_project_blog.specification.SpecificationService;
@@ -33,15 +33,14 @@ public class UserService implements IUserService {
     private final UserRepository repository;
     private final UserMapperService mapper;
     private final PasswordEncoder passwordEncoder;
-    SpecificationService<User> userSpecificationService;
+    private final SpecificationService<User> userSpecificationService;
 
     @Override
     public Page<UserDto> findAll(Long id, String name, Integer pageNum, Integer pageSize, String sort) {
         Pageable paging = GeneralService.pagination(pageNum, pageSize, sort);
         Map<String, String> filter = new HashMap<>();
-        filter.put("id", id!=null?id.toString():null);
+        filter.put("id", id != null ? id.toString() : null);
         filter.put("name", name);
-
         Specification<User> specification = userSpecificationService.getSpecification(filter);
         Page<User> pageUser = repository.findAll(specification, paging);
         return mapper.toPageUserDto(pageUser);

@@ -15,7 +15,7 @@ import java.util.Date;
 @Builder
 @Validated
 public class CommentDto {
-    private long id;
+    private Long id;
     private String text;
     private PostDto post;
     private AuthorDto author;

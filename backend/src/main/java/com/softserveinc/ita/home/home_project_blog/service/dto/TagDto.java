@@ -13,7 +13,7 @@ import org.springframework.validation.annotation.Validated;
 @Builder
 @Validated
 public class TagDto {
-    private long id;
+    private Long id;
     private String name;
 //    private String previewAttachment;
 //    @ManyToOne()
