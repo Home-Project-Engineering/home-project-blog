@@ -18,20 +18,20 @@ import java.util.Date;
 @Table(name = "comments")
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)//AUTO
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false)
     private long id;
 
     @NotBlank
     private String text;
 
-    @ManyToOne//(cascade = { CascadeType.ALL })
+    @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private User author;
 
     @CreationTimestamp
     @Column(name = "created_on", updatable = false)

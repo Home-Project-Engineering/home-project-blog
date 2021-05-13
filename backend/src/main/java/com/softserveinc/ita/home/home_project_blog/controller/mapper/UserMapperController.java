@@ -2,8 +2,8 @@ package com.softserveinc.ita.home.home_project_blog.controller.mapper;
 
 import com.softserveinc.ita.home.home_project_blog.controller.dto.CreateUserDto;
 import com.softserveinc.ita.home.home_project_blog.controller.dto.UpdateUserDto;
+import com.softserveinc.ita.home.home_project_blog.controller.dto.ViewAuthorDto;
 import com.softserveinc.ita.home.home_project_blog.controller.dto.ViewUserDto;
-import com.softserveinc.ita.home.home_project_blog.controller.dto.ViewUserForPostDto;
 import com.softserveinc.ita.home.home_project_blog.service.dto.UserDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -23,7 +23,7 @@ public interface UserMapperController {
 
     ViewUserDto toViewUserDto(UserDto user);
 
-    ViewUserForPostDto toViewUserForPostDto(UserDto user);
+    ViewAuthorDto toViewAuthorDto(UserDto user);
 
     List<ViewUserDto> toViewUserDtos(List<UserDto> users);
 

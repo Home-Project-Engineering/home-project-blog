@@ -20,11 +20,11 @@ import java.util.Set;
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)//AUTO
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false)
     private long id;
 
-    @ManyToMany//(cascade = { CascadeType.ALL })
+    @ManyToMany
     @JoinTable(
             name = "posts_tags",
             joinColumns = {@JoinColumn(name = "post_id")},
@@ -40,8 +40,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    //@Column(updatable=false)
-    private User user;
+    private User author;
 
     @CreationTimestamp
     @Column(name = "created_on", updatable = false)

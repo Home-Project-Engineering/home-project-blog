@@ -14,7 +14,7 @@ import java.util.Date;
 public class ViewCommentDto {
     private Long id;
     private String text;
-    private ViewUserForPostDto user;
+    private ViewAuthorDto author;
     private Date createdOn;
     private Date updatedOn;
 }

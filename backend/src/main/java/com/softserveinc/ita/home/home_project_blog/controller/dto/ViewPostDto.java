@@ -19,7 +19,7 @@ public class ViewPostDto {
     private String text;
     private String title;
     private String previewAttachment;
-    private ViewUserForPostDto user;
+    private ViewAuthorDto author;
     private Date createdOn;
     private Date updatedOn;
 }

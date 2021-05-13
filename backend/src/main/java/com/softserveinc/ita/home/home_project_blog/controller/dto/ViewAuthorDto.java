@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ViewUserForPostDto {
+public class ViewAuthorDto {
     private String name;
     private String firstName;
     private String lastName;
-    private String role;
 }

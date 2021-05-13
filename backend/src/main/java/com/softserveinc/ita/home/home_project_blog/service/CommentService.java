@@ -61,7 +61,7 @@ public class CommentService implements ICommentService {
     @Override
     public CommentDto createComment(Long post_id, @Valid CommentDto comment) {
         comment.setPost(postService.getById(post_id));
-        comment.setUser(userService.getCurrentUser());
+        comment.setAuthor(userService.getCurrentUser());
         return mapper.toCommentDto(commentRepository.save(mapper.toComment(comment)));
     }
 
@@ -86,7 +86,7 @@ public class CommentService implements ICommentService {
     @Override
     public CommentDto getCommentByIdByCurrentUser(Long comment_id) {
         CommentDto comment = getById(comment_id);
-        if (!comment.getUser().equals(userService.getCurrentUser())) {
+        if (!comment.getAuthor().equals(userService.getCurrentUser())) {
             throw new MismatchException(Const.COMMENT_DOESNT_ADHERE_TO_THE_USER);
         }
         return comment;
