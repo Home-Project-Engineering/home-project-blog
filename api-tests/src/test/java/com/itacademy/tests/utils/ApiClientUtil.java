@@ -61,23 +61,4 @@ public final class ApiClientUtil {
                 APPLICATION_EXTERNAL_PORT + "/api/1", "No description provided", new HashMap<>())));
     }
 
-    public static void checkAdminModerBlogger(boolean role, int statusCode){
-        if (role) {
-            assertNotEquals(Response.Status.UNAUTHORIZED.getStatusCode(), statusCode);
-            assertNotEquals(Response.Status.FORBIDDEN.getStatusCode(), statusCode);
-        } else {
-            assertEquals(Response.Status.FORBIDDEN.getStatusCode(), statusCode);
-        }
-    }
-
-    public static int setStatusCode(Function action, ApiClient apiClient) {
-        try {
-            ApiResponse resp = (ApiResponse) action.apply(apiClient);
-             return resp.getStatusCode();
-        } catch (ApiException e) {
-            return e.getCode();
-        }
-
-    }
-
 }
