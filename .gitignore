@@ -30,3 +30,6 @@ hs_err_pid*
 /backend/home-project-blog.iml
 /backend/home_project_blog.iml
 /backend/.mvn
+backend/blog/.openapi-generator/
+backend/blog/src/main/java/com/example/blog/generated/
+
