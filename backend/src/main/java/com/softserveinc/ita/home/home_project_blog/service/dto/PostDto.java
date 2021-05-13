@@ -22,7 +22,7 @@ public class PostDto {
     private String text;
     private String title;
     private String previewAttachment;
-    private UserDto author;
+    private AuthorDto author;
     private Date createdOn;
     private Date updatedOn;
 }

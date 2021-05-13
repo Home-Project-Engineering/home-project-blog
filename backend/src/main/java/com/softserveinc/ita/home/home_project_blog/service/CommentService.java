@@ -3,8 +3,8 @@ package com.softserveinc.ita.home.home_project_blog.service;
 import com.softserveinc.ita.home.home_project_blog.repository.CommentRepository;
 import com.softserveinc.ita.home.home_project_blog.repository.entity.Comment;
 import com.softserveinc.ita.home.home_project_blog.service.dto.CommentDto;
-import com.softserveinc.ita.home.home_project_blog.service.dto.PostDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.CommentMapperService;
+import com.softserveinc.ita.home.home_project_blog.service.mapper.UserMapperService;
 import com.softserveinc.ita.home.home_project_blog.specification.SpecificationService;
 import com.softserveinc.ita.home.home_project_blog.validation.MismatchException;
 import com.softserveinc.ita.home.home_project_blog.validation.Const;
@@ -28,6 +28,7 @@ public class CommentService implements ICommentService {
     private final PostService postService;
     private final CommentRepository commentRepository;
     private final CommentMapperService mapper;
+    private final UserMapperService userMapper;
     private final IUserService userService;
     private final SpecificationService<Comment> commentSpecificationService;
 
@@ -37,8 +38,8 @@ public class CommentService implements ICommentService {
         Map<String, String> filter = new HashMap<>();
         filter.put("id", id!=null?id.toString():null);
         filter.put("post.id", post_id!=null?post_id.toString():null);
-        filter.put("user.name", user_name);
-        filter.put("user.id", user_id!=null?user_id.toString():null);
+        filter.put("author.name", user_name);
+        filter.put("author.id", user_id!=null?user_id.toString():null);
         Specification<Comment> specification = commentSpecificationService.getSpecification(filter);
         Page<Comment> pageComment = commentRepository.findAll(specification, paging);
         return mapper.toPageCommentDto(pageComment);
@@ -61,7 +62,7 @@ public class CommentService implements ICommentService {
     @Override
     public CommentDto createComment(Long post_id, @Valid CommentDto comment) {
         comment.setPost(postService.getById(post_id));
-        comment.setAuthor(userService.getCurrentUser());
+        comment.setAuthor(userMapper.toAuthorDto(userService.getCurrentUser()));
         return mapper.toCommentDto(commentRepository.save(mapper.toComment(comment)));
     }
 
@@ -86,7 +87,7 @@ public class CommentService implements ICommentService {
     @Override
     public CommentDto getCommentByIdByCurrentUser(Long comment_id) {
         CommentDto comment = getById(comment_id);
-        if (!comment.getAuthor().equals(userService.getCurrentUser())) {
+        if (!comment.getAuthor().equals(userMapper.toAuthorDto(userService.getCurrentUser()))) {
             throw new MismatchException(Const.COMMENT_DOESNT_ADHERE_TO_THE_USER);
         }
         return comment;

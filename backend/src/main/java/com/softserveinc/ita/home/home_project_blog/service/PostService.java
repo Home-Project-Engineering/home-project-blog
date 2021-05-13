@@ -7,6 +7,7 @@ import com.softserveinc.ita.home.home_project_blog.service.dto.PostDto;
 import com.softserveinc.ita.home.home_project_blog.service.dto.TagDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.PostMapperService;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.TagMapperService;
+import com.softserveinc.ita.home.home_project_blog.service.mapper.UserMapperService;
 import com.softserveinc.ita.home.home_project_blog.specification.SpecificationService;
 import com.softserveinc.ita.home.home_project_blog.validation.Const;
 import com.softserveinc.ita.home.home_project_blog.validation.MismatchException;
@@ -29,6 +30,7 @@ public class PostService implements IPostService {
     private final PostRepository postRepository;
     private final TagRepository tagRepository;
     private final PostMapperService postMapper;
+    private final UserMapperService userMapper;
     private final TagMapperService tagMapper;
     private final IUserService userService;
     private final SpecificationService<Post> postSpecificationService;
@@ -41,7 +43,7 @@ public class PostService implements IPostService {
         filter.put("id", id!=null?id.toString():null);
         filter.put("tags.id", tag_id!=null?tag_id.toString():null);
         filter.put("tags.name", tag_name);
-        filter.put("user.id", user_id!=null?user_id.toString():null);
+        filter.put("author.id", user_id!=null?user_id.toString():null);
 
         Specification<Post> specification = postSpecificationService.getSpecification(filter);
         Page<Post> pagePost = postRepository.findAll(specification, paging);
@@ -56,7 +58,7 @@ public class PostService implements IPostService {
 
     @Override
     public PostDto save(@Valid PostDto post) {
-        post.setAuthor(userService.getCurrentUser());
+        post.setAuthor(userMapper.toAuthorDto(userService.getCurrentUser()));
         post.setTags(updateTags(post.getTags()));
         return postMapper.toPostDto(postRepository.save(postMapper.toPost(post)));
     }
@@ -104,7 +106,7 @@ public class PostService implements IPostService {
 
     public PostDto getPostByIdByCurrentUser(Long post_id) {
         PostDto post = getById(post_id);
-        if (!post.getAuthor().equals(userService.getCurrentUser())) {
+        if (!post.getAuthor().equals(userMapper.toAuthorDto(userService.getCurrentUser()))) {
             throw new MismatchException(Const.POST_DOESNT_ADHERE_TO_THE_USER);
         }
         return post;
