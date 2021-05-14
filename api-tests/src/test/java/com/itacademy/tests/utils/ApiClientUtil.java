@@ -2,13 +2,20 @@ package com.itacademy.tests.utils;
 
 
 import com.softserveinc.ita.homeproject.blog.ApiClient;
+import com.softserveinc.ita.homeproject.blog.ApiException;
+import com.softserveinc.ita.homeproject.blog.ApiResponse;
 import com.softserveinc.ita.homeproject.blog.ServerConfiguration;
 import org.glassfish.jersey.logging.LoggingFeature;
 
+import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public final class ApiClientUtil {
     private static final String APPLICATION_EXTERNAL_PORT = System.getProperty("blog.application.external.port", "8080");
