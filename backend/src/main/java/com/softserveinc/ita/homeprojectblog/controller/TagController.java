@@ -10,11 +10,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 
+import javax.annotation.security.PermitAll;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -39,23 +41,26 @@ public class TagController implements TagsApi {
     }
 
     @Override // +
+    @PermitAll
     public ResponseEntity<Tag> getTag(BigDecimal id) {
-        var tagDto = tagService.getTag(id);
-        return new ResponseEntity<>(tagMapper.toTag(tagDto), HttpStatus.OK);
+        var tagDtoGet = tagService.getTag(id);
+        return new ResponseEntity<>(tagMapper.toTag(tagDtoGet), HttpStatus.OK);
     }
 
     @Override // +
+    @PermitAll
     public ResponseEntity<List<Tag>> getTags(
             BigDecimal id, String name,
             String sort, Integer pageNum, Integer pageSize) {
 
-        var tagDtoPage = tagService.getTags(id, name, sort, pageNum, pageSize);
-        var tagPage = tagMapper.toTagPage(tagDtoPage);
-        MultiValueMap<String, String> headers = boilerplate.getXTotalCount(tagPage);
-        return new ResponseEntity<>(tagPage.getContent(), headers, HttpStatus.OK);
+        var tagDtoPageGet = tagService.getTags(id, name, sort, pageNum, pageSize);
+        var tagPageGet = tagMapper.toTagPage(tagDtoPageGet);
+        MultiValueMap<String, String> headers = boilerplate.getXTotalCount(tagPageGet);
+        return new ResponseEntity<>(tagPageGet.getContent(), headers, HttpStatus.OK);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:moderator-admin')")
     public ResponseEntity<Void> removeTag(BigDecimal id) {
         tagService.removeTag(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

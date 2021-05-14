@@ -29,21 +29,14 @@ public class RoleEntity {
     private NameEnum name;
 
     public enum NameEnum {
-        BLOGGER(Set.of()),
+        BLOGGER(Set.of(Permission.REGISTERED_ROLE)),
 
-        MODERATOR(Set.of(Permission.TAG_REMOVE
-                ,Permission.POST_UPDATE
-                ,Permission.POST_DELETE
-                ,Permission.COMMENTS_UPDATE
-                ,Permission.COMMENTS_DELETE)),
+        MODERATOR(Set.of(Permission.REGISTERED_ROLE,
+                Permission.MODERATOR_ROLE)),
 
-        ADMIN(Set.of(Permission.USER_MANAGEMENT
-                ,Permission.TAG_REMOVE
-                ,Permission.POST_UPDATE
-                ,Permission.POST_DELETE
-                ,Permission.COMMENTS_UPDATE
-                ,Permission.COMMENTS_DELETE
-                ,Permission.ROLE_MANAGEMENT));
+        ADMIN(Set.of(Permission.REGISTERED_ROLE,
+                Permission.MODERATOR_ROLE,
+                Permission.ADMIN_ROLE));
 
         private final Set<Permission> permission;
 

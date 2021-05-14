@@ -13,11 +13,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 
+import javax.annotation.security.PermitAll;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -45,82 +47,92 @@ public class PostController implements PostsApi {
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<Comment> createComment(BigDecimal postId, Comment comment) {
-        var commentDto = commentMapper.toCommentDto(comment);
-        commentDto = commentService.createComment(postId, commentDto);
-        return new ResponseEntity<>(commentMapper.toComment(commentDto), HttpStatus.CREATED);
+        var commentDtoSet = commentMapper.toCommentDto(comment);
+        var commentDtoGet = commentService.createComment(postId, commentDtoSet);
+        return new ResponseEntity<>(commentMapper.toComment(commentDtoGet), HttpStatus.CREATED);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<Post> createPost(Post body) {
-        var postDto = postMapper.toPostDto(body);
-        postDto = postService.createPost(postDto);
-        return new ResponseEntity<>(postMapper.toPost(postDto), HttpStatus.CREATED);
+        var postDtoSet = postMapper.toPostDto(body);
+        var postDtoGet = postService.createPost(postDtoSet);
+        return new ResponseEntity<>(postMapper.toPost(postDtoGet), HttpStatus.CREATED);
     }
 
     @Override // +
+    @PermitAll
     public ResponseEntity<Comment> getComment(BigDecimal postId, BigDecimal id) {
-        var commentDto = commentService.getComment(postId, id);
-        return new ResponseEntity<>(commentMapper.toComment(commentDto), HttpStatus.OK);
+        var commentDtoGet = commentService.getComment(postId, id);
+        return new ResponseEntity<>(commentMapper.toComment(commentDtoGet), HttpStatus.OK);
     }
 
     @Override // +
+    @PermitAll
     public ResponseEntity<List<Comment>> getComments(
             BigDecimal postId, BigDecimal id, String authorName,
             String sort, Integer pageNum, Integer pageSize) {
 
-        var commentDtoPage = commentService.getComment(
+        var commentDtoPageGet = commentService.getComment(
                 postId, id, authorName,
                 sort, pageNum, pageSize);
 
-        var commentPage = commentMapper.toCommentPage(commentDtoPage);
-        MultiValueMap<String, String> headers = boilerplate.getXTotalCount(commentPage);
-        return new ResponseEntity<>(commentPage.getContent(), headers, HttpStatus.OK);
+        var commentPageGet = commentMapper.toCommentPage(commentDtoPageGet);
+        MultiValueMap<String, String> headers = boilerplate.getXTotalCount(commentPageGet);
+        return new ResponseEntity<>(commentPageGet.getContent(), headers, HttpStatus.OK);
     }
 
     @Override // +
+    @PermitAll
     public ResponseEntity<Post> getPost(BigDecimal id) {
-        var postDto = postService.getPost(id);
-        return new ResponseEntity<>(postMapper.toPost(postDto), HttpStatus.OK);
+        var postDtoGet = postService.getPost(id);
+        return new ResponseEntity<>(postMapper.toPost(postDtoGet), HttpStatus.OK);
     }
 
     @Override // +
+    @PermitAll
     public ResponseEntity<List<Post>> getPosts(
             BigDecimal id, String tagId, String tagName, String authorName,
             String sort, Integer pageNum, Integer pageSize) {
 
-        var postDtoPage = postService.getPosts(
+        var postDtoPageGet = postService.getPosts(
                 id, tagId, tagName, authorName,
                 sort, pageNum, pageSize);
 
-        var postPage = postMapper.toPostPage(postDtoPage);
-        MultiValueMap<String, String> headers = boilerplate.getXTotalCount(postPage);
-        return new ResponseEntity<>(postPage.getContent(), headers, HttpStatus.OK);
+        var postPageGet = postMapper.toPostPage(postDtoPageGet);
+        MultiValueMap<String, String> headers = boilerplate.getXTotalCount(postPageGet);
+        return new ResponseEntity<>(postPageGet.getContent(), headers, HttpStatus.OK);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:moderator-admin')")
     public ResponseEntity<Void> removeComment(BigDecimal postId, BigDecimal id) {
         commentService.removeComment(postId, id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:moderator-admin')")
     public ResponseEntity<Void> removePost(BigDecimal id) {
         postService.removePost(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:moderator-admin')")
     public ResponseEntity<Comment> updateComment(BigDecimal postId, BigDecimal id, Comment comment) {
-        var commentDto = commentMapper.toCommentDto(comment);
-        var updatedCommentDto = commentService.updateComment(postId, id, commentDto);
-        return new ResponseEntity<>(commentMapper.toComment(updatedCommentDto), HttpStatus.OK);
+        var commentDtoSet = commentMapper.toCommentDto(comment);
+        var commentDtoGet = commentService.updateComment(postId, id, commentDtoSet);
+        return new ResponseEntity<>(commentMapper.toComment(commentDtoGet), HttpStatus.OK);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:moderator-admin')")
     public ResponseEntity<Post> updatePost(BigDecimal id, Post post) {
-        var postDto = postMapper.toPostDto(post);
-        var changedPostDto = postService.updatePost(id, postDto);
-        return new ResponseEntity<>(postMapper.toPost(changedPostDto), HttpStatus.OK);
+        var postDtoSet = postMapper.toPostDto(post);
+        var postDtoGet = postService.updatePost(id, postDtoSet);
+        return new ResponseEntity<>(postMapper.toPost(postDtoGet), HttpStatus.OK);
     }
 }

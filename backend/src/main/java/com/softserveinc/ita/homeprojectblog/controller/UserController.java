@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.NativeWebRequest;
 
+import javax.annotation.security.PermitAll;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +49,7 @@ public class UserController implements UsersApi {
     }
 
     @Override // +
-//    @PreAuthorize("hasAuthority('developers:write')")
+    @PermitAll
     public ResponseEntity<User> createUser(User body) {
         var userDtoSet = userMapper.toUserDto(body);
         var userDtoGet = userService.createUser(userDtoSet);
@@ -56,100 +57,113 @@ public class UserController implements UsersApi {
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<Comment> getCommentByCurrentUser(BigDecimal id) {
-        var commentDto = commentService.getCommentByCurrentUser(id);
-        return new ResponseEntity<>(commentMapper.toComment(commentDto), HttpStatus.OK);
+        var commentDtoGet = commentService.getCommentByCurrentUser(id);
+        return new ResponseEntity<>(commentMapper.toComment(commentDtoGet), HttpStatus.OK);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<List<Comment>> getCommentsByCurrentUser(
             BigDecimal id,
             String sort, Integer pageNum, Integer pageSize) {
-        var commentDtoPage = commentService.getCommentsByCurrentUser(id, sort, pageNum, pageSize);
-        var commentPage = commentMapper.toCommentPage(commentDtoPage);
-        MultiValueMap<String, String> headers = boilerplate.getXTotalCount(commentPage);
-        return new ResponseEntity<>(commentPage.getContent(), headers, HttpStatus.OK);
+        var commentDtoPageGet = commentService.getCommentsByCurrentUser(id, sort, pageNum, pageSize);
+        var commentPageGet = commentMapper.toCommentPage(commentDtoPageGet);
+        MultiValueMap<String, String> headers = boilerplate.getXTotalCount(commentPageGet);
+        return new ResponseEntity<>(commentPageGet.getContent(), headers, HttpStatus.OK);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<User> getCurrentUser() {
-        var userDto = userService.getCurrentUser();
-        return new ResponseEntity<>(userMapper.toUser(userDto), HttpStatus.OK);
+        var userDtoGet = userService.getCurrentUser();
+        return new ResponseEntity<>(userMapper.toUser(userDtoGet), HttpStatus.OK);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<Post> getPostByCurrentUser(BigDecimal id) {
-        var postDto = postService.getPostByCurrentUser(id);
-        return new ResponseEntity<>(postMapper.toPost(postDto), HttpStatus.OK);
+        var postDtoGet = postService.getPostByCurrentUser(id);
+        return new ResponseEntity<>(postMapper.toPost(postDtoGet), HttpStatus.OK);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<List<Post>> getPostsByCurrentUser(
             BigDecimal id, String tagId, String tagName,
             String sort, Integer pageNum, Integer pageSize) {
-        var postDtoPage = postService.getPostsByCurrentUser(id, tagId, tagName, sort, pageNum, pageSize);
-        var postPage = postMapper.toPostPage(postDtoPage);
-        MultiValueMap<String, String> headers = boilerplate.getXTotalCount(postPage);
-        return new ResponseEntity<>(postPage.getContent(), headers, HttpStatus.OK);
+        var postDtoPageGet = postService.getPostsByCurrentUser(id, tagId, tagName, sort, pageNum, pageSize);
+        var postPageGet = postMapper.toPostPage(postDtoPageGet);
+        MultiValueMap<String, String> headers = boilerplate.getXTotalCount(postPageGet);
+        return new ResponseEntity<>(postPageGet.getContent(), headers, HttpStatus.OK);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:admin')")
     public ResponseEntity<User> getUser(BigDecimal id) {
-        var userDto = userService.getUser(id);
-        return new ResponseEntity<>(userMapper.toUser(userDto), HttpStatus.OK);
+        var userDtoGet = userService.getUser(id);
+        return new ResponseEntity<>(userMapper.toUser(userDtoGet), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('user:management')")
     @Override // +
+    @PreAuthorize("hasAuthority('role:admin')")
     public ResponseEntity<List<User>> getUsers(
             BigDecimal id, String name,
             String sort, Integer pageNum, Integer pageSize) {
-        var userDtoPage = userService.getUsers(id, name, sort, pageNum, pageSize);
-        var userPage = userMapper.toUserPage(userDtoPage);
-        MultiValueMap<String, String> headers = boilerplate.getXTotalCount(userPage);
-        return new ResponseEntity<>(userPage.getContent(), headers, HttpStatus.OK);
+        var userDtoPageGet = userService.getUsers(id, name, sort, pageNum, pageSize);
+        var userPageGet = userMapper.toUserPage(userDtoPageGet);
+        MultiValueMap<String, String> headers = boilerplate.getXTotalCount(userPageGet);
+        return new ResponseEntity<>(userPageGet.getContent(), headers, HttpStatus.OK);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<Void> removeCommentByCurrentUser(BigDecimal id) {
         commentService.removeCommentByCurrentUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<Void> removePostByCurrentUser(BigDecimal id) {
         postService.removePostByCurrentUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:admin')")
     public ResponseEntity<Void> removeUser(BigDecimal id) {
         userService.removeUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<Comment> updateCommentByCurrentUser(BigDecimal id, Comment comment) {
-        var commentDto = commentMapper.toCommentDto(comment);
-        var updatedCommentDto = commentService.updateCommentByCurrentUser(id, commentDto);
-        return new ResponseEntity<>(commentMapper.toComment(updatedCommentDto), HttpStatus.OK);
+        var commentDtoSet = commentMapper.toCommentDto(comment);
+        var commentDtoGet = commentService.updateCommentByCurrentUser(id, commentDtoSet);
+        return new ResponseEntity<>(commentMapper.toComment(commentDtoGet), HttpStatus.OK);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<User> updateCurrentUser(User body) {
-        var userDto = userMapper.toUserDto(body);
-        var updatedUserDto = userService.updateCurrentUser(userDto);
-        return new ResponseEntity<>(userMapper.toUser(updatedUserDto), HttpStatus.OK);
+        var userDtoSet = userMapper.toUserDto(body);
+        var userDtoGet = userService.updateCurrentUser(userDtoSet);
+        return new ResponseEntity<>(userMapper.toUser(userDtoGet), HttpStatus.OK);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<Post> updatePostByCurrentUser(BigDecimal id, Post post) {
-        var postDto = postMapper.toPostDto(post);
-        var updatedPostDto = postService.updatePostByCurrentUser(id, postDto);
-        return new ResponseEntity<>(postMapper.toPost(updatedPostDto), HttpStatus.OK);
+        var postDtoSet = postMapper.toPostDto(post);
+        var postDtoGet = postService.updatePostByCurrentUser(id, postDtoSet);
+        return new ResponseEntity<>(postMapper.toPost(postDtoGet), HttpStatus.OK);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:admin')")
     public ResponseEntity<User> updateUser(BigDecimal id, User user) {
         var userDtoSet = userMapper.toUserDto(user);
         var userDtoGet = userService.updateUser(userDtoSet, id);
@@ -157,22 +171,25 @@ public class UserController implements UsersApi {
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:admin')")
     public ResponseEntity<Role> getUserRole(BigDecimal id) {
-        var roleDto = userService.getUserRole(id);
-        return new ResponseEntity<>(userMapper.toRole(roleDto), HttpStatus.OK);
+        var roleDtoGet = userService.getUserRole(id);
+        return new ResponseEntity<>(userMapper.toRole(roleDtoGet), HttpStatus.OK);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<Void> updateCurrentUserPassword(Password password) {
-        var passwordDto = userMapper.toPasswordDto(password);
-        userService.updateCurrentUserPassword(passwordDto);
+        var passwordDtoSet = userMapper.toPasswordDto(password);
+        userService.updateCurrentUserPassword(passwordDtoSet);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Override // +
+    @PreAuthorize("hasAuthority('role:admin')")
     public ResponseEntity<Role> updateUserRole(BigDecimal id, Role role) {
-        var roleDto = userMapper.toRoleDto(role);
-        var updatedRoleDto = userService.updateUserRole(id, roleDto);
-        return new ResponseEntity<>(userMapper.toRole(updatedRoleDto), HttpStatus.OK);
+        var roleDtoSet = userMapper.toRoleDto(role);
+        var roleDtoGet = userService.updateUserRole(id, roleDtoSet);
+        return new ResponseEntity<>(userMapper.toRole(roleDtoGet), HttpStatus.OK);
     }
 }
