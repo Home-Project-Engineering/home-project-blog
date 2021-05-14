@@ -1,9 +1,7 @@
 package com.softserveinc.ita.home.home_project_blog.controller.mapper;
 
-import com.softserveinc.ita.home.home_project_blog.controller.dto.CreateUserDto;
-import com.softserveinc.ita.home.home_project_blog.controller.dto.UpdateUserDto;
-import com.softserveinc.ita.home.home_project_blog.controller.dto.ViewAuthorDto;
-import com.softserveinc.ita.home.home_project_blog.controller.dto.ViewUserDto;
+import com.softserveinc.ita.home.home_project_blog.controller.dto.*;
+import com.softserveinc.ita.home.home_project_blog.security.model.Role;
 import com.softserveinc.ita.home.home_project_blog.service.dto.UserDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -20,6 +18,14 @@ public interface UserMapperController {
     UserDto signUpToUserDto(CreateUserDto user);
 
     UserDto UpdateToUserDto(UpdateUserDto user);
+
+    default RoleDto toRoleDto(Role role){
+        return new RoleDto(role.toString().toLowerCase());
+    }
+
+    default Role toRole (RoleDto roleDto){
+        return Role.valueOf(roleDto.getName().toUpperCase());
+    }
 
     ViewUserDto toViewUserDto(UserDto user);
 

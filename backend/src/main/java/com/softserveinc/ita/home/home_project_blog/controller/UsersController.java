@@ -1,6 +1,7 @@
 package com.softserveinc.ita.home.home_project_blog.controller;
 
 import com.softserveinc.ita.home.home_project_blog.controller.dto.CreateUserDto;
+import com.softserveinc.ita.home.home_project_blog.controller.dto.RoleDto;
 import com.softserveinc.ita.home.home_project_blog.controller.dto.UpdateUserDto;
 import com.softserveinc.ita.home.home_project_blog.controller.dto.ViewUserDto;
 import com.softserveinc.ita.home.home_project_blog.controller.mapper.UserMapperController;
@@ -55,7 +56,10 @@ public class UsersController {
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<ViewUserDto> updateUser(@PathVariable Long id,
                                                   @Valid @RequestBody UpdateUserDto user) {
-        return new ResponseEntity<>(mapper.toViewUserDto(userService.update(id, mapper.UpdateToUserDto(user))), HttpStatus.OK);
+        return new ResponseEntity<>(
+                mapper.toViewUserDto(userService.update(id, mapper.UpdateToUserDto(user))),
+                HttpStatus.OK
+        );
     }
 
     @PreAuthorize("hasAuthority('users')")
@@ -63,5 +67,18 @@ public class UsersController {
     public ResponseEntity<ViewUserDto> deleteUser(@PathVariable Long id) {
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PreAuthorize("hasAuthority('users')")
+    @GetMapping(path = "/{id}/role", produces = "application/json")
+    public ResponseEntity<RoleDto> getUserRole(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(mapper.toRoleDto(userService.getRole(id)), HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasAuthority('users')")
+    @PutMapping(path = "/{id}/role", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<RoleDto> updateRole(@PathVariable Long id,
+                                              @Valid @RequestBody RoleDto role) {
+        return new ResponseEntity<>(mapper.toRoleDto(userService.updateRole(id, mapper.toRole(role))), HttpStatus.OK);
     }
 }

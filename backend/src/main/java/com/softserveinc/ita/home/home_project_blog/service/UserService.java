@@ -100,6 +100,19 @@ public class UserService implements IUserService {
         repository.deleteById(id);
     }
 
+    @Override
+    public Role getRole(Long id){
+        return getById(id).getRole();
+    }
+
+    @Override
+    public Role updateRole(Long id, @Valid Role role) {
+        UserDto user = getById(id);
+        user.setRole(role);
+        repository.save(mapper.toUser(user));
+        return getById(id).getRole();
+    }
+
     private UserDto getByEmail(String email) {
         return mapper.toUserDto(repository.findByEmail(email).orElseThrow(
                 () -> new EntityNotFoundException(Const.USER_DOESNT_EXIST)));
@@ -118,5 +131,4 @@ public class UserService implements IUserService {
     public UserDto updateCurrentUser(@Valid UserDto user) {
         return update(getCurrentUser(), user);
     }
-
 }

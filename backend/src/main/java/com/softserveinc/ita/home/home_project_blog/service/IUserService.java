@@ -1,8 +1,8 @@
 package com.softserveinc.ita.home.home_project_blog.service;
 
+import com.softserveinc.ita.home.home_project_blog.security.model.Role;
 import com.softserveinc.ita.home.home_project_blog.service.dto.UserDto;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -24,4 +24,8 @@ public interface IUserService {
     UserDto getCurrentUser();
 
     UserDto updateCurrentUser(@Valid UserDto user);
+
+    Role getRole(Long id);
+
+    Role updateRole(Long id, @Valid Role role);
 }

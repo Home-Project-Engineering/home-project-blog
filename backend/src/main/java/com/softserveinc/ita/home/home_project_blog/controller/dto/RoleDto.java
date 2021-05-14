@@ -1,5 +1,6 @@
 package com.softserveinc.ita.home.home_project_blog.controller.dto;
 
+import com.softserveinc.ita.home.home_project_blog.security.model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,11 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ViewUserDto {
-    private Long id;
+public class RoleDto {
     private String name;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private RoleDto role;
 }
