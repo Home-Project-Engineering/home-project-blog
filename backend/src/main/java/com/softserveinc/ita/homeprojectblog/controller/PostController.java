@@ -47,7 +47,7 @@ public class PostController implements PostsApi {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('role:registered')")
+    @PreAuthorize("hasAuthority('role:any-registered')")
     public ResponseEntity<Comment> createComment(BigDecimal postId, Comment comment) {
         var commentDtoSet = commentMapper.toCommentDto(comment);
         var commentDtoGet = commentService.createComment(postId, commentDtoSet);
@@ -55,7 +55,7 @@ public class PostController implements PostsApi {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('role:registered')")
+    @PreAuthorize("hasAuthority('role:any-registered')")
     public ResponseEntity<Post> createPost(Post body) {
         var postDtoSet = postMapper.toPostDto(body);
         var postDtoGet = postService.createPost(postDtoSet);

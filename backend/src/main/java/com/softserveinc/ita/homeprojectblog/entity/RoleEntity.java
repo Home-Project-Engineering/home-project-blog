@@ -29,12 +29,12 @@ public class RoleEntity {
     private NameEnum name;
 
     public enum NameEnum {
-        BLOGGER(Set.of(Permission.REGISTERED_ROLE)),
+        BLOGGER(Set.of(Permission.BLOGGER_ROLE)),
 
-        MODERATOR(Set.of(Permission.REGISTERED_ROLE,
+        MODERATOR(Set.of(Permission.BLOGGER_ROLE,
                 Permission.MODERATOR_ROLE)),
 
-        ADMIN(Set.of(Permission.REGISTERED_ROLE,
+        ADMIN(Set.of(Permission.BLOGGER_ROLE,
                 Permission.MODERATOR_ROLE,
                 Permission.ADMIN_ROLE));
 

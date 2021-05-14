@@ -1,7 +1,7 @@
 package com.softserveinc.ita.homeprojectblog.security;
 
 public enum Permission {
-    REGISTERED_ROLE("role:registered"),
+    BLOGGER_ROLE("role:any-registered"),
     MODERATOR_ROLE("role:moderator-admin"),
     ADMIN_ROLE("role:admin");
 

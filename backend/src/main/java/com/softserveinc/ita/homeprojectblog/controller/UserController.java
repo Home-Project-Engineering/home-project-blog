@@ -57,14 +57,14 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('role:registered')")
+    @PreAuthorize("hasAuthority('role:any-registered')")
     public ResponseEntity<Comment> getCommentByCurrentUser(BigDecimal id) {
         var commentDtoGet = commentService.getCommentByCurrentUser(id);
         return new ResponseEntity<>(commentMapper.toComment(commentDtoGet), HttpStatus.OK);
     }
 
     @Override
-    @PreAuthorize("hasAuthority('role:registered')")
+    @PreAuthorize("hasAuthority('role:any-registered')")
     public ResponseEntity<List<Comment>> getCommentsByCurrentUser(
             BigDecimal id,
             String sort, Integer pageNum, Integer pageSize) {
@@ -75,21 +75,21 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('role:registered')")
+    @PreAuthorize("hasAuthority('role:any-registered')")
     public ResponseEntity<User> getCurrentUser() {
         var userDtoGet = userService.getCurrentUser();
         return new ResponseEntity<>(userMapper.toUser(userDtoGet), HttpStatus.OK);
     }
 
     @Override
-    @PreAuthorize("hasAuthority('role:registered')")
+    @PreAuthorize("hasAuthority('role:any-registered')")
     public ResponseEntity<Post> getPostByCurrentUser(BigDecimal id) {
         var postDtoGet = postService.getPostByCurrentUser(id);
         return new ResponseEntity<>(postMapper.toPost(postDtoGet), HttpStatus.OK);
     }
 
     @Override
-    @PreAuthorize("hasAuthority('role:registered')")
+    @PreAuthorize("hasAuthority('role:any-registered')")
     public ResponseEntity<List<Post>> getPostsByCurrentUser(
             BigDecimal id, String tagId, String tagName,
             String sort, Integer pageNum, Integer pageSize) {
@@ -118,14 +118,14 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('role:registered')")
+    @PreAuthorize("hasAuthority('role:any-registered')")
     public ResponseEntity<Void> removeCommentByCurrentUser(BigDecimal id) {
         commentService.removeCommentByCurrentUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override
-    @PreAuthorize("hasAuthority('role:registered')")
+    @PreAuthorize("hasAuthority('role:any-registered')")
     public ResponseEntity<Void> removePostByCurrentUser(BigDecimal id) {
         postService.removePostByCurrentUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -139,7 +139,7 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('role:registered')")
+    @PreAuthorize("hasAuthority('role:any-registered')")
     public ResponseEntity<Comment> updateCommentByCurrentUser(BigDecimal id, Comment comment) {
         var commentDtoSet = commentMapper.toCommentDto(comment);
         var commentDtoGet = commentService.updateCommentByCurrentUser(id, commentDtoSet);
@@ -147,7 +147,7 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('role:registered')")
+    @PreAuthorize("hasAuthority('role:any-registered')")
     public ResponseEntity<User> updateCurrentUser(User body) {
         var userDtoSet = userMapper.toUserDto(body);
         var userDtoGet = userService.updateCurrentUser(userDtoSet);
@@ -155,7 +155,7 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('role:registered')")
+    @PreAuthorize("hasAuthority('role:any-registered')")
     public ResponseEntity<Post> updatePostByCurrentUser(BigDecimal id, Post post) {
         var postDtoSet = postMapper.toPostDto(post);
         var postDtoGet = postService.updatePostByCurrentUser(id, postDtoSet);
@@ -178,7 +178,7 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('role:registered')")
+    @PreAuthorize("hasAuthority('role:any-registered')")
     public ResponseEntity<Void> updateCurrentUserPassword(Password password) {
         var passwordDtoSet = userMapper.toPasswordDto(password);
         userService.updateCurrentUserPassword(passwordDtoSet);
