@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,10 +14,4 @@ import org.springframework.validation.annotation.Validated;
 public class TagDto {
     private Long id;
     private String name;
-//    private String previewAttachment;
-//    @ManyToOne()
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private UserDto user;
-    //    private Date createdOn;
-//    private Date updatedOn;
-    }
+}
