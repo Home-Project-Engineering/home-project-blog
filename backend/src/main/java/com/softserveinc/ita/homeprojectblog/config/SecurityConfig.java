@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -38,7 +39,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/*/users").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/*/tags").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/*/tags/{Id:\\d+}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/*/posts/{Id:\\d+}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/*/posts").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/*/comments/{Id:\\d+}").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/*/comments").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
