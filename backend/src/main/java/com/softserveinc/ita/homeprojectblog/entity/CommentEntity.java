@@ -20,7 +20,7 @@ public class CommentEntity {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     BigDecimal id;
 
     @Column(name = "text")

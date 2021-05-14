@@ -101,6 +101,13 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
+
+        <!--flyway-->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+        <!--/flyway-->
         <!--/DB-->
 
         <!--SpringFox dependencies -->
@@ -139,7 +146,6 @@
             <artifactId>jackson-databind</artifactId>
         </dependency>
         <!-- /Bean Validation API support -->
-
 
 
     </dependencies>

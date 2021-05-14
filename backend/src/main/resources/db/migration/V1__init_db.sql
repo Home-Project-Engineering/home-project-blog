@@ -1,9 +1,14 @@
--- DROP DATABASE blog;
--- CREATE DATABASE blog;
+create sequence hibernate_sequence start 1 increment 1;
+
+create sequence comment_seq start with 1 increment by 50;
+create sequence role_seq start with 4 increment by 50;
+create sequence post_seq start with 1 increment by 50;
+create sequence tag_seq start with 1 increment by 50;
+create sequence user_seq start with 2 increment by 50;
 
 create table role
 (
-    id   SMALLSERIAL        NOT NULL,
+    id   BIGINT        NOT NULL,
     name varchar(20) UNIQUE NOT NULL,
     primary key (id)
 );
@@ -11,7 +16,7 @@ create table role
 -- DROP TABLE IF EXISTS "user";
 CREATE TABLE IF NOT EXISTS "user"
 (
-    id         bigserial    NOT NULL,
+    id         NUMERIC    NOT NULL,
     name       VARCHAR(20)  NOT NULL UNIQUE,
     first_name VARCHAR(50)  NOT NULL,
     last_name  VARCHAR(50)  NOT NULL,
@@ -19,7 +24,7 @@ CREATE TABLE IF NOT EXISTS "user"
     password   VARCHAR(255) NOT NULL,
     create_on  TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_on  TIMESTAMPTZ  NULL,
-    role_id    smallint     NOT NULL,
+    role_id    BIGINT     NOT NULL,
     PRIMARY KEY (id),
     foreign key (role_id) REFERENCES role (id)
 );
@@ -27,7 +32,7 @@ CREATE TABLE IF NOT EXISTS "user"
 -- DROP TABLE IF EXISTS "tag";
 CREATE TABLE IF NOT EXISTS "tag"
 (
-    id        bigserial   NOT NULL,
+    id        BIGINT   NOT NULL,
     name      VARCHAR(50) NOT NULL,
     create_on TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_on TIMESTAMPTZ NULL,
@@ -37,10 +42,10 @@ CREATE TABLE IF NOT EXISTS "tag"
 -- DROP TABLE IF EXISTS "post_tags";
 CREATE TABLE IF NOT EXISTS "post"
 (
-    id                 BIGSERIAL    NOT NULL,
+    id                 NUMERIC    NOT NULL,
     title              VARCHAR(250) NOT NULL,
     preview_attachment TEXT         NOT NULL,
-    user_id            BIGINT,
+    user_id            NUMERIC,
     create_on          TIMESTAMPTZ  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     text               TEXT         NOT NULL,
     update_on          TIMESTAMPTZ  NULL,
@@ -51,7 +56,7 @@ CREATE TABLE IF NOT EXISTS "post"
 -- DROP TABLE IF EXISTS "post";
 create table post_tags
 (
-    post_id BIGINT NOT NULL,
+    post_id NUMERIC NOT NULL,
     tags_id BIGINT NOT NULL,
     FOREIGN KEY (post_id) REFERENCES post (id) ON DELETE CASCADE,
     FOREIGN KEY (tags_id) REFERENCES tag (id) ON DELETE CASCADE
@@ -60,10 +65,10 @@ create table post_tags
 -- DROP TABLE IF EXISTS "comment";
 CREATE TABLE IF NOT EXISTS "comment"
 (
-    id        BIGSERIAL   NOT NULL,
+    id        NUMERIC   NOT NULL,
     text      TEXT        NOT NULL,
-    post_id   BIGINT      NOT NULL,
-    user_id   BIGINT,
+    post_id   NUMERIC      NOT NULL,
+    user_id   NUMERIC,
 --     tags_id   BIGINT      NOT NULL,
     create_on TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_on TIMESTAMPTZ NULL,
