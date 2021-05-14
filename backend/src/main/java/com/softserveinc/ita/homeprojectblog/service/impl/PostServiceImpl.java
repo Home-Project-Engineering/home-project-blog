@@ -114,7 +114,8 @@ public class PostServiceImpl implements PostService {
     public PostDto getPostByCurrentUser(BigDecimal id) {
         var userDto = userService.getCurrentUser();
         var postEntity = postRepository.findByUserIdAndId(userDto.getId(), id).orElseThrow(
-                () -> new EntityNotFoundException(String.format(POST_OF_USER_NOT_FOUND_FORMAT, userDto.getId(), id)));
+                () -> new EntityNotFoundException(String.format(
+                        POST_OF_USER_NOT_FOUND_FORMAT, userDto.getId(), id)));
         return postMapper.toPostDto(postEntity);
     }
 
@@ -149,7 +150,8 @@ public class PostServiceImpl implements PostService {
     public void removePostByCurrentUser(BigDecimal id) {
         var userDto = userService.getCurrentUser();
         var postEntity = postRepository.findByUserIdAndId(userDto.getId(), id).orElseThrow(
-                () -> new EntityNotFoundException(String.format(POST_OF_USER_NOT_FOUND_FORMAT, userDto.getId(), id)));
+                () -> new EntityNotFoundException(String.format(
+                        POST_OF_USER_NOT_FOUND_FORMAT, userDto.getId(), id)));
         postRepository.deleteById(postEntity.getId());
     }
 
@@ -157,8 +159,8 @@ public class PostServiceImpl implements PostService {
     public PostDto updatePostByCurrentUser(BigDecimal id, PostDto postDto) {
         var userDto = userService.getCurrentUser();
         var oldPostEntity = postRepository.findByUserIdAndId(userDto.getId(), id).orElseThrow(
-                () -> new EntityNotFoundException(String.format(POST_OF_USER_NOT_FOUND_FORMAT, userDto.getId(), id)));
-
+                () -> new EntityNotFoundException(String.format(
+                        POST_OF_USER_NOT_FOUND_FORMAT, userDto.getId(), id)));
         return getUpdatedPostDto(postDto, oldPostEntity);
     }
 

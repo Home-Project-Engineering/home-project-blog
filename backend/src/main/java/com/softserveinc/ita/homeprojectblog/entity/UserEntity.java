@@ -1,9 +1,7 @@
 package com.softserveinc.ita.homeprojectblog.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -16,41 +14,42 @@ import java.time.*;
 @Builder
 @Entity
 @Table(name = "user", schema = "public")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserEntity {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private BigDecimal id;
+    BigDecimal id;
 
     @NotBlank
     @Column(name = "name")
-    private String name;
+    String name;
 
     @NotBlank
     @Column(name = "first_name")
-    private String firstName;
+    String firstName;
 
     @NotBlank
     @Column(name = "last_name")
-    private String lastName;
+    String lastName;
 
     @NotBlank
     @Column(name = "email")
-    private String email;
+    String email;
 
     // don't use validation because already encrypted
     @Column(name = "password")
-    private String password;
+    String password;
 
     @Column(name = "create_on")
-    private OffsetDateTime createOn;
+    OffsetDateTime createOn;
 
     @Column(name = "update_on")
-    private OffsetDateTime updatedOn;
+    OffsetDateTime updatedOn;
 
     @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "role_id")
-    private RoleEntity role;
+    RoleEntity role;
 
 }

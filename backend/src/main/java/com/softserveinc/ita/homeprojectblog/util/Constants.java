@@ -1,6 +1,12 @@
 package com.softserveinc.ita.homeprojectblog.util;
 
+
+import lombok.experimental.FieldNameConstants;
+
+
+@FieldNameConstants
 public final class Constants {
+
     // message
     public static final String WRONG_PASSWORD_PATTERN =
             "The password must include small and large letters and at least one digit\n" +
@@ -11,7 +17,6 @@ public final class Constants {
 
     // regexp
     public static final String PASSWORD_REGEXP = "(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,32}";
-
 
     // format
     public static final String COMMENT_OF_POST_NOT_FOUND_FORMAT =
@@ -26,7 +31,7 @@ public final class Constants {
     public static final String USER_ROLE_NOT_EXIST_FORMAT = "Role for current user --> %s does not exist";
     public static final String ROLE_NOT_EXIST_FORMAT = "Role with name --> %s does not exist";
 
-
     private Constants() {
     }
+
 }

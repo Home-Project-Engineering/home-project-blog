@@ -102,7 +102,8 @@ public class UserServiceImpl implements UserService {
     public RoleDto updateUserRole(BigDecimal id, RoleDto roleDto) {
         var userDto = getUser(id);
         var userEntity = userMapper.toUserEntity(userDto);
-        var roleEntity = roleRepository.findByName(RoleEntity.NameEnum.valueOf(roleDto.getName().name())).orElseThrow(
+        var roleEntity = roleRepository.findByName(
+                RoleEntity.NameEnum.valueOf(roleDto.getName().name())).orElseThrow(
                 () -> new EntityNotFoundException(String.format(ROLE_NOT_EXIST_FORMAT, roleDto.getName().name())));
         userEntity.setRole(roleEntity);
         userEntity.setUpdatedOn(OffsetDateTime.now());

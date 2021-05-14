@@ -1,8 +1,10 @@
 package com.softserveinc.ita.homeprojectblog.dto;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -15,30 +17,31 @@ import static com.softserveinc.ita.homeprojectblog.util.Constants.WRONG_PASSWORD
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDto {
 
-    private BigDecimal id;
+    BigDecimal id;
 
     @NotBlank
-    private String name;
+    String name;
 
     @NotBlank
-    private String firstName;
+    String firstName;
 
     @NotBlank
-    private String lastName;
+    String lastName;
 
     @NotBlank
-    private String email;
+    String email;
 
     @Pattern(regexp = PASSWORD_REGEXP,
             message = WRONG_PASSWORD_PATTERN)
-    private String password;
+    String password;
 
-    private OffsetDateTime createOn;
+    OffsetDateTime createOn;
 
-    private OffsetDateTime updatedOn;
+    OffsetDateTime updatedOn;
 
-    private RoleDto role;
+    RoleDto role;
 
 }

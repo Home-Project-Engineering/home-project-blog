@@ -1,8 +1,10 @@
 package com.softserveinc.ita.homeprojectblog.entity;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
@@ -11,21 +13,22 @@ import java.time.OffsetDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="tag", schema = "public")
+@Table(name = "tag", schema = "public")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TagEntity {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
 
     @Column(name = "name")
-    private String name;
+    String name;
 
     @Column(name = "create_on")
-    private OffsetDateTime createOn;
+    OffsetDateTime createOn;
 
     @Column(name = "update_on")
-    private OffsetDateTime updateOn;
+    OffsetDateTime updateOn;
 
 }

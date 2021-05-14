@@ -149,7 +149,8 @@ public class CommentServiceImpl implements CommentService {
     public CommentDto updateCommentByCurrentUser(BigDecimal id, CommentDto comment) { // text
         var userDto = userService.getCurrentUser();
         var commentEntity = commentRepository.findByUserIdAndId(userDto.getId(), id).orElseThrow(
-                () -> new EntityNotFoundException(String.format(COMMENT_OF_USER_NOT_FOUND_FORMAT, userDto.getId(), id)));
+                () -> new EntityNotFoundException(String.format(
+                        COMMENT_OF_USER_NOT_FOUND_FORMAT, userDto.getId(), id)));
 
         commentEntity.setText(comment.getText());
         commentEntity.setUpdatedOn(OffsetDateTime.now());

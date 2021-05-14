@@ -1,9 +1,11 @@
 package com.softserveinc.ita.homeprojectblog.dto;
 
 import com.softserveinc.ita.homeprojectblog.model.Author;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -11,17 +13,18 @@ import java.time.OffsetDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CommentDto {
 
-  private BigDecimal id;
+    BigDecimal id;
 
-  private Author author;
+    Author author;
 
-  private String text;
+    String text;
 
-  private OffsetDateTime createdOn;
+    OffsetDateTime createdOn;
 
-  private OffsetDateTime updatedOn;
+    OffsetDateTime updatedOn;
 
 }
 

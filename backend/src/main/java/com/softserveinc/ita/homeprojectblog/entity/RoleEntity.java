@@ -1,10 +1,8 @@
 package com.softserveinc.ita.homeprojectblog.entity;
 
 import com.softserveinc.ita.homeprojectblog.security.Permission;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
@@ -17,6 +15,7 @@ import java.util.stream.Collectors;
 @Builder
 @Entity
 @Table(name = "role", schema = "public")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class RoleEntity {
 
     @Id
@@ -26,7 +25,7 @@ public class RoleEntity {
 
     @Column(name = "name")
     @Enumerated(EnumType.STRING)
-    private NameEnum name;
+    NameEnum name;
 
     public enum NameEnum {
         BLOGGER(Set.of(Permission.BLOGGER_ROLE)),
