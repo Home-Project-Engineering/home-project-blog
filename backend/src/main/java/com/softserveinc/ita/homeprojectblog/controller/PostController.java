@@ -41,12 +41,12 @@ public class PostController implements PostsApi {
     Boilerplate boilerplate;
 
 
-    @Override // +/-
+    @Override
     public Optional<NativeWebRequest> getRequest() {
         return Optional.ofNullable(request);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<Comment> createComment(BigDecimal postId, Comment comment) {
         var commentDtoSet = commentMapper.toCommentDto(comment);
@@ -54,7 +54,7 @@ public class PostController implements PostsApi {
         return new ResponseEntity<>(commentMapper.toComment(commentDtoGet), HttpStatus.CREATED);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<Post> createPost(Post body) {
         var postDtoSet = postMapper.toPostDto(body);
@@ -62,14 +62,14 @@ public class PostController implements PostsApi {
         return new ResponseEntity<>(postMapper.toPost(postDtoGet), HttpStatus.CREATED);
     }
 
-    @Override // +
+    @Override
     @PermitAll
     public ResponseEntity<Comment> getComment(BigDecimal postId, BigDecimal id) {
         var commentDtoGet = commentService.getComment(postId, id);
         return new ResponseEntity<>(commentMapper.toComment(commentDtoGet), HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PermitAll
     public ResponseEntity<List<Comment>> getComments(
             BigDecimal postId, BigDecimal id, String authorName,
@@ -84,14 +84,14 @@ public class PostController implements PostsApi {
         return new ResponseEntity<>(commentPageGet.getContent(), headers, HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PermitAll
     public ResponseEntity<Post> getPost(BigDecimal id) {
         var postDtoGet = postService.getPost(id);
         return new ResponseEntity<>(postMapper.toPost(postDtoGet), HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PermitAll
     public ResponseEntity<List<Post>> getPosts(
             BigDecimal id, String tagId, String tagName, String authorName,
@@ -106,21 +106,21 @@ public class PostController implements PostsApi {
         return new ResponseEntity<>(postPageGet.getContent(), headers, HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:moderator-admin')")
     public ResponseEntity<Void> removeComment(BigDecimal postId, BigDecimal id) {
         commentService.removeComment(postId, id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:moderator-admin')")
     public ResponseEntity<Void> removePost(BigDecimal id) {
         postService.removePost(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:moderator-admin')")
     public ResponseEntity<Comment> updateComment(BigDecimal postId, BigDecimal id, Comment comment) {
         var commentDtoSet = commentMapper.toCommentDto(comment);
@@ -128,7 +128,7 @@ public class PostController implements PostsApi {
         return new ResponseEntity<>(commentMapper.toComment(commentDtoGet), HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:moderator-admin')")
     public ResponseEntity<Post> updatePost(BigDecimal id, Post post) {
         var postDtoSet = postMapper.toPostDto(post);

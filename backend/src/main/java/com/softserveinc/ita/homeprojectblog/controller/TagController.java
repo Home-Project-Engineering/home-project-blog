@@ -35,19 +35,19 @@ public class TagController implements TagsApi {
 
     Boilerplate boilerplate;
 
-    @Override // +/-
+    @Override
     public Optional<NativeWebRequest> getRequest() {
         return Optional.ofNullable(request);
     }
 
-    @Override // +
+    @Override
     @PermitAll
     public ResponseEntity<Tag> getTag(BigDecimal id) {
         var tagDtoGet = tagService.getTag(id);
         return new ResponseEntity<>(tagMapper.toTag(tagDtoGet), HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PermitAll
     public ResponseEntity<List<Tag>> getTags(
             BigDecimal id, String name,
@@ -59,7 +59,7 @@ public class TagController implements TagsApi {
         return new ResponseEntity<>(tagPageGet.getContent(), headers, HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:moderator-admin')")
     public ResponseEntity<Void> removeTag(BigDecimal id) {
         tagService.removeTag(id);

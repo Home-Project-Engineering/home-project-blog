@@ -43,7 +43,7 @@ public class UserController implements UsersApi {
 
     Boilerplate boilerplate;
 
-    @Override // +/-
+    @Override
     public Optional<NativeWebRequest> getRequest() {
         return Optional.ofNullable(request);
     }
@@ -56,14 +56,14 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(userMapper.toUser(userDtoGet), HttpStatus.CREATED);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<Comment> getCommentByCurrentUser(BigDecimal id) {
         var commentDtoGet = commentService.getCommentByCurrentUser(id);
         return new ResponseEntity<>(commentMapper.toComment(commentDtoGet), HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<List<Comment>> getCommentsByCurrentUser(
             BigDecimal id,
@@ -74,21 +74,21 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(commentPageGet.getContent(), headers, HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<User> getCurrentUser() {
         var userDtoGet = userService.getCurrentUser();
         return new ResponseEntity<>(userMapper.toUser(userDtoGet), HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<Post> getPostByCurrentUser(BigDecimal id) {
         var postDtoGet = postService.getPostByCurrentUser(id);
         return new ResponseEntity<>(postMapper.toPost(postDtoGet), HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<List<Post>> getPostsByCurrentUser(
             BigDecimal id, String tagId, String tagName,
@@ -99,14 +99,14 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(postPageGet.getContent(), headers, HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:admin')")
     public ResponseEntity<User> getUser(BigDecimal id) {
         var userDtoGet = userService.getUser(id);
         return new ResponseEntity<>(userMapper.toUser(userDtoGet), HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:admin')")
     public ResponseEntity<List<User>> getUsers(
             BigDecimal id, String name,
@@ -117,28 +117,28 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(userPageGet.getContent(), headers, HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<Void> removeCommentByCurrentUser(BigDecimal id) {
         commentService.removeCommentByCurrentUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<Void> removePostByCurrentUser(BigDecimal id) {
         postService.removePostByCurrentUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:admin')")
     public ResponseEntity<Void> removeUser(BigDecimal id) {
         userService.removeUser(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<Comment> updateCommentByCurrentUser(BigDecimal id, Comment comment) {
         var commentDtoSet = commentMapper.toCommentDto(comment);
@@ -146,7 +146,7 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(commentMapper.toComment(commentDtoGet), HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<User> updateCurrentUser(User body) {
         var userDtoSet = userMapper.toUserDto(body);
@@ -154,7 +154,7 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(userMapper.toUser(userDtoGet), HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<Post> updatePostByCurrentUser(BigDecimal id, Post post) {
         var postDtoSet = postMapper.toPostDto(post);
@@ -162,7 +162,7 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(postMapper.toPost(postDtoGet), HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:admin')")
     public ResponseEntity<User> updateUser(BigDecimal id, User user) {
         var userDtoSet = userMapper.toUserDto(user);
@@ -170,14 +170,14 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(userMapper.toUser(userDtoGet), HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:admin')")
     public ResponseEntity<Role> getUserRole(BigDecimal id) {
         var roleDtoGet = userService.getUserRole(id);
         return new ResponseEntity<>(userMapper.toRole(roleDtoGet), HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:registered')")
     public ResponseEntity<Void> updateCurrentUserPassword(Password password) {
         var passwordDtoSet = userMapper.toPasswordDto(password);
@@ -185,7 +185,7 @@ public class UserController implements UsersApi {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Override // +
+    @Override
     @PreAuthorize("hasAuthority('role:admin')")
     public ResponseEntity<Role> updateUserRole(BigDecimal id, Role role) {
         var roleDtoSet = userMapper.toRoleDto(role);
