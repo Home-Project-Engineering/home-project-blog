@@ -23,8 +23,8 @@ public final class ApiClientUtil {
     private static final String APPLICATION_ADMIN_PASSWORD = System.getProperty("blog.application.admin.password", "passworD321");
     private static final String APPLICATION_MODERATOR_NAME = System.getProperty("blog.application.moderator.username", "Proselit");
     private static final String APPLICATION_MODERATOR_PASSWORD = System.getProperty("blog.application.moderator.password", "passworD321");
-    private static final String APPLICATION_BLOGGER_NAME = System.getProperty("blog.application.blogger.username", "Proselit");
-    private static final String APPLICATION_BLOGGER_PASSWORD = System.getProperty("blog.application.blogger.password", "CheGevara");
+    private static final String APPLICATION_BLOGGER_NAME = System.getProperty("blog.application.blogger.username", "CheGevara");
+    private static final String APPLICATION_BLOGGER_PASSWORD = System.getProperty("blog.application.blogger.password", "passworD321");
     private static final String VERBOSE_LOGGING = System.getProperty("verbose.tests.logging", "true");
 
     public static ApiClient getClient(String name, String password) {
