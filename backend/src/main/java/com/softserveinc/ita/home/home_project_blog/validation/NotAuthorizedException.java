@@ -8,7 +8,7 @@ import org.springframework.security.access.AuthorizationServiceException;
 public class NotAuthorizedException extends AuthorizationServiceException{
     private HttpStatus httpStatus;
     public NotAuthorizedException() {
-        this(Const.NO_AUTH, HttpStatus.BAD_REQUEST);
+        this(Const.NO_AUTH, HttpStatus.UNAUTHORIZED);
     }
     public NotAuthorizedException(String msg, HttpStatus httpStatus) {
         super(msg);
