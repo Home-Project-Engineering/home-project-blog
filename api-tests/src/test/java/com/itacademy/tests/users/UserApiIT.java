@@ -96,7 +96,7 @@ class UserApiIT {
         );
 
         assertThat(actualListUsers).isSortedAccordingTo((u1, u2) -> Objects
-                .requireNonNull(u2.getName()).compareTo(Objects.requireNonNull(u1.getName())));
+                .requireNonNull(u2.getName()).compareToIgnoreCase(Objects.requireNonNull(u1.getName())));
     }
 
 

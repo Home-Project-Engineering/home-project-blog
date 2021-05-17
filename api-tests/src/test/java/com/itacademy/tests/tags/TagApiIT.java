@@ -49,7 +49,7 @@ public class TagApiIT {
                 , 1
                 , 10
         );
-        assertThat(tags).isSortedAccordingTo(Comparator.comparing(Tag::getName));
+        assertThat(tags).isSortedAccordingTo(Comparator.comparing((Tag tag) -> tag.getName().toLowerCase()));
     }
 
     @Test
@@ -61,7 +61,7 @@ public class TagApiIT {
                 , 1
                 , 10
         );
-        assertThat(tags).isSortedAccordingTo(Comparator.comparing(Tag::getName).reversed());
+        assertThat(tags).isSortedAccordingTo(Comparator.comparing((Tag tag) -> tag.getName().toLowerCase()).reversed());
     }
 
     @Test
