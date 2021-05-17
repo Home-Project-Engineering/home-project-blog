@@ -23,11 +23,11 @@ public final class ApiClientUtil {
     private static final String APPLICATION_ADMIN_PASSWORD = System.getProperty("blog.application.admin.password", "passworD321");
     private static final String VERBOSE_LOGGING = System.getProperty("verbose.tests.logging", "true");
 
-    public static ApiClient getClient(String email, String password) {
+    public static ApiClient getClient(String name, String password) {
         ApiClient client = new ApiClient();
         setLoggingFeature(client);
         setServers(client);
-        client.setUsername(email);
+        client.setUsername(name);
         client.setPassword(password);
         return client;
     }
@@ -52,7 +52,7 @@ public final class ApiClientUtil {
         if (Boolean.parseBoolean(VERBOSE_LOGGING)) {
             Logger logger = Logger.getLogger(ApiClient.class.getName());
             client.getHttpClient()
-               .register(new LoggingFeature(logger, Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY, 8192));
+                    .register(new LoggingFeature(logger, Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY, 8192));
         }
     }
 
@@ -70,10 +70,10 @@ public final class ApiClientUtil {
         }
     }
 
-    public static int setStatusCode(Function action, ApiClient apiClient) {
+    public static int setStatusCode(Function<ApiClient,?> action, ApiClient apiClient) {
         try {
-            ApiResponse resp = (ApiResponse) action.apply(apiClient);
-             return resp.getStatusCode();
+            ApiResponse<?> resp = (ApiResponse<?>) action.apply(apiClient);
+            return resp.getStatusCode();
         } catch (ApiException e) {
             return e.getCode();
         }

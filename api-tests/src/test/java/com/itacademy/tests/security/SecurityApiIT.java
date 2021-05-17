@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
@@ -27,7 +27,7 @@ public class SecurityApiIT {
     @Parameterized.Parameter
     public String actionSummary;
     @Parameterized.Parameter(1)
-    public Function<ApiClient, ApiResponse> action;
+    public Function<ApiClient, ApiResponse<?>> action;
     @Parameterized.Parameter(2)
     public boolean admin;
     @Parameterized.Parameter(3)
@@ -38,10 +38,10 @@ public class SecurityApiIT {
     public boolean any;
 
     @Parameterized.Parameters(name = "{index}-{0}")
-    public static Iterable data() {
+    public static Iterable<?> data() {
         Set<Object> data = new HashSet<>();
 
-        Function<ApiClient, ApiResponse> action = (ApiClient apiClient) -> {
+        Function<ApiClient, ApiResponse<?>> action = (ApiClient apiClient) -> {
             CurrentUserApi currentUserApi = new CurrentUserApi(apiClient);
             return currentUserApi.getCurrentUserWithHttpInfo();
         };
@@ -224,7 +224,7 @@ public class SecurityApiIT {
                 "Update User",
                 action,
                 true,
-                true,
+                false,
                 false,
                 false).toArray()
         );
@@ -461,14 +461,14 @@ public class SecurityApiIT {
 
     @Test
     public void testModerator() {
-        ApiClient moderatorClient = ApiClientUtil.getClient("v_moderator@example.com", "Dfkthrf17");
+        ApiClient moderatorClient = ApiClientUtil.getClient("Proselit", "passworD321");
         int statusCode = getStatusCode(moderatorClient);
         ApiClientUtil.checkAdminModerBlogger(moderator, statusCode);
     }
 
     @Test
     public void testBlogger() {
-        ApiClient bloggerClient = ApiClientUtil.getClient("v_blogger@example.com", "Dfkthrf17");
+        ApiClient bloggerClient = ApiClientUtil.getClient("CheGevara", "passworD321");
         int statusCode = getStatusCode(bloggerClient);
         ApiClientUtil.checkAdminModerBlogger(blogger, statusCode);
     }
@@ -488,7 +488,7 @@ public class SecurityApiIT {
     private int getStatusCode(ApiClient unauthorizedClient) {
         int statusCode;
         try {
-            ApiResponse resp = action.apply(unauthorizedClient);
+            ApiResponse<?> resp = action.apply(unauthorizedClient);
             statusCode = resp.getStatusCode();
         } catch (ApiException e) {
             statusCode = e.getCode();
