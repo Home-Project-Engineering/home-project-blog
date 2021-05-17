@@ -24,6 +24,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(Parameterized.class)
 public class SecurityApiIT {
+
+    ApiClient moderatorClient = ApiClientUtil.getClient("Nad@gmail.com", "Password123");
+    ApiClient bloggerClient = ApiClientUtil.getClient("Lena@gmail.com", "Password123");
+
     @Parameterized.Parameter
     public String actionSummary;
     @Parameterized.Parameter(1)
@@ -210,7 +214,7 @@ public class SecurityApiIT {
                             .email(RandomStringUtils.randomAlphabetic(5).concat("@example.com")));
                 },
                 true,
-                true,
+                false,
                 false,
                 false).toArray()
         );
@@ -430,14 +434,12 @@ public class SecurityApiIT {
 
     @Test
     public void testModerator() {
-        ApiClient moderatorClient = ApiClientUtil.getClient("v_moderator@example.com", "Dfkthrf17");
         int statusCode = getStatusCode(moderatorClient);
         checkAdminModerBlogger(moderator, statusCode);
     }
 
     @Test
     public void testBlogger() {
-        ApiClient bloggerClient = ApiClientUtil.getClient("v_blogger@example.com", "Dfkthrf17");
         int statusCode = getStatusCode(bloggerClient);
         checkAdminModerBlogger(blogger, statusCode);
     }
