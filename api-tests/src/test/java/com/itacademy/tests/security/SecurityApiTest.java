@@ -35,7 +35,7 @@ class SecurityApiTest {
     @MethodSource("check")
     void testModerator(Function<ApiClient, ApiResponse<?>> action, String x, boolean a, boolean m) {
 
-        int statusCode = getStatusCode(action, ApiClientUtil.getClient("v_moderator@example.com", "Dfkthrf17"));
+        int statusCode = getStatusCode(action, ApiClientUtil.getModeratorClient());
         checkAdminModerBlogger(m, statusCode);
 
     }
@@ -43,7 +43,7 @@ class SecurityApiTest {
     @ParameterizedTest(name = "{index}-{1}")
     @MethodSource("check")
      void testBlogger(Function<ApiClient, ApiResponse<?>> action, String x, boolean a, boolean m, boolean b) {
-        int statusCode = getStatusCode(action, ApiClientUtil.getClient("v_blogger@example.com", "Dfkthrf17"));
+        int statusCode = getStatusCode(action, ApiClientUtil.getBloggerClient());
         checkAdminModerBlogger(b, statusCode);
     }
 
