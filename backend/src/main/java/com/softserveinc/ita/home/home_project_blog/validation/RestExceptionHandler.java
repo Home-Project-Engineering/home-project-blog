@@ -1,9 +1,12 @@
 package com.softserveinc.ita.home.home_project_blog.validation;
 
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,7 +20,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
-//@Order(Ordered.HIGHEST_PRECEDENCE)
+@Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -31,9 +34,29 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(error, httpStatus);
     }
 
+    @ExceptionHandler(value = {AccessDeniedException.class})
+    public ResponseEntity<Error> accessDeniedExceptionHandler(AccessDeniedException e) {
+        HttpStatus httpStatus = HttpStatus.FORBIDDEN;
+        Error error = new Error(
+                httpStatus.toString(),
+                e.getMessage()
+        );
+        return new ResponseEntity<>(error, httpStatus);
+    }
+
+//    @ExceptionHandler(value = {NotAuthorizedException.class, NotUniqueException.class, MismatchException.class})
+//    public ResponseEntity<Error> myExceptions(RuntimeException e) {
+//        HttpStatus httpStatus = e.getHttpStatus();
+//        Error error = new Error(
+//                httpStatus.toString(),
+//                e.getMessage()
+//        );
+//        return new ResponseEntity<>(error, httpStatus);
+//    }
+
     @ExceptionHandler(value = {NotAuthorizedException.class})
     public ResponseEntity<Error> noAuthorization(NotAuthorizedException e) {
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        HttpStatus httpStatus = e.getHttpStatus();
         Error error = new Error(
                 httpStatus.toString(),
                 e.getMessage()
