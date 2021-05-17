@@ -21,6 +21,10 @@ public final class ApiClientUtil {
     private static final String APPLICATION_EXTERNAL_PORT = System.getProperty("blog.application.external.port", "8080");
     private static final String APPLICATION_ADMIN_NAME = System.getProperty("blog.application.admin.username", "Tertey");
     private static final String APPLICATION_ADMIN_PASSWORD = System.getProperty("blog.application.admin.password", "passworD321");
+    private static final String APPLICATION_MODERATOR_NAME = System.getProperty("blog.application.moderator.username", "Proselit");
+    private static final String APPLICATION_MODERATOR_PASSWORD = System.getProperty("blog.application.moderator.password", "passworD321");
+    private static final String APPLICATION_BLOGGER_NAME = System.getProperty("blog.application.blogger.username", "Proselit");
+    private static final String APPLICATION_BLOGGER_PASSWORD = System.getProperty("blog.application.blogger.password", "CheGevara");
     private static final String VERBOSE_LOGGING = System.getProperty("verbose.tests.logging", "true");
 
     public static ApiClient getClient(String name, String password) {
@@ -38,6 +42,23 @@ public final class ApiClientUtil {
         setServers(client);
         client.setUsername(APPLICATION_ADMIN_NAME);
         client.setPassword(APPLICATION_ADMIN_PASSWORD);
+        return client;
+    }
+    public static ApiClient getModeratorClient() {
+        ApiClient client = new ApiClient();
+        setLoggingFeature(client);
+        setServers(client);
+        client.setUsername(APPLICATION_MODERATOR_NAME);
+        client.setPassword(APPLICATION_MODERATOR_PASSWORD);
+        return client;
+    }
+
+    public static ApiClient getBloggerClient() {
+        ApiClient client = new ApiClient();
+        setLoggingFeature(client);
+        setServers(client);
+        client.setUsername(APPLICATION_BLOGGER_NAME);
+        client.setPassword(APPLICATION_BLOGGER_PASSWORD);
         return client;
     }
 

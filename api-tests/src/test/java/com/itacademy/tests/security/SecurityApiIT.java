@@ -461,14 +461,14 @@ public class SecurityApiIT {
 
     @Test
     public void testModerator() {
-        ApiClient moderatorClient = ApiClientUtil.getClient("Proselit", "passworD321");
+        ApiClient moderatorClient = ApiClientUtil.getModeratorClient();
         int statusCode = getStatusCode(moderatorClient);
         ApiClientUtil.checkAdminModerBlogger(moderator, statusCode);
     }
 
     @Test
     public void testBlogger() {
-        ApiClient bloggerClient = ApiClientUtil.getClient("CheGevara", "passworD321");
+        ApiClient bloggerClient = ApiClientUtil.getBloggerClient();
         int statusCode = getStatusCode(bloggerClient);
         ApiClientUtil.checkAdminModerBlogger(blogger, statusCode);
     }
