@@ -259,7 +259,8 @@ class UserApiIT {
         assertNotNull(expected);
         assertEquals(expected.getFirstName(), actual.getFirstName());
         assertEquals(expected.getLastName(), actual.getLastName());
-        assertEquals(expected.getEmail(), actual.getEmail());
+        assertTrue(expected.getEmail().equalsIgnoreCase(actual.getEmail()));
+        // assertEquals(expected.getEmail(), actual.getEmail());
     }
 
     private void assertUser(User saved, User update, User updated) {
