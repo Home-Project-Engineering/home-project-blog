@@ -40,14 +40,12 @@ public class SecurityApiIT {
     @Parameterized.Parameters(name = "{index}-{0}")
     public static Iterable<?> data() {
         Set<Object> data = new HashSet<>();
-
-        Function<ApiClient, ApiResponse<?>> action = (ApiClient apiClient) -> {
-            CurrentUserApi currentUserApi = new CurrentUserApi(apiClient);
-            return currentUserApi.getCurrentUserWithHttpInfo();
-        };
         data.add(Arrays.asList(
                 "Get current user",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    CurrentUserApi currentUserApi = new CurrentUserApi(apiClient);
+                    return currentUserApi.getCurrentUserWithHttpInfo();
+                },
                 true,
                 true,
                 true,
@@ -210,7 +208,7 @@ public class SecurityApiIT {
                             .email(RandomStringUtils.randomAlphabetic(5).concat("@example.com")));
                 },
                 true,
-                true,
+                false,
                 false,
                 false).toArray()
         );

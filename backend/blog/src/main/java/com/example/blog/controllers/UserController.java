@@ -217,7 +217,7 @@ public class UserController implements UsersApi {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('update:posts:comment:tag')")
+    @PreAuthorize("hasAuthority('delete:update:posts:comment:tag')")
     public ResponseEntity<User> updateUser(BigDecimal id, User user) {
 
         DtoUser dtoUser = UserMapper.INSTANCE.fromUser(user);
