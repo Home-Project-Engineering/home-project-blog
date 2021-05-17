@@ -14,4 +14,12 @@ import org.springframework.validation.annotation.Validated;
 public class TagDto {
     private Long id;
     private String name;
+
+    public String getName() {
+        return name.toLowerCase().trim();
+    }
+
+    public void setName(String name) {
+        this.name = name.toLowerCase().trim();
+    }
 }

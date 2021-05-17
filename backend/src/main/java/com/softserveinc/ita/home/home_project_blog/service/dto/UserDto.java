@@ -41,4 +41,8 @@ public class UserDto {
     public String getEmail() {
         return email.toLowerCase().trim();
     }
+
+    public void setEmail(String email) {
+        this.email = email.toLowerCase().trim();
+    }
 }
