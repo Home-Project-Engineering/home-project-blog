@@ -7,10 +7,10 @@ import com.softserveinc.ita.homeproject.blog.ApiResponse;
 import com.softserveinc.ita.homeproject.blog.client.api.*;
 import com.softserveinc.ita.homeproject.blog.client.model.*;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
 
 import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
@@ -18,15 +18,14 @@ import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SecurityApiTestIT5 {
+class SecurityApiTest {
 
 
     @ParameterizedTest(name = "{index}-{1}")
     @MethodSource("check")
-    public void testAdmin(Function<ApiClient, ApiResponse<?>> action, String x, boolean a) {
+    void testAdmin(Function<ApiClient, ApiResponse<?>> action, String x, boolean a) {
 
         int statusCode = getStatusCode(action, ApiClientUtil.getAdminClient());
         checkAdminModerBlogger(a, statusCode);
@@ -34,7 +33,7 @@ public class SecurityApiTestIT5 {
 
     @ParameterizedTest(name = "{index}-{1}")
     @MethodSource("check")
-    public void testModerator(Function<ApiClient, ApiResponse<?>> action, String x, boolean a, boolean m) {
+    void testModerator(Function<ApiClient, ApiResponse<?>> action, String x, boolean a, boolean m) {
 
         int statusCode = getStatusCode(action, ApiClientUtil.getClient("v_moderator@example.com", "Dfkthrf17"));
         checkAdminModerBlogger(m, statusCode);
@@ -43,20 +42,20 @@ public class SecurityApiTestIT5 {
 
     @ParameterizedTest(name = "{index}-{1}")
     @MethodSource("check")
-    public void testBlogger(Function<ApiClient, ApiResponse<?>> action, String x, boolean a, boolean m, boolean b) {
+     void testBlogger(Function<ApiClient, ApiResponse<?>> action, String x, boolean a, boolean m, boolean b) {
         int statusCode = getStatusCode(action, ApiClientUtil.getClient("v_blogger@example.com", "Dfkthrf17"));
         checkAdminModerBlogger(b, statusCode);
     }
 
     @ParameterizedTest(name = "{index}-{1}")
     @MethodSource("check")
-    public void testUnauthorizedClient(Function<ApiClient, ApiResponse<?>> action, boolean a, boolean m, boolean b, boolean un) {
+     void testUnauthorizedClient(Function<ApiClient, ApiResponse<?>> action, boolean a, boolean m, boolean b, boolean un) {
 
         int statusCode = getStatusCode(action, ApiClientUtil.getUnauthorizedClient());
         if (un) {
-            assertNotEquals(Response.Status.FORBIDDEN.getStatusCode(), statusCode);
+            Assertions.assertNotEquals(Response.Status.FORBIDDEN.getStatusCode(), statusCode);
         } else {
-            assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), statusCode);
+            Assertions.assertEquals(Response.Status.UNAUTHORIZED.getStatusCode(), statusCode);
         }
 
     }
@@ -384,8 +383,8 @@ public class SecurityApiTestIT5 {
 
     public void checkAdminModerBlogger(boolean role, int statusCode) {
         if (role) {
-            assertNotEquals(Response.Status.UNAUTHORIZED.getStatusCode(), statusCode);
-            assertNotEquals(Response.Status.FORBIDDEN.getStatusCode(), statusCode);
+            Assertions.assertNotEquals(Response.Status.UNAUTHORIZED.getStatusCode(), statusCode);
+            Assertions.assertNotEquals(Response.Status.FORBIDDEN.getStatusCode(), statusCode);
         } else {
             assertEquals(Response.Status.FORBIDDEN.getStatusCode(), statusCode);
         }
