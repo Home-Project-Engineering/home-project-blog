@@ -3,7 +3,6 @@ package com.itacademy.tests.users;
 import com.itacademy.tests.utils.ApiClientUtil;
 import com.softserveinc.ita.homeproject.blog.ApiException;
 import com.softserveinc.ita.homeproject.blog.client.api.UsersApi;
-import com.softserveinc.ita.homeproject.blog.client.model.Post;
 import com.softserveinc.ita.homeproject.blog.client.model.Role;
 import com.softserveinc.ita.homeproject.blog.client.model.User;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -22,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserApiIT {
 
-    private final UsersApi userApi = new UsersApi(ApiClientUtil.getClient());
+    private final UsersApi userApi = new UsersApi(ApiClientUtil.getAdminClient());
     private final UsersApi unauthorizedUserApi = new UsersApi(ApiClientUtil.getUnauthorizedClient());
 
 
@@ -36,10 +35,11 @@ class UserApiIT {
                 null,
                 1,
                 10
-                );
+        );
 
         assertThat(actualListUsers).isNotEmpty();
     }
+
     @Test
     void getUsersById() {
         User expectedUser = userApi.createUser(createTestUser());
@@ -82,8 +82,9 @@ class UserApiIT {
         assertThat(actualListUsers).isSortedAccordingTo(Comparator.comparing(u -> Objects
                 .requireNonNull(u.getId())));
     }
+
     @Test
-    void getAllUsersDescSortByFirstNameTest() throws ApiException {
+    void getAllUsersDescSortByNameTest() throws ApiException {
         saveListUser();
 
         List<User> actualListUsers = userApi.getUsers(
@@ -95,9 +96,8 @@ class UserApiIT {
         );
 
         assertThat(actualListUsers).isSortedAccordingTo((u1, u2) -> Objects
-                .requireNonNull(u2.getName()).compareToIgnoreCase(Objects.requireNonNull(u1.getName())));
+                .requireNonNull(u2.getName()).compareTo(Objects.requireNonNull(u1.getName())));
     }
-
 
 
     @org.junit.jupiter.api.Test
@@ -194,6 +194,32 @@ class UserApiIT {
                 .matches(exception -> exception.getCode() == 400);
     }
 
+    @Test
+    void tryToCreateUserWithDuplicateName() {
+        User user = createTestUser();
+        userApi.createUser(user);
+
+        User duplicate = createTestUser();
+        duplicate.setName(user.getName());
+
+        assertThatExceptionOfType(ApiException.class)
+                .isThrownBy(() -> userApi.createUser(duplicate))
+                .matches(exception -> exception.getCode() == 400);
+    }
+
+    @Test
+    void tryToCreateUserWithDuplicateEmail() {
+        User user = createTestUser();
+        userApi.createUser(user);
+
+        User duplicate = createTestUser();
+        duplicate.setEmail(user.getEmail());
+
+        assertThatExceptionOfType(ApiException.class)
+                .isThrownBy(() -> userApi.createUser(duplicate))
+                .matches(exception -> exception.getCode() == 400);
+    }
+
     private User createTestUser() {
         return new User()
                 .name(RandomStringUtils.randomAlphabetic(5).concat("_test"))
@@ -217,10 +243,12 @@ class UserApiIT {
         list.add(createTestUser());
         return list;
     }
+
     private void assertUserRole(Role expected, Role actual) {
         assertNotNull(expected);
         assertEquals(expected.getName(), actual.getName());
     }
+
     private void assertUserRole(Role saved, Role update, Role updated) {
         assertNotNull(updated);
         assertNotEquals(saved, updated);
@@ -231,7 +259,8 @@ class UserApiIT {
         assertNotNull(expected);
         assertEquals(expected.getFirstName(), actual.getFirstName());
         assertEquals(expected.getLastName(), actual.getLastName());
-        assertEquals(expected.getEmail(), actual.getEmail());
+        assertTrue(expected.getEmail().equalsIgnoreCase(actual.getEmail()));
+        // assertEquals(expected.getEmail(), actual.getEmail());
     }
 
     private void assertUser(User saved, User update, User updated) {

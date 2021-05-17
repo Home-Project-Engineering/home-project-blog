@@ -9,18 +9,15 @@ import com.softserveinc.ita.homeproject.blog.client.model.Tag;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TagApiIT {
-    TagsApi tagsApi = new TagsApi(ApiClientUtil.getClient());
-    PostsApi postsApi = new PostsApi(ApiClientUtil.getClient());
+    TagsApi tagsApi = new TagsApi(ApiClientUtil.getAdminClient());
+    PostsApi postsApi = new PostsApi(ApiClientUtil.getAdminClient());
 
     @Test
     void removeTag() {
@@ -36,11 +33,59 @@ public class TagApiIT {
         List<Tag> tags = tagsApi.getTags(
                 null
                 , null
-                ,"-id"
-                ,1
-                ,10
+                , "-id"
+                , 1
+                , 10
         );
         assertThat(tags).isNotEmpty();
+    }
+
+    @Test
+    void tagsShouldBeSortedByAscName() {
+        List<Tag> tags = tagsApi.getTags(
+                null
+                , null
+                , "name"
+                , 1
+                , 10
+        );
+        assertThat(tags).isSortedAccordingTo(Comparator.comparing(Tag::getName));
+    }
+
+    @Test
+    void tagsShouldBeSortedByDescName() {
+        List<Tag> tags = tagsApi.getTags(
+                null
+                , null
+                , "-name"
+                , 1
+                , 10
+        );
+        assertThat(tags).isSortedAccordingTo(Comparator.comparing(Tag::getName).reversed());
+    }
+
+    @Test
+    void tagsShouldBeSortedByAscId() {
+        List<Tag> tags = tagsApi.getTags(
+                null
+                , null
+                , "id"
+                , 1
+                , 10
+        );
+        assertThat(tags).isSortedAccordingTo(Comparator.comparing(Tag::getId));
+    }
+
+    @Test
+    void tagsShouldBeSortedByDescId() {
+        List<Tag> tags = tagsApi.getTags(
+                null
+                , null
+                , "-id"
+                , 1
+                , 10
+        );
+        assertThat(tags).isSortedAccordingTo(Comparator.comparing(Tag::getId).reversed());
     }
 
     @Test
@@ -58,6 +103,7 @@ public class TagApiIT {
                 text(RandomStringUtils.randomAlphabetic(5)).
                 tags(Collections.singletonList(createTestTag()));
     }
+
     private Post createTestPostWithTags() {
         return new Post().
                 title(RandomStringUtils.randomAlphabetic(5)).
@@ -65,7 +111,8 @@ public class TagApiIT {
                 previewAttachment(RandomStringUtils.randomAlphabetic(5)).
                 tags(Arrays.asList(createTestTag(), createTestTag(), createTestTag(), createTestTag()));
     }
-    private Tag createTestTag(){
+
+    private Tag createTestTag() {
         return new Tag().name(RandomStringUtils.randomAlphabetic(5));
     }
 

@@ -18,8 +18,8 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class CurrentUserPostsApiIT {
-    private final PostsApi postsApi = new PostsApi(ApiClientUtil.getClient());
-    private final CurrentUserPostsApi currentUserPostsApi = new CurrentUserPostsApi(ApiClientUtil.getClient());
+    private final PostsApi postsApi = new PostsApi(ApiClientUtil.getAdminClient());
+    private final CurrentUserPostsApi currentUserPostsApi = new CurrentUserPostsApi(ApiClientUtil.getAdminClient());
 
 
     @Test
