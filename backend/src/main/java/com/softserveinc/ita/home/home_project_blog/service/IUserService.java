@@ -1,6 +1,7 @@
 package com.softserveinc.ita.home.home_project_blog.service;
 
 import com.softserveinc.ita.home.home_project_blog.security.model.Role;
+import com.softserveinc.ita.home.home_project_blog.service.dto.ChangePasswordBody;
 import com.softserveinc.ita.home.home_project_blog.service.dto.UserDto;
 import org.springframework.data.domain.Page;
 import org.springframework.validation.annotation.Validated;
@@ -24,6 +25,8 @@ public interface IUserService {
     UserDto getCurrentUser();
 
     UserDto updateCurrentUser(@Valid UserDto user);
+
+    void updateCurrentUserPassword(@Valid ChangePasswordBody changePassword);
 
     Role getRole(Long id);
 

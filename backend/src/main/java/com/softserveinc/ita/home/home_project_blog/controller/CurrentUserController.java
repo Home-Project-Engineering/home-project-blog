@@ -8,6 +8,7 @@ import com.softserveinc.ita.home.home_project_blog.service.GeneralService;
 import com.softserveinc.ita.home.home_project_blog.service.ICommentService;
 import com.softserveinc.ita.home.home_project_blog.service.IPostService;
 import com.softserveinc.ita.home.home_project_blog.service.IUserService;
+import com.softserveinc.ita.home.home_project_blog.service.dto.ChangePasswordBody;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +43,12 @@ public class CurrentUserController {
         return new ResponseEntity<>(userMapper.toViewUserDto(userService.updateCurrentUser(userMapper.UpdateToUserDto(user))), HttpStatus.OK);
     }
 
+    @PutMapping(path = "/password", consumes = "application/json", produces = "application/json")
+    public ResponseEntity updateCurrentUserPassword(@Valid @RequestBody ChangePasswordBody changePassword) {
+        userService.updateCurrentUserPassword(changePassword);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping(path = "/posts", produces = "application/json")
     public ResponseEntity<List<ViewPostDto>> getPostsByCurrentUser(
             @RequestParam(required = false) Long id,
@@ -66,9 +73,9 @@ public class CurrentUserController {
     }
 
     @DeleteMapping(path = "/posts/{post_id}", produces = "application/json")
-    public ResponseEntity<ViewPostDto> deletePostByCurrentUser(@PathVariable("post_id") Long post_id) {
+    public ResponseEntity deletePostByCurrentUser(@PathVariable("post_id") Long post_id) {
         postService.deletePostByCurrentUser(post_id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping(path = "/comments", produces = "application/json")
@@ -92,14 +99,14 @@ public class CurrentUserController {
                                                         @Valid @RequestBody CreateCommentDto comment) {
         return new ResponseEntity<>(
                 commentMapper.toViewCommentDto(
-                commentService.updateCommentByCurrentUser(id, commentMapper.toCommentDto(comment))),
+                        commentService.updateCommentByCurrentUser(id, commentMapper.toCommentDto(comment))),
                 HttpStatus.OK
         );
     }
 
     @DeleteMapping(path = "/comments/{id}", produces = "application/json")
-    public ResponseEntity<ViewCommentDto> deleteComment(@PathVariable Long id) {
+    public ResponseEntity deleteComment(@PathVariable Long id) {
         commentService.deleteCommentByCurrentUser(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

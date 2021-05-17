@@ -3,12 +3,14 @@ package com.softserveinc.ita.home.home_project_blog.service;
 import com.softserveinc.ita.home.home_project_blog.repository.UserRepository;
 import com.softserveinc.ita.home.home_project_blog.repository.entity.User;
 import com.softserveinc.ita.home.home_project_blog.security.model.Role;
+import com.softserveinc.ita.home.home_project_blog.service.dto.ChangePasswordBody;
 import com.softserveinc.ita.home.home_project_blog.service.dto.UserDto;
 import com.softserveinc.ita.home.home_project_blog.service.mapper.UserMapperService;
 import com.softserveinc.ita.home.home_project_blog.specification.SpecificationService;
 import com.softserveinc.ita.home.home_project_blog.validation.Const;
 import com.softserveinc.ita.home.home_project_blog.validation.NotAuthorizedException;
 import com.softserveinc.ita.home.home_project_blog.validation.NotUniqueException;
+import com.softserveinc.ita.home.home_project_blog.validation.WrongPasswordException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -130,5 +132,15 @@ public class UserService implements IUserService {
     @Override
     public UserDto updateCurrentUser(@Valid UserDto user) {
         return update(getCurrentUser(), user);
+    }
+
+    @Override
+    public void updateCurrentUserPassword(@Valid ChangePasswordBody changePassword) {
+        UserDto user = getCurrentUser();
+        if (!passwordEncoder.matches(changePassword.getOldPassword(),user.getPassword())){
+            throw new WrongPasswordException();
+        }
+        user.setPassword(passwordEncoder.encode(changePassword.getNewPassword()));
+        repository.save(mapper.toUser(user));
     }
 }
