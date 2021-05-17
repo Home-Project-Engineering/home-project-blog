@@ -87,7 +87,7 @@ public class PostApiIT {
                 , 10
         );
 
-        assertThat(posts).isSortedAccordingTo(Comparator.comparing(Post::getId));
+        assertThat(posts).isSortedAccordingTo(Comparator.comparing(Post::getId).reversed());
     }
 
     @Test
@@ -101,7 +101,7 @@ public class PostApiIT {
                 , 1
                 , 10
         );
-        assertThat(posts).isSortedAccordingTo(Comparator.comparing(Post::getId).reversed());
+        assertThat(posts).isSortedAccordingTo(Comparator.comparing(Post::getId));
     }
 
     @Test
