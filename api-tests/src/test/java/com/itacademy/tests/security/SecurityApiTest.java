@@ -22,7 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SecurityApiTest {
 
-
     @ParameterizedTest(name = "{index}-{1}")
     @MethodSource("check")
     void testAdmin(Function<ApiClient, ApiResponse<?>> action, String x, boolean a) {
@@ -160,7 +159,7 @@ class SecurityApiTest {
                         true,
                         true,
                         false),
-                ////
+
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             UsersApi userApi = new UsersApi(apiClient);
                             return userApi.createUserWithHttpInfo(new User());
