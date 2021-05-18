@@ -15,9 +15,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+import static com.itacademy.tests.utils.ApiClientUtil.getNewRandomUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SecurityApiTest {
@@ -41,14 +43,14 @@ class SecurityApiTest {
 
     @ParameterizedTest(name = "{index}-{1}")
     @MethodSource("check")
-     void testBlogger(Function<ApiClient, ApiResponse<?>> action, String x, boolean a, boolean m, boolean b) {
+    void testBlogger(Function<ApiClient, ApiResponse<?>> action, String x, boolean a, boolean m, boolean b) {
         int statusCode = getStatusCode(action, ApiClientUtil.getBloggerClient());
         checkAdminModerBlogger(b, statusCode);
     }
 
     @ParameterizedTest(name = "{index}-{1}")
     @MethodSource("check")
-     void testUnauthorizedClient(Function<ApiClient, ApiResponse<?>> action, boolean a, boolean m, boolean b, boolean un) {
+    void testUnauthorizedClient(Function<ApiClient, ApiResponse<?>> action, String x, boolean a, boolean m, boolean b, boolean un) {
 
         int statusCode = getStatusCode(action, ApiClientUtil.getUnauthorizedClient());
         if (un) {
@@ -59,21 +61,23 @@ class SecurityApiTest {
 
     }
 
+    static Stream<Arguments> check() {
 
-    private static Stream<Arguments> check() {
-        return Stream.of(Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
-                    CurrentUserApi currentUserApi = new CurrentUserApi(apiClient);
-                    return currentUserApi.getCurrentUserWithHttpInfo();
-                },
-                "Get current User",
-                true,
-                true,
-                true,
-                false),
+        return Stream.of(
 
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             CurrentUserApi currentUserApi = new CurrentUserApi(apiClient);
                             return currentUserApi.getCurrentUserWithHttpInfo();
+                        },
+                        "Get current User",
+                        true,
+                        true,
+                        true,
+                        false),
+
+                Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                            CurrentUserApi currentUserApi = new CurrentUserApi(apiClient);
+                            return currentUserApi.updateCurrentUserWithHttpInfo(new User());
                         },
                         "Update current User",
                         true,
@@ -192,12 +196,7 @@ class SecurityApiTest {
 
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             UsersApi userApi = new UsersApi(apiClient);
-                            return userApi.updateUserWithHttpInfo(new BigDecimal(-1), new User()
-                                    .name(RandomStringUtils.randomAlphabetic(5).concat("_test"))
-                                    .firstName("firstName")
-                                    .lastName("lastName")
-                                    .password("passworD321")
-                                    .email(RandomStringUtils.randomAlphabetic(5).concat("@example.com")));
+                            return userApi.updateUserWithHttpInfo(new BigDecimal(-1), getNewRandomUser());
                         },
                         "Update User",
                         true,
@@ -368,6 +367,7 @@ class SecurityApiTest {
 
         );
     }
+
 
     private int getStatusCode(Function<ApiClient, ApiResponse<?>> action, ApiClient unauthorizedClient) {
         int statusCode;
