@@ -201,14 +201,14 @@ public class PostService {
 
     private Sort getSorter(String sort) {
         if (sort == null) {
-            return Sort.by(Sort.Direction.ASC, "id");
+            return Sort.by(Sort.Direction.DESC, "-id");
         } else {
             if (sort.contains("-")) {
                 String par = sort.substring(1);
-                return Sort.by(Sort.Direction.ASC, par);
+                return Sort.by(Sort.Direction.DESC, par);
 
             } else {
-                return Sort.by(Sort.Direction.DESC, sort);
+                return Sort.by(Sort.Direction.ASC, sort);
             }
         }
 
