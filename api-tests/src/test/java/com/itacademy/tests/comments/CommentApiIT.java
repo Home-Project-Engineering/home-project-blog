@@ -1,25 +1,23 @@
 package com.itacademy.tests.comments;
 
+import com.itacademy.tests.GeneralApi;
 import com.itacademy.tests.utils.ApiClientUtil;
 import com.softserveinc.ita.homeproject.blog.ApiException;
 import com.softserveinc.ita.homeproject.blog.client.api.CommentsApi;
 import com.softserveinc.ita.homeproject.blog.client.api.PostsApi;
 import com.softserveinc.ita.homeproject.blog.client.model.Comment;
 import com.softserveinc.ita.homeproject.blog.client.model.Post;
-import com.softserveinc.ita.homeproject.blog.client.model.Tag;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CommentApiIT {
+public class CommentApiIT implements GeneralApi {
     private final CommentsApi commentsApi = new CommentsApi(ApiClientUtil.getAdminClient());
     private final PostsApi postApi = new PostsApi(ApiClientUtil.getAdminClient());
 
@@ -52,7 +50,7 @@ public class CommentApiIT {
         Post post = postApi.createPost(createTestPost());
         Comment expected = createTestComment();
         Comment comment = commentsApi.createComment(post.getId(), expected);
-        assertComment(expected, comment);
+        assertCommentBaseInfo(expected, comment);
     }
 
     @Test
@@ -95,37 +93,4 @@ public class CommentApiIT {
         return commentList;
     }
 
-    private List<Comment> createCommentList() {
-        List<Comment> list = new ArrayList<>();
-        list.add(createTestComment());
-        list.add(createTestComment());
-        list.add(createTestComment());
-        list.add(createTestComment());
-        return list;
-    }
-
-    private Post createTestPost() {
-        return new Post().
-                title(RandomStringUtils.randomAlphabetic(5)).
-                previewAttachment(RandomStringUtils.randomAlphabetic(5)).
-                text(RandomStringUtils.randomAlphabetic(5)).
-                tags(Arrays.asList(new Tag().name(RandomStringUtils.randomAlphabetic(5))
-                        , new Tag().name(RandomStringUtils.randomAlphabetic(5))));
-    }
-
-    private Comment createTestComment() {
-        return new Comment().
-                text(RandomStringUtils.randomAlphabetic(5));
-    }
-
-    private void assertComment(Comment expected, Comment actual) {
-        assertNotNull(expected);
-        assertEquals(expected.getText(), actual.getText());
-    }
-
-    private void assertComment(Comment saved, Comment update, Comment updated) {
-        assertNotNull(updated);
-        assertNotEquals(saved, updated);
-        assertEquals(update.getText(), updated.getText());
-    }
 }
