@@ -5,11 +5,6 @@ import com.softserveinc.ita.homeproject.blog.ApiClient;
 import com.softserveinc.ita.homeproject.blog.ApiException;
 import com.softserveinc.ita.homeproject.blog.ApiResponse;
 import com.softserveinc.ita.homeproject.blog.ServerConfiguration;
-import com.softserveinc.ita.homeproject.blog.client.api.CurrentUserApi;
-import com.softserveinc.ita.homeproject.blog.client.api.UsersApi;
-import com.softserveinc.ita.homeproject.blog.client.model.Role;
-import com.softserveinc.ita.homeproject.blog.client.model.User;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.glassfish.jersey.logging.LoggingFeature;
 
 import javax.ws.rs.core.Response;
@@ -28,10 +23,9 @@ public final class ApiClientUtil {
     private static final String APPLICATION_ADMIN_PASSWORD = System.getProperty("blog.application.admin.password", "passworD321");
     private static final String APPLICATION_MODERATOR_NAME = System.getProperty("blog.application.moderator.username", "Proselit");
     private static final String APPLICATION_MODERATOR_PASSWORD = System.getProperty("blog.application.moderator.password", "passworD321");
+    private static final String APPLICATION_BLOGGER_NAME = System.getProperty("blog.application.blogger.username", "CheGevara");
+    private static final String APPLICATION_BLOGGER_PASSWORD = System.getProperty("blog.application.blogger.password", "passworD321");
     private static final String VERBOSE_LOGGING = System.getProperty("verbose.tests.logging", "true");
-    public static final String SUFFIX_TEST = "_test";
-    public static final String SUFFIX_PASSWORD = "aA1";
-    public static final String SUFFIX_EMAIL = "@example.com";
 
     public static ApiClient getClient(String name, String password) {
         ApiClient client = new ApiClient();
@@ -64,28 +58,9 @@ public final class ApiClientUtil {
         ApiClient client = new ApiClient();
         setLoggingFeature(client);
         setServers(client);
-
-        String username = RandomStringUtils.randomAlphabetic(5).concat(SUFFIX_TEST);
-        String password = RandomStringUtils.randomAlphabetic(5).concat(SUFFIX_TEST);
-        client.setUsername(username);
-        client.setPassword(password);
-
-        User user = getNewRandomUser();
-        user.setName(username);
-        user.setPassword(password);
-
-        UsersApi userApi = new UsersApi(client);
-        userApi.createUser(user);
+        client.setUsername(APPLICATION_BLOGGER_NAME);
+        client.setPassword(APPLICATION_BLOGGER_PASSWORD);
         return client;
-    }
-
-    public static User getNewRandomUser() {
-        return new User()
-                .name(RandomStringUtils.randomAlphabetic(5).concat(SUFFIX_TEST))
-                .firstName(RandomStringUtils.randomAlphabetic(5).concat(SUFFIX_TEST))
-                .lastName(RandomStringUtils.randomAlphabetic(5).concat(SUFFIX_TEST))
-                .password(RandomStringUtils.randomAlphanumeric(5).concat(SUFFIX_PASSWORD))
-                .email(RandomStringUtils.randomAlphabetic(5).concat(SUFFIX_EMAIL));
     }
 
     public static ApiClient getUnauthorizedClient() {

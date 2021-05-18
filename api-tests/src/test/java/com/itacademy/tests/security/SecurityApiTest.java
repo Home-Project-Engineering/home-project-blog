@@ -18,10 +18,13 @@ import java.util.Arrays;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static com.itacademy.tests.utils.ApiClientUtil.getNewRandomUser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SecurityApiTest {
+
+    private static final String SUFFIX_TEST = "_test";
+    private static final String SUFFIX_PASSWORD = "aA1";
+    private static final String SUFFIX_EMAIL = "@mailExample.com";
 
     @ParameterizedTest(name = "{index}-{1}")
     @MethodSource("check")
@@ -386,5 +389,14 @@ class SecurityApiTest {
         } else {
             assertEquals(Response.Status.FORBIDDEN.getStatusCode(), statusCode);
         }
+    }
+
+    public static User getNewRandomUser() {
+        return new User()
+                .name(RandomStringUtils.randomAlphabetic(5).concat(SUFFIX_TEST))
+                .firstName(RandomStringUtils.randomAlphabetic(5).concat(SUFFIX_TEST))
+                .lastName(RandomStringUtils.randomAlphabetic(5).concat(SUFFIX_TEST))
+                .password(RandomStringUtils.randomAlphanumeric(5).concat(SUFFIX_PASSWORD))
+                .email(RandomStringUtils.randomAlphabetic(5).concat(SUFFIX_EMAIL));
     }
 }
