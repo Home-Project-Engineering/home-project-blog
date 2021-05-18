@@ -17,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CurrentUserPostsApiIT {
+class CurrentUserPostsApiIT {
     private final PostsApi postsApi = new PostsApi(ApiClientUtil.getAdminClient());
     private final CurrentUserPostsApi currentUserPostsApi = new CurrentUserPostsApi(ApiClientUtil.getAdminClient());
 
@@ -42,9 +42,9 @@ public class CurrentUserPostsApiIT {
 
         List<Post> actualPostsList = postsApi.getPosts(
                 expectedPost.getId()
-                ,null
-                ,null
-                ,null
+                , null
+                , null
+                , null
                 , "-id"
                 , 1
                 , 100);
@@ -59,21 +59,21 @@ public class CurrentUserPostsApiIT {
         saveListPost();
         List<Post> posts = currentUserPostsApi.getPostsByCurrentUser(
                 null
-                ,null
-                ,null
-                ,"-id"
-                ,1
-                ,10
+                , null
+                , null
+                , "-id"
+                , 1
+                , 10
         );
         assertThat(posts).isNotEmpty();
     }
+
     @Test
     void getPostByCurrentUser() {
         Post expected = postsApi.createPost(createTestPost());
         Post actual = currentUserPostsApi.getPostByCurrentUser(expected.getId());
         assertPost(expected, actual);
     }
-
 
 
     private List<Post> saveListPost() throws ApiException {
@@ -102,12 +102,14 @@ public class CurrentUserPostsApiIT {
                 tags(Arrays.asList(new Tag().name(RandomStringUtils.randomAlphabetic(5))
                         , new Tag().name(RandomStringUtils.randomAlphabetic(5))));
     }
+
     private void assertPost(Post saved, Post update, Post updated) {
         assertNotNull(updated);
         assertNotEquals(saved, updated);
         assertEquals(update.getText(), updated.getText());
         assertEquals(update.getTitle(), updated.getTitle());
     }
+
     private void assertPost(Post expected, Post actual) {
         assertNotNull(expected);
         assertEquals(expected.getTitle(), actual.getTitle());

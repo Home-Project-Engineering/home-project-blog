@@ -7,6 +7,7 @@ import com.softserveinc.ita.homeproject.blog.ApiResponse;
 import com.softserveinc.ita.homeproject.blog.ServerConfiguration;
 import com.softserveinc.ita.homeproject.blog.client.api.CurrentUserApi;
 import com.softserveinc.ita.homeproject.blog.client.api.UsersApi;
+import com.softserveinc.ita.homeproject.blog.client.model.Role;
 import com.softserveinc.ita.homeproject.blog.client.model.User;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.glassfish.jersey.logging.LoggingFeature;
@@ -49,6 +50,7 @@ public final class ApiClientUtil {
         client.setPassword(APPLICATION_ADMIN_PASSWORD);
         return client;
     }
+
     public static ApiClient getModeratorClient() {
         ApiClient client = new ApiClient();
         setLoggingFeature(client);
@@ -77,7 +79,7 @@ public final class ApiClientUtil {
         return client;
     }
 
-     public static User getNewRandomUser() {
+    public static User getNewRandomUser() {
         return new User()
                 .name(RandomStringUtils.randomAlphabetic(5).concat(SUFFIX_TEST))
                 .firstName(RandomStringUtils.randomAlphabetic(5).concat(SUFFIX_TEST))
@@ -106,7 +108,7 @@ public final class ApiClientUtil {
                 APPLICATION_EXTERNAL_PORT + "/api/1", "No description provided", new HashMap<>())));
     }
 
-    public static void checkAdminModerBlogger(boolean role, int statusCode){
+    public static void checkAdminModerBlogger(boolean role, int statusCode) {
         if (role) {
             assertNotEquals(Response.Status.UNAUTHORIZED.getStatusCode(), statusCode);
             assertNotEquals(Response.Status.FORBIDDEN.getStatusCode(), statusCode);
@@ -115,7 +117,7 @@ public final class ApiClientUtil {
         }
     }
 
-    public static int setStatusCode(Function<ApiClient,?> action, ApiClient apiClient) {
+    public static int setStatusCode(Function<ApiClient, ?> action, ApiClient apiClient) {
         try {
             ApiResponse<?> resp = (ApiResponse<?>) action.apply(apiClient);
             return resp.getStatusCode();
