@@ -145,8 +145,16 @@
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
         </dependency>
-
         <!-- /Bean Validation API support -->
+
+        <!--for generated code-->
+        <dependency>
+            <groupId>com.softserveinc.ita.homeproject</groupId>
+            <artifactId/>
+            <scope>compile</scope>
+        </dependency>
+        <!--/for generated code-->
+
     </dependencies>
 
     <build>
@@ -182,7 +190,7 @@
                                 <openApiNullable>true</openApiNullable>
                             </configOptions>
                             <!--              <templateDirectory>${project.build.resources[0].directory}/mustaches/client</templateDirectory>-->
-                            <output>${project.basedir}</output>
+                            <output>${project.build.directory}/generated-sources/openapi/client</output>
                             <addCompileSourceRoot>true</addCompileSourceRoot>
                         </configuration>
                     </execution>
