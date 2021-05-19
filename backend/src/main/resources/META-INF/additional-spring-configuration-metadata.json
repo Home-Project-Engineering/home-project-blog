@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "blog.application.external.port",
+      "type": "java.lang.String",
+      "description": "Description for blog.application.external.port."
+  }
+] }
