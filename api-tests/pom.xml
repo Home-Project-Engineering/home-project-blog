@@ -18,7 +18,7 @@
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
 
-    <junit-jupiter-engine.version>5.5.2</junit-jupiter-engine.version>
+    <junit-jupiter-engine.version>5.7.0</junit-jupiter-engine.version>
 
     <jackson-version>2.12.3</jackson-version>
     <jackson-databind-nullable-version>0.2.1</jackson-databind-nullable-version>
@@ -27,6 +27,7 @@
     <swagger-annotations-version>1.5.22</swagger-annotations-version>
     <jersey-version>2.32</jersey-version>
     <threetenbp-version>2.9.10</threetenbp-version>
+    <junit-jupiter-params>5.7.0</junit-jupiter-params>
   </properties>
 
   <dependencies>
@@ -35,7 +36,12 @@
       <artifactId>junit-jupiter-engine</artifactId>
       <version>${junit-jupiter-engine.version}</version>
     </dependency>
-
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
+      <version>${junit-jupiter-params}</version>
+      <scope>test</scope>
+    </dependency>
     <!-- JSON processing: jackson -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
@@ -165,7 +171,7 @@
                 <useRuntimeException>true</useRuntimeException>]
                 <openApiNullable>true</openApiNullable>
               </configOptions>
-              <templateDirectory>${project.build.resources[0].directory}/mustaches/client</templateDirectory>
+<!--              <templateDirectory>${project.build.resources[0].directory}/mustaches/client</templateDirectory>-->
               <output>${project.build.directory}/generated-sources/openapi/client</output>
               <addCompileSourceRoot>true</addCompileSourceRoot>
             </configuration>
