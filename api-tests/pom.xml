@@ -33,18 +33,21 @@
     </properties>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <!--for generating randomness-->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
+        <!--/for generating randomness-->
 
-        <!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
+        <!--tests-->
+        <!--assertj-->
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <scope>test</scope>
         </dependency>
+        <!--/assertj-->
 
         <!--junit-->
         <!--junit5-->
@@ -52,13 +55,13 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <scope>test</scope>
         </dependency>
         <!--/junit5-->
+
         <!--junit4-->
         <dependency>
             <groupId>junit</groupId>
@@ -67,6 +70,7 @@
         </dependency>
         <!--/junit4-->
         <!--/junit-->
+        <!--/tests-->
 
         <!-- JSON processing: jackson -->
         <dependency>
@@ -90,12 +94,15 @@
             <artifactId>jackson-databind-nullable</artifactId>
             <version>${jackson-databind-nullable-version}</version>
         </dependency>
+        <!-- /JSON processing: jackson -->
+
         <!-- @Nullable annotation -->
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
             <version>3.0.2</version>
         </dependency>
+        <!-- /@Nullable annotation -->
 
         <!-- HTTP client: jersey-client -->
         <dependency>
@@ -114,6 +121,7 @@
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-jackson</artifactId>
         </dependency>
+        <!-- /HTTP client: jersey-client -->
 
         <!-- JSON processing: jackson -->
         <dependency>
@@ -121,7 +129,7 @@
             <artifactId>javax.annotation-api</artifactId>
             <scope>provided</scope>
         </dependency>
-
+        <!-- /JSON processing: jackson -->
 
         <!--SpringFox dependencies -->
         <dependency>
@@ -138,8 +146,8 @@
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
         </dependency>
-
         <!--/SpringFox dependencies -->
+
         <!-- Bean Validation API support -->
         <dependency>
             <groupId>javax.validation</groupId>
