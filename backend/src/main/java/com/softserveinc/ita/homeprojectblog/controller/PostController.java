@@ -40,7 +40,6 @@ public class PostController implements PostsApi {
 
     Boilerplate boilerplate;
 
-
     @Override
     public Optional<NativeWebRequest> getRequest() {
         return Optional.ofNullable(request);
@@ -135,4 +134,5 @@ public class PostController implements PostsApi {
         var postDtoGet = postService.updatePost(id, postDtoSet);
         return new ResponseEntity<>(postMapper.toPost(postDtoGet), HttpStatus.OK);
     }
+
 }

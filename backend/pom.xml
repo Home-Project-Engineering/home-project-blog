@@ -160,6 +160,25 @@
                 <version>3.5.1</version>
             </plugin>
 
+            <!--add new source for executions-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>3.2.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>add-source</goal>
+                        </goals>
+                        <configuration>
+                            <sources>src/main/gen</sources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--/add new source for executions-->
+
             <!--swagger/openapi new generator-->
             <plugin>
                 <groupId>org.openapitools</groupId>
@@ -198,24 +217,7 @@
                 </executions>
             </plugin>
 
-            <!--add new source for executions-->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>build-helper-maven-plugin</artifactId>
-                <version>3.2.0</version>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>add-source</goal>
-                        </goals>
-                        <configuration>
-                            <sources>src/main/gen</sources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <!--/add new source for executions-->
+
             <!--/swagger/openapi new generator-->
         </plugins>
     </build>

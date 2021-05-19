@@ -11,6 +11,7 @@
     </parent>
 
     <modules>
+        <module>backend</module>
         <module>api-tests</module>
     </modules>
 
