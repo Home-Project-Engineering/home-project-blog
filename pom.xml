@@ -11,7 +11,7 @@
     </parent>
 
     <modules>
-        <module>backend</module>
+        <module>api-tests</module>
     </modules>
 
     <groupId>com.softserveink.ita.homeprojectblog</groupId>
