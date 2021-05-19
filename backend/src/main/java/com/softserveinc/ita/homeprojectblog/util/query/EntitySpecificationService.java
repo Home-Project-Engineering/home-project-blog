@@ -13,6 +13,7 @@ import static com.softserveinc.ita.homeprojectblog.util.Constants.USER_NOT_EXIST
 
 @Component("entitySpecificationService")
 public class EntitySpecificationService<T> {
+
     public static final String RSQL_EQUAL = "==";
     public static final String RSQL_AND = ";";
     public static final String DOUBLE_QUOTES = "\"";

@@ -194,4 +194,5 @@ public class UserController implements UsersApi {
         var roleDtoGet = userService.updateUserRole(id, roleDtoSet);
         return new ResponseEntity<>(userMapper.toRole(roleDtoGet), HttpStatus.OK);
     }
+
 }

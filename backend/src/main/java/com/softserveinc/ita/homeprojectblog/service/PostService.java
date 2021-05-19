@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import java.math.BigDecimal;
 
 public interface PostService {
+
     PostDto createPost(PostDto postDto);
 
     PostDto getPost(BigDecimal id);
@@ -23,5 +24,6 @@ public interface PostService {
     void removePostByCurrentUser(BigDecimal id);
 
     PostDto updatePostByCurrentUser(BigDecimal id, PostDto postDto);
+
 }
 

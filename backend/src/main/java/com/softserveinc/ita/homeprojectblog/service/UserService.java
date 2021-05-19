@@ -33,4 +33,5 @@ public interface UserService {
     void updateCurrentUserPassword(@Valid PasswordDto passwordDto);
 
     RoleDto updateUserRole(BigDecimal id, RoleDto roleDto);
+
 }

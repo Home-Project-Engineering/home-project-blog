@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class Sorter {
+
     public Sort getSorter(String sort) {
         var str = new StringBuilder(sort);
 
@@ -14,4 +15,5 @@ public class Sorter {
         }
         return Sort.by(Sort.Direction.ASC, str.toString());
     }
+
 }

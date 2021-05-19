@@ -12,4 +12,5 @@ public interface TagService {
     Page<TagDto> getTags(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize);
 
     void removeTag(BigDecimal id);
+
 }

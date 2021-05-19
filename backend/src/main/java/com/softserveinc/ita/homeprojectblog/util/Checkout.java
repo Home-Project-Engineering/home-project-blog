@@ -21,10 +21,10 @@ import java.util.Set;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Checkout {
+
     String sort;
     Integer pageNum;
     Integer pageSize;
-
 
     public Checkout checkoutAndSetDefaults(String sort, Integer pageNum, Integer pageSize) {
 

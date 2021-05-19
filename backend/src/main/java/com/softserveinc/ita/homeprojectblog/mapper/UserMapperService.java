@@ -32,8 +32,6 @@ public interface UserMapperService {
 
     RoleDto toRoleDto(RoleEntity role);
 
-
-
     @Mapping(target = "id", source = "oldUserEntity.id")
     @Mapping(target = "role", source = "oldUserEntity.role")
     @Mapping(target = "createOn", source = "oldUserEntity.createOn")
@@ -44,4 +42,5 @@ public interface UserMapperService {
     @Mapping(target = "password", source = "oldUserEntity.password")
     @Mapping(target = "updatedOn", ignore = true)
     UserEntity toUserEntityFromUsersEntity(UserEntity newUserEntity, UserEntity oldUserEntity);
+
 }
