@@ -316,7 +316,7 @@ class SecurityApiIT {
                             return commentsApi.getCommentWithHttpInfo(new BigDecimal(-1), new BigDecimal(-1));
                         },
                         "Get concrete comment",
-                        true,
+                        true,/**/
                         true,
                         true,
                         true),
