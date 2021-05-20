@@ -24,10 +24,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(Parameterized.class)
 public class SecurityApiIT {
+
+    ApiClient moderatorClient = ApiClientUtil.getClient("Nad@gmail.com", "Password123");
+    ApiClient bloggerClient = ApiClientUtil.getClient("Lena@gmail.com", "Password123");
+
     @Parameterized.Parameter
     public String actionSummary;
     @Parameterized.Parameter(1)
-    public Function<ApiClient, ApiResponse> action;
+    public Function<ApiClient, ApiResponse<?>> action;
     @Parameterized.Parameter(2)
     public boolean admin;
     @Parameterized.Parameter(3)
@@ -38,10 +42,10 @@ public class SecurityApiIT {
     public boolean any;
 
     @Parameterized.Parameters(name = "{index}-{0}")
-    public static Iterable data() {
+    public static Iterable<?> data() {
         Set<Object> data = new HashSet<>();
 
-        Function<ApiClient, ApiResponse> action = (ApiClient apiClient) -> {
+        Function<ApiClient, ApiResponse<?>> action = (ApiClient apiClient) -> {
             CurrentUserApi currentUserApi = new CurrentUserApi(apiClient);
             return currentUserApi.getCurrentUserWithHttpInfo();
         };
@@ -53,13 +57,12 @@ public class SecurityApiIT {
                 true,
                 false).toArray()
         );
-        action = (ApiClient apiClient) -> {
-            CurrentUserApi currentUserApi = new CurrentUserApi(apiClient);
-            return currentUserApi.getCurrentUserWithHttpInfo();
-        };
         data.add(Arrays.asList(
                 "Update current user",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    CurrentUserApi currentUserApi = new CurrentUserApi(apiClient);
+                    return currentUserApi.getCurrentUserWithHttpInfo();
+                },
                 true,
                 true,
                 true,
@@ -67,49 +70,45 @@ public class SecurityApiIT {
         );
 
         //Comment of Cur USER
-        action = (ApiClient apiClient) -> {
-            CurrentUserCommentsApi currentUserCommentsApi = new CurrentUserCommentsApi(apiClient);
-            return currentUserCommentsApi.getCommentsByCurrentUserWithHttpInfo(new BigDecimal(-1), null, null, null);
-        };
         data.add(Arrays.asList(
                 "Get comments current user",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    CurrentUserCommentsApi currentUserCommentsApi = new CurrentUserCommentsApi(apiClient);
+                    return currentUserCommentsApi.getCommentsByCurrentUserWithHttpInfo(new BigDecimal(-1), null, null, null);
+                },
                 true,
                 true,
                 true,
                 false).toArray()
         );
-        action = (ApiClient apiClient) -> {
-            CurrentUserCommentsApi currentUserCommentsApi = new CurrentUserCommentsApi(apiClient);
-            return currentUserCommentsApi.getCommentByCurrentUserWithHttpInfo(new BigDecimal(-1));
-        };
         data.add(Arrays.asList(
                 "Get specific comment current user",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    CurrentUserCommentsApi currentUserCommentsApi = new CurrentUserCommentsApi(apiClient);
+                    return currentUserCommentsApi.getCommentByCurrentUserWithHttpInfo(new BigDecimal(-1));
+                },
                 true,
                 true,
                 true,
                 false).toArray()
         );
-        action = (ApiClient apiClient) -> {
-            CurrentUserCommentsApi currentUserCommentsApi = new CurrentUserCommentsApi(apiClient);
-            return currentUserCommentsApi.updateCommentByCurrentUserWithHttpInfo(new BigDecimal(-1), new Comment());
-        };
         data.add(Arrays.asList(
                 "Update comment current user",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    CurrentUserCommentsApi currentUserCommentsApi = new CurrentUserCommentsApi(apiClient);
+                    return currentUserCommentsApi.updateCommentByCurrentUserWithHttpInfo(new BigDecimal(-1), new Comment());
+                },
                 true,
                 true,
                 true,
                 false).toArray()
         );
-        action = (ApiClient apiClient) -> {
-            CurrentUserCommentsApi currentUserCommentsApi = new CurrentUserCommentsApi(apiClient);
-            return currentUserCommentsApi.removeCommentByCurrentUserWithHttpInfo(new BigDecimal(-1));
-        };
         data.add(Arrays.asList(
                 "Delete specific comment current user",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    CurrentUserCommentsApi currentUserCommentsApi = new CurrentUserCommentsApi(apiClient);
+                    return currentUserCommentsApi.removeCommentByCurrentUserWithHttpInfo(new BigDecimal(-1));
+                },
                 true,
                 true,
                 true,
@@ -118,52 +117,48 @@ public class SecurityApiIT {
 
         //Posts of Cur User
 
-        action = (ApiClient apiClient) -> {
-            CurrentUserPostsApi currentUserPostsApiApi = new CurrentUserPostsApi(apiClient);
-            return currentUserPostsApiApi.getPostsByCurrentUserWithHttpInfo(null, null, null, null, null, null);
-        };
         data.add(Arrays.asList(
                 "Get posts current user",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    CurrentUserPostsApi currentUserPostsApiApi = new CurrentUserPostsApi(apiClient);
+                    return currentUserPostsApiApi.getPostsByCurrentUserWithHttpInfo(null, null, null, null, null, null);
+                },
                 true,
                 true,
                 true,
                 false).toArray()
         );
 
-        action = (ApiClient apiClient) -> {
-            CurrentUserPostsApi currentUserPostsApiApi = new CurrentUserPostsApi(apiClient);
-            return currentUserPostsApiApi.getPostsByCurrentUserWithHttpInfo(null, null, null, null, null, null);
-        };
         data.add(Arrays.asList(
                 "Get specific post current user",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    CurrentUserPostsApi currentUserPostsApiApi = new CurrentUserPostsApi(apiClient);
+                    return currentUserPostsApiApi.getPostsByCurrentUserWithHttpInfo(null, null, null, null, null, null);
+                },
                 true,
                 true,
                 true,
                 false).toArray()
         );
 
-        action = (ApiClient apiClient) -> {
-            CurrentUserPostsApi currentUserPostsApiApi = new CurrentUserPostsApi(apiClient);
-            return currentUserPostsApiApi.updatePostByCurrentUserWithHttpInfo(new BigDecimal(-1), new Post());
-        };
         data.add(Arrays.asList(
                 "Update post current user",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    CurrentUserPostsApi currentUserPostsApiApi = new CurrentUserPostsApi(apiClient);
+                    return currentUserPostsApiApi.updatePostByCurrentUserWithHttpInfo(new BigDecimal(-1), new Post());
+                },
                 true,
                 true,
                 true,
                 false).toArray()
         );
 
-        action = (ApiClient apiClient) -> {
-            CurrentUserPostsApi currentUserPostsApiApi = new CurrentUserPostsApi(apiClient);
-            return currentUserPostsApiApi.removePostByCurrentUserWithHttpInfo(new BigDecimal(-1));
-        };
         data.add(Arrays.asList(
                 "Delete post current user",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    CurrentUserPostsApi currentUserPostsApiApi = new CurrentUserPostsApi(apiClient);
+                    return currentUserPostsApiApi.removePostByCurrentUserWithHttpInfo(new BigDecimal(-1));
+                },
                 true,
                 true,
                 true,
@@ -171,97 +166,89 @@ public class SecurityApiIT {
         );
 
         //User management
-
-        action = (ApiClient apiClient) -> {
-            UsersApi userApi = new UsersApi(apiClient);
-            return userApi.createUserWithHttpInfo(new User());
-        };
         data.add(Arrays.asList(
                 "Create new User",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    UsersApi userApi = new UsersApi(apiClient);
+                    return userApi.createUserWithHttpInfo(new User());
+                },
                 true,
                 true,
                 true,
                 true).toArray()
         );
 
-        action = (ApiClient apiClient) -> {
-            UsersApi userApi = new UsersApi(apiClient);
-            return userApi.getUsersWithHttpInfo(null, null, null, null, null);
-        };
         data.add(Arrays.asList(
                 "See all Users",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    UsersApi userApi = new UsersApi(apiClient);
+                    return userApi.getUsersWithHttpInfo(null, null, null, null, null);
+                },
                 true,
                 false,
                 false,
                 false).toArray()
         );
 
-        action = (ApiClient apiClient) -> {
-            UsersApi userApi = new UsersApi(apiClient);
-            return userApi.getUserWithHttpInfo(new BigDecimal(-1));
-        };
         data.add(Arrays.asList(
                 "See specific User",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    UsersApi userApi = new UsersApi(apiClient);
+                    return userApi.getUserWithHttpInfo(new BigDecimal(-1));
+                },
                 true,
                 false,
                 false,
                 false).toArray()
         );
 
-        action = (ApiClient apiClient) -> {
-            UsersApi userApi = new UsersApi(apiClient);
-            return userApi.updateUserWithHttpInfo(new BigDecimal(-1), new User()
-                    .name(RandomStringUtils.randomAlphabetic(5).concat("_test"))
-                    .firstName("firstName")
-                    .lastName("lastName")
-                    .password("passworD321")
-                    .email(RandomStringUtils.randomAlphabetic(5).concat("@example.com")));
-        };
         data.add(Arrays.asList(
                 "Update User",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    UsersApi userApi = new UsersApi(apiClient);
+                    return userApi.updateUserWithHttpInfo(new BigDecimal(-1), new User()
+                            .name(RandomStringUtils.randomAlphabetic(5).concat("_test"))
+                            .firstName("firstName")
+                            .lastName("lastName")
+                            .password("passworD321")
+                            .email(RandomStringUtils.randomAlphabetic(5).concat("@example.com")));
+                },
                 true,
-                true,
+                false,
                 false,
                 false).toArray()
         );
 
-        action = (ApiClient apiClient) -> {
-            UsersApi userApi = new UsersApi(apiClient);
-            return userApi.removeUserWithHttpInfo(new BigDecimal(-1));
-        };
         data.add(Arrays.asList(
                 "Delete User",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    UsersApi userApi = new UsersApi(apiClient);
+                    return userApi.removeUserWithHttpInfo(new BigDecimal(-1));
+                },
                 true,
                 false,
                 false,
                 false).toArray()
         );
 
-        action = (ApiClient apiClient) -> {
-            UsersApi userApi = new UsersApi(apiClient);
-            return userApi.getUserRoleWithHttpInfo(new BigDecimal(-1));
-        };
         data.add(Arrays.asList(
                 "Get User Role",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    UsersApi userApi = new UsersApi(apiClient);
+                    return userApi.getUserRoleWithHttpInfo(new BigDecimal(-1));
+                },
                 true,
                 false,
                 false,
                 false).toArray()
         );
 
-        action = (ApiClient apiClient) -> {
-            UsersApi userApi = new UsersApi(apiClient);
-            return userApi.updateUserRoleWithHttpInfo(new BigDecimal(-1), new Role());
-        };
         data.add(Arrays.asList(
                 "Update User Role",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    UsersApi userApi = new UsersApi(apiClient);
+                    return userApi.updateUserRoleWithHttpInfo(new BigDecimal(-1), new Role());
+                },
                 true,
                 false,
                 false,
@@ -269,70 +256,65 @@ public class SecurityApiIT {
         );
         //Posts
 
-        action = (ApiClient apiClient) -> {
-            PostsApi postsApi = new PostsApi(apiClient);
-            return postsApi.createPostWithHttpInfo(new Post().title("t"));
-        };
         data.add(Arrays.asList(
                 "Create post",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    PostsApi postsApi = new PostsApi(apiClient);
+                    return postsApi.createPostWithHttpInfo(new Post().title("t"));
+                },
                 true,
                 true,
                 true,
                 false).toArray()
         );
 
-        action = (ApiClient apiClient) -> {
-            PostsApi postsApi = new PostsApi(apiClient);
-            return postsApi.getPostsWithHttpInfo(null, null, null, null, null, null, null);
-        };
         data.add(Arrays.asList(
                 "Get all posts",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    PostsApi postsApi = new PostsApi(apiClient);
+                    return postsApi.getPostsWithHttpInfo(null, null, null, null, null, null, null);
+                },
                 true,
                 true,
                 true,
                 true).toArray()
         );
 
-        action = (ApiClient apiClient) -> {
-            PostsApi postsApi = new PostsApi(apiClient);
-            return postsApi.getPostWithHttpInfo(new BigDecimal(-1));
-        };
         data.add(Arrays.asList(
                 "Get specific post",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    PostsApi postsApi = new PostsApi(apiClient);
+                    return postsApi.getPostWithHttpInfo(new BigDecimal(-1));
+                },
                 true,
                 true,
                 true,
                 true).toArray()
         );
 
-        action = (ApiClient apiClient) -> {
-            PostsApi postsApi = new PostsApi(apiClient);
-            return postsApi.updatePostWithHttpInfo(new BigDecimal(-1), new Post().
-                    title(RandomStringUtils.randomAlphabetic(5)).
-                    text(RandomStringUtils.randomAlphabetic(5)).
-                    previewAttachment(RandomStringUtils.randomAlphabetic(5)).
-                    tags(Arrays.asList(new Tag().name(RandomStringUtils.randomAlphabetic(5))
-                            , new Tag().name(RandomStringUtils.randomAlphabetic(5)))));
-        };
         data.add(Arrays.asList(
                 "Update post",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    PostsApi postsApi = new PostsApi(apiClient);
+                    return postsApi.updatePostWithHttpInfo(new BigDecimal(-1), new Post().
+                            title(RandomStringUtils.randomAlphabetic(5)).
+                            text(RandomStringUtils.randomAlphabetic(5)).
+                            previewAttachment(RandomStringUtils.randomAlphabetic(5)).
+                            tags(Arrays.asList(new Tag().name(RandomStringUtils.randomAlphabetic(5))
+                                    , new Tag().name(RandomStringUtils.randomAlphabetic(5)))));
+                },
                 true,
                 true,
                 false,
                 false).toArray()
         );
 
-        action = (ApiClient apiClient) -> {
-            PostsApi postsApi = new PostsApi(apiClient);
-            return postsApi.removePostWithHttpInfo(new BigDecimal(-1));
-        };
         data.add(Arrays.asList(
                 "Delete post",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    PostsApi postsApi = new PostsApi(apiClient);
+                    return postsApi.removePostWithHttpInfo(new BigDecimal(-1));
+                },
                 true,
                 true,
                 false,
@@ -341,66 +323,61 @@ public class SecurityApiIT {
 
         //Comments
 
-        action = (ApiClient apiClient) -> {
-            CommentsApi commentsApi = new CommentsApi(apiClient);
-            return commentsApi.createCommentWithHttpInfo(new BigDecimal(-1), new Comment());
-        };
         data.add(Arrays.asList(
                 "Create comment",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    CommentsApi commentsApi = new CommentsApi(apiClient);
+                    return commentsApi.createCommentWithHttpInfo(new BigDecimal(-1), new Comment());
+                },
                 true,
                 true,
                 true,
                 false).toArray()
         );
 
-        action = (ApiClient apiClient) -> {
-            CommentsApi commentsApi = new CommentsApi(apiClient);
-            return commentsApi.getCommentsWithHttpInfo(null, null, null, null, null, null);
-        };
         data.add(Arrays.asList(
                 "Get all comments",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    CommentsApi commentsApi = new CommentsApi(apiClient);
+                    return commentsApi.getCommentsWithHttpInfo(null, null, null, null, null, null);
+                },
                 true,
                 true,
                 true,
                 true).toArray()
         );
 
-        action = (ApiClient apiClient) -> {
-            CommentsApi commentsApi = new CommentsApi(apiClient);
-            return commentsApi.getCommentWithHttpInfo(new BigDecimal(-1), new BigDecimal(-1));
-        };
         data.add(Arrays.asList(
                 "Get concrete comment",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    CommentsApi commentsApi = new CommentsApi(apiClient);
+                    return commentsApi.getCommentWithHttpInfo(new BigDecimal(-1), new BigDecimal(-1));
+                },
                 true,
                 true,
                 true,
                 true).toArray()
         );
 
-        action = (ApiClient apiClient) -> {
-            CommentsApi commentsApi = new CommentsApi(apiClient);
-            return commentsApi.updateCommentWithHttpInfo(new BigDecimal(-1), new BigDecimal(-1),
-                    new Comment().text(RandomStringUtils.randomAlphabetic(5)));
-        };
         data.add(Arrays.asList(
                 "Update comment",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    CommentsApi commentsApi = new CommentsApi(apiClient);
+                    return commentsApi.updateCommentWithHttpInfo(new BigDecimal(-1), new BigDecimal(-1),
+                            new Comment().text(RandomStringUtils.randomAlphabetic(5)));
+                },
                 true,
                 true,
                 false,
                 false).toArray()
         );
 
-        action = (ApiClient apiClient) -> {
-            CommentsApi commentsApi = new CommentsApi(apiClient);
-            return commentsApi.removeCommentWithHttpInfo(new BigDecimal(-1), new BigDecimal(-1));
-        };
         data.add(Arrays.asList(
                 "Delete comment",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    CommentsApi commentsApi = new CommentsApi(apiClient);
+                    return commentsApi.removeCommentWithHttpInfo(new BigDecimal(-1), new BigDecimal(-1));
+                },
                 true,
                 true,
                 false,
@@ -410,39 +387,35 @@ public class SecurityApiIT {
 
         //Tags
 
-        action = (ApiClient apiClient) -> {
-            TagsApi tagApi = new TagsApi(apiClient);
-            return tagApi.getTagsWithHttpInfo(null, null, null, null, null);
-        };
         data.add(Arrays.asList(
                 "Get all tags",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    TagsApi tagApi = new TagsApi(apiClient);
+                    return tagApi.getTagsWithHttpInfo(null, null, null, null, null);
+                },
                 true,
                 true,
                 true,
                 true).toArray()
         );
 
-        action = (ApiClient apiClient) -> {
-            TagsApi tagApi = new TagsApi(apiClient);
-            return tagApi.getTagWithHttpInfo(new BigDecimal(-1));
-        };
         data.add(Arrays.asList(
                 "Get specific tag",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    TagsApi tagApi = new TagsApi(apiClient);
+                    return tagApi.getTagWithHttpInfo(new BigDecimal(-1));
+                },
                 true,
                 true,
                 true,
                 true).toArray()
         );
-
-        action = (ApiClient apiClient) -> {
-            TagsApi tagApi = new TagsApi(apiClient);
-            return tagApi.removeTagWithHttpInfo(new BigDecimal(-1));
-        };
         data.add(Arrays.asList(
                 "Delete tag",
-                action,
+                (Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
+                    TagsApi tagApi = new TagsApi(apiClient);
+                    return tagApi.removeTagWithHttpInfo(new BigDecimal(-1));
+                },
                 true,
                 true,
                 false,
@@ -456,21 +429,19 @@ public class SecurityApiIT {
     public void testAdmin() {
         ApiClient adminClient = ApiClientUtil.getAdminClient();
         int statusCode = getStatusCode(adminClient);
-        ApiClientUtil.checkAdminModerBlogger(admin, statusCode);
+        checkAdminModerBlogger(admin, statusCode);
     }
 
     @Test
     public void testModerator() {
-        ApiClient moderatorClient = ApiClientUtil.getClient("v_moderator@example.com", "Dfkthrf17");
         int statusCode = getStatusCode(moderatorClient);
-        ApiClientUtil.checkAdminModerBlogger(moderator, statusCode);
+        checkAdminModerBlogger(moderator, statusCode);
     }
 
     @Test
     public void testBlogger() {
-        ApiClient bloggerClient = ApiClientUtil.getClient("v_blogger@example.com", "Dfkthrf17");
         int statusCode = getStatusCode(bloggerClient);
-        ApiClientUtil.checkAdminModerBlogger(blogger, statusCode);
+        checkAdminModerBlogger(blogger, statusCode);
     }
 
     @Test
@@ -488,12 +459,21 @@ public class SecurityApiIT {
     private int getStatusCode(ApiClient unauthorizedClient) {
         int statusCode;
         try {
-            ApiResponse resp = action.apply(unauthorizedClient);
+            ApiResponse<?> resp = action.apply(unauthorizedClient);
             statusCode = resp.getStatusCode();
         } catch (ApiException e) {
             statusCode = e.getCode();
         }
         return statusCode;
+    }
+
+    public void checkAdminModerBlogger(boolean role, int statusCode) {
+        if (role) {
+            assertNotEquals(Response.Status.UNAUTHORIZED.getStatusCode(), statusCode);
+            assertNotEquals(Response.Status.FORBIDDEN.getStatusCode(), statusCode);
+        } else {
+            assertEquals(Response.Status.FORBIDDEN.getStatusCode(), statusCode);
+        }
     }
 
 }

@@ -19,8 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public final class ApiClientUtil {
     private static final String APPLICATION_EXTERNAL_PORT = System.getProperty("blog.application.external.port", "8080");
-    private static final String APPLICATION_ADMIN_EMAIL = System.getProperty("blog.application.admin.username", "v_admin@example.com");
-    private static final String APPLICATION_ADMIN_PASSWORD = System.getProperty("blog.application.admin.password", "Dfkthrf17");
+    private static final String APPLICATION_ADMIN_EMAIL = System.getProperty("blog.application.admin.username", "Lida123@gmail.com");
+    private static final String APPLICATION_ADMIN_PASSWORD = System.getProperty("blog.application.admin.password", "Password123");
     private static final String VERBOSE_LOGGING = System.getProperty("verbose.tests.logging", "true");
 
     public static ApiClient getClient(String email, String password) {
@@ -59,25 +59,6 @@ public final class ApiClientUtil {
     private static void setServers(ApiClient client) {
         client.setServers(List.of(new ServerConfiguration("http://localhost:" +
                 APPLICATION_EXTERNAL_PORT + "/api/1", "No description provided", new HashMap<>())));
-    }
-
-    public static void checkAdminModerBlogger(boolean role, int statusCode){
-        if (role) {
-            assertNotEquals(Response.Status.UNAUTHORIZED.getStatusCode(), statusCode);
-            assertNotEquals(Response.Status.FORBIDDEN.getStatusCode(), statusCode);
-        } else {
-            assertEquals(Response.Status.FORBIDDEN.getStatusCode(), statusCode);
-        }
-    }
-
-    public static int setStatusCode(Function action, ApiClient apiClient) {
-        try {
-            ApiResponse resp = (ApiResponse) action.apply(apiClient);
-             return resp.getStatusCode();
-        } catch (ApiException e) {
-            return e.getCode();
-        }
-
     }
 
 }

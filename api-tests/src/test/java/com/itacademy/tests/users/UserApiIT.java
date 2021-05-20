@@ -1,5 +1,6 @@
 package com.itacademy.tests.users;
 
+import com.itacademy.tests.GeneralApi;
 import com.itacademy.tests.utils.ApiClientUtil;
 import com.softserveinc.ita.homeproject.blog.ApiException;
 import com.softserveinc.ita.homeproject.blog.client.api.UsersApi;
@@ -19,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-class UserApiIT {
+class UserApiIT implements GeneralApi {
 
     private final UsersApi userApi = new UsersApi(ApiClientUtil.getAdminClient());
     private final UsersApi unauthorizedUserApi = new UsersApi(ApiClientUtil.getUnauthorizedClient());
@@ -96,7 +97,7 @@ class UserApiIT {
         );
 
         assertThat(actualListUsers).isSortedAccordingTo((u1, u2) -> Objects
-                .requireNonNull(u2.getName()).compareTo(Objects.requireNonNull(u1.getName())));
+                .requireNonNull(u2.getName()).compareToIgnoreCase(Objects.requireNonNull(u1.getName())));
     }
 
 
@@ -207,6 +208,8 @@ class UserApiIT {
                 .matches(exception -> exception.getCode() == 400);
     }
 
+    //TODO parameters
+
     @Test
     void tryToCreateUserWithDuplicateEmail() {
         User user = createTestUser();
@@ -220,13 +223,18 @@ class UserApiIT {
                 .matches(exception -> exception.getCode() == 400);
     }
 
-    private User createTestUser() {
-        return new User()
-                .name(RandomStringUtils.randomAlphabetic(5).concat("_test"))
-                .firstName("firstName")
-                .lastName("lastName")
-                .password("passworD321")
-                .email(RandomStringUtils.randomAlphabetic(5).concat("@example.com"));
+
+    @Test
+    void tryToCreateUserWithDuplicateEmailCaseSensitiveTest() {
+        User user = createTestUser();
+        userApi.createUser(user);
+
+        User duplicate = createTestUser();
+        duplicate.setEmail(user.getEmail().toUpperCase());
+
+        assertThatExceptionOfType(ApiException.class)
+                .isThrownBy(() -> userApi.createUser(duplicate))
+                .matches(exception -> exception.getCode() == 400);
     }
 
     private void saveListUser() throws ApiException {
@@ -259,7 +267,8 @@ class UserApiIT {
         assertNotNull(expected);
         assertEquals(expected.getFirstName(), actual.getFirstName());
         assertEquals(expected.getLastName(), actual.getLastName());
-        assertEquals(expected.getEmail(), actual.getEmail());
+        assertTrue(expected.getEmail().equalsIgnoreCase(actual.getEmail()));
+        // assertEquals(expected.getEmail(), actual.getEmail());
     }
 
     private void assertUser(User saved, User update, User updated) {

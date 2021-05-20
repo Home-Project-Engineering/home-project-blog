@@ -1,5 +1,6 @@
 package com.itacademy.tests.curentUser;
 
+import com.itacademy.tests.GeneralApi;
 import com.itacademy.tests.utils.ApiClientUtil;
 import com.softserveinc.ita.homeproject.blog.ApiException;
 import com.softserveinc.ita.homeproject.blog.client.api.CommentsApi;
@@ -7,20 +8,16 @@ import com.softserveinc.ita.homeproject.blog.client.api.CurrentUserCommentsApi;
 import com.softserveinc.ita.homeproject.blog.client.api.PostsApi;
 import com.softserveinc.ita.homeproject.blog.client.model.Comment;
 import com.softserveinc.ita.homeproject.blog.client.model.Post;
-import com.softserveinc.ita.homeproject.blog.client.model.Tag;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CurrentUserCommentsApiIT {
+public class CurrentUserCommentsApiIT implements GeneralApi {
     private final PostsApi postsApi = new PostsApi(ApiClientUtil.getAdminClient());
     private final CommentsApi commentsApi = new CommentsApi(ApiClientUtil.getAdminClient());
     private final CurrentUserCommentsApi currentUserCommentsApi = new CurrentUserCommentsApi(ApiClientUtil.getAdminClient());
@@ -37,7 +34,7 @@ public class CurrentUserCommentsApiIT {
     @Test
     void getCommentsByCurrentUser() {
         Post post = postsApi.createPost(createTestPost());
-        saveListComment(post.getId());
+        saveListComment(post.getId(),commentsApi);
         List<Comment> comments = currentUserCommentsApi.getCommentsByCurrentUser(
                 null
                 ,"-id"
@@ -76,45 +73,6 @@ public class CurrentUserCommentsApiIT {
                 .text("newText");
         Comment updated = currentUserCommentsApi.updateCommentByCurrentUser(savedComment.getId(), updateComment);
         assertComment(savedComment, updateComment, updated);
-
-    }
-    private List<Comment> saveListComment(BigDecimal postId) throws ApiException {
-
-        List<Comment> list = createCommentList();
-        List<Comment> commentList = new ArrayList<>();
-        for (Comment cc : list) {
-            commentList.add(commentsApi.createComment(postId, cc));
-        }
-        return commentList;
-    }
-
-    private List<Comment> createCommentList() {
-        List<Comment> list = new ArrayList<>();
-        list.add(createTestComment());
-        list.add(createTestComment());
-        list.add(createTestComment());
-        list.add(createTestComment());
-        return list;
-    }
-    private Post createTestPost() {
-        return new Post().
-                title(RandomStringUtils.randomAlphabetic(5)).
-                text(RandomStringUtils.randomAlphabetic(5)).
-                previewAttachment(RandomStringUtils.randomAlphabetic(5)).
-                tags(Arrays.asList(new Tag().name(RandomStringUtils.randomAlphabetic(5))
-                        , new Tag().name(RandomStringUtils.randomAlphabetic(5))));
-    }
-    private Comment createTestComment() {
-        return new Comment().
-                text(RandomStringUtils.randomAlphabetic(5));
-    }
-    private void assertComment(Comment expected, Comment actual) {
-        assertNotNull(expected);
-        assertEquals(expected.getText(), actual.getText());
-    }
-    private void assertComment(Comment saved, Comment update, Comment updated) {
-        assertNotNull(updated);
-        assertNotEquals(saved, updated);
-        assertEquals(update.getText(), updated.getText());
     }
 }
+
