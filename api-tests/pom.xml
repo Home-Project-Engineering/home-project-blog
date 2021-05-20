@@ -33,14 +33,25 @@
     </properties>
 
     <dependencies>
-        <!--for generating randomness-->
+
+        <!--link to our backend module-->
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
+            <groupId>com.softserveink.ita.homeprojectblog</groupId>
+            <artifactId>backend</artifactId>
+            <version>1.1.1</version>
+            <scope>test</scope>
         </dependency>
-        <!--/for generating randomness-->
+        <!--/link to our backend module-->
 
         <!--tests-->
+        <!--spring boot starter-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--/spring boot starter-->
+
         <!--assertj-->
         <dependency>
             <groupId>org.assertj</groupId>
@@ -154,6 +165,13 @@
             <artifactId>validation-api</artifactId>
         </dependency>
         <!-- /Bean Validation API support -->
+
+        <!--for generating randomness-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <!--/for generating randomness-->
 
     </dependencies>
 
