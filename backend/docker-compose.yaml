@@ -1,7 +1,7 @@
 version: '3'
 services:
   springapp:
-    build: blog
+    build: .
     container_name: springapp
 #    image: springapp
     environment:
