@@ -27,3 +27,9 @@ hs_err_pid*
 /backend/mvnw
 /backend/mvnw.cmd
 /backend/target/
+/backend/home-project-blog.iml
+/backend/home_project_blog.iml
+/backend/.mvn
+backend/blog/.openapi-generator/
+backend/blog/src/main/java/com/example/blog/generated/
+
