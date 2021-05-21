@@ -3,10 +3,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.4.5</version>
-        <relativePath/>
+<!--        <groupId>org.springframework.boot</groupId>-->
+<!--        <artifactId>spring-boot-starter-parent</artifactId>-->
+<!--        <version>2.4.5</version>-->
+<!--        <relativePath/>-->
+
+        <groupId>com.softserveinc.ita.home</groupId>
+        <artifactId>home_project_blog</artifactId>
+        <version>${revision}</version>
     </parent>
     <groupId>com.softserveinc.ita.home</groupId>
     <artifactId>home_project_blog</artifactId>
@@ -14,6 +18,7 @@
     <name>home_project_blog</name>
     <description>Demo project for Spring Boot</description>
     <properties>
+        <revision>0.1.0-SNAPSHOT</revision>
         <java.version>11</java.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <org.projectlombok.version>1.18.20</org.projectlombok.version>

@@ -4,9 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.softserveinc.ita.homeproject</groupId>
-    <artifactId>home-project-blog-api-tests</artifactId>
-    <version>${revision}</version>
+    <parent>
+        <groupId>com.softserveinc.ita.home</groupId>
+        <artifactId>home_project_blog</artifactId>
+        <version>${revision}</version>
+    </parent>
+    <!--    <groupId>com.softserveinc.ita.homeproject</groupId>-->
+    <!--    <artifactId>home-project-blog-api-tests</artifactId>-->
+    <!--    <version>${revision}</version>-->
 
     <name>Home project blog api tests</name>
     <description>This module is intended to test backend of Home Project Blog application.</description>
@@ -192,6 +197,16 @@
                     </execution>
                 </executions>
             </plugin>
+<!--                <plugin>-->
+<!--                    <groupId>org.apache.maven.plugins</groupId>-->
+<!--                    <artifactId>maven-surefire-plugin</artifactId>-->
+<!--                                <version>2.12.4</version>-->
+<!--                    &lt;!&ndash;            <configuration>&ndash;&gt;-->
+<!--                    &lt;!&ndash;                <includes>&ndash;&gt;-->
+<!--                    &lt;!&ndash;                    <include>Sample.java</include>&ndash;&gt;-->
+<!--                    &lt;!&ndash;                </includes>&ndash;&gt;-->
+<!--                    &lt;!&ndash;            </configuration>&ndash;&gt;-->
+<!--                </plugin>-->
         </plugins>
     </build>
 </project>
