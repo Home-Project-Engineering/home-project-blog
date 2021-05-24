@@ -120,7 +120,7 @@ public class PostApiIT implements GeneralApi {
     }
 
 
-    @org.junit.jupiter.api.Test
+    @Test
     void updatePost() {
         Post post = postsApi.createPost(createTestPost());
         Post updatePost = new Post()
@@ -134,7 +134,7 @@ public class PostApiIT implements GeneralApi {
         assertNotEquals(post.getUpdatedOn(), updated.getUpdatedOn());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void updatePostWithoutTags() {
         Post post = postsApi.createPost(createTestPost());
         Post updatePost = new Post()

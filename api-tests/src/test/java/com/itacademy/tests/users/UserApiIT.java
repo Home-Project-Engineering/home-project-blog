@@ -101,14 +101,14 @@ class UserApiIT implements GeneralApi {
     }
 
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getUserRole() {
         User user = userApi.createUser(createTestUser());
         Role role = userApi.getUserRole(user.getId());
         assertUserRole(user.getRole(), role);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void updateUserRole() {
         User user = userApi.createUser(createTestUser());
         Role provided = new Role().name(Role.NameEnum.MODERATOR);
