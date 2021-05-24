@@ -21,8 +21,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
 
-        <junit-jupiter-engine.version>5.5.2</junit-jupiter-engine.version>
-        <junit-jupiter-params>5.5.2</junit-jupiter-params>
+        <junit-jupiter>5.7.0</junit-jupiter>
 
         <jackson-version>2.12.3</jackson-version>
         <jackson-databind-nullable-version>0.2.1</jackson-databind-nullable-version>
@@ -37,7 +36,7 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit-jupiter-engine.version}</version>
+            <version>${junit-jupiter}</version>
         </dependency>
 
         <!-- JSON processing: jackson -->
@@ -131,24 +130,24 @@
             <artifactId>jackson-datatype-threetenbp</artifactId>
             <version>${threetenbp-version}</version>
         </dependency>
-        <dependency>
-            <groupId>jakarta.persistence</groupId>
-            <artifactId>jakarta.persistence-api</artifactId>
-            <version>2.2.3</version>
-            <scope>test</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>jakarta.persistence</groupId>-->
+<!--            <artifactId>jakarta.persistence-api</artifactId>-->
+<!--            <version>2.2.3</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit-jupiter-params}</version>
+            <version>${junit-jupiter}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-<!--            <version>RELEASE</version>-->
-            <scope>test</scope>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>junit</groupId>-->
+<!--            <artifactId>junit</artifactId>-->
+<!--&lt;!&ndash;            <version>RELEASE</version>&ndash;&gt;-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
 
 
     </dependencies>
