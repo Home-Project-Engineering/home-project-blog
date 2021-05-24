@@ -1,4 +1,4 @@
-package com.example.blog.backend.util.security.config;
+package com.example.blog.util.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

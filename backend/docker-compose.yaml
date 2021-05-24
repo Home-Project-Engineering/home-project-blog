@@ -3,7 +3,6 @@ services:
   springapp:
     build: .
     container_name: springapp
-#    image: springapp
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/blog
     ports:
@@ -20,9 +19,3 @@ services:
     ports:
       - "5435:5432"
     restart: always
-  flyway:
-    image: flyway/flyway
-    volumes:
-      - ./src/main/resources/db/migration/:/flyway/sql/
-    depends_on:
-      - db
