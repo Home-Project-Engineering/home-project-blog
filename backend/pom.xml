@@ -161,12 +161,6 @@
             </plugin>
             <!--/for proper manifest-->
 
-<!--            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5.1</version>
-            </plugin>-->
-
             <!--add new source for executions-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>

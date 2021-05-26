@@ -174,16 +174,27 @@
         </dependency>
         <!--/for generating randomness-->
 
+<!--        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>-->
+
     </dependencies>
 
     <build>
         <plugins>
-            <!--for proper manifest-->
-<!--            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>-->
-            <!--/for proper manifest-->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>false</skipTests>
+                    <includes>
+                        <include>**/CommentApiIT.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
 
             <plugin>
                 <groupId>org.openapitools</groupId>
@@ -214,6 +225,7 @@
                                 <groupId>${project.groupId}</groupId>
                                 <modelPackage>com.softserveinc.ita.homeproject.blog.client.model</modelPackage>
                                 <apiPackage>com.softserveinc.ita.homeproject.blog.client.api</apiPackage>
+                                <basePackages>com.softserveinc.ita.homeproject.blog</basePackages>
                                 <invokerPackage>com.softserveinc.ita.homeproject.blog</invokerPackage>
                                 <useRuntimeException>true</useRuntimeException>]
                                 <openApiNullable>true</openApiNullable>
