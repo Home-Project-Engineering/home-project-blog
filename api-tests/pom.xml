@@ -21,7 +21,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-
         <junit-jupiter-engine.version>5.7.0</junit-jupiter-engine.version>
 
         <jackson-version>2.12.3</jackson-version>
@@ -32,40 +31,47 @@
         <jersey-version>2.32</jersey-version>
         <threetenbp-version>2.9.10</threetenbp-version>
         <junit-jupiter-params>5.7.0</junit-jupiter-params>
+
+        <docker.image.postgres>db</docker.image.postgres>
+        <docker.image.postgres.internal.port>5432</docker.image.postgres.internal.port>
+        <docker.image.postgres.external.port>5435</docker.image.postgres.external.port>
+        <docker.image.blog.external.port>8080</docker.image.blog.external.port>
+        <docker.image.blog.internal.port>8080</docker.image.blog.internal.port>
+        <docker.image.postgres.db>postgres</docker.image.postgres.db>
+        <docker.image.postgres.user>postgres</docker.image.postgres.user>
+        <docker.image.postgres.password>dfkthrf17</docker.image.postgres.password>
+        <postgres.url>
+            jdbc:postgresql://${docker.image.postgres}:${docker.image.postgres.internal.port}/${docker.image.postgres.db}
+        </postgres.url>
+
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <!--            <version>${junit-jupiter-engine.version}</version>-->
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <!--            <version>${junit-jupiter-params}</version>-->
             <scope>test</scope>
         </dependency>
         <!-- JSON processing: jackson -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <!--            <version>${jackson-version}</version>-->
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <!--            <version>${jackson-version}</version>-->
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <!--            <version>${jackson-version}</version>-->
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <!--            <version>2.10.3</version>-->
         </dependency>
         <dependency>
             <groupId>org.openapitools</groupId>
@@ -91,20 +97,17 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <!--            <version>3.12.0</version>-->
         </dependency>
 
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <!--            <version>3.19.0</version>-->
             <scope>test</scope>
         </dependency>
         <!-- Fix for Java 11 -->
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
-            <!--            <version>2.3.3</version>-->
         </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>
@@ -116,48 +119,148 @@
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
-            <!--            <version>${jersey-version}</version>-->
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.inject</groupId>
             <artifactId>jersey-hk2</artifactId>
-            <!--            <version>${jersey-version}</version>-->
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-multipart</artifactId>
-            <!--            <version>${jersey-version}</version>-->
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.media</groupId>
             <artifactId>jersey-media-json-jackson</artifactId>
-            <!--            <version>${jersey-version}</version>-->
         </dependency>
         <dependency>
             <groupId>com.github.joschi.jackson</groupId>
             <artifactId>jackson-datatype-threetenbp</artifactId>
             <version>${threetenbp-version}</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.0.0-M5</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>0.27.2</version>
         </dependency>
 
     </dependencies>
 
     <build>
         <plugins>
-
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <extensions>true</extensions>
                 <configuration>
-                    <skipTests>true</skipTests>
+                    <images>
+                        <image>
+                            <name>${docker.image.postgres}</name>
+                            <build>
+                                <from>postgres:alpine</from>
+                            </build>
+                            <run>
+                                <env>
+                                    <!--<POSTGRES_USER>${docker.image.postgres.user}</POSTGRES_USER>-->
+                                    <!--<POSTGRES_PASSWORD>${docker.image.postgres.password}</POSTGRES_PASSWORD>-->
+                                    <POSTGRES_USER>${DB_USER}</POSTGRES_USER>
+                                    <POSTGRES_PASSWORD>${DB_PASS}</POSTGRES_PASSWORD>
+                                </env>
+                                <ports>
+                                    <port>
+                                        ${docker.image.postgres.external.port}:${docker.image.postgres.internal.port}
+                                    </port>
+                                </ports>
+                                <wait>
+                                    <log>database system is ready to accept connections</log>
+                                    <time>30000</time>
+                                </wait>
+                                <log>
+                                    <enabled>true</enabled>
+                                </log>
+                            </run>
+
+
+                        </image>
+                        <image>
+                            <name>blog</name>
+                            <build>
+                                <contextDir>${basedir}/../backend/</contextDir>
+                            </build>
+                            <run>
+                                <env>
+                                    <!--<DATASOURCE_URL>${postgres.url}</DATASOURCE_URL>-->
+                                    <DATASOURCE_URL>${DB_URL}</DATASOURCE_URL>
+                                </env>
+                                <ports>
+                                    <port>${docker.image.blog.external.port}:${docker.image.blog.internal.port}</port>
+                                </ports>
+                                <wait>
+                                    <log>Started BlogApplication</log>
+                                    <time>150000</time>
+                                </wait>
+                                <log>
+                                    <enabled>true</enabled>
+                                </log>
+                                <links>${docker.image.postgres}</links>
+                            </run>
+                        </image>
+                    </images>
+                    <verbose>true</verbose>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>start</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                            <goal>build</goal>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
+
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+<!--                    <systemPropertyVariables>-->
+<!--                        <DB_URL>${postgres.url}</DB_URL>-->
+<!--                        <DB_USER>${docker.image.postgres.user}</DB_USER>-->
+<!--                        <DB_PASS>${docker.image.postgres.password}</DB_PASS>-->
+<!--                    </systemPropertyVariables>-->
+                    <includes>
+                        <include>CommentApiIT.java</include>
+                    </includes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
