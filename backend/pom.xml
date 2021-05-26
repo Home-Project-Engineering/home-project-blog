@@ -25,6 +25,8 @@
         <springfox-version>2.9.2</springfox-version>
         <mapstruct-version>1.4.2.Final</mapstruct-version>
         <jackson-databind-nullable-version>0.2.1</jackson-databind-nullable-version>
+        <fabric8io.docker.maven.plugin.version>0.36.0</fabric8io.docker.maven.plugin.version>
+        <dkanejs.docker.compose.maven.plugin.version>4.0.0</dkanejs.docker.compose.maven.plugin.version>
     </properties>
 
     <dependencies>
@@ -149,6 +151,21 @@
         <!-- /Bean Validation API support -->
 
 
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/io.fabric8/docker-maven-plugin &ndash;&gt;
+        <dependency>
+            <groupId>io.fabric8</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>${fabric8io.docker.maven.plugin.version}</version>
+        </dependency>-->
+
+        <!--docker-->
+        <dependency>
+            <groupId>com.dkanejs.maven.plugins</groupId>
+            <artifactId>docker-compose-maven-plugin</artifactId>
+            <version>${dkanejs.docker.compose.maven.plugin.version}</version>
+        </dependency>
+        <!--/docker-->
+
     </dependencies>
 
     <build>
@@ -160,6 +177,54 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
             <!--/for proper manifest-->
+
+            <!--start docker-compose-->
+            <plugin>
+                <groupId>com.dkanejs.maven.plugins</groupId>
+                <artifactId>docker-compose-maven-plugin</artifactId>
+                <version>4.0.0</version>
+                <executions>
+
+                    <execution>
+                        <id>up</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>up</goal>
+                        </goals>
+                        <configuration>
+                            <composeFile>${project.parent.basedir}/docker-compose.yaml</composeFile>
+                            <detachedMode>true</detachedMode>
+                        </configuration>
+                    </execution>
+
+                </executions>
+            </plugin>
+
+            <!--            <plugin>
+                            <groupId>io.fabric8</groupId>
+                            <artifactId>docker-maven-plugin</artifactId>
+                            <version>${fabric8io.docker.maven.plugin.version}</version>
+                            <extensions>true</extensions>
+
+                            <configuration>
+                                <verbose>true</verbose>
+                                <images>
+
+                                    <image>
+                                        <alias>mynet</alias>
+                                        <name>fabric8/compose-demo:latest</name>
+
+                                        <external>
+                                            <type>compose</type>
+                                            <basedir>${project.parent.basedir}</basedir>
+                                            <composeFile>docker-compose.yml</composeFile>
+                                        </external>
+
+                                    </image>
+                                </images>
+                            </configuration>
+                        </plugin>-->
+            <!--/start docker-compose-->
 
             <!--add new source for executions-->
             <plugin>
@@ -218,7 +283,9 @@
                 </executions>
             </plugin>
             <!--/swagger/openapi new generator-->
+
         </plugins>
+
     </build>
 
 </project>
