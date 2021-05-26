@@ -21,8 +21,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class SecurityApiTest {
-
+class SecurityApiIT {
     @ParameterizedTest(name = "{index}-{1}")
     @MethodSource("check")
     void testAdmin(Function<ApiClient, ApiResponse<?>> action, String x, boolean a) {

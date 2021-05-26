@@ -4,7 +4,7 @@ services:
     build: .
     container_name: springapp
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/blog
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
     ports:
       - "8000:8080"
     restart: always
@@ -14,8 +14,8 @@ services:
     image: postgres:alpine
     container_name: db
     environment:
-      - POSTGRES_PASSWORD=dfkthrf17
-      - POSTGRES_DB=blog
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: dfkthrf17
     ports:
       - "5435:5432"
     restart: always
