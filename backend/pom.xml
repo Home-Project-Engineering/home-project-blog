@@ -154,12 +154,18 @@
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
-
+            <!--for proper manifest-->
             <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <!--/for proper manifest-->
+
+<!--            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.5.1</version>
-            </plugin>
+            </plugin>-->
 
             <!--add new source for executions-->
             <plugin>
