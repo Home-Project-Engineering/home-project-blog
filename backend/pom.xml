@@ -150,14 +150,6 @@
         </dependency>
         <!-- /Bean Validation API support -->
 
-
-<!--        &lt;!&ndash; https://mvnrepository.com/artifact/io.fabric8/docker-maven-plugin &ndash;&gt;
-        <dependency>
-            <groupId>io.fabric8</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <version>${fabric8io.docker.maven.plugin.version}</version>
-        </dependency>-->
-
         <!--docker-->
         <dependency>
             <groupId>com.dkanejs.maven.plugins</groupId>
@@ -178,7 +170,7 @@
             </plugin>
             <!--/for proper manifest-->
 
-            <!--start docker-compose-->
+            <!--docker-compose start-->
             <plugin>
                 <groupId>com.dkanejs.maven.plugins</groupId>
                 <artifactId>docker-compose-maven-plugin</artifactId>
@@ -191,6 +183,7 @@
                         <goals>
                             <goal>up</goal>
                         </goals>
+
                         <configuration>
                             <composeFile>${project.parent.basedir}/docker-compose.yaml</composeFile>
                             <detachedMode>true</detachedMode>
@@ -199,32 +192,7 @@
 
                 </executions>
             </plugin>
-
-            <!--            <plugin>
-                            <groupId>io.fabric8</groupId>
-                            <artifactId>docker-maven-plugin</artifactId>
-                            <version>${fabric8io.docker.maven.plugin.version}</version>
-                            <extensions>true</extensions>
-
-                            <configuration>
-                                <verbose>true</verbose>
-                                <images>
-
-                                    <image>
-                                        <alias>mynet</alias>
-                                        <name>fabric8/compose-demo:latest</name>
-
-                                        <external>
-                                            <type>compose</type>
-                                            <basedir>${project.parent.basedir}</basedir>
-                                            <composeFile>docker-compose.yml</composeFile>
-                                        </external>
-
-                                    </image>
-                                </images>
-                            </configuration>
-                        </plugin>-->
-            <!--/start docker-compose-->
+            <!--/docker-compose start-->
 
             <!--add new source for executions-->
             <plugin>
