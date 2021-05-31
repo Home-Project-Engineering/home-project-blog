@@ -263,6 +263,13 @@
                     <skipTests>false</skipTests>
                     <includes>
                         <include>**/CommentApiIT.java</include>
+                        <include>**/CurrentUserApiIT</include>
+                        <include>**/CurrentUserCommentsApiIT</include>
+                        <include>**/CurrentUserPostsApiIT</include>
+                        <include>**/PostApiIT</include>
+                        <include>**/SecurityApiIT</include>
+                        <include>**/TagApiIT</include>
+                        <include>**/UserApiIT</include>
                     </includes>
                 </configuration>
             </plugin>
