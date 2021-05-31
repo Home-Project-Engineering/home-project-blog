@@ -39,7 +39,6 @@ services:
     depends_on:
       - db
 
-
   db:
     image: postgres
     container_name: db

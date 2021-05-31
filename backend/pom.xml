@@ -25,12 +25,11 @@
         <springfox-version>2.9.2</springfox-version>
         <mapstruct-version>1.4.2.Final</mapstruct-version>
         <jackson-databind-nullable-version>0.2.1</jackson-databind-nullable-version>
-        <fabric8io.docker.maven.plugin.version>0.36.0</fabric8io.docker.maven.plugin.version>
         <dkanejs.docker.compose.maven.plugin.version>4.0.0</dkanejs.docker.compose.maven.plugin.version>
     </properties>
 
     <dependencies>
-        <!--spring boot-->
+        <!--spring boot starters-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
@@ -49,11 +48,6 @@
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-devtools</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
@@ -66,7 +60,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-        <!--/spring boot-->
 
         <!--rsql for specification-->
         <dependency>
@@ -75,7 +68,14 @@
             <version>5.0.16</version>
         </dependency>
         <!--/rsql for specification-->
-        <!--/spring boot-->
+        <!--/spring boot starters-->
+
+        <!--/spring boot other-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+        <!--/spring boot other-->
 
         <!--lombok-->
         <dependency>
@@ -170,7 +170,7 @@
             </plugin>
             <!--/for proper manifest-->
 
-            <!--docker-compose start-->
+            <!--docker-compose up-->
             <plugin>
                 <groupId>com.dkanejs.maven.plugins</groupId>
                 <artifactId>docker-compose-maven-plugin</artifactId>
@@ -192,7 +192,7 @@
 
                 </executions>
             </plugin>
-            <!--/docker-compose start-->
+            <!--/docker-compose up-->
 
             <!--add new source for executions-->
             <plugin>

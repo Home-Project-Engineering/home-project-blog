@@ -207,6 +207,54 @@
             </plugin>
             <!--/poll and wait deployed port-->
 
+            <!--docker-compose down-->
+            <plugin>
+                <groupId>com.dkanejs.maven.plugins</groupId>
+                <artifactId>docker-compose-maven-plugin</artifactId>
+                <version>4.0.0</version>
+                <executions>
+
+                    <execution>
+                        <id>down</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>down</goal>
+                        </goals>
+
+                        <configuration>
+                            <composeFile>${project.parent.basedir}/docker-compose.yaml</composeFile>
+                            <detachedMode>true</detachedMode>
+                        </configuration>
+                    </execution>
+
+                </executions>
+            </plugin>
+            <!--/docker-compose down-->
+
+            <!--docker image delete-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>delete-image-springapp</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>
+                                <argument>image</argument>
+                                <argument>rm</argument>
+                                <argument>home-project-blog_springapp</argument>
+                            </arguments>
+                            <executable>docker</executable>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--/docker image delete-->
+
             <!--manually add tests for not named by convention tests-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
