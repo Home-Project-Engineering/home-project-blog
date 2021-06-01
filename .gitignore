@@ -29,4 +29,3 @@ hs_err_pid*
 /backend/mvnw.cmd
 /backend/target/
 /backend/.mvn
-/api-tests/target/
