@@ -15,8 +15,6 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-
 public class IntegrationTest implements GeneralApi {
     private final UsersApi userApi = new UsersApi(ApiClientUtil.getAdminClient());
     private final TagsApi tagsApi = new TagsApi(ApiClientUtil.getAdminClient());

@@ -2,20 +2,13 @@ package com.itacademy.tests.utils;
 
 
 import com.softserveinc.ita.homeproject.blog.ApiClient;
-import com.softserveinc.ita.homeproject.blog.ApiException;
-import com.softserveinc.ita.homeproject.blog.ApiResponse;
 import com.softserveinc.ita.homeproject.blog.ServerConfiguration;
 import org.glassfish.jersey.logging.LoggingFeature;
 
-import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public final class ApiClientUtil {
     private static final String APPLICATION_EXTERNAL_PORT = System.getProperty("blog.application.external.port", "8080");
@@ -52,7 +45,7 @@ public final class ApiClientUtil {
         if (Boolean.parseBoolean(VERBOSE_LOGGING)) {
             Logger logger = Logger.getLogger(ApiClient.class.getName());
             client.getHttpClient()
-               .register(new LoggingFeature(logger, Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY, 8192));
+                    .register(new LoggingFeature(logger, Level.INFO, LoggingFeature.Verbosity.PAYLOAD_ANY, 8192));
         }
     }
 
@@ -60,5 +53,4 @@ public final class ApiClientUtil {
         client.setServers(List.of(new ServerConfiguration("http://localhost:" +
                 APPLICATION_EXTERNAL_PORT + "/api/1", "No description provided", new HashMap<>())));
     }
-
 }
