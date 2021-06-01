@@ -4,23 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.softserveinc.ita.homeproject</groupId>
-    <artifactId>home-project-blog-api-tests</artifactId>
-    <version>${revision}</version>
+    <groupId>com.softserveinc.ita.home</groupId>
+    <artifactId>api-tests</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
 
-    <name>Home project blog api tests</name>
-    <description>This module is intended to test backend of Home Project Blog application.</description>
+    <name>api-tests</name>
+    <description>Test for the blog</description>
 
     <properties>
-        <revision>0.1.0-SNAPSHOT</revision>
-
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
-
-        <junit-jupiter-engine.version>5.5.2</junit-jupiter-engine.version>
-        <junit-jupiter-params>5.5.2</junit-jupiter-params>
-
+        <junit-jupiter>5.7.0</junit-jupiter>
         <jackson-version>2.12.3</jackson-version>
         <jackson-databind-nullable-version>0.2.1</jackson-databind-nullable-version>
         <junit-version>4.13</junit-version>
@@ -28,14 +23,13 @@
         <swagger-annotations-version>1.5.22</swagger-annotations-version>
         <jersey-version>2.32</jersey-version>
         <threetenbp-version>2.9.10</threetenbp-version>
-
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>${junit-jupiter-engine.version}</version>
+            <version>${junit-jupiter}</version>
         </dependency>
 
         <!-- JSON processing: jackson -->
@@ -77,7 +71,6 @@
             <artifactId>swagger-annotations</artifactId>
             <version>${swagger-annotations-version}</version>
         </dependency>
-
 
         <!--Random String-->
         <dependency>
@@ -131,29 +124,22 @@
             <version>${threetenbp-version}</version>
         </dependency>
         <dependency>
-            <groupId>jakarta.persistence</groupId>
-            <artifactId>jakarta.persistence-api</artifactId>
-            <version>2.2.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit-jupiter-params}</version>
+            <version>${junit-jupiter}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>RELEASE</version>
-            <scope>test</scope>
-        </dependency>
-
-
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
@@ -181,7 +167,7 @@
                                 <modelPackage>com.softserveinc.ita.homeproject.blog.client.model</modelPackage>
                                 <apiPackage>com.softserveinc.ita.homeproject.blog.client.api</apiPackage>
                                 <invokerPackage>com.softserveinc.ita.homeproject.blog</invokerPackage>
-                                <useRuntimeException>true</useRuntimeException>]
+                                <useRuntimeException>true</useRuntimeException>
                                 <openApiNullable>true</openApiNullable>
                             </configOptions>
                             <templateDirectory>${project.build.resources[0].directory}/mustaches/client
