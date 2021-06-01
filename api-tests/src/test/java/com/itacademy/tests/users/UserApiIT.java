@@ -266,7 +266,6 @@ class UserApiIT implements GeneralApi {
         assertEquals(expected.getFirstName(), actual.getFirstName());
         assertEquals(expected.getLastName(), actual.getLastName());
         assertTrue(expected.getEmail().equalsIgnoreCase(actual.getEmail()));
-        // assertEquals(expected.getEmail(), actual.getEmail());
     }
 
     private void assertUser(User saved, User update, User updated) {
