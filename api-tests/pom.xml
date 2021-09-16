@@ -1,0 +1,326 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.softserveink.ita.homeprojectblog</groupId>
+        <artifactId>home-project-blog</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <groupId>com.softserveinc.ita.homeproject</groupId>
+    <artifactId>api-tests</artifactId>
+
+    <name>api-tests</name>
+    <version>1.1.1</version>
+    <description>This module is intended to test backend of Home Project Blog application.</description>
+
+    <properties>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+
+        <junit-jupiter-engine.version>5.5.2</junit-jupiter-engine.version>
+
+        <jackson-version>2.12.3</jackson-version>
+        <jackson-databind-nullable-version>0.2.1</jackson-databind-nullable-version>
+        <junit-version>4.13</junit-version>
+        <jsr305-version>3.0.2</jsr305-version>
+        <swagger-annotations-version>1.5.22</swagger-annotations-version>
+        <jersey-version>2.32</jersey-version>
+        <threetenbp-version>2.9.10</threetenbp-version>
+        <springfox-version>2.9.2</springfox-version>
+    </properties>
+
+    <dependencies>
+
+        <!--link to our backend module-->
+        <dependency>
+            <groupId>com.softserveink.ita.homeprojectblog</groupId>
+            <artifactId>backend</artifactId>
+            <version>1.1.1</version>
+            <scope>test</scope>
+        </dependency>
+        <!--/link to our backend module-->
+
+        <!--tests-->
+        <!--spring boot starter-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--/spring boot starter-->
+
+        <!--assertj-->
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--/assertj-->
+
+        <!--junit-->
+        <!--junit5-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--/junit5-->
+
+        <!--junit4-->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--/junit4-->
+        <!--/junit-->
+        <!--/tests-->
+
+        <!-- JSON processing: jackson -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>${jackson-databind-nullable-version}</version>
+        </dependency>
+        <!-- /JSON processing: jackson -->
+
+        <!-- @Nullable annotation -->
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+        <!-- /@Nullable annotation -->
+
+        <!-- HTTP client: jersey-client -->
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.inject</groupId>
+            <artifactId>jersey-hk2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-json-jackson</artifactId>
+        </dependency>
+        <!-- /HTTP client: jersey-client -->
+
+        <!-- JSON processing: jackson -->
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- /JSON processing: jackson -->
+
+        <!--SpringFox dependencies -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${springfox-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+        </dependency>
+        <!--/SpringFox dependencies -->
+
+        <!-- Bean Validation API support -->
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+        <!-- /Bean Validation API support -->
+
+        <!--for generating randomness-->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <!--/for generating randomness-->
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!--poll and wait deployed port-->
+            <plugin>
+                <groupId>com.github.slem1</groupId>
+                <artifactId>await-maven-plugin</artifactId>
+                <version>1.2</version>
+                <executions>
+                    <execution>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>Await</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <poll>
+                        <attempts>5</attempts>
+                        <sleep>5000</sleep>
+                    </poll>
+                    <httpConnections>
+                        <httpConnection>
+                            <url>http://localhost:8080</url>
+                            <statusCode>401</statusCode>
+                        </httpConnection>
+                    </httpConnections>
+                </configuration>
+            </plugin>
+            <!--/poll and wait deployed port-->
+
+            <!--docker-compose down-->
+            <plugin>
+                <groupId>com.dkanejs.maven.plugins</groupId>
+                <artifactId>docker-compose-maven-plugin</artifactId>
+                <version>4.0.0</version>
+                <executions>
+
+                    <execution>
+                        <id>down</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>down</goal>
+                        </goals>
+
+                        <configuration>
+                            <composeFile>${project.parent.basedir}/docker-compose.yaml</composeFile>
+                            <detachedMode>true</detachedMode>
+                        </configuration>
+                    </execution>
+
+                </executions>
+            </plugin>
+            <!--/docker-compose down-->
+
+            <!--docker image delete-->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>delete-image-springapp</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>
+                                <argument>image</argument>
+                                <argument>rm</argument>
+                                <argument>home-project-blog_springapp</argument>
+                            </arguments>
+                            <executable>docker</executable>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--/docker image delete-->
+
+            <!--manually add tests for not named by convention tests-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <skipTests>false</skipTests>
+                    <includes>
+                        <include>**/CommentApiIT.java</include>
+                        <include>**/CurrentUserApiIT</include>
+                        <include>**/CurrentUserCommentsApiIT</include>
+                        <include>**/CurrentUserPostsApiIT</include>
+                        <include>**/PostApiIT</include>
+                        <include>**/SecurityApiIT</include>
+                        <include>**/TagApiIT</include>
+                        <include>**/UserApiIT</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <!--/manually add tests for not named by convention tests-->
+
+            <!--swagger/openapi new generator-->
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>5.0.1</version>
+
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.parent.basedir}/openapi/openapi.yaml</inputSpec>
+                            <!--<inputSpec>
+                                https://raw.githubusercontent.com/BenAvleck/home-project-blog/main/openapi/openapi.yaml
+                            </inputSpec>-->
+                            <generatorName>java</generatorName>
+                            <generateApiTests>false</generateApiTests>
+                            <generateModelTests>false</generateModelTests>
+                            <configOptions>
+                                <java8>true</java8>
+                                <dateLibrary>java8</dateLibrary>
+                                <library>jersey2</library>
+                                <sourceFolder>src/test/java</sourceFolder>
+                                <artifactId>api-tests</artifactId>
+                                <artifactVersion>${revision}</artifactVersion>
+                                <groupId>${project.groupId}</groupId>
+                                <modelPackage>com.softserveinc.ita.homeproject.blog.client.model</modelPackage>
+                                <apiPackage>com.softserveinc.ita.homeproject.blog.client.api</apiPackage>
+                                <basePackages>com.softserveinc.ita.homeproject.blog</basePackages>
+                                <invokerPackage>com.softserveinc.ita.homeproject.blog</invokerPackage>
+                                <useRuntimeException>true</useRuntimeException>]
+                                <openApiNullable>true</openApiNullable>
+                            </configOptions>
+                            <!--              <templateDirectory>${project.build.resources[0].directory}/mustaches/client</templateDirectory>-->
+                            <output>${project.build.directory}/generated-sources/openapi/client</output>
+                            <addCompileSourceRoot>true</addCompileSourceRoot>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--swagger/openapi new generator-->
+
+        </plugins>
+
+    </build>
+
+</project>

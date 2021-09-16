@@ -2,6 +2,11 @@ openapi: 3.0.3
 
 info:
   version: 1.1.1
+  #  version: usable.khoma.team
+
+  #  team version --> 1.0.0.2.0
+  #  team version --> ben.val.lid.vld.sash
+  #  vld addition until commit --> 2/2021.05.10
   title: Home Project Blog Service
   description: |
     Blog for the Home Project engineers
@@ -10,10 +15,10 @@ info:
     url: https://github.com/Home-Project-Engineering/home-project-blog/blob/main/LICENSE
 
 servers:
-  - url: /api/1
+  - url: http://localhost:8080/api/1
 
 security:
-  - basicAuth: []
+  - basicAuth: [ ]
 
 tags:
   - name: Current User
@@ -245,7 +250,7 @@ paths:
   /users:
     post:
       summary: Create User
-      description: Create a new User.
+      description: Create a new User. You can only create a blogger
       tags:
         - Users
       operationId: createUser
@@ -371,7 +376,7 @@ paths:
       tags:
         - Users
       summary: Update User Role
-      description: Updates Role on a User that exists in the system by the specified ID.
+      description: Updates Role on a User that exists in the system by the specified userID.
       operationId: updateUserRole
       requestBody:
         $ref: '#/components/requestBodies/RoleBody'
@@ -827,6 +832,16 @@ components:
           description: The message of an error that describes the Error.
           type: string
           readOnly: true
+    Password:
+      required:
+        - oldPassword
+        - newPassword
+      type: object
+      properties:
+        oldPassword:
+          type: string
+        newPassword:
+          type: string
 
     ChangePassword:
       type: object
@@ -849,6 +864,8 @@ components:
           example: passworD321
 
   responses:
+    PasswordUpdatedResponse:
+      description: The password was succesfully updated.
     NoContentResponse:
       description: The request was succesfully processed.
     TagResponse:
