@@ -3,7 +3,7 @@ package com.itacademy.tests.curentUser;
 import com.itacademy.tests.utils.ApiClientUtil;
 import com.softserveinc.ita.homeproject.blog.client.api.CurrentUserApi;
 import com.softserveinc.ita.homeproject.blog.client.api.UsersApi;
-import com.softserveinc.ita.homeproject.blog.client.model.Password;
+import com.softserveinc.ita.homeproject.blog.client.model.ChangePassword;
 import com.softserveinc.ita.homeproject.blog.client.model.User;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
@@ -13,8 +13,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class CurrentUserApiIT {
 
-    private final CurrentUserApi currentUserApi = new CurrentUserApi(ApiClientUtil.getClient());
-    private final UsersApi usersApi = new UsersApi(ApiClientUtil.getClient());
+    private final CurrentUserApi currentUserApi = new CurrentUserApi(ApiClientUtil.getAdminClient());
+    private final UsersApi usersApi = new UsersApi(ApiClientUtil.getAdminClient());
 
     @Test
     void getCurrentUser() {
@@ -29,8 +29,8 @@ class CurrentUserApiIT {
                 .getCurrentUser();
         User updateUser = new User()
                 .email(savedUser.getEmail())
-                .firstName("updatedFirstName")
-                .lastName("updatedLastName")
+                .firstName(RandomStringUtils.randomAlphabetic(5))
+                .lastName(RandomStringUtils.randomAlphabetic(5))
                 .name(savedUser.getName());
 
         User updated = currentUserApi.updateCurrentUser(updateUser);
@@ -42,7 +42,7 @@ class CurrentUserApiIT {
         User expected = usersApi.createUser(createTestUser());
         CurrentUserApi currentUserApiForUpdatePassword = new CurrentUserApi(ApiClientUtil.getClient(expected.getEmail(), "passworD321"));
         String newPassword = "newPassworD321";
-        currentUserApiForUpdatePassword.updateCurrentUserPassword(new Password().oldPassword("passworD321").newPassword(newPassword));
+        currentUserApiForUpdatePassword.updateCurrentUserPassword(new ChangePassword().oldPassword("passworD321").newPassword(newPassword));
         currentUserApiForUpdatePassword.getApiClient().setPassword(newPassword);
         User actual = currentUserApiForUpdatePassword.getCurrentUser();
         assertUser(expected, actual);
