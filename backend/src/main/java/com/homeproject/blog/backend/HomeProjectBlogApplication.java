@@ -1,4 +1,4 @@
-package main.java.com.homeproject.blog.backend;
+package com.homeproject.blog.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
