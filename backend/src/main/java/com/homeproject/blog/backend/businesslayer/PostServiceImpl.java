@@ -100,7 +100,7 @@ public class PostServiceImpl implements PostService {
             stream = stream.filter(post -> post.hasTag(tag_name));
         }
         if (parameters.containsKey("author_name")) {
-            String author_name = parameters.get("tag_name");
+            String author_name = parameters.get("author_name");
             stream = stream.filter(post -> post.getAuthor().getName().equals(author_name));
         }
         String sort = parameters.getOrDefault("sort", "-id");

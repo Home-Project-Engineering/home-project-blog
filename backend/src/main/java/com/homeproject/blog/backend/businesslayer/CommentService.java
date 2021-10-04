@@ -1,7 +1,7 @@
 package com.homeproject.blog.backend.businesslayer;
 
 import com.homeproject.blog.backend.entities.Comment;
-import com.homeproject.blog.backend.exceptions.CommentNotFoundException;
+import com.homeproject.blog.backend.exceptions.CommentNotFoundException;;
 
 import java.util.Collection;
 import java.util.Map;
@@ -18,4 +18,5 @@ public interface CommentService {
 
     Collection<Comment> sortComments(Collection<Comment> comments, Map<String, String> parameters);
 
+    void deleteComment(Long id) throws CommentNotFoundException;
 }

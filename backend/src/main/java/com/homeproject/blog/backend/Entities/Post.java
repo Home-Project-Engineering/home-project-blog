@@ -15,12 +15,7 @@ public class Post {
 
         @Override
         public int compare(Post post1, Post post2) {
-            if (post1.id > post2.id) {
-                return sign;
-            } else if (post1.id < post2.id) {
-                return sign * -1;
-            }
-            return 0;
+            return post1.id.compareTo(post2.id) * sign;
         }
     }
 
