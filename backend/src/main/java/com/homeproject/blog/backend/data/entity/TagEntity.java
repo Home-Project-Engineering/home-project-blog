@@ -1,10 +1,21 @@
-package com.homeproject.blog.backend.entities;
+package com.homeproject.blog.backend.data.entity;
 
-public class Tag {
+import com.homeproject.blog.backend.dtos.Tag;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "tags")
+public class TagEntity {
+    @Id
+    @GeneratedValue
+    @Column(name = "id", nullable = false)
     private Long id;
     private String name;
 
-    public Tag(long id, String name) {
+    public TagEntity() {}
+
+    public TagEntity(Long id, String name) {
         this.id = id;
         this.name = name;
     }

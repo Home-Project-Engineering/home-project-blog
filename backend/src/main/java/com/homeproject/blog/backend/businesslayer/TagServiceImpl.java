@@ -1,73 +1,89 @@
 package com.homeproject.blog.backend.businesslayer;
 
-import com.homeproject.blog.backend.entities.Tag;
+import com.homeproject.blog.backend.data.entity.TagEntity;
+import com.homeproject.blog.backend.data.entity.converters.TagConverter;
+import com.homeproject.blog.backend.data.repository.TagRepository;
+import com.homeproject.blog.backend.dtos.Tag;
+import com.homeproject.blog.backend.exceptions.ForbiddenActionException;
 import com.homeproject.blog.backend.exceptions.TagNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class TagServiceImpl implements TagService {
-    private static final Map<Long, Tag> tags = new HashMap<>();
-    private static final AtomicLong index = new AtomicLong();
+    @Autowired
+    private TagRepository tagRepository;
+    @Autowired
+    private TagConverter tagConverter;
 
-    private static Long getNextIndex (){
-        return index.getAndIncrement();
-    }
-
-    static {
-        populateTag("Java8");
-        populateTag("News");
-        populateTag("Projects");
-    }
-
-    private static void populateTag(String name) {
-        Long nextIndex = getNextIndex();
-        tags.put(nextIndex, new Tag(nextIndex, name));
+    private TagEntity verifyTagExisting(Long id) throws TagNotFoundException {
+        Optional<TagEntity> result = tagRepository.findById(id);
+        if (result.isEmpty()) {
+            throw new TagNotFoundException();
+        }
+        return result.get();
     }
 
     @Override
     public Tag readTag(Long id) throws TagNotFoundException {
-        Tag tag = tags.get(id);
-        if (tag == null) {
-            throw new TagNotFoundException();
-        }
-        return tag;
+        TagEntity entity = verifyTagExisting(id);
+        return tagConverter.entityToTag(entity);
     }
 
     @Override
     public Collection<Tag> getTags() {
-        return tags.values();
+        Iterable<TagEntity> entities = tagRepository.findAll();
+        ArrayList<TagEntity> list = new ArrayList<>();
+        entities.forEach(list::add);
+        return tagConverter.entitiesToTags(list);
     }
 
     @Override
-    public void deleteTag(Long id) throws TagNotFoundException {
-        readTag(id);
-        tags.remove(id);
-    }
-
-    public static Long findTagByName(String name) {
-        Set<Map.Entry<Long, Tag>> pairs = tags.entrySet();
-        for (Map.Entry<Long, Tag> pair : pairs) {
-            Tag current = pair.getValue();
-            if (current.getName().equals(name)) {
-                return current.getId();
-            }
+    public void deleteTag(Long id) throws TagNotFoundException, ForbiddenActionException {
+        verifyTagExisting(id);
+        try {
+            tagRepository.deleteById(id);
+        } catch (Exception exception) {
+            throw new ForbiddenActionException();
         }
-        return -1L;
     }
 
-    public static void identifyTags(ArrayList<Tag> tags) throws TagNotFoundException {
+    @Override
+    public List<TagEntity> identifyTags(List<Tag> tags) {
         if (tags == null) {
-            return;
+            return null;
         }
-        for (Tag tag : tags) {
-            Long tagId = TagServiceImpl.findTagByName(tag.getName());
-            if (tagId.equals(-1)) {
-                throw new TagNotFoundException();
+        Stream<TagEntity> stream = tags.stream().map(tag -> {
+            TagEntity entity = identifyTag(tag);
+            tag.setId(entity.getId());
+            return entity;
+        });
+        return stream.collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    @Override
+    public Page<Tag> findAll(Long id, String name, PageRequest pageRequest) {
+        Page<TagEntity> allByIdAndName = tagRepository.findAllByIdAndName(pageRequest, id, name);
+        Page<Tag> page = new PageImpl<Tag>(allByIdAndName.stream().map(tagConverter::entityToTag).collect(Collectors.toList()), pageRequest, allByIdAndName.getTotalElements());
+        return page;
+    }
+
+    private TagEntity identifyTag(Tag tag) {
+        Iterable<TagEntity> entities = tagRepository.findAll();
+        for (TagEntity entity : entities) {
+            if (entity.getName().equals(tag.getName())) {
+                return entity;
             }
-            tag.setId(tagId);
         }
+        TagEntity newEntity = new TagEntity();
+        newEntity.setName(tag.getName());
+        return tagRepository.save(newEntity);
     }
 }

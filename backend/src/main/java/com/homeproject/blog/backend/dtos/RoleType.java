@@ -1,4 +1,4 @@
-package com.homeproject.blog.backend.entities;
+package com.homeproject.blog.backend.dtos;
 
 public class RoleType {
     String name;

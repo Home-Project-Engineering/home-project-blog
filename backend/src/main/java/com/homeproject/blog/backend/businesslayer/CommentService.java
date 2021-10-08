@@ -1,6 +1,6 @@
 package com.homeproject.blog.backend.businesslayer;
 
-import com.homeproject.blog.backend.entities.Comment;
+import com.homeproject.blog.backend.dtos.Comment;
 import com.homeproject.blog.backend.exceptions.CommentNotFoundException;;
 
 import java.util.Collection;

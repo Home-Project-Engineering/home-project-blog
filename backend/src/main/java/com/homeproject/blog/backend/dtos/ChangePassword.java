@@ -1,4 +1,4 @@
-package com.homeproject.blog.backend.entities;
+package com.homeproject.blog.backend.dtos;
 
 public class ChangePassword {
     private String oldPassword;

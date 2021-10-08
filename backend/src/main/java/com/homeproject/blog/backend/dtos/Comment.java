@@ -1,6 +1,8 @@
-package com.homeproject.blog.backend.entities;
+package com.homeproject.blog.backend.dtos;
 
+import javax.persistence.TemporalType;
 import java.util.Comparator;
+import java.util.Date;
 
 public class Comment {
     private Long id;
@@ -9,20 +11,7 @@ public class Comment {
     private String createdOn;
     private String updatedOn;
 
-    public static class CommentIDComparator implements Comparator<Comment> {
-        private int sign = 1;
-
-        public CommentIDComparator(boolean ascending) {
-            if (!ascending) {
-                sign = -1;
-            }
-        }
-
-        @Override
-        public int compare(Comment comment1, Comment comment2) {
-           return comment1.id.compareTo(comment2.id) * sign;
-        }
-    }
+    public Comment() {}
 
     public Comment(Long id, Author author, String text, String createdOn, String updatedOn) {
         this.id = id;

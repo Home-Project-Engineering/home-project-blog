@@ -1,41 +1,10 @@
-package com.homeproject.blog.backend.entities;
+package com.homeproject.blog.backend.dtos;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.List;
 
 public class Post {
-    public static class PostIDComparator implements Comparator<Post> {
-        private int sign = 1;
-
-        public PostIDComparator(boolean ascending) {
-            if (!ascending) {
-                sign = -1;
-            }
-        }
-
-        @Override
-        public int compare(Post post1, Post post2) {
-            return post1.id.compareTo(post2.id) * sign;
-        }
-    }
-
-    public static class PostTitleComparator implements Comparator<Post> {
-        private int sign = 1;
-
-        public PostTitleComparator(boolean ascending) {
-            if (!ascending) {
-                sign = -1;
-            }
-        }
-
-        @Override
-        public int compare(Post post1, Post post2) {
-            return post1.title.compareTo(post2.title) * sign;
-        }
-    }
-
     private Long id;
-    private ArrayList<Tag> tags;
+    private List<Tag> tags;
     private String createdOn;
     private Author author;
     private String text;
@@ -43,7 +12,9 @@ public class Post {
     private String previewAttachment;
     private String updatedOn;
 
-    public Post(Long id, ArrayList<Tag> tags, String createdOn, Author author, String text, String title, String previewAttachment, String updatedOn) {
+    public Post() {}
+
+    public Post(Long id, List<Tag> tags, String createdOn, Author author, String text, String title, String previewAttachment, String updatedOn) {
         this.id = id;
         this.tags = tags;
         this.createdOn = createdOn;
@@ -66,11 +37,11 @@ public class Post {
         this.id = id;
     }
 
-    public ArrayList<Tag> getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(ArrayList<Tag> tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 
