@@ -1,11 +1,12 @@
 package com.homeproject.blog.backend.dtos;
 
 public class Author {
+    private Long id;
     private String name;
     private String firstName;
     private String secondName;
 
-    public Author(String name, String firstName, String secondName) {
+    public Author(Long id, String name, String firstName, String secondName) {
         this.name = name;
         this.firstName = firstName;
         this.secondName = secondName;
@@ -33,5 +34,13 @@ public class Author {
 
     public void setSecondName(String secondName) {
         this.secondName = secondName;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

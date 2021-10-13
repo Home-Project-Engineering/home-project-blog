@@ -2,17 +2,16 @@ package com.homeproject.blog.backend.presentationlayer.controllers;
 
 import com.homeproject.blog.backend.businesslayer.PostService;
 import com.homeproject.blog.backend.dtos.Post;
-import com.homeproject.blog.backend.dtos.Error;
 import com.homeproject.blog.backend.exceptions.PostNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.Map;
 
 @Controller
@@ -25,9 +24,8 @@ public class PostController {
     @GetMapping(produces = "application/json")
     ResponseEntity<Object> getAllPosts(@RequestParam(required = false) Map<String, String> parameters) {
         LOG.info("Get all posts request");
-        Collection<Post> posts = postService.getPosts(parameters);
-        posts = postService.sortPosts(posts, parameters);
-        return new ResponseEntity<>(posts, HttpStatus.OK);
+        Page<Post> page = postService.getPosts(parameters);
+        return ResponseEntity.ok().header("X-Total-Count", String.valueOf(page.getTotalElements())).body(page.toList());
     }
 
     @PostMapping(consumes = "application/json", produces = "application/json")
@@ -38,38 +36,23 @@ public class PostController {
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")
-     ResponseEntity<Object> getPostById(@PathVariable Long id) {
+     ResponseEntity<Object> getPostById(@PathVariable Long id) throws PostNotFoundException {
         LOG.info("Get post by id request");
-        try {
-            Post post = postService.readPost(id);
-            return new ResponseEntity<>(post, HttpStatus.OK);
-        } catch (PostNotFoundException exception) {
-            LOG.info("Exception " + exception.getMessage());
-            return new ResponseEntity<>(new Error(exception.getCode(), exception.getMessage()), exception.getHttpStatus());
-        }
+        Post post = postService.readPost(id);
+        return new ResponseEntity<>(post, HttpStatus.OK);
     }
 
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
-    ResponseEntity<Object> updatePost(@PathVariable Long id, @RequestBody Post changes) {
+    ResponseEntity<Object> updatePost(@PathVariable Long id, @RequestBody Post changes) throws PostNotFoundException {
         LOG.info("Update post request");
-        try {
-            Post newPost = postService.updatePost(id, changes);
-            return new ResponseEntity<>(newPost, HttpStatus.OK);
-        } catch (PostNotFoundException exception) {
-            LOG.info("Exception " + exception.getMessage());
-            return new ResponseEntity<>(new Error(exception.getCode(), exception.getMessage()), exception.getHttpStatus());
-        }
+        Post newPost = postService.updatePost(id, changes);
+        return new ResponseEntity<>(newPost, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")
-    ResponseEntity<Object> deletePost(@PathVariable Long id) {
+    ResponseEntity<Object> deletePost(@PathVariable Long id) throws PostNotFoundException {
         LOG.info("Delete post request");
-        try {
-            postService.deletePost(id);
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        } catch (PostNotFoundException exception) {
-            LOG.info("Exception " + exception.getMessage());
-            return new ResponseEntity<>(new Error(exception.getCode(), exception.getMessage()), exception.getHttpStatus());
-        }
+        postService.deletePost(id);
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 }

@@ -14,11 +14,9 @@ public interface TagService {
 
     Tag readTag(Long id) throws TagNotFoundException;
 
-    Collection<Tag> getTags();
-
     void deleteTag(Long id) throws TagNotFoundException, ForbiddenActionException;
 
     List<TagEntity> identifyTags(List<Tag> tags);
 
-    Page<Tag> findAll(Long id, String name, PageRequest pageRequest);
+    Page<Tag> findAll(Long id, String name, Integer pageNum, Integer pageSize, String sort);
 }

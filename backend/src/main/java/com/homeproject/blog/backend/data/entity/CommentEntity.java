@@ -13,9 +13,8 @@ public class CommentEntity {
     @Column(name = "id", nullable = false)
     private Long id;
     private String text;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn
-    private AuthorEntity author;
+    @ManyToOne
+    private UserEntity author;
     private String createdOn;
     private String updatedOn;
 
@@ -35,11 +34,11 @@ public class CommentEntity {
         this.text = text;
     }
 
-    public AuthorEntity getAuthor() {
+    public UserEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(AuthorEntity author) {
+    public void setAuthor(UserEntity author) {
         this.author = author;
     }
 

@@ -13,11 +13,10 @@ public class PostEntity {
     private String title;
     private String text;
     private String createdOn;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn
-    private AuthorEntity author;
+    @ManyToOne
+    private UserEntity author;
     @ManyToMany
-    @JoinTable
+    @JoinTable(name = "posts_tags")
     private List<TagEntity> tags;
     private String previewAttachment;
     private String updatedOn;
@@ -78,11 +77,11 @@ public class PostEntity {
         this.createdOn = createdOn;
     }
 
-    public AuthorEntity getAuthor() {
+    public UserEntity getAuthor() {
         return author;
     }
 
-    public void setAuthor(AuthorEntity author) {
+    public void setAuthor(UserEntity author) {
         this.author = author;
     }
 }

@@ -41,11 +41,11 @@ public class UserEntity {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
+    public String getSecondName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setSecondName(String lastName) {
         this.lastName = lastName;
     }
 

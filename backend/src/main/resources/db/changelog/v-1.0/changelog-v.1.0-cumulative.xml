@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <changeSet id="13.10.2021-create_post_table" author="Pavlo Ponomarenko">
+        <createTable tableName="posts">
+            <column name="id" autoIncrement="true" type="long">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="text"/>
+            <column name="text" type="text"/>
+            <column name="createdOn" type="text"/>
+            <column name="author_id" type="long"/>
+            <column name="previewAttachment" type="text"/>
+            <column name="updatedOn" type="text"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="13.10.2021-create_comment_table" author="Pavlo Ponomarenko">
+        <createTable tableName="comments">
+            <column name="id" autoIncrement="true" type="long">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="text" type="text"/>
+            <column name="author_id" type="long"/>
+            <column name="createdOn" type="text"/>
+            <column name="updatedOn" type="text"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="13.10.2021-create_post_table" author="Pavlo Ponomarenko">
+        <createTable tableName="tags">
+            <column name="id" autoIncrement="true" type="long">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="text"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="13.10.2021-create_user_table" author="Pavlo Ponomarenko">
+        <createTable tableName="users">
+            <column name="id" autoIncrement="true" type="long">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="text"/>
+            <column name="firstName" type="text"/>
+            <column name="lastName" type="text"/>
+            <column name="email" type="text"/>
+            <column name="password" type="text"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="13.10.2021-create_roleType_table" author="Pavlo Ponomarenko">
+        <createTable tableName="role_types">
+            <column name="id" autoIncrement="true" type="long">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="text"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

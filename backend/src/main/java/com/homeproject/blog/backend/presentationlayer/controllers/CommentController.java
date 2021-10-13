@@ -38,36 +38,21 @@ public class CommentController {
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")
-    ResponseEntity<Object> getCommentById(@PathVariable(name = "id") Long id) {
+    ResponseEntity<Object> getCommentById(@PathVariable(name = "id") Long id) throws CommentNotFoundException {
         LOG.info("Get comment by id request");
-        try {
-            Comment comment = commentService.readComment(id);
-            return new ResponseEntity<>(comment, HttpStatus.OK);
-        } catch (CommentNotFoundException exception) {
-            LOG.info("Exception " + exception.getMessage());
-            return new ResponseEntity<>(new Error("404", exception.getMessage()), HttpStatus.NOT_FOUND);
-        }
+        Comment comment = commentService.readComment(id);
+        return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
     @PutMapping(path = "/{id}", consumes = "application/json", produces = "application/json")
-    ResponseEntity<Object> updateComment(@PathVariable(name = "id") Long id, @RequestBody Comment changes) {
-        try {
-            Comment comment = commentService.updateComment(id, changes);
-            return new ResponseEntity<>(comment, HttpStatus.OK);
-        } catch (CommentNotFoundException exception) {
-            LOG.info("Exception " + exception.getMessage());
-            return new ResponseEntity<>(new Error("404", exception.getMessage()), HttpStatus.NOT_FOUND);
-        }
+    ResponseEntity<Object> updateComment(@PathVariable(name = "id") Long id, @RequestBody Comment changes) throws CommentNotFoundException {
+        Comment comment = commentService.updateComment(id, changes);
+        return new ResponseEntity<>(comment, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")
-    ResponseEntity<Object> deleteComment(@PathVariable(name = "id") Long id) {
-        try {
-            commentService.deleteComment(id);
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
-        } catch (CommentNotFoundException exception) {
-            LOG.info("Exception " + exception.getMessage());
-            return new ResponseEntity<>(new Error("404", exception.getMessage()), HttpStatus.NOT_FOUND);
-        }
+    ResponseEntity<Object> deleteComment(@PathVariable(name = "id") Long id) throws CommentNotFoundException {
+        commentService.deleteComment(id);
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 }

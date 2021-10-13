@@ -1,11 +1,12 @@
 package com.homeproject.blog.backend.businesslayer;
 
-import com.homeproject.blog.backend.data.entity.AuthorEntity;
 import com.homeproject.blog.backend.data.entity.CommentEntity;
+import com.homeproject.blog.backend.data.entity.converters.AuthorConverter;
 import com.homeproject.blog.backend.data.entity.converters.CommentConverter;
 import com.homeproject.blog.backend.data.repository.CommentRepository;
 import com.homeproject.blog.backend.dtos.Comment;
 import com.homeproject.blog.backend.exceptions.CommentNotFoundException;
+import com.homeproject.blog.backend.supportclasses.AppStartupRunner;
 import com.homeproject.blog.backend.supportclasses.CurrentDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,12 +25,14 @@ public class CommentServiceImpl implements CommentService {
     private CommentRepository repository;
     @Autowired
     private CommentConverter commentConverter;
+    @Autowired
+    private AuthorConverter authorConverter;
 
     @Override
     public Comment createComment(Comment comment) {
         CommentEntity entity = new CommentEntity();
-        entity.setId(comment.getId());
-        entity.setAuthor(new AuthorEntity(comment.getAuthor()));
+
+        entity.setAuthor(AppStartupRunner.userEntity);
         entity.setText(comment.getText());
         String date = CurrentDate.getDate();
         entity.setCreatedOn(date);

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -38,21 +39,9 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Collection<Tag> getTags() {
-        Iterable<TagEntity> entities = tagRepository.findAll();
-        ArrayList<TagEntity> list = new ArrayList<>();
-        entities.forEach(list::add);
-        return tagConverter.entitiesToTags(list);
-    }
-
-    @Override
-    public void deleteTag(Long id) throws TagNotFoundException, ForbiddenActionException {
+    public void deleteTag(Long id) throws TagNotFoundException {
         verifyTagExisting(id);
-        try {
-            tagRepository.deleteById(id);
-        } catch (Exception exception) {
-            throw new ForbiddenActionException();
-        }
+        tagRepository.deleteById(id);
     }
 
     @Override
@@ -69,9 +58,20 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Page<Tag> findAll(Long id, String name, PageRequest pageRequest) {
+    public Page<Tag> findAll(Long id, String name, Integer pageNum, Integer pageSize, String sort) {
+        Sort sorting;
+        if (sort != null) {
+            if (sort.charAt(0) == '-') {
+                sorting = Sort.by(sort.substring(1)).descending();
+            } else {
+                sorting = Sort.by(sort);
+            }
+        } else {
+            sorting = Sort.by("name");
+        }
+        PageRequest pageRequest = PageRequest.of(pageNum, pageSize, sorting);
         Page<TagEntity> allByIdAndName = tagRepository.findAllByIdAndName(pageRequest, id, name);
-        Page<Tag> page = new PageImpl<Tag>(allByIdAndName.stream().map(tagConverter::entityToTag).collect(Collectors.toList()), pageRequest, allByIdAndName.getTotalElements());
+        Page<Tag> page = new PageImpl<>(allByIdAndName.stream().map(tagConverter::entityToTag).collect(Collectors.toList()), pageRequest, allByIdAndName.getTotalElements());
         return page;
     }
 
