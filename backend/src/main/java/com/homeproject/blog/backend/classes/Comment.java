@@ -5,7 +5,7 @@ package com.homeproject.blog.backend.classes;
 public class Comment {
     private Post post;
     private String text;
-    private int id;
+    private Long id;
     private Author author;
 
     public Post getPost() {
@@ -24,11 +24,11 @@ public class Comment {
         this.text = text;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -40,7 +40,7 @@ public class Comment {
         this.author = author;
     }
 
-    public Comment(Post post, String text, Author author, int id) {
+    public Comment(Post post, String text, Author author, Long id) {
         this.post = post;
         this.text = text;
         this.id = id;

@@ -1,10 +1,25 @@
 package com.homeproject.blog.backend.classes;
 
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.util.HashSet;
+
+
 public class Post {
     private String text;
     private Author author;
     private Long id;
+    private HashSet<Tag> tags;
+
+    public HashSet<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(HashSet<Tag> tags) {
+        this.tags = tags;
+    }
 
     public String getText() {
         return text;
@@ -29,6 +44,8 @@ public class Post {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public Post (){}
 
     public Post(String text, Author author, Long id) {
         this.text = text;

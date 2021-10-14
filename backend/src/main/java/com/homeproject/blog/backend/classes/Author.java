@@ -4,8 +4,8 @@ public class Author {
     private String name;
     private int id;
 
-    public int getId() {
-        return id;
+    public Author getId() {
+        return Long.valueOf(id);
     }
 
     public void setId(int id) {

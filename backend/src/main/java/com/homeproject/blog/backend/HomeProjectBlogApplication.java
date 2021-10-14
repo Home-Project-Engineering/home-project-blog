@@ -14,7 +14,6 @@ public class HomeProjectBlogApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(HomeProjectBlogApplication.class, args);
 
-
 	}
 
 
