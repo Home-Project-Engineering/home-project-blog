@@ -7,7 +7,8 @@ import java.util.List;
 @Table(name = "posts")
 public class PostEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "post_generator")
+    @SequenceGenerator(name = "post_generator", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
     private String title;

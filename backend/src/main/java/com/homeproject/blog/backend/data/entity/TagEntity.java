@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Table(name = "tags")
 public class TagEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_generator")
+    @SequenceGenerator(name = "tag_generator", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
     private String name;

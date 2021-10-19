@@ -6,7 +6,8 @@ import javax.persistence.*;
 @Table(name = "role_types")
 public class RoleTypeEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_type_generator")
+    @SequenceGenerator(name = "role_type_generator", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
     String name;

@@ -1,7 +1,5 @@
 package com.homeproject.blog.backend.data.entity;
 
-import com.homeproject.blog.backend.dtos.Author;
-import com.homeproject.blog.backend.dtos.Comment;
 
 import javax.persistence.*;
 
@@ -9,7 +7,8 @@ import javax.persistence.*;
 @Table(name = "comments")
 public class CommentEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_generator")
+    @SequenceGenerator(name = "comment_generator", allocationSize = 1)
     @Column(name = "id", nullable = false)
     private Long id;
     private String text;
