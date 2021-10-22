@@ -1,7 +1,9 @@
 package com.homeproject.blog.backend.businesslayer;
 
 import com.homeproject.blog.backend.dtos.Comment;
-import com.homeproject.blog.backend.exceptions.CommentNotFoundException;;
+import com.homeproject.blog.backend.dtos.Tag;
+import com.homeproject.blog.backend.exceptions.CommentNotFoundException;
+import org.springframework.data.domain.Page;;
 
 import java.util.Collection;
 import java.util.Map;
@@ -14,9 +16,7 @@ public interface CommentService {
 
     Comment readComment(Long id) throws CommentNotFoundException;
 
-    Collection<Comment> getComments();
-
-    Collection<Comment> sortComments(Collection<Comment> comments, Map<String, String> parameters);
-
     void deleteComment(Long id) throws CommentNotFoundException;
+
+    Page<Comment> findAll(Long id, String authorName, Integer pageNum, Integer pageSize, String sort);
 }

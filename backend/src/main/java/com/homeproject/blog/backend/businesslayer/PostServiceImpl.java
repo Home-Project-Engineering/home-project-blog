@@ -2,7 +2,7 @@ package com.homeproject.blog.backend.businesslayer;
 
 import com.homeproject.blog.backend.data.entity.PostEntity;
 import com.homeproject.blog.backend.data.entity.TagEntity;
-import com.homeproject.blog.backend.data.entity.converters.PostConverter;
+import com.homeproject.blog.backend.businesslayer.converters.PostConverter;
 import com.homeproject.blog.backend.data.repository.PostRepository;
 import com.homeproject.blog.backend.dtos.Post;
 import com.homeproject.blog.backend.exceptions.PostNotFoundException;
@@ -45,7 +45,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post updatePost(Long id, Post changes) throws PostNotFoundException {
+    public Post updatePost(Long id, Post changes) {
         List<TagEntity> tagEntities = tagService.identifyTags(changes.getTags());
         PostEntity entity = verifyPostExisting(id);
         entity.setText(changes.getText());
@@ -57,7 +57,7 @@ public class PostServiceImpl implements PostService {
         return postConverter.entityToPost(updatedEntity);
     }
 
-    private PostEntity verifyPostExisting(Long id) throws PostNotFoundException {
+    private PostEntity verifyPostExisting(Long id) {
         Optional<PostEntity> result = postRepository.findById(id);
         if (result.isEmpty()) {
             throw new PostNotFoundException();
@@ -66,14 +66,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post readPost(Long id) throws PostNotFoundException {
+    public Post readPost(Long id) {
         PostEntity entity = verifyPostExisting(id);
         return postConverter.entityToPost(entity);
     }
 
     @Override
-    public Page<Post> getPosts(Map<String, String> parameters) {
-        String sort = parameters.get("sort");
+    public Page<Post> getPosts(Long id, String tagId, String tagName, String authorName, String sort, Integer pageNum, Integer pageSize) {
         Sort sorting;
         if (sort != null) {
             if (sort.charAt(0) == '-') {
@@ -84,35 +83,16 @@ public class PostServiceImpl implements PostService {
         } else {
             sorting = Sort.by("id").descending();
         }
-        if (!parameters.containsKey("page_num")) {
-            parameters.put("page_num", "0");
-        }
-        if (!parameters.containsKey("page_size")) {
-            parameters.put("page_size", "10");
-        }
-        Integer pageNum = Integer.parseInt(parameters.get("page_num"));
-        Integer pageSize = Integer.parseInt(parameters.get("page_size"));
-        String idParam = parameters.get("id");
-        Long id;
-        if (idParam == null) {
-            id = null;
-        } else {
-            id = Long.parseLong(idParam);
-        }
-        String tagIdParam = parameters.get("tag_id");
-        Long tag_id;
-        if (tagIdParam == null) {
-            tag_id = null;
-        } else {
-            tag_id = Long.parseLong(tagIdParam);
-        }
+        pageNum = pageNum == null ? pageNum = 0 : pageNum;
+        pageSize = pageSize == null ? pageSize = 10 : pageSize;
+        Long tagIdValue = tagId == null ? null : Long.parseLong(tagId);
         PageRequest request = PageRequest.of(pageNum, pageSize, sorting);
-        Page<PostEntity> entities = postRepository.findPostsByParameters(request, id, tag_id, parameters.get("tag_name"), parameters.get("author_name"));
+        Page<PostEntity> entities = postRepository.findPostsByParameters(request, id, tagIdValue, tagName, authorName);
         return new PageImpl<>(entities.stream().map(postConverter::entityToPost).collect(Collectors.toList()), request, entities.getTotalElements());
     }
 
     @Override
-    public void deletePost(Long id) throws PostNotFoundException {
+    public void deletePost(Long id) {
         verifyPostExisting(id);
         postRepository.deleteById(id);
     }

@@ -4,6 +4,8 @@ import com.homeproject.blog.backend.businesslayer.TagService;
 import com.homeproject.blog.backend.dtos.Tag;
 import com.homeproject.blog.backend.exceptions.ForbiddenActionException;
 import com.homeproject.blog.backend.exceptions.TagNotFoundException;
+import com.homeproject.blog.backend.presentationlayer.converters.TagConverter;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,32 +15,36 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.util.List;
+
 
 @Controller
-@RequestMapping("tags")
-public class TagController {
+public class TagController implements TagsApi {
     @Autowired
     private TagService tagService;
+    @Autowired
+    private TagConverter tagConverter;
     private final Logger LOG = LoggerFactory.getLogger(TagController.class);
 
-    @GetMapping(produces = "application/json")
-    ResponseEntity<Object> getAllTags(@RequestParam( name = "id", required = false) Long id, @RequestParam(name = "name", required = false) String name, @RequestParam(name = "sort", required = false, defaultValue = "name") String sort, @RequestParam(name = "page_num", required = false, defaultValue = "0") Integer pageNum, @RequestParam(name = "page_size", required = false, defaultValue = "10") Integer pageSize) {
+    public ResponseEntity<List<com.homeproject.blog.backend.presentationlayer.model.Tag>> getTags(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
         LOG.info("Get all tags request");
-        Page<Tag> page = tagService.findAll(id, name, pageNum, pageSize, sort);
-        return ResponseEntity.ok().header("X-Total-Count", String.valueOf(page.getTotalElements())).body(page.toList());
+        Long tagId = id == null ? null : id.longValue();
+        Page<Tag> page = tagService.findAll(tagId, name, pageNum, pageSize, sort);
+        List<com.homeproject.blog.backend.presentationlayer.model.Tag> resultList = tagConverter.dtosToViews(page.toList());
+        return ResponseEntity.ok().header("X-Total-Count", String.valueOf(page.getTotalElements())).body(resultList);
     }
 
-    @GetMapping(path = "/{id}", produces = "application/json")
-    ResponseEntity<Object> getTagById(@PathVariable Long id) throws TagNotFoundException {
+    public ResponseEntity<com.homeproject.blog.backend.presentationlayer.model.Tag> getTag(BigDecimal id) {
         LOG.info("Get tag by id request");
-        Tag tag = tagService.readTag(id);
-        return new ResponseEntity<>(tag, HttpStatus.OK);
+        Tag tag = tagService.readTag(id.longValue());
+        return new ResponseEntity<>(tagConverter.dtoToView(tag), HttpStatus.OK);
     }
 
-    @DeleteMapping(path = "/{id}")
-    ResponseEntity<Object> deleteTag(@PathVariable Long id) throws TagNotFoundException, ForbiddenActionException {
+    public ResponseEntity<Void> removeTag(BigDecimal id) {
         LOG.info("Delete post request");
-            tagService.deleteTag(id);
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
+        tagService.deleteTag(id.longValue());
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 }

@@ -1,4 +1,4 @@
-package com.homeproject.blog.backend.data.entity.converters;
+package com.homeproject.blog.backend.businesslayer.converters;
 
 import com.homeproject.blog.backend.data.entity.RoleTypeEntity;
 import com.homeproject.blog.backend.data.entity.UserEntity;
@@ -7,7 +7,10 @@ import com.homeproject.blog.backend.dtos.RoleType;
 import com.homeproject.blog.backend.dtos.User;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.Role;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class AuthorConverterImpl implements AuthorConverter {

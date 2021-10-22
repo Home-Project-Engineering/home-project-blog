@@ -16,6 +16,7 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<springfox-version>2.8.0</springfox-version>
 	</properties>
 
 	<dependencies>
@@ -66,6 +67,35 @@
 			<scope>test</scope>
 		</dependency>
 		-->
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${springfox-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${springfox-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.2.11</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+		<!-- Bean Validation API support -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -73,6 +103,37 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.openapitools</groupId>
+				<artifactId>openapi-generator-maven-plugin</artifactId>
+				<version>4.3.1</version>
+				<executions>
+					<execution>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<inputSpec>../openapi/openapi.yaml</inputSpec>
+							<generatorName>spring</generatorName>
+							<configOptions>
+								<java8>true</java8>
+								<dateLibrary>java8</dateLibrary>
+								<sourceFolder>/</sourceFolder>
+								<modelPackage>com.homeproject.blog.backend.presentationlayer.model</modelPackage>
+								<apiPackage>com.homeproject.blog.backend.presentationlayer.controllers</apiPackage>
+								<invokerPackage>com.homeproject.blog.backend.presentationlayer.controllers</invokerPackage>
+								<interfaceOnly>true</interfaceOnly>
+								<useSwaggerAnnotations>false</useSwaggerAnnotations>
+								<returnResponse>true</returnResponse>
+								<hideGenerationTimestamp>true</hideGenerationTimestamp>
+							</configOptions>
+							<addCompileSourceRoot>true</addCompileSourceRoot> <!-- default -->
+							<output>${project.build.directory}/generated-sources/openapi</output>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

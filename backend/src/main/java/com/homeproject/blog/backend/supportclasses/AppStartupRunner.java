@@ -4,7 +4,7 @@ import com.homeproject.blog.backend.businesslayer.CommentService;
 import com.homeproject.blog.backend.businesslayer.PostService;
 import com.homeproject.blog.backend.data.entity.RoleTypeEntity;
 import com.homeproject.blog.backend.data.entity.UserEntity;
-import com.homeproject.blog.backend.data.entity.converters.AuthorConverter;
+import com.homeproject.blog.backend.businesslayer.converters.AuthorConverter;
 import com.homeproject.blog.backend.data.repository.RoleTypeRepository;
 import com.homeproject.blog.backend.data.repository.UserRepository;
 import com.homeproject.blog.backend.dtos.*;
@@ -15,7 +15,6 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import javax.management.relation.Role;
 import java.util.ArrayList;
 
 

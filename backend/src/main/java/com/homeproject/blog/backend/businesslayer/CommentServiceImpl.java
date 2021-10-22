@@ -1,14 +1,20 @@
 package com.homeproject.blog.backend.businesslayer;
 
 import com.homeproject.blog.backend.data.entity.CommentEntity;
-import com.homeproject.blog.backend.data.entity.converters.AuthorConverter;
-import com.homeproject.blog.backend.data.entity.converters.CommentConverter;
+import com.homeproject.blog.backend.businesslayer.converters.AuthorConverter;
+import com.homeproject.blog.backend.businesslayer.converters.CommentConverter;
+import com.homeproject.blog.backend.data.entity.TagEntity;
 import com.homeproject.blog.backend.data.repository.CommentRepository;
 import com.homeproject.blog.backend.dtos.Comment;
+import com.homeproject.blog.backend.dtos.Tag;
 import com.homeproject.blog.backend.exceptions.CommentNotFoundException;
 import com.homeproject.blog.backend.supportclasses.AppStartupRunner;
 import com.homeproject.blog.backend.supportclasses.CurrentDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
@@ -65,22 +71,26 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Collection<Comment> getComments() {
-        Iterable<CommentEntity> entities = repository.findAll();
-        ArrayList<CommentEntity> list = new ArrayList<>();
-        entities.forEach(list::add);
-        Stream<Comment> comments = list.stream().map(commentConverter::entityToComment);
-        return comments.collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    @Override
-    public Collection<Comment> sortComments(Collection<Comment> comments, Map<String, String> parameters) {
-        return comments;
-    }
-
-    @Override
     public void deleteComment(Long id) throws CommentNotFoundException {
         verifyCommentExisting(id);
         repository.deleteById(id);
+    }
+
+    @Override
+    public Page<Comment> findAll(Long id, String authorName, Integer pageNum, Integer pageSize, String sort) {
+        Sort sorting;
+        if (sort != null) {
+            if (sort.charAt(0) == '-') {
+                sorting = Sort.by(sort.substring(1)).descending();
+            } else {
+                sorting = Sort.by(sort);
+            }
+        } else {
+            sorting = Sort.by("id").descending();
+        }
+        PageRequest pageRequest = PageRequest.of(pageNum, pageSize, sorting);
+        Page<CommentEntity> allByIdAndName = repository.findAllByIdAndName(pageRequest, id, authorName);
+        Page<Comment> page = new PageImpl<>(allByIdAndName.stream().map(commentConverter::entityToComment).collect(Collectors.toList()), pageRequest, allByIdAndName.getTotalElements());
+        return page;
     }
 }

@@ -2,7 +2,7 @@ package com.homeproject.blog.backend.exceptions;
 
 import org.springframework.http.HttpStatus;
 
-public class BlogException extends Exception {
+public class BlogException extends RuntimeException {
     private String code;
     private HttpStatus httpStatus;
 

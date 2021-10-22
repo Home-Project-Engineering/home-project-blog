@@ -1,10 +1,9 @@
 package com.homeproject.blog.backend.businesslayer;
 
 import com.homeproject.blog.backend.data.entity.TagEntity;
-import com.homeproject.blog.backend.data.entity.converters.TagConverter;
+import com.homeproject.blog.backend.businesslayer.converters.TagConverter;
 import com.homeproject.blog.backend.data.repository.TagRepository;
 import com.homeproject.blog.backend.dtos.Tag;
-import com.homeproject.blog.backend.exceptions.ForbiddenActionException;
 import com.homeproject.blog.backend.exceptions.TagNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -69,6 +68,8 @@ public class TagServiceImpl implements TagService {
         } else {
             sorting = Sort.by("name");
         }
+        pageNum = pageNum == null ? pageNum = 0 : pageNum;
+        pageSize = pageSize == null ? pageSize = 10 : pageSize;
         PageRequest pageRequest = PageRequest.of(pageNum, pageSize, sorting);
         Page<TagEntity> allByIdAndName = tagRepository.findAllByIdAndName(pageRequest, id, name);
         Page<Tag> page = new PageImpl<>(allByIdAndName.stream().map(tagConverter::entityToTag).collect(Collectors.toList()), pageRequest, allByIdAndName.getTotalElements());

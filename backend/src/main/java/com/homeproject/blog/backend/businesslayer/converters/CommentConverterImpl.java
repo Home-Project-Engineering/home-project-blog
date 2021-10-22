@@ -1,8 +1,15 @@
-package com.homeproject.blog.backend.data.entity.converters;
+package com.homeproject.blog.backend.businesslayer.converters;
 
 import com.homeproject.blog.backend.data.entity.CommentEntity;
 import com.homeproject.blog.backend.dtos.Comment;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class CommentConverterImpl implements CommentConverter {
