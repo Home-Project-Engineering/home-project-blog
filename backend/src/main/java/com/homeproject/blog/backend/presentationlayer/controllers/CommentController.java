@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 public class CommentController implements PostsApi{
 
@@ -26,24 +29,26 @@ public class CommentController implements PostsApi{
         return ResponseEntity.status(HttpStatus.CREATED).body(conversionService.convert(commentDTO, Comment.class));
     }
 
-    @GetMapping(produces = "application/json")
-    public ResponseEntity<Object> getComments(@PathVariable Long post_id, @RequestParam( name = "id", required = false) Long id, @RequestParam(name = "author_name", required = false) String authorName, @RequestParam(name = "sort", required = false, defaultValue = "-id") String sort, @RequestParam(name = "page_num", required = false, defaultValue = "0") Integer pageNum, @RequestParam(name = "page_size", required = false, defaultValue = "10") Integer pageSize) {
-        Page<CommentDTO> page = commentService.getComments(post_id, id, authorName, ParametersConfig.getSortParameters(pageNum, pageSize, sort));
-        return ResponseEntity.ok().header("X-Total-Count", String.valueOf(page.getTotalElements())).body(page.toList());
+    @Override
+    public ResponseEntity<List<Comment>> getComments(Long postId, Long id, String authorName, String sort, Integer pageNum, Integer pageSize) {
+        Page<CommentDTO> page = commentService.getComments(postId, id, authorName, ParametersConfig.getSortParameters(pageNum, pageSize, sort));
+        return ResponseEntity.ok().header("X-Total-Count", String.valueOf(page.getTotalElements())).body(page.stream().map(comment -> conversionService.convert(comment, Comment.class)).collect(Collectors.toList()));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> getCommentById(@PathVariable Long post_id, @PathVariable Long id){
-        return ResponseEntity.ok(commentService.readComment(post_id, id));
+    @Override
+    public ResponseEntity<Comment> getComment(Long postId, Long id){
+        return ResponseEntity.ok(conversionService.convert(commentService.readComment(postId, id), Comment.class));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> updateComment(@PathVariable Long post_id, @PathVariable Long id, @RequestBody CommentDTO commentDTO) {
-        return ResponseEntity.ok(commentService.updateComment(post_id, id, commentDTO));
+    @Override
+    public ResponseEntity<Comment> updateComment(Long postId, Long id, Comment comment) {
+        CommentDTO commentDTO = commentService.updateComment(postId, id, conversionService.convert(comment, CommentDTO.class));
+        return ResponseEntity.ok(conversionService.convert(commentDTO, Comment.class));
     }
 
-    @DeleteMapping("/{id}")
-    public void removePost(@PathVariable Long post_id,@PathVariable Long id){
-        commentService.deleteComment(post_id, id);
+    @Override
+    public ResponseEntity<Void> removeComment(Long postId, Long id) {
+        commentService.deleteComment(postId, id);
+        return ResponseEntity.noContent().build();
     }
 }
