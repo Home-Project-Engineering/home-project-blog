@@ -39,9 +39,9 @@
             <column name="id" autoIncrement="true" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="created_on" type="text"/>
+            <column name="created_on" type="timestamp"/>
             <column name="text" type="text"/>
-            <column name="updated_on" type="text"/>
+            <column name="updated_on" type="timestamp"/>
             <column name="user_id" type="bigint"/>
             <column name="post_id" type="bigint"/>
         </createTable>
