@@ -660,7 +660,7 @@ components:
       properties:
         id:
           description: The ID of the User.
-          type: number
+          type: integer
           format: int64
           readOnly: true
         name:
@@ -721,7 +721,7 @@ components:
       properties:
         id:
           description: The ID of the Post.
-          type: number
+          type: integer
           format: int64
           readOnly: true
         tags:
@@ -776,7 +776,7 @@ components:
       properties:
         id:
           description: The ID of the Comment.
-          type: number
+          type: integer
           format: int64
           readOnly: true
         author:
@@ -807,7 +807,7 @@ components:
       properties:
         id:
           description: The ID of the Tag.
-          type: number
+          type: integer
           format: int64
           readOnly: true
         name:
@@ -993,14 +993,14 @@ components:
       in: path
       name: id
       schema:
-        type: number
+        type: integer
         format: int64
       required: true
     p_post_id:
       in: path
       name: post_id
       schema:
-        type: number
+        type: integer
         format: int64
       required: true
     page_num:
@@ -1008,16 +1008,18 @@ components:
       name: page_num
       schema:
         type: integer
+        default: 0
     page_size:
       in: query
       name: page_size
       schema:
         type: integer
+        default: 10
     id:
       in: query
       name: id
       schema:
-        type: number
+        type: integer
         format: int64
     name:
       in: query
@@ -1038,12 +1040,14 @@ components:
       in: query
       name: user_id
       schema:
-        type: string
+        type: integer
+        format: int64
     tag_id:
       in: query
       name: tag_id
       schema:
-        type: string
+        type: integer
+        format: int64
     tags_sort:
       in: query
       name: sort
