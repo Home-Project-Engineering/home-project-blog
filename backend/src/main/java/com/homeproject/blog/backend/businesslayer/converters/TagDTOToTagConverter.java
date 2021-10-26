@@ -3,9 +3,10 @@ package com.homeproject.blog.backend.businesslayer.converters;
 
 import com.homeproject.blog.backend.businesslayer.dto.TagDTO;
 import com.homeproject.blog.backend.data.entities.Tag;
-import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
-public class TagDTOToTagConverter implements Converter<TagDTO, Tag> {
+@Component
+public class TagDTOToTagConverter implements BlogDTOConverter<TagDTO, Tag> {
 
     @Override
     public Tag convert(TagDTO source) {

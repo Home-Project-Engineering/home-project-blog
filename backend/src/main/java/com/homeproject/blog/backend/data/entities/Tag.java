@@ -9,7 +9,8 @@ import java.util.Objects;
 @Table(name = "tags")
 public class Tag {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_generator")
+    @SequenceGenerator(name = "tag_generator", sequenceName = "seq_tag_id", allocationSize = 10)
     private Long id;
 
     private String name;

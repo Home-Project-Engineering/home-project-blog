@@ -3,6 +3,8 @@ package com.homeproject.blog.backend.data.entities;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +12,8 @@ import java.util.List;
 @Table(name = "posts")
 public class Post {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "post_generator")
+    @SequenceGenerator(name = "post_generator", sequenceName = "seq_post_id", allocationSize = 10)
     private Long id;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
@@ -25,7 +28,7 @@ public class Post {
     private User author;
 
     @DateTimeFormat
-    private String createdOn;
+    private OffsetDateTime createdOn;
 
     private String text;
 
@@ -34,7 +37,7 @@ public class Post {
     private String previewAttachment;
 
     @DateTimeFormat
-    private String updatedOn;
+    private OffsetDateTime updatedOn;;
 
     public Long getId() {
         return id;
@@ -60,11 +63,11 @@ public class Post {
         this.author = author;
     }
 
-    public String getCreatedOn() {
+    public OffsetDateTime getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(String createdOn) {
+    public void setCreatedOn(OffsetDateTime createdOn) {
         this.createdOn = createdOn;
     }
 
@@ -92,15 +95,15 @@ public class Post {
         this.previewAttachment = previewAttachment;
     }
 
-    public String getUpdatedOn() {
+    public OffsetDateTime getUpdatedOn() {
         return updatedOn;
     }
 
-    public void setUpdatedOn(String updatedOn) {
+    public void setUpdatedOn(OffsetDateTime updatedOn) {
         this.updatedOn = updatedOn;
     }
 
-    public Post(Long id, List<Tag> tags, User author, String createdOn, String text, String title, String previewAttachment, String updatedOn) {
+    public Post(Long id, List<Tag> tags, User author, OffsetDateTime createdOn, String text, String title, String previewAttachment, OffsetDateTime updatedOn) {
         this.id = id;
         this.tags = tags;
         this.author = author;

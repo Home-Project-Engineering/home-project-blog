@@ -2,7 +2,7 @@ package com.homeproject.blog.backend.businesslayer.services;
 
 import com.homeproject.blog.backend.businesslayer.dto.PostDTO;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 public interface PostService {
 
@@ -12,7 +12,7 @@ public interface PostService {
 
     PostDTO readPost(Long id);
 
-    Page<PostDTO> getPosts(Long id, Long tagId, String tagName, String authorName, PageRequest pageRequest);
+    Page<PostDTO> getPosts(Long id, Long tagId, String tagName, String authorName, Pageable pageRequest);
 
     void deletePost(Long id);
 

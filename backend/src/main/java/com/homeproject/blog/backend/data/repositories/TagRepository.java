@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
@@ -20,4 +22,6 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
     @Modifying(clearAutomatically = true)
     @Query(value = "delete from post_tags where tag_id = :id", nativeQuery = true)
     void deleteRelation(Long id);
+
+    Optional<Tag> findByName(String name);
 }

@@ -1,26 +1,29 @@
 package com.homeproject.blog.backend.data.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
+    @SequenceGenerator(name = "user_generator", sequenceName = "seq_user_id", allocationSize = 10)
     private Long id;
 
     private String name;
 
     private String firstName;
 
-    private String secondName;
+    private String lastName;
 
     private String email;
 
     private String password;
+
+    @ManyToOne(cascade = {CascadeType.MERGE})
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     public Long getId() {
         return id;
@@ -46,12 +49,12 @@ public class User {
         this.firstName = firstName;
     }
 
-    public String getSecondName() {
-        return secondName;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -70,14 +73,24 @@ public class User {
         this.password = password;
     }
 
-    public User(Long id, String name, String firstName, String secondName, String email, String password) {
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public User(Long id, String name, String firstName, String lastName, String email, String password, Role role) {
         this.id = id;
         this.name = name;
         this.firstName = firstName;
-        this.secondName = secondName;
+        this.lastName = lastName;
         this.email = email;
         this.password = password;
+        this.role = role;
     }
+
     public User() {
     }
 }

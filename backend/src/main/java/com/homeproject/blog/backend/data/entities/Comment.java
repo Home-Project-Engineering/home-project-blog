@@ -3,12 +3,14 @@ package com.homeproject.blog.backend.data.entities;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "comments")
 public class Comment{
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "comment_generator")
+    @SequenceGenerator(name = "comment_generator", sequenceName = "seq_comment_id",allocationSize = 10)
     private Long id;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -18,14 +20,14 @@ public class Comment{
     private String text;
 
     @DateTimeFormat
-    private String createdOn;
+    private OffsetDateTime createdOn;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "post_id")
     private Post post;
 
     @DateTimeFormat
-    private String updatedOn;
+    private OffsetDateTime updatedOn;
 
     public Long getId() {
         return id;
@@ -51,11 +53,11 @@ public class Comment{
         this.text = text;
     }
 
-    public String getCreatedOn() {
+    public OffsetDateTime getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(String createdOn) {
+    public void setCreatedOn(OffsetDateTime createdOn) {
         this.createdOn = createdOn;
     }
 
@@ -67,15 +69,15 @@ public class Comment{
         this.post = post;
     }
 
-    public String getUpdatedOn() {
+    public OffsetDateTime getUpdatedOn() {
         return updatedOn;
     }
 
-    public void setUpdatedOn(String updatedOn) {
+    public void setUpdatedOn(OffsetDateTime updatedOn) {
         this.updatedOn = updatedOn;
     }
 
-    public Comment(Long id, User author, String text, String createdOn, Post post, String updatedOn) {
+    public Comment(Long id, User author, String text, OffsetDateTime createdOn, Post post, OffsetDateTime updatedOn) {
         this.id = id;
         this.author = author;
         this.text = text;

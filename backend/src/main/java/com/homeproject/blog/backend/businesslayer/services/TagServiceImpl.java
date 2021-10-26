@@ -11,6 +11,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.stream.Collectors;
 
@@ -33,7 +34,7 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Page<TagDTO> getTags(Long id, String name, PageRequest pageRequest) {
+    public Page<TagDTO> getTags(Long id, String name, Pageable pageRequest) {
         Page<Tag> allByIdAndName = tagRepository.findAllByIdAndName(pageRequest, id, name);
         return new PageImpl<>(allByIdAndName.stream().map(tag -> conversionService.convert(tag, TagDTO.class)).collect(Collectors.toList()), pageRequest, allByIdAndName.getTotalElements());
     }

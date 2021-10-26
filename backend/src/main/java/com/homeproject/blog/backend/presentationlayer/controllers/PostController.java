@@ -1,46 +1,56 @@
 package com.homeproject.blog.backend.presentationlayer.controllers;
 
 import com.homeproject.blog.backend.businesslayer.dto.PostDTO;
-import com.homeproject.blog.backend.businesslayer.dto.TagDTO;
 import com.homeproject.blog.backend.businesslayer.services.PostService;
+import com.homeproject.blog.backend.presentationlayer.config.ParametersConfig;
+import com.homeproject.blog.backend.presentationlayer.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/posts")
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+
 @RestController
-public class PostController {
+public class PostController implements PostsApi{
 
     @Autowired
     private PostService postService;
 
-    @PostMapping(produces = "application/json")
-    public ResponseEntity<Object> createPost(@RequestBody PostDTO post) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(postService.createPost(post));
+    @Autowired
+    private ConversionService conversionService;
+
+    @Override
+    public ResponseEntity<Post> createPost(Post post){
+        PostDTO postDTO = postService.createPost(conversionService.convert(post, PostDTO.class));
+        return ResponseEntity.status(HttpStatus.CREATED).body(conversionService.convert(postDTO, Post.class));
     }
 
-    @GetMapping(produces = "application/json")
-    public ResponseEntity<Object> getPosts(@RequestParam( name = "id", required = false) Long id, @RequestParam(name = "tag_id", required = false) Long tagId, @RequestParam(name = "tag_name", required = false) String tagName, @RequestParam(name = "author_name", required = false) String authorName, @RequestParam(name = "sort", required = false) String sort, @RequestParam(name = "page_num", required = false, defaultValue = "0") Integer pageNum, @RequestParam(name = "page_size", required = false, defaultValue = "10") Integer pageSize) {
-        Page<PostDTO> page = postService.getPosts(id, tagId, tagName, authorName, PageRequest.of(pageNum, pageSize, Sort.by("id")));
-        return ResponseEntity.ok().header("X-Total-Count", String.valueOf(page.getTotalElements())).body(page.toList());
+    @Override
+    public ResponseEntity<List<Post>> getPosts(Long id, Long tagId, String tagName, String authorName,  String sort, Integer pageNum, Integer pageSize) {
+        Page<PostDTO> page = postService.getPosts(id, tagId, tagName, authorName, ParametersConfig.getSortParameters(pageNum, pageSize, sort));
+        return ResponseEntity.ok().header("X-Total-Count", String.valueOf(page.getTotalElements())).body(page.stream().map(post -> conversionService.convert(post, Post.class)).collect(Collectors.toList()));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> getPostById(@PathVariable Long id) {
-        return ResponseEntity.ok(postService.readPost(id));
+    @Override
+    public ResponseEntity<Post> getPost(Long id){
+        return ResponseEntity.ok(conversionService.convert(postService.readPost(id), Post.class));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Object> updatePost(@PathVariable Long id, @RequestBody PostDTO post) {
-        return ResponseEntity.ok(postService.updatePost(id, post));
+    @Override
+    public ResponseEntity<Post> updatePost( Long id, Post post) {
+        PostDTO postDTO = postService.updatePost(id, conversionService.convert(post, PostDTO.class));
+        return ResponseEntity.ok(conversionService.convert(postDTO, Post.class));
     }
 
-    @DeleteMapping("/{id}")
-    public void removePost(@PathVariable Long id){
+    @Override
+    public ResponseEntity<Void> removePost(Long id) {
         postService.deletePost(id);
+        return ResponseEntity.noContent().build();
     }
 }

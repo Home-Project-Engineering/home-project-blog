@@ -2,16 +2,18 @@ package com.homeproject.blog.backend.businesslayer.dto;
 
 import com.homeproject.blog.backend.data.entities.Post;
 
+import java.time.OffsetDateTime;
+
 public class CommentDTO {
     private Long id;
 
+    private AuthorDTO author;
+
     private String text;
 
-    private String createdOn;
+    private OffsetDateTime createdOn;
 
-    private Post post;
-
-    private String updatedOn;
+    private OffsetDateTime updatedOn;
 
     public Long getId() {
         return id;
@@ -19,6 +21,14 @@ public class CommentDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public AuthorDTO getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(AuthorDTO author) {
+        this.author = author;
     }
 
     public String getText() {
@@ -29,35 +39,27 @@ public class CommentDTO {
         this.text = text;
     }
 
-    public String getCreatedOn() {
+    public OffsetDateTime getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(String createdOn) {
+    public void setCreatedOn(OffsetDateTime createdOn) {
         this.createdOn = createdOn;
     }
 
-    public Post getPost() {
-        return post;
-    }
-
-    public void setPost(Post post) {
-        this.post = post;
-    }
-
-    public String getUpdatedOn() {
+    public OffsetDateTime getUpdatedOn() {
         return updatedOn;
     }
 
-    public void setUpdatedOn(String updatedOn) {
+    public void setUpdatedOn(OffsetDateTime updatedOn) {
         this.updatedOn = updatedOn;
     }
 
-    public CommentDTO(Long id, String text, String createdOn, Post post, String updatedOn) {
+    public CommentDTO(Long id, AuthorDTO author, String text, OffsetDateTime createdOn, OffsetDateTime updatedOn) {
         this.id = id;
+        this.author = author;
         this.text = text;
         this.createdOn = createdOn;
-        this.post = post;
         this.updatedOn = updatedOn;
     }
 

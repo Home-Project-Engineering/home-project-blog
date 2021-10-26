@@ -1,17 +1,19 @@
 package com.homeproject.blog.backend.businesslayer.dto;
 
+import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PostDTO {
     private Long id;
     private List<TagDTO> tags = new ArrayList<>();
-    private UserDTO author;
-    private String createdOn;
+    private AuthorDTO author;
+    private OffsetDateTime createdOn;
     private String text;
     private String title;
     private String previewAttachment;
-    private String updatedOn;
+    private OffsetDateTime updatedOn;
 
     public Long getId() {
         return id;
@@ -29,19 +31,19 @@ public class PostDTO {
         this.tags = tags;
     }
 
-    public UserDTO getAuthor() {
+    public AuthorDTO getAuthor() {
         return author;
     }
 
-    public void setAuthor(UserDTO author) {
+    public void setAuthor(AuthorDTO author) {
         this.author = author;
     }
 
-    public String getCreatedOn() {
+    public OffsetDateTime getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(String createdOn) {
+    public void setCreatedOn(OffsetDateTime createdOn) {
         this.createdOn = createdOn;
     }
 
@@ -69,15 +71,15 @@ public class PostDTO {
         this.previewAttachment = previewAttachment;
     }
 
-    public String getUpdatedOn() {
+    public OffsetDateTime getUpdatedOn() {
         return updatedOn;
     }
 
-    public void setUpdatedOn(String updatedOn) {
+    public void setUpdatedOn(OffsetDateTime updatedOn) {
         this.updatedOn = updatedOn;
     }
 
-    public PostDTO(Long id, List<TagDTO> tags, UserDTO author, String createdOn, String text, String title, String previewAttachment, String updatedOn) {
+    public PostDTO(Long id, List<TagDTO> tags, AuthorDTO author, OffsetDateTime createdOn, String text, String title, String previewAttachment, OffsetDateTime updatedOn) {
         this.id = id;
         this.tags = tags;
         this.author = author;
