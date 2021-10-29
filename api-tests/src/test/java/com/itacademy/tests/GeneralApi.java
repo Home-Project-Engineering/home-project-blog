@@ -129,7 +129,7 @@ public interface GeneralApi {
 
     //***************todo optimize for saving****************
 
-    default List<Comment> saveListComment(BigDecimal postId, CommentsApi commentsApi) throws ApiException {
+    default List<Comment> saveListComment(Long postId, CommentsApi commentsApi) throws ApiException {
 
         List<Comment> list = createCommentList();
         List<Comment> commentList = new ArrayList<>();

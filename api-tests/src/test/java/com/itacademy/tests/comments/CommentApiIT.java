@@ -83,7 +83,7 @@ public class CommentApiIT implements GeneralApi {
                 .isThrownBy(() -> commentsApi.getComment(post.getId(), expected.getId()));
     }
 
-    private List<Comment> saveListComment(BigDecimal postId) throws ApiException {
+    private List<Comment> saveListComment(Long postId) throws ApiException {
 
         List<Comment> list = createCommentList();
         List<Comment> commentList = new ArrayList<>();

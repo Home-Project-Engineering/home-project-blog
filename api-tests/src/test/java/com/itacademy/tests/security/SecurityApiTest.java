@@ -87,7 +87,7 @@ class SecurityApiTest {
 
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             CurrentUserCommentsApi currentUserCommentsApi = new CurrentUserCommentsApi(apiClient);
-                            return currentUserCommentsApi.getCommentsByCurrentUserWithHttpInfo(new BigDecimal(-1), null, null, null);
+                            return currentUserCommentsApi.getCommentsByCurrentUserWithHttpInfo(new Long(-1), null, null, null);
                         },
                         "Get comments current User",
                         true,
@@ -97,7 +97,7 @@ class SecurityApiTest {
 
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             CurrentUserCommentsApi currentUserCommentsApi = new CurrentUserCommentsApi(apiClient);
-                            return currentUserCommentsApi.getCommentByCurrentUserWithHttpInfo(new BigDecimal(-1));
+                            return currentUserCommentsApi.getCommentByCurrentUserWithHttpInfo(new Long(-1));
                         },
                         "Get specific comment current User",
                         true,
@@ -106,7 +106,7 @@ class SecurityApiTest {
                         false),
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             CurrentUserCommentsApi currentUserCommentsApi = new CurrentUserCommentsApi(apiClient);
-                            return currentUserCommentsApi.updateCommentByCurrentUserWithHttpInfo(new BigDecimal(-1), new Comment());
+                            return currentUserCommentsApi.updateCommentByCurrentUserWithHttpInfo(new Long(-1), new Comment());
                         },
                         "Update comment current User",
                         true,
@@ -116,7 +116,7 @@ class SecurityApiTest {
 
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             CurrentUserCommentsApi currentUserCommentsApi = new CurrentUserCommentsApi(apiClient);
-                            return currentUserCommentsApi.removeCommentByCurrentUserWithHttpInfo(new BigDecimal(-1));
+                            return currentUserCommentsApi.removeCommentByCurrentUserWithHttpInfo(new Long(-1));
                         },
                         "Delete specific comment current User",
                         true,
@@ -146,7 +146,7 @@ class SecurityApiTest {
 
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             CurrentUserPostsApi currentUserPostsApiApi = new CurrentUserPostsApi(apiClient);
-                            return currentUserPostsApiApi.updatePostByCurrentUserWithHttpInfo(new BigDecimal(-1), new Post());
+                            return currentUserPostsApiApi.updatePostByCurrentUserWithHttpInfo(new Long(-1), new Post());
                         },
                         "Update post current User",
                         true,
@@ -156,7 +156,7 @@ class SecurityApiTest {
 
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             CurrentUserPostsApi currentUserPostsApiApi = new CurrentUserPostsApi(apiClient);
-                            return currentUserPostsApiApi.removePostByCurrentUserWithHttpInfo(new BigDecimal(-1));
+                            return currentUserPostsApiApi.removePostByCurrentUserWithHttpInfo(new Long(-1));
                         },
                         "Delete post current User",
                         true,
@@ -186,7 +186,7 @@ class SecurityApiTest {
 
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             UsersApi userApi = new UsersApi(apiClient);
-                            return userApi.getUserWithHttpInfo(new BigDecimal(-1));
+                            return userApi.getUserWithHttpInfo(new Long(-1));
                         },
                         "See specific User",
                         true,
@@ -196,7 +196,7 @@ class SecurityApiTest {
 
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             UsersApi userApi = new UsersApi(apiClient);
-                            return userApi.updateUserWithHttpInfo(new BigDecimal(-1), new User()
+                            return userApi.updateUserWithHttpInfo(new Long(-1), new User()
                                     .name(RandomStringUtils.randomAlphabetic(5).concat("_test"))
                                     .firstName("firstName")
                                     .lastName("lastName")
@@ -211,7 +211,7 @@ class SecurityApiTest {
 
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             UsersApi userApi = new UsersApi(apiClient);
-                            return userApi.removeUserWithHttpInfo(new BigDecimal(-1));
+                            return userApi.removeUserWithHttpInfo(new Long(-1));
                         },
                         "Delete User",
                         true,
@@ -221,7 +221,7 @@ class SecurityApiTest {
 
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             UsersApi userApi = new UsersApi(apiClient);
-                            return userApi.getUserRoleWithHttpInfo(new BigDecimal(-1));
+                            return userApi.getUserRoleWithHttpInfo(new Long(-1));
                         },
                         "Get User Role",
                         true,
@@ -231,7 +231,7 @@ class SecurityApiTest {
 
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             UsersApi userApi = new UsersApi(apiClient);
-                            return userApi.updateUserRoleWithHttpInfo(new BigDecimal(-1), new Role());
+                            return userApi.updateUserRoleWithHttpInfo(new Long(-1), new Role());
                         },
                         "Update User Role",
                         true,
@@ -261,7 +261,7 @@ class SecurityApiTest {
 
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             PostsApi postsApi = new PostsApi(apiClient);
-                            return postsApi.getPostWithHttpInfo(new BigDecimal(-1));
+                            return postsApi.getPostWithHttpInfo(new Long(-1));
                         },
                         "Get specific post",
                         true,
@@ -271,7 +271,7 @@ class SecurityApiTest {
 
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             PostsApi postsApi = new PostsApi(apiClient);
-                            return postsApi.updatePostWithHttpInfo(new BigDecimal(-1), new Post().
+                            return postsApi.updatePostWithHttpInfo(new Long(-1), new Post().
                                     title(RandomStringUtils.randomAlphabetic(5)).
                                     text(RandomStringUtils.randomAlphabetic(5)).
                                     previewAttachment(RandomStringUtils.randomAlphabetic(5)).
@@ -286,7 +286,7 @@ class SecurityApiTest {
 
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             PostsApi postsApi = new PostsApi(apiClient);
-                            return postsApi.removePostWithHttpInfo(new BigDecimal(-1));
+                            return postsApi.removePostWithHttpInfo(new Long(-1));
                         },
                         "Delete post",
                         true,
@@ -296,7 +296,7 @@ class SecurityApiTest {
 
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             CommentsApi commentsApi = new CommentsApi(apiClient);
-                            return commentsApi.createCommentWithHttpInfo(new BigDecimal(-1), new Comment());
+                            return commentsApi.createCommentWithHttpInfo(new Long(-1), new Comment());
                         },
                         "Create comment",
                         true,
@@ -316,7 +316,7 @@ class SecurityApiTest {
 
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             CommentsApi commentsApi = new CommentsApi(apiClient);
-                            return commentsApi.getCommentWithHttpInfo(new BigDecimal(-1), new BigDecimal(-1));
+                            return commentsApi.getCommentWithHttpInfo(new Long(-1), new Long(-1));
                         },
                         "Get concrete comment",
                         true,
@@ -325,7 +325,7 @@ class SecurityApiTest {
                         true),
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             CommentsApi commentsApi = new CommentsApi(apiClient);
-                            return commentsApi.updateCommentWithHttpInfo(new BigDecimal(-1), new BigDecimal(-1),
+                            return commentsApi.updateCommentWithHttpInfo(new Long(-1), new Long(-1),
                                     new Comment().text(RandomStringUtils.randomAlphabetic(5)));
                         },
                         "Update comment",
@@ -335,7 +335,7 @@ class SecurityApiTest {
                         false),
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             CommentsApi commentsApi = new CommentsApi(apiClient);
-                            return commentsApi.removeCommentWithHttpInfo(new BigDecimal(-1), new BigDecimal(-1));
+                            return commentsApi.removeCommentWithHttpInfo(new Long(-1), new Long(-1));
                         },
                         "Delete comment",
                         true,
@@ -353,7 +353,7 @@ class SecurityApiTest {
                         true),
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             TagsApi tagApi = new TagsApi(apiClient);
-                            return tagApi.getTagWithHttpInfo(new BigDecimal(-1));
+                            return tagApi.getTagWithHttpInfo(new Long(-1));
                         },
                         "Get specific tag",
                         true,
@@ -362,7 +362,7 @@ class SecurityApiTest {
                         true),
                 Arguments.of((Function<ApiClient, ApiResponse<?>>) (ApiClient apiClient) -> {
                             TagsApi tagApi = new TagsApi(apiClient);
-                            return tagApi.removeTagWithHttpInfo(new BigDecimal(-1));
+                            return tagApi.removeTagWithHttpInfo(new Long(-1));
                         },
                         "Delete tag",
                         true,

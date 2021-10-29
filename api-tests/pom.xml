@@ -162,7 +162,7 @@
                                 <library>jersey2</library>
                                 <sourceFolder>src/gen/java/main</sourceFolder>
                                 <artifactId>home-project-blog-api-client</artifactId>
-                                <artifactVersion>${revision}</artifactVersion>
+                                <artifactVersion>${project.version}</artifactVersion>
                                 <groupId>${project.groupId}</groupId>
                                 <modelPackage>com.softserveinc.ita.homeproject.blog.client.model</modelPackage>
                                 <apiPackage>com.softserveinc.ita.homeproject.blog.client.api</apiPackage>
@@ -170,8 +170,6 @@
                                 <useRuntimeException>true</useRuntimeException>
                                 <openApiNullable>true</openApiNullable>
                             </configOptions>
-                            <templateDirectory>${project.build.resources[0].directory}/mustaches/client
-                            </templateDirectory>
                             <output>${project.build.directory}/generated-sources/openapi/client</output>
                             <addCompileSourceRoot>true</addCompileSourceRoot>
                         </configuration>
