@@ -4,17 +4,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.softserveinc.ita.home</groupId>
+    <groupId>com.softserveinc.ita.home.blog</groupId>
     <artifactId>api-tests</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <name>api-tests</name>
-    <description>Test for the blog</description>
+    <description>Api test for the blog</description>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
+
+        <!--Test Dependencies-->
         <junit-jupiter>5.7.0</junit-jupiter>
         <jackson-version>2.12.3</jackson-version>
         <jackson-databind-nullable-version>0.2.1</jackson-databind-nullable-version>
@@ -23,16 +25,68 @@
         <swagger-annotations-version>1.5.22</swagger-annotations-version>
         <jersey-version>2.32</jersey-version>
         <threetenbp-version>2.9.10</threetenbp-version>
+        <randomizePorts>true</randomizePorts>
+        <jackson-datatype-jsr310.version>2.10.3</jackson-datatype-jsr310.version>
+        <commons-lang3.version>3.12.0</commons-lang3.version>
+        <assertj-core.version>3.19.0</assertj-core.version>
+        <jakarta.xml.bind-api.version>2.3.3</jakarta.xml.bind-api.version>
+        <javax.ws.rs-api.version>2.1.1</javax.ws.rs-api.version>
+
+        <!--Docker configuration-->
+            <!--Database-->
+        <database.container.name>blog_db</database.container.name>
+        <postgresdb.image>postgres:13.4-alpine</postgresdb.image>
+        <db.hostname>blog-db.docker</db.hostname>
+        <blog.db.internal.url>jdbc:postgresql://${db.hostname}:${internal.db.port}/postgres</blog.db.internal.url>
+        <blog.db.user>postgres</blog.db.user>
+        <blog.db.password>password</blog.db.password>
+        <external.db.port>${random.external.db.port}</external.db.port>
+        <internal.db.port>5432</internal.db.port>
+            <!--Docker stats-->
+        <docker-stats-logger.image>kh0ma/docker-stats-logger:0.0.7</docker-stats-logger.image>
+        <docker-stats-logger.container.name>docker-stats-logger</docker-stats-logger.container.name>
+            <!--App-->
+        <application.container.name>blog_api</application.container.name>
+        <application.dockerfile.location>${project.basedir}/../backend</application.dockerfile.location>
+        <application.name>application-blog</application.name>
+        <external.app.port>${random.external.app.port}</external.app.port>
+        <internal.app.port>8080</internal.app.port>
+
+        <!--Tests configuration-->
+        <tests.app.url>http://localhost:${external.app.port}/api/1</tests.app.url>
+        <tests.app.admin.username>admin@exmple.com</tests.app.admin.username>
+        <tests.app.admin.password>password</tests.app.admin.password>
+        <tests.verbose.logging>true</tests.verbose.logging>
     </properties>
 
     <dependencies>
+        <!--Test Dependencies-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit-jupiter}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit-jupiter}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj-core.version}</version>
+            <scope>test</scope>
         </dependency>
 
-        <!-- JSON processing: jackson -->
+        <!--Client Dependencies-->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -51,53 +105,33 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.10.3</version>
+            <version>${jackson-datatype-jsr310.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
             <version>${jackson-databind-nullable-version}</version>
         </dependency>
-
-        <!-- @Nullable annotation -->
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
             <version>${jsr305-version}</version>
         </dependency>
-
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
             <version>${swagger-annotations-version}</version>
         </dependency>
-
-        <!--Random String-->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.12.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>3.19.0</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- Fix for Java 11 -->
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
-            <version>2.3.3</version>
+            <version>${jakarta.xml.bind-api.version}</version>
         </dependency>
         <dependency>
             <groupId>javax.ws.rs</groupId>
             <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.1.1</version>
+            <version>${javax.ws.rs-api.version}</version>
         </dependency>
-
-        <!-- HTTP client: jersey-client -->
         <dependency>
             <groupId>org.glassfish.jersey.core</groupId>
             <artifactId>jersey-client</artifactId>
@@ -122,12 +156,6 @@
             <groupId>com.github.joschi.jackson</groupId>
             <artifactId>jackson-datatype-threetenbp</artifactId>
             <version>${threetenbp-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-params</artifactId>
-            <version>${junit-jupiter}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -172,6 +200,190 @@
                             </configOptions>
                             <output>${project.build.directory}/generated-sources/openapi/client</output>
                             <addCompileSourceRoot>true</addCompileSourceRoot>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>reserve-app-port</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>reserve-network-port</goal>
+                        </goals>
+                        <configuration>
+                            <randomPort>${randomizePorts}</randomPort>
+                            <minPortNumber>8080</minPortNumber>
+                            <maxPortNumber>9999</maxPortNumber>
+                            <portNames>
+                                <portName>random.external.app.port</portName>
+                            </portNames>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>reserve-db-port</id>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>reserve-network-port</goal>
+                        </goals>
+                        <configuration>
+                            <randomPort>${randomizePorts}</randomPort>
+                            <minPortNumber>5432</minPortNumber>
+                            <maxPortNumber>7000</maxPortNumber>
+                            <portNames>
+                                <portName>random.external.db.port</portName>
+                            </portNames>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.24.0</version>
+                <configuration>
+                    <images>
+                        <image>
+                            <alias>${database.container.name}</alias>
+                            <name>${postgresdb.image}</name>
+                            <run>
+                                <hostname>${db.hostname}</hostname>
+                                <namingStrategy>alias</namingStrategy>
+                                <env>
+                                    <POSTGRES_USER>${blog.db.user}</POSTGRES_USER>
+                                    <POSTGRES_PASSWORD>${blog.db.password}</POSTGRES_PASSWORD>
+                                </env>
+                                <ports>
+                                    <port>${external.db.port}:${internal.db.port}</port>
+                                </ports>
+                                <wait>
+                                    <log>database system is ready to accept connections</log>
+                                    <time>24000</time>
+                                    <kill>1000</kill>
+                                    <shutdown>500</shutdown>
+                                </wait>
+                                <log>
+                                    <enabled>true</enabled>
+                                    <date>default</date>
+                                </log>
+                            </run>
+                        </image>
+                        <image>
+                            <alias>${docker-stats-logger.container.name}</alias>
+                            <name>${docker-stats-logger.image}</name>
+                            <run>
+                                <env>
+                                    <DOCKER_HOST>${docker.host}</DOCKER_HOST>
+                                </env>
+                                <volumes>
+                                    <bind>
+                                        <volume>/var/run/docker.sock:/var/run/docker.sock:rw</volume>
+                                    </bind>
+                                </volumes>
+                                <namingStrategy>alias</namingStrategy>
+                                <log>
+                                    <enabled>true</enabled>
+                                    <date>default</date>
+                                </log>
+                            </run>
+                        </image>
+                        <image>
+                            <alias>${application.container.name}</alias>
+                            <name>${application.name}</name>
+                            <build>
+                                <dockerFileDir>${application.dockerfile.location}</dockerFileDir>
+                            </build>
+                            <run>
+                                <env>
+                                    <DATASOURCE_URL>${blog.db.internal.url}</DATASOURCE_URL>
+                                    <DATASOURCE_USERNAME>${blog.db.user}</DATASOURCE_USERNAME>
+                                    <DATASOURCE_PASSWORD>${blog.db.password}</DATASOURCE_PASSWORD>
+                                    <APP_PORT>${internal.app.port}</APP_PORT>
+                                </env>
+                                <namingStrategy>alias</namingStrategy>
+                                <links>
+                                    <link>${database.container.name}</link>
+                                </links>
+                                <dependsOn>
+                                    <container>${database.container.name}</container>
+                                </dependsOn>
+                                <ports>
+                                    <port>${external.app.port}:${internal.app.port}</port>
+                                </ports>
+                                <wait>
+                                    <log>Tomcat started on port</log>
+                                    <time>30000</time>
+                                    <kill>1000</kill>
+                                    <shutdown>500</shutdown>
+                                </wait>
+                                <log>
+                                    <enabled>true</enabled>
+                                    <date>default</date>
+                                </log>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>stop-previously-started-containers</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>start-containers</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop-started-containers</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <configuration>
+                    <trimStackTrace>false</trimStackTrace>
+                    <runOrder>alphabetical</runOrder>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                    <systemPropertyVariables>
+                        <blog.application.url>${tests.app.url}</blog.application.url>
+                        <blog.application.admin.username>${tests.app.admin.username}</blog.application.admin.username>
+                        <blog.application.admin.password>${tests.app.admin.password}</blog.application.admin.password>
+                        <verbose.tests.logging>${tests.verbose.logging}</verbose.tests.logging>
+                    </systemPropertyVariables>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>execute-integration-tests</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>verify-integration-tests</id>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                        <configuration>
+                            <summaryFiles>
+                                <summaryFile>${project.build.directory}/failsafe-reports/failsafe-summary.xml</summaryFile>
+                            </summaryFiles>
                         </configuration>
                     </execution>
                 </executions>
