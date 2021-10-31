@@ -22,6 +22,7 @@ public class CommentConverterImpl implements CommentConverter {
         comment.setCreatedOn(entity.getCreatedOn());
         comment.setAuthor(authorConverter.entityToAuthor(entity.getAuthor()));
         comment.setText(entity.getText());
+        comment.setPostId(entity.getPost().getId());
         comment.setUpdatedOn(entity.getUpdatedOn());
         return comment;
     }

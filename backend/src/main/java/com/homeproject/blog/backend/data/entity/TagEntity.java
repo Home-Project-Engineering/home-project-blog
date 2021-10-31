@@ -9,7 +9,7 @@ import javax.persistence.*;
 public class TagEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tag_generator")
-    @SequenceGenerator(name = "tag_generator", allocationSize = 1)
+    @SequenceGenerator(name = "tag_generator", allocationSize = 10)
     @Column(name = "id", nullable = false)
     private Long id;
     private String name;

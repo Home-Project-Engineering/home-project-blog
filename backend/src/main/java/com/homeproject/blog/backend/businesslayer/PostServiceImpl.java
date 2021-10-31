@@ -1,12 +1,13 @@
 package com.homeproject.blog.backend.businesslayer;
 
+import com.homeproject.blog.backend.businesslayer.converters.UserConverter;
 import com.homeproject.blog.backend.data.entity.PostEntity;
 import com.homeproject.blog.backend.data.entity.TagEntity;
 import com.homeproject.blog.backend.businesslayer.converters.PostConverter;
 import com.homeproject.blog.backend.data.repository.PostRepository;
 import com.homeproject.blog.backend.dtos.Post;
 import com.homeproject.blog.backend.exceptions.PostNotFoundException;
-import com.homeproject.blog.backend.supportclasses.AppStartupRunner;
+import com.homeproject.blog.backend.security.SecurityService;
 import com.homeproject.blog.backend.supportclasses.CurrentDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,10 @@ public class PostServiceImpl implements PostService {
     private TagService tagService;
     @Autowired
     private PostConverter postConverter;
+    @Autowired
+    private SecurityService securityService;
+    @Autowired
+    private UserConverter userConverter;
 
 
     @Override
@@ -36,7 +41,7 @@ public class PostServiceImpl implements PostService {
         newPost.setTags(tagEntities);
         newPost.setTitle(post.getTitle());
         newPost.setText(post.getText());
-        newPost.setAuthor(AppStartupRunner.userEntity);
+        newPost.setAuthor(userConverter.userToEntity(securityService.findLoggedInUser()));
         newPost.setPreviewAttachment(post.getPreviewAttachment());
         newPost.setUpdatedOn(date);
         newPost.setCreatedOn(date);
@@ -69,6 +74,11 @@ public class PostServiceImpl implements PostService {
     public Post readPost(Long id) {
         PostEntity entity = verifyPostExisting(id);
         return postConverter.entityToPost(entity);
+    }
+
+    @Override
+    public PostEntity findPostEntity(Long postId) {
+        return verifyPostExisting(postId);
     }
 
     @Override

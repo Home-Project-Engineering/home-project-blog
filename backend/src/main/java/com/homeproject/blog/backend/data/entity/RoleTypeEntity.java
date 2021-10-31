@@ -12,6 +12,14 @@ public class RoleTypeEntity {
     private Long id;
     String name;
 
+    public RoleTypeEntity(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public RoleTypeEntity() {
+    }
+
     public Long getId() {
         return id;
     }

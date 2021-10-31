@@ -67,20 +67,21 @@ public class PostController implements PostsApi {
 
     public ResponseEntity<List<com.homeproject.blog.backend.presentationlayer.model.Comment>> getComments(BigDecimal postId, BigDecimal id, String authorName, String sort, Integer pageNum, Integer pageSize) {
         LOG.info("Get all comments request");
-        Page<Comment> page = commentService.findAll(id.longValue(), authorName, pageNum, pageSize, sort);
+        Long commentId = id == null ? null : id.longValue();
+        Page<Comment> page = commentService.findAll(postId.longValue(), commentId, authorName, pageNum, pageSize, sort);
         List<com.homeproject.blog.backend.presentationlayer.model.Comment> responseList = commentConverter.dtosToViews(page.toList());
         return ResponseEntity.ok().header("X-Total-Count", String.valueOf(page.getTotalElements())).body(responseList);
     }
 
     public ResponseEntity<com.homeproject.blog.backend.presentationlayer.model.Comment> createComment(@ApiParam(value = "",required=true) @PathVariable("post_id") BigDecimal postId, @ApiParam(value = "" ,required=true )  @Valid @RequestBody com.homeproject.blog.backend.presentationlayer.model.Comment comment) {
         LOG.info("Create comment request");
-        Comment newComment = commentService.createComment(commentConverter.viewToDTO(comment));
+        Comment newComment = commentService.createComment(commentConverter.viewToDTO(comment), postId.longValue());
         return new ResponseEntity<>(commentConverter.dtoToView(newComment), HttpStatus.CREATED);
     }
 
     public ResponseEntity<com.homeproject.blog.backend.presentationlayer.model.Comment> getComment(BigDecimal postId, BigDecimal id) {
         LOG.info("Get comment by id request");
-        Comment comment = commentService.readComment(id.longValue());
+        Comment comment = commentService.readComment(id.longValue(), postId.longValue());
         return new ResponseEntity<>(commentConverter.dtoToView(comment), HttpStatus.OK);
     }
 
@@ -90,7 +91,7 @@ public class PostController implements PostsApi {
     }
 
     public ResponseEntity<Void> removeComment(BigDecimal postId, BigDecimal id) {
-        commentService.deleteComment(id.longValue());
+        commentService.deleteComment(id.longValue(), postId.longValue());
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 }

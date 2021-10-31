@@ -13,6 +13,8 @@ public class CommentEntity {
     private Long id;
     private String text;
     @ManyToOne
+    private PostEntity post;
+    @ManyToOne
     private UserEntity author;
     private String createdOn;
     private String updatedOn;
@@ -55,5 +57,13 @@ public class CommentEntity {
 
     public void setUpdatedOn(String updatedOn) {
         this.updatedOn = updatedOn;
+    }
+
+    public PostEntity getPost() {
+        return post;
+    }
+
+    public void setPost(PostEntity post) {
+        this.post = post;
     }
 }

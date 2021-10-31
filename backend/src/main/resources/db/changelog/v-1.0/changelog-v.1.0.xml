@@ -23,6 +23,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="text" type="text"/>
+            <column name="post_id" type="bigint"/>
             <column name="author_id" type="bigint"/>
             <column name="created_on" type="text"/>
             <column name="updated_on" type="text"/>
@@ -68,7 +69,7 @@
         <createSequence sequenceName="post_generator"/>
         <createSequence sequenceName="role_type_generator"/>
         <createSequence sequenceName="comment_generator"/>
-        <createSequence sequenceName="tag_generator"/>
-        <createSequence sequenceName="user_generator"/>
+        <createSequence sequenceName="tag_generator" incrementBy="10"/>
+        <createSequence sequenceName="user_generator" startValue="4"/>
     </changeSet>
 </databaseChangeLog>

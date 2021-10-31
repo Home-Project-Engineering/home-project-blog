@@ -1,15 +1,12 @@
 package com.homeproject.blog.backend.dtos;
 
-import javax.persistence.TemporalType;
-import java.util.Comparator;
-import java.util.Date;
-
 public class Comment {
     private Long id;
     private Author author;
     private String text;
     private String createdOn;
     private String updatedOn;
+    private Long postId;
 
     public Comment() {}
 
@@ -59,5 +56,13 @@ public class Comment {
 
     public void setUpdatedOn(String updatedOn) {
         this.updatedOn = updatedOn;
+    }
+
+    public Long getPostId() {
+        return postId;
+    }
+
+    public void setPostId(Long postId) {
+        this.postId = postId;
     }
 }

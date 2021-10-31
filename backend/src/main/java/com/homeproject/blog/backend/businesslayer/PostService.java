@@ -1,5 +1,6 @@
 package com.homeproject.blog.backend.businesslayer;
 
+import com.homeproject.blog.backend.data.entity.PostEntity;
 import com.homeproject.blog.backend.dtos.Post;
 import com.homeproject.blog.backend.exceptions.PostNotFoundException;
 import org.springframework.data.domain.Page;
@@ -10,7 +11,9 @@ public interface PostService {
 
     Post updatePost(Long id, Post changes);
 
-    Post readPost(Long id) throws PostNotFoundException;
+    Post readPost(Long id);
+
+    PostEntity findPostEntity(Long postId);
 
     Page<Post> getPosts(Long id, String tagId, String tagName, String authorName, String sort, Integer pageNum, Integer pageSize);
 

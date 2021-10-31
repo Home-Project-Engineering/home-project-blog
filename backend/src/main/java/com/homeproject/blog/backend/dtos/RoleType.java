@@ -9,6 +9,8 @@ public class RoleType {
         this.name = name;
     }
 
+    public RoleType() {}
+
     public String getName() {
         return name;
     }

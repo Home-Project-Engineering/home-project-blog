@@ -10,13 +10,13 @@ import java.util.Map;
 
 public interface CommentService {
 
-    Comment createComment(Comment comment);
+    Comment createComment(Comment comment, Long postId);
 
-    Comment updateComment(Long id, Comment changes) throws CommentNotFoundException;
+    Comment updateComment(Long id, Comment changes);
 
-    Comment readComment(Long id) throws CommentNotFoundException;
+    Comment readComment(Long id, Long postId);
 
-    void deleteComment(Long id) throws CommentNotFoundException;
+    void deleteComment(Long id, Long postId);
 
-    Page<Comment> findAll(Long id, String authorName, Integer pageNum, Integer pageSize, String sort);
+    Page<Comment> findAll(Long postId, Long id, String authorName, Integer pageNum, Integer pageSize, String sort);
 }

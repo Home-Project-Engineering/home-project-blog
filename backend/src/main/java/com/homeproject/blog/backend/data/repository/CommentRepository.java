@@ -10,6 +10,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CommentRepository extends CrudRepository<CommentEntity, Long> {
 
-    @Query(value="SELECT comment FROM CommentEntity comment WHERE (:id is null or comment.id = :id) and (:name is null or comment.author = :authorName)")
-    Page<CommentEntity> findAllByIdAndName(Pageable pageRequest, Long id, String authorName);
+    @Query(value="SELECT comment FROM CommentEntity comment WHERE (:postId is null or comment.post.id = :postId) and (:id is null or comment.id = :id) and (:authorName is null or comment.author.name = :authorName)")
+    Page<CommentEntity> findAllByIdAndName(Pageable pageRequest, Long postId, Long id, String authorName);
 }
