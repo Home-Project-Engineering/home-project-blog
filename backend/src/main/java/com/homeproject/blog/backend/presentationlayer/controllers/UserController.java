@@ -9,21 +9,15 @@ import com.homeproject.blog.backend.presentationlayer.converters.PostConverter;
 import com.homeproject.blog.backend.presentationlayer.converters.UserConverter;
 import com.homeproject.blog.backend.presentationlayer.model.*;
 import com.homeproject.blog.backend.security.SecurityService;
-import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
-import javax.validation.Valid;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
