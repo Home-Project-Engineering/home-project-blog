@@ -1,10 +1,10 @@
 package com.homeproject.blog.backend.business.services.impl;
 
-import com.homeproject.blog.backend.business.convertersBetweenServiceAndController.CommentConverter;
-import com.homeproject.blog.backend.business.models.Author;
+import com.homeproject.blog.backend.presentation.converters.CommentConverter;
+import com.homeproject.blog.backend.business.models.DTO.AuthorDTO;
 import com.homeproject.blog.backend.business.models.additional.Date;
 import com.homeproject.blog.backend.business.services.CommentService;
-import com.homeproject.blog.backend.business.models.DTO.Comment;
+import com.homeproject.blog.backend.business.models.DTO.CommentDTO;
 import com.homeproject.blog.backend.database.repositories.CommentRepository;
 import com.homeproject.blog.backend.persistence.entity.CommentEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +26,10 @@ public class CommentServiceImpl implements CommentService {
     private CommentConverter commentConverter;
 
     @Override
-    public Comment createComment(Comment comment) {
+    public CommentDTO createComment(CommentDTO comment) {
         CommentEntity entity = new CommentEntity();
         entity.setId(comment.getId());
-        entity.setAuthor(new Author(comment.getAuthor()));
+        entity.setAuthorDTO(new AuthorDTO(comment.getAuthorDTO()));
         entity.setText(comment.getText());
         entity.setCreatedOn(Date.getCurrentDate());
         entity.setUpdatedOn(Date.getCurrentDate());
@@ -44,7 +44,7 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public Comment updateComment(Long id, Comment changes){
+    public CommentDTO updateComment(Long id, CommentDTO changes){
         CommentEntity entity = verifyCommentExisting(id);
         entity.setText(changes.getText());
         entity.setUpdatedOn(Date.getCurrentDate());
@@ -53,17 +53,17 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment readComment(Long id) {
+    public CommentDTO readComment(Long id) {
         CommentEntity entity = verifyCommentExisting(id);
         return commentConverter.entityToComment(entity);
     }
 
     @Override
-    public Collection<Comment> getComments() {
+    public Collection<CommentDTO> getComments() {
         Iterable<CommentEntity> entities = commentRepository.findAll();
         ArrayList<CommentEntity> list = new ArrayList<>();
         entities.forEach(list::add);
-        Stream<Comment> comments = list.stream().map(commentConverter::entityToComment);
+        Stream<CommentDTO> comments = list.stream().map(commentConverter::entityToComment);
         return comments.collect(Collectors.toCollection(ArrayList::new));
     }
 
@@ -76,7 +76,7 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public Comment getCommentById(Long id) {
+    public CommentDTO getCommentById(Long id) {
         return null;
     }
 

@@ -1,17 +1,15 @@
 package com.homeproject.blog.backend.business.models.DTO;
 
 
-import com.homeproject.blog.backend.business.models.Author;
-
 import java.util.List;
 import java.util.Objects;
 
 
-public class Post {
+public class PostDTO {
     private String text;
-    private Author author;
+    private AuthorDTO authorDTO;
     private Long id;
-    private List<Tag> tags;
+    private List<TagDTO> tags;
     private String createdOn;
     private String title;
     private String previewAttachment;
@@ -49,11 +47,11 @@ public class Post {
         this.updatedOn = updatedOn;
     }
 
-    public List<Tag> getTags() {
-        return (List<Tag>) tags;
+    public List<TagDTO> getTags() {
+        return (List<TagDTO>) tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(List<TagDTO> tags) {
         this.tags = tags;
     }
 
@@ -65,12 +63,12 @@ public class Post {
         this.text = text;
     }
 
-    public Author getAuthor() {
-        return author;
+    public AuthorDTO getAuthorDTO() {
+        return authorDTO;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setAuthorDTO(AuthorDTO authorDTO) {
+        this.authorDTO = authorDTO;
     }
 
     public Long getId() {
@@ -81,13 +79,13 @@ public class Post {
         this.id = id;
     }
 
-    public Post (){}
+    public PostDTO(){}
 
-    public Post(Long id, List<Tag> tags, String createdOn, Author author, String text, String title, String previewAttachment, String updatedOn) {
+    public PostDTO(Long id, List<TagDTO> tags, String createdOn, AuthorDTO authorDTO, String text, String title, String previewAttachment, String updatedOn) {
         this.id = id;
         this.tags = tags;
         this.createdOn = createdOn;
-        this.author = author;
+        this.authorDTO = authorDTO;
         this.text = text;
         this.title = title;
         this.previewAttachment = previewAttachment;
@@ -98,19 +96,19 @@ public class Post {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Post post = (Post) o;
-        return Objects.equals(text, post.text) &&
-                Objects.equals(author, post.author) &&
-                Objects.equals(id, post.id) &&
-                Objects.equals(tags, post.tags) &&
-                Objects.equals(createdOn, post.createdOn) &&
-                Objects.equals(title, post.title) &&
-                Objects.equals(previewAttachment, post.previewAttachment) &&
-                Objects.equals(updatedOn, post.updatedOn);
+        PostDTO postDTO = (PostDTO) o;
+        return Objects.equals(text, postDTO.text) &&
+                Objects.equals(authorDTO, postDTO.authorDTO) &&
+                Objects.equals(id, postDTO.id) &&
+                Objects.equals(tags, postDTO.tags) &&
+                Objects.equals(createdOn, postDTO.createdOn) &&
+                Objects.equals(title, postDTO.title) &&
+                Objects.equals(previewAttachment, postDTO.previewAttachment) &&
+                Objects.equals(updatedOn, postDTO.updatedOn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(text, author, id, tags, createdOn, title, previewAttachment, updatedOn);
+        return Objects.hash(text, authorDTO, id, tags, createdOn, title, previewAttachment, updatedOn);
     }
 }

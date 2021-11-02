@@ -1,6 +1,6 @@
 package com.homeproject.blog.backend.presentation.controllers;
 
-import com.homeproject.blog.backend.business.models.DTO.Tag;
+import com.homeproject.blog.backend.business.models.DTO.TagDTO;
 import com.homeproject.blog.backend.business.services.TagService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,10 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Collection;
 
 @Controller
+@RequestMapping("tags")
 public class TagController {
     @Autowired
     private TagService tagService;
@@ -23,14 +25,14 @@ public class TagController {
     @GetMapping(produces = "application/json")
     ResponseEntity<Object> getAllTags() {
         LOG.info("Get all tags request");
-        Collection<Tag> comments = tagService.getTags();
+        Collection<TagDTO> comments = tagService.getTags();
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")
     ResponseEntity<Object> getTagById(@PathVariable Long id) {
         LOG.info("Get tag by id request");
-            Tag tag = tagService.readTag(id);
+            TagDTO tag = tagService.readTag(id);
             return new ResponseEntity<>(tag, HttpStatus.OK);
     }
 

@@ -1,7 +1,8 @@
 package com.homeproject.blog.backend.business.services.impl;
 
-import com.homeproject.blog.backend.business.convertersBetweenServiceAndController.TagConverter;
-import com.homeproject.blog.backend.business.models.DTO.Tag;
+import com.homeproject.blog.backend.presentation.converters.TagConverter;
+import com.homeproject.blog.backend.business.models.DTO.TagDTO;
+import com.homeproject.blog.backend.business.services.TagService;
 import com.homeproject.blog.backend.database.repositories.TagRepository;
 import com.homeproject.blog.backend.persistence.entity.TagEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,35 +11,41 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-public class TagServiceImpl {
+public class TagServiceImpl implements TagService {
     @Autowired
     private TagRepository tagRepository;
     @Autowired
     private TagConverter tagConverter;
 
-    public Tag readTag(Long id){
+    @Override
+    public TagDTO readTag(Long id) {
         TagEntity entity = verifyTagExisting(id);
         return tagConverter.entityToTag(entity);
     }
 
-    public Collection<Tag> getTags() {
+    @Override
+    public Collection<TagDTO> getTags() {
         Iterable<TagEntity> entities = tagRepository.findAll();
         ArrayList<TagEntity> list = new ArrayList<>();
         entities.forEach(list::add);
         return tagConverter.entitiesToTags(list);
     }
 
+    @Override
     public void deleteTag(Long id) {
         verifyTagExisting(id);
         tagRepository.deleteById(id);
     }
 
-    public List<TagEntity> identifyTags(List<Tag> tags) {
+    public List<TagEntity> identifyTags(List<TagEntity> tags) {
         if (tags == null) {
             return null;
         }
@@ -50,21 +57,23 @@ public class TagServiceImpl {
         return stream.collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public Page<Tag> findAll(Long id, String name, PageRequest pageRequest) {
+
+    public Page<TagDTO> findAll(Long id, String name, PageRequest pageRequest) {
         Page<TagEntity> allByIdAndName = tagRepository.findAllByIdAndName(pageRequest, id, name);
-        Page<Tag> page = new PageImpl<Tag>(allByIdAndName.stream().map(tagConverter::entityToTag).collect(Collectors.toList()), pageRequest, allByIdAndName.getTotalElements());
-        return page;
+        return new PageImpl<>(allByIdAndName.stream()
+                .map(tagConverter::entityToTag)
+                .collect(Collectors.toList()), pageRequest, allByIdAndName.getTotalElements());
     }
 
-    private TagEntity identifyTag(Tag tag) {
+    private TagEntity identifyTag(TagEntity tag) {
         Iterable<TagEntity> entities = tagRepository.findAll();
         for (TagEntity entity : entities) {
-            if (entity.getName().equals(tag.getTag())) {
+            if (entity.getName().equals(tag.getName())) {
                 return entity;
             }
         }
         TagEntity newEntity = new TagEntity();
-        newEntity.setName(tag.getTag());
+        newEntity.setName(tag.getName());
         return tagRepository.save(newEntity);
     }
 

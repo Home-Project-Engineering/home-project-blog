@@ -1,6 +1,6 @@
-package com.homeproject.blog.backend.business.convertersBetweenServiceAndController;
+package com.homeproject.blog.backend.presentation.converters;
 
-import com.homeproject.blog.backend.business.models.DTO.Tag;
+import com.homeproject.blog.backend.business.models.DTO.TagDTO;
 import com.homeproject.blog.backend.persistence.entity.TagEntity;
 import org.springframework.stereotype.Service;
 
@@ -11,21 +11,21 @@ import java.util.stream.Stream;
 
 @Service
 public class TagConverter {
-    public Tag entityToTag(TagEntity entity) {
-        Tag tag = new Tag();
+    public TagDTO entityToTag(TagEntity entity) {
+        TagDTO tag = new TagDTO();
         tag.setId(entity.getId());
         tag.setTag(entity.getName());
         return tag;
     }
 
-    public TagEntity tagToEntity(Tag tag) {
+    public TagEntity tagToEntity(TagDTO tag) {
         TagEntity entity = new TagEntity();
         entity.setId(tag.getId());
         entity.setName(tag.getTag());
         return entity;
     }
 
-    public List<TagEntity> tagsToEntities(List<Tag> tags) {
+    public List<TagEntity> tagsToEntities(List<TagDTO> tags) {
         if (tags == null) {
             return null;
         }
@@ -33,11 +33,11 @@ public class TagConverter {
         return stream.collect(Collectors.toCollection(ArrayList::new));
     }
 
-    public List<Tag> entitiesToTags(List<TagEntity> entities) {
+    public List<TagDTO> entitiesToTags(List<TagEntity> entities) {
         if (entities == null) {
             return null;
         }
-        Stream<Tag> stream = entities.stream().map(this::entityToTag);
+        Stream<TagDTO> stream = entities.stream().map(this::entityToTag);
         return stream.collect(Collectors.toCollection(ArrayList::new));
     }
 }

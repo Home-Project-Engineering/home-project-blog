@@ -1,25 +1,23 @@
 package com.homeproject.blog.backend.business.models.DTO;
 
 
-import com.homeproject.blog.backend.business.models.Author;
-
 import java.util.Objects;
 
-public class Comment {
+public class CommentDTO {
     private String text;
     private Long id;
-    private Author author;
+    private AuthorDTO authorDTO;
     private String createdOn;
     private String updatedOn;
 
-    public Comment() {
+    public CommentDTO() {
 
     }
 
-    public Comment(Post post, String text, Author author, Long id) {
+    public CommentDTO(PostDTO postDTO, String text, AuthorDTO authorDTO, Long id) {
         this.text = text;
         this.id = id;
-        this.author = author;
+        this.authorDTO = authorDTO;
     }
 
     public String getCreatedOn() {
@@ -54,12 +52,12 @@ public class Comment {
         this.id = id;
     }
 
-    public Author getAuthor() {
-        return author;
+    public AuthorDTO getAuthorDTO() {
+        return authorDTO;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setAuthorDTO(AuthorDTO authorDTO) {
+        this.authorDTO = authorDTO;
     }
 
 
@@ -67,16 +65,16 @@ public class Comment {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Comment comment = (Comment) o;
+        CommentDTO comment = (CommentDTO) o;
         return Objects.equals(text, comment.text) &&
                 Objects.equals(id, comment.id) &&
-                Objects.equals(author, comment.author) &&
+                Objects.equals(authorDTO, comment.authorDTO) &&
                 Objects.equals(createdOn, comment.createdOn) &&
                 Objects.equals(updatedOn, comment.updatedOn);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(text, id, author, createdOn, updatedOn);
+        return Objects.hash(text, id, authorDTO, createdOn, updatedOn);
     }
 }

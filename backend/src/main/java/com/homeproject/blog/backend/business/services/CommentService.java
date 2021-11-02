@@ -1,20 +1,20 @@
 package com.homeproject.blog.backend.business.services;
 
-import com.homeproject.blog.backend.business.models.DTO.Comment;
+import com.homeproject.blog.backend.business.models.DTO.CommentDTO;
 
 import java.util.Collection;
 
 public interface CommentService {
 
-    Comment createComment(Comment comment);
+    CommentDTO createComment(CommentDTO comment);
 
-    Comment updateComment(Long id, Comment commentUpdate);
+    CommentDTO updateComment(Long id, CommentDTO commentUpdate);
 
-    Comment readComment(Long id);
+    CommentDTO readComment(Long id);
 
     void deleteComment(Long id);
 
-    Comment getCommentById(Long id);
+    CommentDTO getCommentById(Long id);
 
-    Collection<Comment> getComments();
+    Collection<CommentDTO> getComments();
 }

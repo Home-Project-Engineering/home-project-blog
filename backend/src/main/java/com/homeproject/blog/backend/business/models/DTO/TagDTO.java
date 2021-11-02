@@ -2,7 +2,7 @@ package com.homeproject.blog.backend.business.models.DTO;
 
 import java.util.Objects;
 
-public class Tag {
+public class TagDTO {
     private String tag;
     private Long id;
 
@@ -26,7 +26,7 @@ public class Tag {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Tag tag1 = (Tag) o;
+        TagDTO tag1 = (TagDTO) o;
         return Objects.equals(tag, tag1.tag) &&
                 Objects.equals(id, tag1.id);
     }

@@ -1,6 +1,6 @@
 package com.homeproject.blog.backend.persistence.entity;
 
-import com.homeproject.blog.backend.business.models.Author;
+import com.homeproject.blog.backend.business.models.DTO.AuthorDTO;
 
 import javax.persistence.*;
 
@@ -14,7 +14,7 @@ public class CommentEntity {
         private String text;
         @OneToOne(cascade = CascadeType.ALL)
         @JoinColumn
-        private Author author;
+        private AuthorDTO authorDTO;
         private String createdOn;
         private String updatedOn;
 
@@ -34,12 +34,12 @@ public class CommentEntity {
             this.text = text;
         }
 
-        public Author getAuthor() {
-            return author;
+        public UserEntity getAuthorDTO() {
+            return authorDTO;
         }
 
-        public void setAuthor(Author author) {
-            this.author = author;
+        public void setAuthorDTO(AuthorDTO authorDTO) {
+            this.authorDTO = authorDTO;
         }
 
         public String getCreatedOn() {
