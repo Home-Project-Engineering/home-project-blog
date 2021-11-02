@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class RoleToRoleDTOConverter implements BlogDTOConverter<Role, RoleDTO> {
     @Override
     public RoleDTO convert(Role source) {
-        RoleDTO roleDTO = new RoleDTO(source.getName().toString());
+        RoleDTO roleDTO = new RoleDTO(source.getName().name());
         return roleDTO;
     }
 }

@@ -1,20 +1,38 @@
 package com.homeproject.blog.backend.businesslayer.dto;
 
+
 public class RoleDTO {
-    private String value;
 
-    public String getValue() {
-        return value;
+    private String name;
+
+    public String getName() {
+        return name;
     }
 
-    public void setValue(String value) {
-        this.value = value;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public RoleDTO(String value) {
-        this.value = value;
+    public RoleDTO(String name) {
+        this.name = name;
     }
 
-    public RoleDTO() {
-    }
+    //    @Enumerated(EnumType.STRING)
+//    private RoleName name;
+//
+//    public enum RoleName {
+//        BLOGGER, MODERATOR, ADMIN
+//    }
+//
+//    public RoleName getName() {
+//        return name;
+//    }
+//
+//    public void setName(RoleName name) {
+//        this.name = name;
+//    }
+//
+//    public RoleDTO(RoleName name) {
+//        this.name = name;
+//    }
 }

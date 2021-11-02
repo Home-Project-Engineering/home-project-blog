@@ -24,11 +24,15 @@ public class PostServiceImpl implements PostService {
     private PostRepository postRepository;
 
     @Autowired
-    ConversionService conversionService;
+    private UserService userService;
+
+    @Autowired
+    private ConversionService conversionService;
 
     @Override
     public PostDTO createPost(PostDTO postDTO) {
         Post newPost = conversionService.convert(postDTO, Post.class);
+        newPost.setAuthor(userService.getCurrentUserByUsername());
         newPost.setCreatedOn(OffsetDateTime.now());
         newPost.setUpdatedOn(OffsetDateTime.now());
         postRepository.save(newPost);
@@ -74,4 +78,5 @@ public class PostServiceImpl implements PostService {
         postRepository.deleteRelation(id);
         postRepository.deleteById(id);
     }
+
 }

@@ -1,6 +1,7 @@
 package com.homeproject.blog.backend.businesslayer.services;
 
 import com.homeproject.blog.backend.businesslayer.dto.PostDTO;
+import com.homeproject.blog.backend.data.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

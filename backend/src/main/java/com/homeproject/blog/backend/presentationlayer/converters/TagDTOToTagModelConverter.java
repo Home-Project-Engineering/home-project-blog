@@ -4,7 +4,6 @@ import com.homeproject.blog.backend.businesslayer.dto.TagDTO;
 import com.homeproject.blog.backend.presentationlayer.model.Tag;
 import org.springframework.stereotype.Component;
 
-
 @Component
 public class TagDTOToTagModelConverter implements BlogConverter<TagDTO, Tag> {
 

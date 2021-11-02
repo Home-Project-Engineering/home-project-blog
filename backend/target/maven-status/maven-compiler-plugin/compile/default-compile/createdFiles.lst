@@ -8,7 +8,6 @@ com\homeproject\blog\backend\businesslayer\services\CommentServiceImpl.class
 com\homeproject\blog\backend\data\entities\User.class
 com\homeproject\blog\backend\presentationlayer\controllers\PostsApi.class
 com\homeproject\blog\backend\presentationlayer\model\Author.class
-com\homeproject\blog\backend\exceptions\InternalServerErrorException.class
 com\homeproject\blog\backend\presentationlayer\model\User.class
 com\homeproject\blog\backend\businesslayer\converters\RoleToRoleDTOConverter.class
 com\homeproject\blog\backend\data\entities\Tag.class
@@ -35,6 +34,7 @@ com\homeproject\blog\backend\businesslayer\converters\UserToAuthorDTOConverter.c
 com\homeproject\blog\backend\businesslayer\converters\CommentDTOToCommentConverter.class
 com\homeproject\blog\backend\data\repositories\CommentRepository.class
 com\homeproject\blog\backend\businesslayer\dto\TagDTO.class
+com\homeproject\blog\backend\config\SecurityConfig.class
 com\homeproject\blog\backend\data\entities\Role.class
 com\homeproject\blog\backend\HomeProjectBlogApplication.class
 com\homeproject\blog\backend\presentationlayer\converters\TagDTOToTagModelConverter.class
@@ -46,7 +46,6 @@ com\homeproject\blog\backend\businesslayer\converters\CommentToCommentDTOConvert
 com\homeproject\blog\backend\data\entities\Role$RoleName.class
 com\homeproject\blog\backend\businesslayer\dto\UserDTO.class
 com\homeproject\blog\backend\presentationlayer\converters\PostModelToModelDTOConverter.class
-com\homeproject\blog\backend\businesslayer\dto\ErrorDTO.class
 com\homeproject\blog\backend\data\repositories\RoleRepository.class
 com\homeproject\blog\backend\presentationlayer\converters\PostDTOToPostModelConverter.class
 com\homeproject\blog\backend\businesslayer\dto\AuthorDTO.class
@@ -54,14 +53,16 @@ com\homeproject\blog\backend\businesslayer\dto\RoleDTO.class
 com\homeproject\blog\backend\exceptions\ForbiddenActionException.class
 com\homeproject\blog\backend\presentationlayer\model\Role.class
 com\homeproject\blog\backend\presentationlayer\controllers\TagsApi.class
+com\homeproject\blog\backend\presentationlayer\converters\CommentModelToCommentDTOConverter.class
 com\homeproject\blog\backend\businesslayer\services\CommentService.class
 com\homeproject\blog\backend\businesslayer\dto\CommentDTO.class
 com\homeproject\blog\backend\presentationlayer\model\Comment.class
+com\homeproject\blog\backend\presentationlayer\controllers\UserController.class
 com\homeproject\blog\backend\businesslayer\services\TagService.class
+com\homeproject\blog\backend\presentationlayer\converters\CommentDTOToCommentModelConverter.class
 com\homeproject\blog\backend\data\repositories\PostRepository.class
 com\homeproject\blog\backend\businesslayer\converters\UserToUserDTOConverter.class
 com\homeproject\blog\backend\presentationlayer\model\Tag.class
 com\homeproject\blog\backend\businesslayer\services\PostService.class
 com\homeproject\blog\backend\data\repositories\TagRepository.class
 com\homeproject\blog\backend\data\entities\Post.class
-com\homeproject\blog\backend\presentationlayer\controllers\CommentController.class

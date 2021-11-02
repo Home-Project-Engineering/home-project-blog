@@ -52,10 +52,14 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="email" type="text"/>
-            <column name="name" type="text"/>
+            <column name="name" type="text">
+                <constraints unique="true" nullable="false"/>
+            </column>
             <column name="first_name" type="text"/>
             <column name="last_name" type="text"/>
-            <column name="password" type="text"/>
+            <column name="password" type="text">
+                <constraints nullable="false"/>
+            </column>
             <column name="role_id" type="bigint"/>
         </createTable>
     </changeSet>
@@ -75,5 +79,16 @@
         <createSequence sequenceName="seq_comment_id" incrementBy="10"/>
         <createSequence sequenceName="seq_user_id" incrementBy="10"/>
         <createSequence sequenceName="seq_role_id" incrementBy="3"/>
+    </changeSet>
+    <changeSet id="01.11.2021-sequence-creation" author="Dmitry Varhanov">
+        <insert tableName="roles">
+            <column name="name" value="ADMIN"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="name" value="MODERATOR"/>
+        </insert>
+        <insert tableName="roles">
+            <column name="name" value="BLOGGER"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>

@@ -23,4 +23,5 @@ public class WebConfig implements WebMvcConfigurer {
         blogDTOConverters.stream().forEach(registry::addConverter);
         blogConverters.stream().forEach(registry::addConverter);
     }
+
 }

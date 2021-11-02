@@ -15,4 +15,12 @@ public interface CommentService {
     Page<CommentDTO> getComments(Long postId, Long id, String authorName, Pageable pageRequest);
 
     void deleteComment(Long postId,Long id);
+
+    CommentDTO getCommentByCurrentUser(Long id);
+
+    Page<CommentDTO> getCommentsByCurrentUser(Long id, Pageable pageRequest);
+
+    CommentDTO updateCommentByCurrentUser(Long id,CommentDTO comment);
+
+    void deleteCommentByCurrentUser(Long id);
 }

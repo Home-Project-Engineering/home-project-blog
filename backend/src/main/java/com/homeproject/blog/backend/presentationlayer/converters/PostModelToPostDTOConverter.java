@@ -6,10 +6,12 @@ import com.homeproject.blog.backend.presentationlayer.model.Post;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.stereotype.Component;
 
 import java.util.stream.Collectors;
 
-public class PostModelToModelDTOConverter implements BlogConverter<Post, PostDTO> {
+@Component
+public class PostModelToPostDTOConverter implements BlogConverter<Post, PostDTO> {
 
     @Lazy
     @Autowired
@@ -22,6 +24,6 @@ public class PostModelToModelDTOConverter implements BlogConverter<Post, PostDTO
         postDTO.setText(source.getText());
         postDTO.setTitle(source.getTitle());
         postDTO.setPreviewAttachment(source.getPreviewAttachment());
-        return null;
+        return postDTO;
     }
 }

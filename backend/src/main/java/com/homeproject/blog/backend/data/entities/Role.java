@@ -1,6 +1,13 @@
 package com.homeproject.blog.backend.data.entities;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "roles")
@@ -16,6 +23,7 @@ public class Role {
 
     public enum RoleName{
         BLOGGER, MODERATOR, ADMIN;
+
     }
 
     public Long getId() {
@@ -41,4 +49,5 @@ public class Role {
     public Role(){
 
     }
+
 }
