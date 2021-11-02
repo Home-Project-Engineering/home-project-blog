@@ -53,7 +53,7 @@ public class PostController implements PostsApi {
     @Override
     public ResponseEntity<com.homeproject.blog.backend.presentationlayer.model.Post> getPost(Long id) {
         LOG.info("Get post by id request");
-        Post post = postService.readPost(id.longValue());
+        Post post = postService.readPost(id);
         return new ResponseEntity<>(postConverter.dtoToView(post), HttpStatus.OK);
     }
 
@@ -61,7 +61,7 @@ public class PostController implements PostsApi {
     @Override
     public ResponseEntity<com.homeproject.blog.backend.presentationlayer.model.Post> updatePost(Long id, com.homeproject.blog.backend.presentationlayer.model.Post post) {
         LOG.info("Update post request");
-        Post newPost = postService.updatePost(id.longValue(), postConverter.viewToDTO(post));
+        Post newPost = postService.updatePost(id, postConverter.viewToDTO(post));
         return new ResponseEntity<>(postConverter.dtoToView(newPost), HttpStatus.OK);
     }
 
@@ -76,38 +76,37 @@ public class PostController implements PostsApi {
     @Override
     public ResponseEntity<List<com.homeproject.blog.backend.presentationlayer.model.Comment>> getComments(Long postId, Long id, String authorName, String sort, Integer pageNum, Integer pageSize) {
         LOG.info("Get all comments request");
-        Long commentId = id == null ? null : id.longValue();
-        Page<Comment> page = commentService.findAll(postId.longValue(), commentId, authorName, pageNum, pageSize, sort);
+        Page<Comment> page = commentService.findAll(postId, id, authorName, pageNum, pageSize, sort);
         List<com.homeproject.blog.backend.presentationlayer.model.Comment> responseList = commentConverter.dtosToViews(page.toList());
         return ResponseEntity.ok().header("X-Total-Count", String.valueOf(page.getTotalElements())).body(responseList);
     }
 
     @PreAuthorize("hasAnyRole('admin', 'moderator', 'blogger')")
     @Override
-    public ResponseEntity<com.homeproject.blog.backend.presentationlayer.model.Comment> createComment(@ApiParam(value = "",required=true) @PathVariable("post_id") Long postId, @ApiParam(value = "" ,required=true )  @Valid @RequestBody com.homeproject.blog.backend.presentationlayer.model.Comment comment) {
+    public ResponseEntity<com.homeproject.blog.backend.presentationlayer.model.Comment> createComment(Long postId, com.homeproject.blog.backend.presentationlayer.model.Comment comment) {
         LOG.info("Create comment request");
-        Comment newComment = commentService.createComment(commentConverter.viewToDTO(comment), postId.longValue());
+        Comment newComment = commentService.createComment(commentConverter.viewToDTO(comment), postId);
         return new ResponseEntity<>(commentConverter.dtoToView(newComment), HttpStatus.CREATED);
     }
 
     @Override
     public ResponseEntity<com.homeproject.blog.backend.presentationlayer.model.Comment> getComment(Long postId, Long id) {
         LOG.info("Get comment by id request");
-        Comment comment = commentService.readComment(id.longValue(), postId.longValue());
+        Comment comment = commentService.readComment(id, postId);
         return new ResponseEntity<>(commentConverter.dtoToView(comment), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('admin', 'moderator')")
     @Override
     public ResponseEntity<com.homeproject.blog.backend.presentationlayer.model.Comment> updateComment(Long postId, Long id, com.homeproject.blog.backend.presentationlayer.model.Comment comment) {
-        Comment updatedComment = commentService.updateComment(id.longValue(), commentConverter.viewToDTO(comment));
+        Comment updatedComment = commentService.updateComment(id, commentConverter.viewToDTO(comment));
         return new ResponseEntity<>(commentConverter.dtoToView(updatedComment), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('admin', 'moderator')")
     @Override
     public ResponseEntity<Void> removeComment(Long postId, Long id) {
-        commentService.deleteComment(id.longValue(), postId.longValue());
+        commentService.deleteComment(id, postId);
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 }
