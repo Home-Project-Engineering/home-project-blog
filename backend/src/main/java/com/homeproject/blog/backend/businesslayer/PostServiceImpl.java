@@ -82,7 +82,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Page<Post> getPosts(Long id, String tagId, String tagName, String authorName, String sort, Integer pageNum, Integer pageSize) {
+    public Page<Post> getPosts(Long id, Long tagId, String tagName, String authorName, String sort, Integer pageNum, Integer pageSize) {
         Sort sorting;
         if (sort != null) {
             if (sort.charAt(0) == '-') {
@@ -95,9 +95,8 @@ public class PostServiceImpl implements PostService {
         }
         pageNum = pageNum == null ? pageNum = 0 : pageNum;
         pageSize = pageSize == null ? pageSize = 10 : pageSize;
-        Long tagIdValue = tagId == null ? null : Long.parseLong(tagId);
         PageRequest request = PageRequest.of(pageNum, pageSize, sorting);
-        Page<PostEntity> entities = postRepository.findPostsByParameters(request, id, tagIdValue, tagName, authorName);
+        Page<PostEntity> entities = postRepository.findPostsByParameters(request, id, tagId, tagName, authorName);
         return new PageImpl<>(entities.stream().map(postConverter::entityToPost).collect(Collectors.toList()), request, entities.getTotalElements());
     }
 

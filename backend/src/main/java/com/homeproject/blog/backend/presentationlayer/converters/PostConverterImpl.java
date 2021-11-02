@@ -21,7 +21,7 @@ public class PostConverterImpl implements PostConverter {
     @Override
     public com.homeproject.blog.backend.presentationlayer.model.Post dtoToView(Post dto) {
         com.homeproject.blog.backend.presentationlayer.model.Post view = new com.homeproject.blog.backend.presentationlayer.model.Post();
-        view.setId(new BigDecimal(dto.getId()));
+        view.setId(new Long(dto.getId()));
         view.setAuthor(authorConverter.dtoToView(dto.getAuthor()));
         view.setCreatedOn(OffsetDateTime.parse(dto.getCreatedOn()));
         view.setTags(tagConverter.dtosToViews(dto.getTags()));

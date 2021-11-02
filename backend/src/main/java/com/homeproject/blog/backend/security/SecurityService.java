@@ -17,7 +17,7 @@ public interface SecurityService {
 
     Page<Comment> getLoggedInUserComments(Long commentId, String sort, Integer pageNum, Integer pageSize);
 
-    Page<Post> getLoggedInUserPosts(Long postId, String tagId, String tagName, String sort, Integer pageNum, Integer pageSize);
+    Page<Post> getLoggedInUserPosts(Long postId, Long tagId, String tagName, String sort, Integer pageNum, Integer pageSize);
 
     User updateLoggedInUser(User user);
 

@@ -70,7 +70,7 @@ public class SecurityServiceImpl implements SecurityService {
     }
 
     @Override
-    public Page<Post> getLoggedInUserPosts(Long postId, String tagId, String tagName, String sort, Integer pageNum, Integer pageSize) {
+    public Page<Post> getLoggedInUserPosts(Long postId, Long tagId, String tagName, String sort, Integer pageNum, Integer pageSize) {
         User user = findLoggedInUser();
         return postService.getPosts(postId, tagId, tagName, user.getName(), sort, pageNum, pageSize);
     }

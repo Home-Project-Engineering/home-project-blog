@@ -15,7 +15,7 @@ public interface PostService {
 
     PostEntity findPostEntity(Long postId);
 
-    Page<Post> getPosts(Long id, String tagId, String tagName, String authorName, String sort, Integer pageNum, Integer pageSize);
+    Page<Post> getPosts(Long id, Long tagId, String tagName, String authorName, String sort, Integer pageNum, Integer pageSize);
 
     void deletePost(Long id) throws PostNotFoundException;
 }

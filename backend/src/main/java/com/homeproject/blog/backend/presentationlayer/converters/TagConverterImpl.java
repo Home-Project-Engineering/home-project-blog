@@ -15,7 +15,7 @@ public class TagConverterImpl implements TagConverter {
     @Override
     public com.homeproject.blog.backend.presentationlayer.model.Tag dtoToView(Tag dto) {
         com.homeproject.blog.backend.presentationlayer.model.Tag view = new com.homeproject.blog.backend.presentationlayer.model.Tag();
-        view.setId(new BigDecimal(dto.getId()));
+        view.setId(new Long(dto.getId()));
         view.setName(dto.getName());
         return view;
     }

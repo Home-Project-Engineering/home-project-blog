@@ -17,7 +17,7 @@ public class UserConverterImpl implements UserConverter{
     @Override
     public User dtoToModel(com.homeproject.blog.backend.dtos.User dto) {
         User model = new User();
-        model.setId(new BigDecimal(dto.getId()));
+        model.setId(new Long(dto.getId()));
         model.setName(dto.getName());
         model.setFirstName(dto.getFirstName());
         model.setLastName(dto.getLastName());

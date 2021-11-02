@@ -17,7 +17,7 @@ public class CommentConverterImpl implements CommentConverter {
     @Override
     public com.homeproject.blog.backend.presentationlayer.model.Comment dtoToView(Comment dto) {
         com.homeproject.blog.backend.presentationlayer.model.Comment view = new com.homeproject.blog.backend.presentationlayer.model.Comment();
-        view.setId(new BigDecimal(dto.getId()));
+        view.setId(new Long(dto.getId()));
         view.setText(dto.getText());
         view.setAuthor(authorConverter.dtoToView(dto.getAuthor()));
         view.setCreatedOn(OffsetDateTime.parse(dto.getCreatedOn()));

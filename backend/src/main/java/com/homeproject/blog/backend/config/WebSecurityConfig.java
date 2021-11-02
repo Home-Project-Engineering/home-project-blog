@@ -30,6 +30,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/users").permitAll()
+                .antMatchers(HttpMethod.GET,"/posts").permitAll()
+                .antMatchers(HttpMethod.GET,"/post").permitAll()
+                .antMatchers(HttpMethod.GET,"/comments").permitAll()
+                .antMatchers(HttpMethod.GET,"/comment").permitAll()
+                .antMatchers(HttpMethod.GET,"/tags").permitAll()
+                .antMatchers(HttpMethod.GET,"/tag").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

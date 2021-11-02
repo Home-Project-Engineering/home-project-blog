@@ -16,8 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
-
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,16 +44,15 @@ public class UserController implements UsersApi {
 
     @PreAuthorize("hasAnyRole('admin', 'moderator', 'blogger')")
     @Override
-    public ResponseEntity<User> getUser(BigDecimal id) {
-        com.homeproject.blog.backend.dtos.User user = userService.findById(id.longValue());
+    public ResponseEntity<User> getUser(Long id) {
+        com.homeproject.blog.backend.dtos.User user = userService.findById(id);
         return new ResponseEntity<>(userConverter.dtoToModel(user), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('admin')")
     @Override
-    public ResponseEntity<List<User>> getUsers(BigDecimal id, String name, String sort, Integer pageNum, Integer pageSize) {
-        Long postId = id == null ? null : id.longValue();
-        Page<com.homeproject.blog.backend.dtos.User> page = userService.findAll(postId, name, pageNum, pageSize, sort);
+    public ResponseEntity<List<User>> getUsers(Long id, String name, String sort, Integer pageNum, Integer pageSize) {
+        Page<com.homeproject.blog.backend.dtos.User> page = userService.findAll(id, name, pageNum, pageSize, sort);
         List<User> resultList = userConverter.dtosToViews(page.toList());
         return ResponseEntity.ok().header("X-Total-Count", String.valueOf(page.getTotalElements())).body(resultList);
     }
@@ -70,31 +67,32 @@ public class UserController implements UsersApi {
 
     @PreAuthorize("hasAnyRole('admin')")
     @Override
-    public ResponseEntity<Void> removeUser(BigDecimal id) {
-        userService.deleteUser(id.longValue());
+    public ResponseEntity<Void> removeUser(Long id) {
+        userService.deleteUser(id);
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 
     @PreAuthorize("hasAnyRole('admin')")
     @Override
-    public ResponseEntity<User> updateUser(BigDecimal id, User user) {
-        User updatedUser = userConverter.dtoToModel(userService.updateUser(id.longValue(), userConverter.modelToDto(user)));
+    public ResponseEntity<User> updateUser(Long id, User user) {
+        User updatedUser = userConverter.dtoToModel(userService.updateUser(id, userConverter.modelToDto(user)));
         return new ResponseEntity<>(updatedUser, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('admin')")
     @Override
-    public ResponseEntity<Role> getUserRole(BigDecimal id) {
-        RoleType roleType = userService.getUserRole(id.longValue());
+    public ResponseEntity<Role> getUserRole(Long id) {
+        RoleType roleType = userService.getUserRole(id);
         Role role = new Role();
         return new ResponseEntity<>(role.name(Role.NameEnum.fromValue(roleType.getName())), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('admin')")
-    public ResponseEntity<Role> updateUserRole(BigDecimal id, Role role) {
+    @Override
+    public ResponseEntity<Role> updateUserRole(Long id, Role role) {
         RoleType roleType = new RoleType();
         roleType.setName(role.getName().name());
-        RoleType updatedRole = userService.updateUserRole(id.longValue(), roleType);
+        RoleType updatedRole = userService.updateUserRole(id, roleType);
         return new ResponseEntity<>(role.name(Role.NameEnum.fromValue(updatedRole.getName())), HttpStatus.OK);
     }
 
@@ -114,63 +112,61 @@ public class UserController implements UsersApi {
 
     @PreAuthorize("hasAnyRole('admin', 'moderator', 'blogger')")
     @Override
-    public ResponseEntity<Comment> getCommentByCurrentUser(BigDecimal id) {
-        com.homeproject.blog.backend.dtos.Comment comment = securityService.getLoggedInUserComment(id.longValue());
+    public ResponseEntity<Comment> getCommentByCurrentUser(Long id) {
+        com.homeproject.blog.backend.dtos.Comment comment = securityService.getLoggedInUserComment(id);
         return new ResponseEntity<>(commentConverter.dtoToView(comment), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('admin', 'moderator', 'blogger')")
     @Override
-    public ResponseEntity<List<Comment>> getCommentsByCurrentUser(BigDecimal id, String sort, Integer pageNum, Integer pageSize) {
-        Long commentId = id == null ? null : id.longValue();
-        Page<com.homeproject.blog.backend.dtos.Comment> comments = securityService.getLoggedInUserComments(commentId, sort, pageNum, pageSize);
+    public ResponseEntity<List<Comment>> getCommentsByCurrentUser(Long id, String sort, Integer pageNum, Integer pageSize) {
+        Page<com.homeproject.blog.backend.dtos.Comment> comments = securityService.getLoggedInUserComments(id, sort, pageNum, pageSize);
         return new ResponseEntity<>(comments.stream().map(commentConverter::dtoToView).collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('admin', 'moderator', 'blogger')")
     @Override
-    public ResponseEntity<Post> getPostByCurrentUser(BigDecimal id) {
-        com.homeproject.blog.backend.dtos.Post post = securityService.getLoggedInUserPost(id.longValue());
+    public ResponseEntity<Post> getPostByCurrentUser(Long id) {
+        com.homeproject.blog.backend.dtos.Post post = securityService.getLoggedInUserPost(id);
         return new ResponseEntity<>(postConverter.dtoToView(post), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('admin', 'moderator', 'blogger')")
     @Override
-    public ResponseEntity<List<Post>> getPostsByCurrentUser(BigDecimal id, String tagId, String tagName, String sort, Integer pageNum, Integer pageSize) {
-        Long postId = id == null ? null : id.longValue();
-        Page<com.homeproject.blog.backend.dtos.Post> posts = securityService.getLoggedInUserPosts(postId, tagId, tagName, sort, pageNum, pageSize);
+    public ResponseEntity<List<Post>> getPostsByCurrentUser(Long id, Long tagId, String tagName, String sort, Integer pageNum, Integer pageSize) {
+        Page<com.homeproject.blog.backend.dtos.Post> posts = securityService.getLoggedInUserPosts(id, tagId, tagName, sort, pageNum, pageSize);
         return new ResponseEntity<>(posts.stream().map(postConverter::dtoToView).collect(Collectors.toList()), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('admin', 'moderator', 'blogger')")
     @Override
-    public ResponseEntity<Comment> updateCommentByCurrentUser(BigDecimal id, Comment comment) {
-        securityService.getLoggedInUserComment(id.longValue());
-        com.homeproject.blog.backend.dtos.Comment updatedComment = commentService.updateComment(id.longValue(), commentConverter.viewToDTO(comment));
+    public ResponseEntity<Comment> updateCommentByCurrentUser(Long id, Comment comment) {
+        securityService.getLoggedInUserComment(id);
+        com.homeproject.blog.backend.dtos.Comment updatedComment = commentService.updateComment(id, commentConverter.viewToDTO(comment));
         return new ResponseEntity<>(commentConverter.dtoToView(updatedComment), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('admin', 'moderator', 'blogger')")
     @Override
-    public ResponseEntity<Post> updatePostByCurrentUser(BigDecimal id, Post post) {
-        securityService.getLoggedInUserPost(id.longValue());
-        com.homeproject.blog.backend.dtos.Post updatedPost = postService.updatePost(id.longValue(), postConverter.viewToDTO(post));
+    public ResponseEntity<Post> updatePostByCurrentUser(Long id, Post post) {
+        securityService.getLoggedInUserPost(id);
+        com.homeproject.blog.backend.dtos.Post updatedPost = postService.updatePost(id, postConverter.viewToDTO(post));
         return new ResponseEntity<>(postConverter.dtoToView(updatedPost), HttpStatus.OK);
     }
 
     @PreAuthorize("hasAnyRole('admin', 'moderator', 'blogger')")
     @Override
-    public ResponseEntity<Void> removeCommentByCurrentUser(BigDecimal id) {
-        securityService.getLoggedInUserComment(id.longValue());
-        commentService.deleteComment(id.longValue(), null);
+    public ResponseEntity<Void> removeCommentByCurrentUser(Long id) {
+        securityService.getLoggedInUserComment(id);
+        commentService.deleteComment(id, null);
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 
     @PreAuthorize("hasAnyRole('admin', 'moderator', 'blogger')")
     @Override
-    public ResponseEntity<Void> removePostByCurrentUser(BigDecimal id) {
-        securityService.getLoggedInUserPost(id.longValue());
-        postService.deletePost(id.longValue());
+    public ResponseEntity<Void> removePostByCurrentUser(Long id) {
+        securityService.getLoggedInUserPost(id);
+        postService.deletePost(id);
         return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 }
