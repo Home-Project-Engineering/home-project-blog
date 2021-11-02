@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <changeSet id="13.10.2021-create_post_table" author="Pavlo Ponomarenko">
+        <createTable tableName="posts">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="text"/>
+            <column name="text" type="text"/>
+            <column name="created_on" type="text"/>
+            <column name="author_id" type="bigint"/>
+            <column name="preview_attachment" type="text"/>
+            <column name="updated_on" type="text"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="13.10.2021-create_comment_table" author="Pavlo Ponomarenko">
+        <createTable tableName="comments">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="text" type="text"/>
+            <column name="post_id" type="bigint"/>
+            <column name="author_id" type="bigint"/>
+            <column name="created_on" type="text"/>
+            <column name="updated_on" type="text"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="13.10.2021-create_tag_table" author="Pavlo Ponomarenko">
+        <createTable tableName="tags">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="text"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="13.10.2021-create_user_table" author="Pavlo Ponomarenko">
+        <createTable tableName="users">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="text"/>
+            <column name="first_name" type="text"/>
+            <column name="last_name" type="text"/>
+            <column name="email" type="text"/>
+            <column name="password" type="text"/>
+            <column name="role_id" type="bigint"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="13.10.2021-create_roleType_table" author="Pavlo Ponomarenko">
+        <createTable tableName="role_types">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="text"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="18.10.2021-create_posts_tags_table" author="Pavlo Ponomarenko">
+        <createTable tableName="posts_tags">
+            <column name="post_entity_id" autoIncrement="true" type="bigint"/>
+            <column name="tags_id" autoIncrement="true" type="bigint"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="sequence_creation" author="Pavlo Ponomarenko">
+        <createSequence sequenceName="comment_generator"/>
+        <createSequence sequenceName="post_generator"/>
+        <createSequence sequenceName="role_type_generator"/>
+        <createSequence sequenceName="comment_generator"/>
+        <createSequence sequenceName="tag_generator" incrementBy="10"/>
+        <createSequence sequenceName="user_generator" startValue="4"/>
+    </changeSet>
+</databaseChangeLog>
