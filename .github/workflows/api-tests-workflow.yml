@@ -1,4 +1,4 @@
-name: build
+name: Run Api Tests
 on:
   pull_request:
     branches: [ main ]
@@ -11,8 +11,10 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-      - name: Build and Run Tests
-        run: cd api-tests & mvn clean install
+      - name: Build Backend
+        run: cd ./backend && mvn clean install -DskipTests -ntp
+      - name: Build Tests
+        run: cd ./api-tests && mvn clean install -ntp
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v2
         if: always() # always run even if the previous step fails
