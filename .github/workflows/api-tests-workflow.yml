@@ -1,6 +1,6 @@
 name: Run Api Tests
 on:
-  pull_request:
+  pull_request_target:
     branches: [ main ]
   workflow_dispatch:
 
