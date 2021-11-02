@@ -4,28 +4,112 @@
                      xmlns:pro="http://www.liquibase.org/xml/ns/pro"
                      xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd
                      http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd">
-    <changeSet id="1" author="Ana">
-        <createTable tableName="post">
-            <column name="id" type="bigint">
-                <constraints primaryKey="true" primaryKeyName="posts_id_pk" />
+    <changeSet id="post_table" author="Ana">
+        <createTable tableName="posts">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="author_id" type="bigint">
-                 <constraints unique="true" uniqueConstraintName="house_owner_unq" />
-            </column>
-            <column name="fully_paid" type="boolean" defaultValueBoolean="false"></column>
+            <column name="title" type="text"/>
+            <column name="text" type="text"/>
+            <column name="created_on" type="text"/>
+            <column name="author_id" type="bigint"/>
+            <column name="preview_attachment" type="text"/>
+            <column name="updated_on" type="text"/>
         </createTable>
-        <createTable tableName="item">
-            <column name="id" type="bigint">
-                <constraints primaryKey="true" primaryKeyName="item_id_pk" />
+    </changeSet>
+    <changeSet id="comment_table" author="Ana">
+        <createTable tableName="comments">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(250)" />
-            <column name="house_id" type="bigint">
-                <constraints nullable="false" notNullConstraintName="item_house_id_nn" />
-            </column>
+            <column name="text" type="text"/>
+            <column name="post_id" type="bigint"/>
+            <column name="author_id" type="bigint"/>
+            <column name="created_on" type="text"/>
+            <column name="updated_on" type="text"/>
         </createTable>
-        <addAutoIncrement tableName="post" columnName="id" columnDataType="bigint" startWith="1" incrementBy="1" />
-        <addAutoIncrement tableName="item" columnName="id" columnDataType="bigint" startWith="1" incrementBy="1" />
-        <!--<createSequence sequenceName="hibernate_sequence" incrementBy="1" startValue="1" />-->
-        <addForeignKeyConstraint baseTableName="item" baseColumnNames="house_id" constraintName="item_house_id_fk" referencedTableName="house" referencedColumnNames="id" />
+    </changeSet>
+    <changeSet id="tag_table" author="Ana">
+        <createTable tableName="tags">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="text"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="user_table" author="Pavlo Ponomarenko">
+        <createTable tableName="users">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="text"/>
+            <column name="first_name" type="text"/>
+            <column name="last_name" type="text"/>
+            <column name="email" type="text"/>
+            <column name="password" type="text"/>
+            <column name="role_id" type="bigint"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="roleType_table" author="Ana">
+        <createTable tableName="role_types">
+            <column name="id" autoIncrement="true" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="text"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="posts_tags_table" author="Ana">
+        <createTable tableName="posts_tags">
+            <column name="post_entity_id" autoIncrement="true" type="bigint"/>
+            <column name="tags_id" autoIncrement="true" type="bigint"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="sequence_creation" author="Ana">
+        <createSequence sequenceName="comment_generator"/>
+        <createSequence sequenceName="post_generator"/>
+        <createSequence sequenceName="role_type_generator"/>
+        <createSequence sequenceName="comment_generator"/>
+        <createSequence sequenceName="tag_generator" incrementBy="10"/>
+        <createSequence sequenceName="user_generator" startValue="4"/>
+    </changeSet>
+    <changeSet id="role_type_table" author="Ana">
+        <insert tableName="role_types">
+            <column name="id" value="1"/>
+            <column name="name" value="admin"/>
+        </insert>
+        <insert tableName="role_types">
+            <column name="id" value="2"/>
+            <column name="name" value="moderator"/>
+        </insert>
+        <insert tableName="role_types">
+            <column name="id" value="3"/>
+            <column name="name" value="blogger"/>
+        </insert>
+    </changeSet>
+    <changeSet id="init_user_table" author="Ana">
+        <insert tableName="users">
+            <column name="name" value="Coder"/>
+            <column name="first_name" value="John"/>
+            <column name="last_name" value="Smith"/>
+            <column name="email" value="abcd.gmail"/>
+            <column name="password" value="$2a$10$UOwwGnMvTAPJZpieXbsoeOCB/4g6aIx4ZOWTDsl/O/KvHaABUYazi"/>
+            <column name="role_id" value="1"/>
+        </insert>
+        <insert tableName="users">
+            <column name="name" value="Searcher"/>
+            <column name="first_name" value="John"/>
+            <column name="last_name" value="Smith"/>
+            <column name="email" value="abcd.gmail"/>
+            <column name="password" value="$2a$10$UOwwGnMvTAPJZpieXbsoeOCB/4g6aIx4ZOWTDsl/O/KvHaABUYazi"/>
+            <column name="role_id" value="2"/>
+        </insert>
+        <insert tableName="users">
+            <column name="name" value="User"/>
+            <column name="first_name" value="John"/>
+            <column name="last_name" value="Smith"/>
+            <column name="email" value="abcd.gmail"/>
+            <column name="password" value="$2a$10$UOwwGnMvTAPJZpieXbsoeOCB/4g6aIx4ZOWTDsl/O/KvHaABUYazi"/>
+            <column name="role_id" value="3"/>
+        </insert>
     </changeSet>
 </databaseChangeLog>
